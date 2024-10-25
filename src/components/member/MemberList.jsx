@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { deleteMember, listMembers } from "../service/MemberService";
+import { deleteMember, listMembers } from "../../service/MemberService";
 import { useNavigate } from "react-router-dom";
 
-const ListEmployeeComponent = () => {
+const MemberList = () => {
   const [members, setMembers] = useState([]);
 
   const navigator = useNavigate();
@@ -22,7 +22,7 @@ const ListEmployeeComponent = () => {
       });
   }
   function addNewMember() {
-    navigator("/addMember");
+    navigator("/signup");
   }
 
   function updateMember(mno) {
@@ -90,4 +90,4 @@ const ListEmployeeComponent = () => {
   );
 };
 
-export default ListEmployeeComponent;
+export default MemberList;
