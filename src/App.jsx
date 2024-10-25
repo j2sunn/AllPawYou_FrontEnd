@@ -11,8 +11,8 @@ function App() {
       <BrowserRouter>
         <HeaderComponent />
         <Routes>
-          {/* // http://localhost:3000 */}
-          <Route path="/" element={<MemberList />}></Route>
+          {/* // http://localhost:3000/admin/memberList */}
+          <Route path="/admin/memberList" element={<MemberList />}></Route>
         </Routes>
         <FooterComponent />
       </BrowserRouter>
