@@ -1,3 +1,18 @@
+@font-face {
+	font-family: 'NanumSquareRound';
+	src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'GowunDodum-Regular';
+	src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -17,7 +32,12 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+
+	/*폰트 우선순위 정하면 */
+	font-family: 'GowunDodum-Regular', 'NanumSquareRound';
 }
+
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
@@ -25,24 +45,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 /*폰트 추가*/
-@font-face {
-  font-family: 'NanumSquareRound';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
 
-@font-face {
-  font-family: "GowunDodum-Regular";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-/*폰트 위에 두개중에 골라서 사용*/
-* {
-  font-family: 'NanumSquareRound';
-}
 
 body {
 	line-height: 1;
