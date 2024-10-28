@@ -3,7 +3,8 @@ import styled from "styled-components";
 const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
-`;
+  background-color : #FFF7D4;
+  `;
 const StyledLink = styled.a`
   text-decoration : none;
   color: inherit;
@@ -30,8 +31,6 @@ const FooterComponent = () => {
 
 
   return (
-    <div>
-      <footer className="footer">
         <FooterContainer>
           <Logo>
             <img src="/src/logo.png" style={{ height: '150px', width: '150px' }}></img>
@@ -52,8 +51,6 @@ const FooterComponent = () => {
             </p>
           </Board>
         </FooterContainer>
-      </footer>
-    </div>
   );
 };
 
