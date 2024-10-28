@@ -2,6 +2,7 @@ import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import HeaderComponent from "../components/common/HeaderComponent";
 import { useState } from "react";
+import FooterComponent from "../components/common/FooterComponent";
 
 const MyPage = () => {
   const [update, setUpdate] = useState(false);
@@ -50,7 +51,7 @@ const MyPage = () => {
           <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>수정</Button>
         </Container>
       )}
-      
+      <FooterComponent />
     </>
   )
 };
@@ -61,6 +62,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 5rem 0 10rem;
 `;
 
 const Content = styled.div`
