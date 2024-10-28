@@ -16,6 +16,11 @@ const HeaderComponent = () => {
                   member
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/user">
+                  user
+                </NavLink>
+              </li>
             </ul>
           </div>
           <div className="navbar-brand">Dev Mode</div>
