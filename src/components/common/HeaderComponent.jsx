@@ -18,8 +18,8 @@ const HeaderComponent = () => {
           </Logo>
           <Nav>
             <NavItem onClick={()=>navigator('/')}>홈</NavItem>
-            <NavItem>자유게시판</NavItem>
-            <NavItem>쇼핑</NavItem>
+            <NavItem onClick={()=>navigator('/community')}>자유게시판</NavItem>
+            <NavItem onClick={()=>navigator('/shopping')}>쇼핑</NavItem>
             <NavItem>고객센터</NavItem>
             {loginState ? (
               <>
