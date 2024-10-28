@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import logo from "../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 
 const HeaderComponent = () => {
   const navigator = useNavigate();
+  const [loginState, setLoginState] = useState(true);
 
   return (
     <>
@@ -18,7 +21,25 @@ const HeaderComponent = () => {
             <NavItem>자유게시판</NavItem>
             <NavItem>쇼핑</NavItem>
             <NavItem>고객센터</NavItem>
-            <NavItem onClick={()=>navigator('/login')}>로그인</NavItem>
+            {loginState ? (
+              <>
+                <NavItem>장바구니</NavItem>
+                <NavItem>
+                  <Accordion sx={{height: '5rem', backgroundColor: 'rgba(0,0,0,0)', boxShadow: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <AccordionSummary sx={{marginBottom: '-1rem'}}>
+                      {/* 이미지 넣기 */}
+                      <Img as='div'/>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{backgroundColor: '#EEC759'}}>
+                      <AccordianItem onClick={()=>navigator('/mypage')}>마이페이지</AccordianItem>
+                      <AccordianItem onClick={()=>setLoginState(false)}>로그아웃</AccordianItem>
+                    </AccordionDetails>
+                  </Accordion>
+                </NavItem>
+              </>
+              ) : (
+              <NavItem onClick={()=>navigator('/login')}>로그인</NavItem>)
+            }
           </Nav>
         </Header>
       </Container>
@@ -71,4 +92,16 @@ const Nav = styled.div`
 
 const NavItem = styled.div`
   cursor: pointer;
+`;
+
+const Img = styled.img`
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: gray;
+`;
+
+const AccordianItem = styled.div`
+  text-align: center;
+  margin: 1rem 0;
 `;
