@@ -8,6 +8,7 @@ import NotFound from "./routes/NotFound";
 import Login from "./routes/Login";
 import FindEmail from "./routes/FindEmail";
 import FindEmailResult from "./routes/FindEmailResult";
+import ResetPassword from "./routes/ResetPassword";
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/findEmail" element={<FindEmail/>}  />
           <Route path="/findEmailResult" element={<FindEmailResult/>} />
+          <Route path="/resetPwd" element={<ResetPassword />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

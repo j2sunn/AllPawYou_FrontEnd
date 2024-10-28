@@ -2,8 +2,8 @@ import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import FooterComponent from "../components/common/FooterComponent";
 import HeaderComponent from "../components/common/HeaderComponent";
-import { FaGoogle } from "react-icons/fa";
 import { SiKakaotalk } from "react-icons/si";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginContainer = styled.div`
     text-align:center;
@@ -48,8 +48,8 @@ const Login = () => {
                 <span>소셜 로그인</span>
                 <hr style={{ width: '350px', margin: '0 auto' }} />
                 <Icons>
-                    <a href="/signup"><SiKakaotalk size={40} /></a>
-                    <a href="/signup"><FaGoogle size={40} /></a>
+                    <a href="/signup"><SiKakaotalk size={40} style={{color:"yellow"}} /></a>
+                    <a href="/signup"><FcGoogle size={40} /></a>
                 </Icons>
                 
                 <div>
