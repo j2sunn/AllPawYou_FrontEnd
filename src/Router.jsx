@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import HeaderComponent from "src/components/common/HeaderComponent";
 import UserLogin from "./components/User/Login";
 import SignInPage from "./components/User/SignInPage";
 import SignUpPage from "./components/User/SignUpPage";
@@ -14,11 +13,11 @@ import Login from "./routes/Login";
 import FindEmail from "./routes/FindEmail";
 import FindEmailResult from "./routes/FindEmailResult";
 import ResetPassword from "./routes/ResetPassword";
+import UserList from "./components/User/UserList";
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <HeaderComponent />
       <Routes>
         <Route path="/" element={<MainPage />} />
 
@@ -39,6 +38,8 @@ const Router = () => {
         <Route path="/user/signin" element={<SignInPage />}></Route>
         {/* // http://localhost:3000/user/signup */}
         <Route path="/user/signup" element={<SignUpPage />}></Route>
+        {/* // http://localhost:3000/user/userlist */}
+        <Route path="/user/userlist" element={<UserList />}></Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
