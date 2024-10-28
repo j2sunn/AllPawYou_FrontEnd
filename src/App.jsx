@@ -8,7 +8,10 @@ function App() {
       primary: {
         main: '#527853'
       }
-    }
+    },
+    typography: {
+      fontFamily: "'GowunDodum-Regular', 'NanumSquareRound'"
+    },
   });
 
   return (
