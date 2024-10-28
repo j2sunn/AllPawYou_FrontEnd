@@ -6,6 +6,16 @@ import FooterComponent from "../components/common/FooterComponent";
 
 const MyPage = () => {
   const [update, setUpdate] = useState(false);
+  const [profile, setProfile] = useState({});
+
+  const profileHandler = (event, key) => {
+    const newObj = {
+      ...profile,
+      [key]: event.target.value
+    };
+    console.log(newObj);
+    setProfile(newObj);
+  }
 
   return (
     <>
@@ -16,18 +26,28 @@ const MyPage = () => {
           <Content>
             <Profile>
               <ProfileImg as="div"/>
-              <TextField variant="outlined" size="small" sx={{width: '150px'}} />
+              <TextField variant="outlined" size="small" sx={{width: '150px'}} onChange={()=>profileHandler(event, 'nickname')}/>
             </Profile>
             <Profile>
-              <ProfileDetail>이름 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}}/></ProfileDetail>
-              <ProfileDetail>전화번호 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}}/></ProfileDetail>
-              <ProfileDetail>이메일 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}}/></ProfileDetail>
+              <ProfileDetail>
+                이름 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'name')}/>
+              </ProfileDetail>
+              <ProfileDetail>
+                전화번호 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'phone')}/>
+              </ProfileDetail>
+              <ProfileDetail>
+                이메일 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'email')}/>
+              </ProfileDetail>
             </Profile>
           </Content>
           <Title>주소</Title>
-          <TextField variant="outlined" size="small" multiline maxRows={6} sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}/>
+          <TextField variant="outlined" size="small" multiline maxRows={6} 
+            sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}
+            onChange={()=>profileHandler(event, 'address')}/>
           <Title>자기소개</Title>
-          <TextField variant="outlined" size="small" multiline maxRows={6} sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}/>
+          <TextField variant="outlined" size="small" multiline maxRows={6} 
+            sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}
+            onChange={()=>profileHandler(event, 'info')}/>
           <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>저장</Button>
         </Container>
       ) : (
@@ -45,7 +65,7 @@ const MyPage = () => {
             </Profile>
           </Content>
           <Title>주소</Title>
-          <Content>asdfsd</Content>
+          <Content></Content>
           <Title>자기소개</Title>
           <Content></Content>
           <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>수정</Button>
