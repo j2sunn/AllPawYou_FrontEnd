@@ -134,7 +134,7 @@ const SignUp = () => {
                   required
                   sx={{width:"75%"}}
                 />
-                 <ButtonOverlay variant="outlined">인증번호 전송</ButtonOverlay>
+                 <ButtonOverlay variant="contained">인증번호 전송</ButtonOverlay>
                 <div className="invalid-feedback">{errors.m_email}</div>
                
               </div>
@@ -146,7 +146,7 @@ const SignUp = () => {
                   required
                   sx={{width:"75%"}}
                 />
-                <ButtonOverlay variant="outlined">인증번호 확인</ButtonOverlay>
+                <ButtonOverlay variant="contained">인증번호 확인</ButtonOverlay>
                 <div className="invalid-feedback">{errors.m_email}</div>
               </div>
 
@@ -223,7 +223,7 @@ const SignUp = () => {
               </div>
               <div className="mb-4"></div>
               <ButtonContainer>
-              <Button variant="contained" type="submit">
+              <Button variant="contained" type="submit" sx={{width: '100%', height: '56px'}}>
                 회원 가입
               </Button>
               </ButtonContainer>

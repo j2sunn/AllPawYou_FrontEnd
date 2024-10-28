@@ -53,8 +53,8 @@ const Login = () => {
                 </Icons>
                 
                 <div>
-                    <Links href="/findEmail">아이디 찾기</Links> |
-                    <Links href=""> 비밀번호 재설정</Links> |
+                    <Links href="/findEmail">이메일 찾기</Links> |
+                    <Links href="/resetPwd"> 비밀번호 재설정</Links> |
                     <Links href="/signup"> 회원가입</Links>
                 </div>
 
