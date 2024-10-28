@@ -4,7 +4,7 @@ import HeaderComponent from "../components/common/HeaderComponent";
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import styled from "styled-components";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import FooterComponent from "../components/common/FooterComponent";
 
 const ListEmployeeComponent = () => {
@@ -79,7 +79,7 @@ const ListEmployeeComponent = () => {
                   <TableCell align="center">번호</TableCell>
                   <TableCell align="center">이름</TableCell>
                   <TableCell align="center">이메일</TableCell>
-                  <TableCell align="center">삭제</TableCell>
+                  <TableCell align="center" sx={{width: '15rem'}}>삭제</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -88,7 +88,7 @@ const ListEmployeeComponent = () => {
                     <TableCell align="center">{index+1}</TableCell>
                     <TableCell align="center">{item.name}</TableCell>
                     <TableCell align="center">{item.email}</TableCell>
-                    <TableCell align="center">회원 삭제</TableCell>
+                    <TableCell align="center" sx={{width: '15rem'}}><Button variant="outlined" color="error">회원 삭제</Button></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
