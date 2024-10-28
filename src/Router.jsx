@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./routes/MainPage";
 import MemberList from "./components/member/MemberList";
 import MemberSignUp from "./components/member/MemberSignUp";
+import MyPage from "./routes/MyPage";
 import NotFound from "./routes/NotFound";
 
 const Router = () => {
@@ -10,6 +11,8 @@ const Router = () => {
     <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
+
+          <Route path="/mypage" element={<MyPage />} />
           {/* // http://localhost:3000/admin/memberList */}
           <Route path="/admin/memberList" element={<MemberList />}></Route>
           {/* // http://localhost:3000/signup */}
