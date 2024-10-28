@@ -35,6 +35,7 @@ const SignUp = () => {
   const [m_pwd_chk, setM_pwd_chk] = useState("");
   const [m_nick, setM_nick] = useState("");
   const [m_phone, setM_phone] = useState("");
+  const [auth, setAuth] = useState(false);
 
   const [errors, setErrors] = useState({
     m_email: "",
@@ -134,10 +135,11 @@ const SignUp = () => {
                   required
                   sx={{width:"75%"}}
                 />
-                 <ButtonOverlay variant="outlined">인증번호 전송</ButtonOverlay>
+                 <ButtonOverlay variant="contained" onClick={()=>setAuth(true)}>인증번호 전송</ButtonOverlay>
                 <div className="invalid-feedback">{errors.m_email}</div>
                
               </div>
+              {auth && (
               <div className="mb-3">
                 <label htmlFor="validateNumber">인증번호</label><br/>
                 <TextField
@@ -146,10 +148,11 @@ const SignUp = () => {
                   required
                   sx={{width:"75%"}}
                 />
-                <ButtonOverlay variant="outlined">인증번호 확인</ButtonOverlay>
+                <ButtonOverlay variant="contained">인증번호 확인</ButtonOverlay>
                 <div className="invalid-feedback">{errors.m_email}</div>
-              </div>
-
+              </div>)
+              }
+              
               <div className="mb-3">
                 <label htmlFor="pwd">비밀번호</label>
                 <TextField
@@ -223,7 +226,7 @@ const SignUp = () => {
               </div>
               <div className="mb-4"></div>
               <ButtonContainer>
-              <Button variant="contained" type="submit">
+              <Button variant="contained" type="submit" sx={{width: '100%', height: '56px'}}>
                 회원 가입
               </Button>
               </ButtonContainer>
