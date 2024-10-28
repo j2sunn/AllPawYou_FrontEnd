@@ -9,16 +9,16 @@ const StyledLink = styled.a`
   text-decoration : none;
   color: inherit;
 `;
-const Content = styled.p`
+const Content = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 2rem;
 `;
-const Board = styled.p`
+const Board = styled.div`
   text-align : left;
   font-size: 12px;
 `;
-const Info = styled.p`
+const Info = styled.div`
   text-align : right;
 `;
 const Logo = styled.div`
