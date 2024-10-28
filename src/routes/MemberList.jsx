@@ -5,6 +5,7 @@ import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import styled from "styled-components";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import FooterComponent from "../components/common/FooterComponent";
 
 const ListEmployeeComponent = () => {
   const [members, setMembers] = useState([{
@@ -98,6 +99,7 @@ const ListEmployeeComponent = () => {
           </Pages>
         </Content>
       </Container>
+      <FooterComponent />
     </>
   );
 };

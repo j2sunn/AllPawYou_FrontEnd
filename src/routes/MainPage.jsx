@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaRegHeart } from "react-icons/fa";
 import HeaderComponent from "../components/common/HeaderComponent";
+import FooterComponent from "../components/common/FooterComponent";
 
 const MainPage = () => {
   return (
@@ -82,6 +83,7 @@ const MainPage = () => {
           </ProductCardBottom>
         </ProductCard>
       </Container>
+      <FooterComponent />
     </>
   )
 };

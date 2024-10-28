@@ -6,16 +6,21 @@ import { FaGoogle } from "react-icons/fa";
 import { SiKakaotalk } from "react-icons/si";
 
 const LoginContainer = styled.div`
-text-align:center;
-padding-top:100px;
-height: 600px;
+    text-align:center;
+    padding-top:100px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 const Content = styled.div`
-padding-top:20px;
-    padding-bottom:20px;
+    padding: 20px 0;
 `;
 const Icons = styled.div`
-padding-top:10px;
+    margin: 2rem 0;
+    width: 10%;
+    display: flex;
+    justify-content: space-between;
 `;
 
 const Links = styled.a`
@@ -38,18 +43,20 @@ const Login = () => {
                     <TextField type="password" label="비밀번호" variant="outlined" sx={{ width: '350px' }} />
                 </Content>
                 <div>
-                    <Button variant="contained" sx={{ backgroundColor: '#527853', width: '350px', height: '40px' }}>로그인</Button>
+                    <Button variant="contained" sx={{ backgroundColor: '#527853', width: '350px', height: '40px', marginBottom: '3rem' }}>로그인</Button>
                 </div>
-                <span>소셜 로그인</span><hr style={{ width: '350px', margin: '0 auto' }} />
-                    <Icons>
+                <span>소셜 로그인</span>
+                <hr style={{ width: '350px', margin: '0 auto' }} />
+                <Icons>
                     <a href="/signup"><SiKakaotalk size={40} /></a>
                     <a href="/signup"><FaGoogle size={40} /></a>
-                    </Icons>
+                </Icons>
                 
-
-                <Links href="/findEmail">아이디 찾기</Links> |
-                <Links href=""> 비밀번호 재설정</Links> |
-                <Links href="/signup"> 회원가입</Links>
+                <div>
+                    <Links href="/findEmail">아이디 찾기</Links> |
+                    <Links href=""> 비밀번호 재설정</Links> |
+                    <Links href="/signup"> 회원가입</Links>
+                </div>
 
 
             </LoginContainer>
