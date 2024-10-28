@@ -1,54 +1,38 @@
 import { useEffect, useState } from "react";
-import { deleteMember, listMembers } from "../service/MemberService";
-import HeaderComponent from "../components/common/HeaderComponent";
+import { listUsers, deleteUser } from "../../service/UserService";
+
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import FooterComponent from "../components/common/FooterComponent";
+import FooterComponent from "../common/FooterComponent";
+import HeaderComponent from "../common/HeaderComponent";
 
-const ListEmployeeComponent = () => {
-  const [members, setMembers] = useState([
-    {
-      name: "a",
-      email: "a@a.com",
-    },
-    {
-      name: "b",
-      email: "b@a.com",
-    },
-    {
-      name: "c",
-      email: "c@a.com",
-    },
-    {
-      name: "d",
-      email: "d@a.com",
-    },
-  ]);
+const UserList = () => {
+  const [user, setUsers] = useState([]);
 
   useEffect(() => {
-    getAllMembers();
+    getAllUsers();
   }, []);
 
-  function getAllMembers() {
-    listMembers()
+  function getAllUsers() {
+    listUsers()
       .then((response) => {
         console.log(response.data);
-        setMembers(response.data);
+        setUsers(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   }
 
-  function removeMember(mno) {
-    console.log(mno);
+  function removeUser(no) {
+    console.log(no);
 
-    deleteMember(mno)
+    deleteUser(no)
       .then((response) => {
         console.log(response);
-        getAllMembers();
+        getAllUsers();
       })
       .catch((error) => {
         console.error(error);
@@ -76,7 +60,7 @@ const ListEmployeeComponent = () => {
           </SimpleTreeView>
         </SideBar>
         <Content>
-          <Title>회원 관리</Title>
+          <Title>유저 관리</Title>
           <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
             <Table>
               <TableHead sx={{ backgroundColor: "#EEC759" }}>
@@ -90,12 +74,12 @@ const ListEmployeeComponent = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {members.map((item, index) => (
-                  <TableRow key={item.name}>
+                {user.map((item, index) => (
+                  <TableRow key={item.no}>
                     <TableCell align="center">{index + 1}</TableCell>
-                    <TableCell align="center">{item.name}</TableCell>
+                    <TableCell align="center">{item.username}</TableCell>
                     <TableCell align="center">{item.email}</TableCell>
-                    <TableCell align="center" sx={{ width: "15rem" }}>
+                    <TableCell align="center" sx={{ width: "15rem" }} onClick={() => removeUser(item.no)}>
                       <Button variant="outlined" color="error">
                         회원 삭제
                       </Button>
@@ -113,7 +97,7 @@ const ListEmployeeComponent = () => {
   );
 };
 
-export default ListEmployeeComponent;
+export default UserList;
 
 const Container = styled.div`
   display: flex;
