@@ -39,12 +39,48 @@ const MainPage = () => {
         </BoardCard>
       </Container>
       <Container>
-        <ProductCard>1</ProductCard>
-        <ProductCard>2</ProductCard>
-        <ProductCard>3</ProductCard>
-        <ProductCard>4</ProductCard>
-        <ProductCard>5</ProductCard>
-        <ProductCard>6</ProductCard>
+        <ProductCard>
+          <ProductImg src="#" alt="이미지1" as='div' />
+          <ProductCardBottom>
+            <div>이름</div>
+            <div>가격</div>
+          </ProductCardBottom>
+        </ProductCard>
+        <ProductCard>
+          <ProductImg src="#" alt="이미지1" as='div' />
+          <ProductCardBottom>
+            <div>이름</div>
+            <div>가격</div>
+          </ProductCardBottom>
+        </ProductCard>
+        <ProductCard>
+          <ProductImg src="#" alt="이미지1" as='div' />
+          <ProductCardBottom>
+            <div>이름</div>
+            <div>가격</div>
+          </ProductCardBottom>
+        </ProductCard>
+        <ProductCard>
+          <ProductImg src="#" alt="이미지1" as='div' />
+          <ProductCardBottom>
+            <div>이름</div>
+            <div>가격</div>
+          </ProductCardBottom>
+        </ProductCard>
+        <ProductCard>
+          <ProductImg src="#" alt="이미지1" as='div' />
+          <ProductCardBottom>
+            <div>이름</div>
+            <div>가격</div>
+          </ProductCardBottom>
+        </ProductCard>
+        <ProductCard>
+          <ProductImg src="#" alt="이미지1" as='div' />
+          <ProductCardBottom>
+            <div>이름</div>
+            <div>가격</div>
+          </ProductCardBottom>
+        </ProductCard>
       </Container>
     </>
   )
@@ -85,5 +121,14 @@ const BoardLike = styled.div`
 
 const ProductCard = styled(BoardCard)`
   width: 200px;
-  height: 200px;
+  height: 220px;
+`;
+
+const ProductImg = styled.img`
+    width: 200px;
+    height: 150px;
+`;
+
+const ProductCardBottom = styled(BoardCardBottom)`
+    flex-direction: column;
 `;
