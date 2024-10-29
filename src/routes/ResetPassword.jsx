@@ -15,9 +15,8 @@ const Content = styled.div`
 `;
 
 const ButtonAdd = styled(Button)`
-left: 10px;
-width: 23%;
-height:56px;
+    width: 25%;
+    height:56px;
 `;
 
 const ButtonContainer = styled.div`
@@ -39,13 +38,11 @@ const ResetPassword = () => {
             <Container>
                 <Content>
                     <h4 style={{ marginBottom: '25px' }}>비밀번호 재설정</h4>
-                    <div style={{ marginBottom: "16px" }}>
-                        <TextField label="이메일 주소" variant="outlined" placeholder="'@'를 포함하여 입력해주세요'"
-                            sx={{ width: "75%" }} />
-                        <ButtonAdd variant="contained" sx={{ height: '56px' }} onClick={() => setAuth(true)}>인증번호 전송</ButtonAdd><br />
-                        <ValidationText></ValidationText>
+                    <div style={{ marginBottom: "16px", display: 'flex', justifyContent: 'space-between', width: '100%'}}>
+                        <TextField label="이메일 주소" variant="outlined" placeholder="'@'를 포함하여 입력해주세요'" sx={{width: '72%'}} />
+                        <ButtonAdd variant="contained" sx={{ height: '56px' }} onClick={() => setAuth(true)}>인증번호 전송</ButtonAdd>
                     </div>
-                    <div style={{ marginBottom: "16px" }}>
+                    <div style={{ marginBottom: "16px"}}>
                         {auth && (
                             <>
                                 <TextField label="인증번호" variant="outlined" placeholder="인증번호를 입력해주세요" sx={{ width: "75%"}} />
@@ -59,7 +56,7 @@ const ResetPassword = () => {
                         <TextField label="새 비밀번호" variant="outlined" placeholder="비밀번호를 입력해주세요" sx={{ width: "100%" }} /><br />
                         <ValidationText></ValidationText>
                     </div>
-                    <div style={{ marginBottom: "16px" }}>
+                    <div style={{ marginBottom: "16px"}}>
                         <TextField label="새 비밀번호 확인" variant="outlined" placeholder="비밀번호를 입력해주세요" sx={{ width: "100%"}} /><br />
                         <ValidationText></ValidationText>
                     </div>
