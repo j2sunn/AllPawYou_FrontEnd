@@ -13,7 +13,7 @@ width:45%;
 `;
 
 const Content = styled.div`
-    padding-bottom:20px;
+    padding-bottom:60px;
 `;
 
 const ButtonAdd = styled(Button)`
@@ -193,7 +193,7 @@ const validateForm=()=>{ //잘 작성했는지 확인
                         
                     </div>
                     <ButtonContainer>
-                        <Button variant="contained" sx={{ width: '100%', height: '56px' }}>이메일 찾기</Button>
+                        <Button variant="contained" sx={{ width: '100%', height: '56px', fontSize: '1.5rem' }}>이메일 찾기</Button>
                     </ButtonContainer>
                 </Content>
 

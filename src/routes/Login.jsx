@@ -93,7 +93,7 @@ export default function Login() {
             />
           </Content>
           <div>
-            <Button variant="contained" type="submit" sx={{ backgroundColor: "#527853", width: "350px", height: "40px", marginBottom: "3rem" }}>
+            <Button variant="contained" type="submit" sx={{ backgroundColor: "#527853", width: "350px", height: "40px", marginBottom: "3rem", fontSize: '1.2rem' }}>
               로그인
             </Button>
           </div>

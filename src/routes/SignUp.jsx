@@ -134,7 +134,7 @@ const SignUp = () => {
               </div>
               <div className="mb-4"></div>
               <ButtonContainer>
-                <Button variant="contained" type="submit" sx={{ width: "100%", height: "56px" }}>
+                <Button variant="contained" type="submit" sx={{ width: "100%", height: "56px", fontSize: '1.5rem'}}>
                   회원 가입
                 </Button>
               </ButtonContainer>
