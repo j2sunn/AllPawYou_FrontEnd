@@ -6,10 +6,11 @@ import { findMem,sendSMS, verifySMS,findEmail } from "../service/SmsService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const Container = styled.div`
-padding: 70px;
+padding: 100px 70px;
 margin:auto;
 position:relative;
 width:45%;
+min-height: 700px;
 `;
 
 const Content = styled.div`
