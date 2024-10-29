@@ -13,7 +13,7 @@ width:45%;
 `;
 
 const Content = styled.div`
-    padding-bottom:20px;
+    padding-bottom:60px;
 `;
 
 const ButtonAdd = styled(Button)`
@@ -37,13 +37,14 @@ const ValidationText = styled.span`
 const FindEmail = () => {
     const [show, setShow] = useState(false);
     const [count, setCount] = useState(0);  // count를 상태 변수로 관리
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [auth, setAuth] = useState('');
+    const [name, setName] = useState(''); //작성한 이름 저장
+    const [phone, setPhone] = useState(''); //작성한 휴대폰번호저장
+    const [auth, setAuth] = useState(''); //작성한 인증번호 저장
     const [errors, setErrors] = useState({
         name: '', //이름 작성 여부
         phone: '', //휴대폰번호 작성 여부
-        auth: '' //인증번호 일치 여부
+        auth: '', //인증번호 작성 여부
+        same : '인증번호가 일치하지 않습니다.' //인증번호 일치 여부
     });
     const navigator = useNavigate();
     
@@ -103,31 +104,31 @@ const FindEmail = () => {
 
     //인증번호를 입력값과 비교
 const verify = ()=>{
-    verifySMS(auth)
-    .then(resp=>{
-        let dat = resp.data; //일치하면 1을 리턴할거고 일치하지 않으면 0을 리턴할거다
-        console.log("인증번호일치 resp.data : "+resp.data);
-        if(dat==0){
-            //불일치하는 인증번호 작성 시
-            alert("인증번호가 일치하지 않습니다.");
-            return;
-        }else{
-            //일치하는 인증번호 작성 시
-            //이메일을 알려주는 페이지로 이동하기
-            findEmail(phone)
-            .then((response)=>{
-                response.data;
-                console.log("찾은이메일 response.data : "+response.data);
-                let email = response.data;
-                if(email){
-                    //null이 아닐 때 
-                    navigator('/informEmail/'+email); //핸드폰번호는 중복되면 안되니까 그걸로 사람찾기
-                }
+    if(authWrite()){
+        verifySMS(auth)
+        .then(resp=>{
+            resp.data; //일치하면 1을 리턴할거고 일치하지 않으면 0을 리턴할거다
+            let dat = resp.data;
+            console.log("인증번호일치 resp.data : "+resp.data);
+            if(dat==0){
+                //불일치하는 인증번호 작성 시
+                alert("인증번호가 일치하지 않습니다.");
+                return;
+            }else{
+                const errorCopy = {...errors}; //스프레드 연산자
+                errorCopy.same = "인증번호가 일치합니다."; //일치
+                console.log(errors);
+                //일치하는 인증번호 작성 시
+                //이메일을 알려주는 페이지로 이동하기
+
+                //여기에 findEmail(phone) 있었다.
                 
-            })
-            
-        }
-    })
+                setErrors(errorCopy);
+                
+            }
+        })
+    }
+   
 }
 
 
@@ -153,10 +154,38 @@ const validateForm=()=>{ //잘 작성했는지 확인
         console.log("휴대폰번호 미작성");
         valid=false;
     }
+
+    
     setErrors(errorCopy);
     return valid;
 }
-
+const authWrite = ()=>{ //인증번호 작성했는지 여부 검사
+    let valid=true;
+    const errorCopy = {...errors}; //스프레드 연산자
+    if(auth.trim()){
+        //인증번호 한 자라도 작성한 경우
+        errorCopy.auth = '';
+    }else{
+        errorCopy.auth = '인증번호를 작성해주세요.';
+        console.log("인증번호 미작성");
+        valid=false;
+    }
+    setErrors(errorCopy);
+    return valid;
+}
+const final = ()=>{
+            findEmail(phone)
+                .then((response)=>{
+                    response.data;
+                    console.log("찾은이메일 response.data : "+response.data);
+                    let email = response.data;
+                    if(email){
+                        //null이 아닐 때 
+                        navigator('/findEmailResult/'+email); //핸드폰번호는 중복되면 안되니까 그걸로 사람찾기
+                    }
+                    
+                })
+}
     return (
         <>
             <HeaderComponent />
@@ -187,13 +216,23 @@ const validateForm=()=>{ //잘 작성했는지 확인
                                 placeholder="인증번호를 입력해주세요" sx={{ width: "75%" }} />
                                 <ButtonAdd variant="contained" sx={{ height: '56px' }}
                                 onClick={verify}>인증번호 확인</ButtonAdd><br />
-                                <ValidationText></ValidationText>
+                                {/* { errors.auth && <ValidationText>{errors.auth}</ValidationText> } */}
+                                {errors.same && <ValidationText>{errors.same}</ValidationText>}    
+                                {/* {(!(errors.same)) && <ValidationText>인증번호가 일치하지 않습니다.</ValidationText>} */}
+                                {/* <ValidationText></ValidationText> */}
                             </>
                         )}
                         
                     </div>
                     <ButtonContainer>
-                        <Button variant="contained" sx={{ width: '100%', height: '56px' }}>이메일 찾기</Button>
+
+                        <Button variant="contained" sx={{ width: '100%', height: '56px', fontSize: '1.5rem' }}
+                        //  disabled={!(errors.same)} 
+                         //  true일 때만 버튼 활성화
+                         disabled={errors.same !== "인증번호가 일치합니다."} // status가 "active"일 때만 버튼 활성화
+                        onClick={final}
+                        >이메일 찾기</Button>
+
                     </ButtonContainer>
                 </Content>
 

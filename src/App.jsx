@@ -10,7 +10,8 @@ function App() {
       }
     },
     typography: {
-      fontFamily: "'GowunDodum-Regular', 'NanumSquareRound'"
+      fontFamily: "'GowunDodum-Regular', 'NanumSquareRound'",
+      fontSize: '1.5rem'
     },
   });
 
