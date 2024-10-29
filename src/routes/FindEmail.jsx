@@ -2,7 +2,7 @@ import { Button, TextField } from "@mui/material";
 import HeaderComponent from "../components/common/HeaderComponent";
 import FooterComponent from "../components/common/FooterComponent";
 import styled from "styled-components";
-import { findMem,sendSMS, verifySMS,findEmail } from "../services/SmsService";
+import { findMem,sendSMS, verifySMS,findEmail } from "../service/SmsService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const Container = styled.div`
@@ -59,7 +59,8 @@ const FindEmail = () => {
             
             //문자 전송하기 전에 일단 db에 있는 이름인지 조회해서 있는 이름일 경우에만 문자전송
             //일단 employees 테이블의 같은이름 같은번호가 있는 지 조회
-            const member = {name,phone};
+            const member = { name,
+                "phone" : phone};
             findMem(member)
             .then((response)=>{
                 response.data;
