@@ -19,7 +19,6 @@ export const login = async ({ email, password }) => {
   return response.data;
 };
 
-
 /** SIGNUP API */
 export const signUp = async ({ email, username, password, nickname, phone, address }) => {
   const data = { email, username, password, nickname, phone, address };
