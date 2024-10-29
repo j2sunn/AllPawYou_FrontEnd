@@ -32,6 +32,7 @@ const Error = styled.div`
 
 const SignUp = () => {
   const [auth, setAuth] = useState(false);
+  const [authNumber, setAuthNumber] = useState(''); //인증번호
   const [values, setValues] = useState({
     email: "",
     username: "",
@@ -90,6 +91,11 @@ const SignUp = () => {
       obj = {...obj, password: ''};
     }
 
+    // passwordConfirm
+    if(values.password.trim() != values.passwordConfirm.trim()){
+      obj = {...obj, passwordConfirm: "비밀번호와 일치하지 않습니다."}
+    }
+
     // nickname
     regex = /^[A-Za-z0-9]{2,10}$/i;
     if(!regex.test(values.nickname.trim())){
@@ -108,6 +114,9 @@ const SignUp = () => {
       obj = {...obj, phone: ''};
     }
     setError(obj);
+
+    //인증번호 검증 로직 추가해야함
+
     return valid;
   }
 
@@ -138,23 +147,23 @@ const SignUp = () => {
               </div>
               {auth && (
                 <div className="mb-3">
-                  <label htmlFor="validateNumber">인증번호</label>
+                  <label htmlFor="authNumber">인증번호</label>
                   <br />
-                  <TextField id="validateNumber" className={`form-control`} required sx={{ width: "75%" }} />
+                  <TextField id="authNumber" className={`form-control`} required sx={{ width: "75%" }} onChange={(e)=>setAuthNumber(e.target.value)}/>
                   <ButtonOverlay variant="contained">인증번호 확인</ButtonOverlay>
                 </div>
               )}
 
               <div className="mb-3">
-                <label htmlFor="pwd">비밀번호</label>
+                <label htmlFor="password">비밀번호</label>
                 <TextField type="password" id="password" className={`form-control`} onChange={handleChange} required />
                 <Error>{error.password}</Error>
               </div>
 
               <div className="mb-3">
-                <label htmlFor="pwd">비밀번호 확인</label>
-                <TextField type="password" id="passwordCheck" className={`form-control`} onChange={handleChange} required />
-                {/* <div className="invalid-feedback">{errors.m_pwd_chk}</div> */}
+                <label htmlFor="passwordConfirm">비밀번호 확인</label>
+                <TextField type="password" id="passwordConfirm" className={`form-control`} onChange={handleChange} required />
+                <Error>{error.passwordConfirm}</Error>
               </div>
 
               <div className="row">
