@@ -23,18 +23,26 @@ const Info = styled.div`
 `;
 const Logo = styled.div`
   float : left;
-  margin-left : 30px;
+  margin-left: 20px;
   margin-bottom: 20px;
   display:flex;
+  width : 180px;
+  flex-direction: column;
+  align-items: center;
 `;
-
+const LogoText = styled.span`
+  color: #527853;
+  font-size: 23px;
+  font-weight: 600;
+`;
 const FooterComponent = () => {
   
 
   return (
         <FooterContainer>
           <Logo>
-            <img src="/src/logo.png" style={{ width: '250px' }}></img>
+            <img src="/src/logo.png" style={{ width: '150px' }}></img>
+            <LogoText>All Paw You</LogoText>
           </Logo>
           <Content>
             <Board>
