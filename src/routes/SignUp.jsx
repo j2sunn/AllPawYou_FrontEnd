@@ -5,7 +5,8 @@ import FooterComponent from "../components/common/FooterComponent";
 import { Button, TextField } from "@mui/material";
 
 import styled from "styled-components";
-import { signUp } from "../service/Auth";
+import { signUp, sendMail, verify } from "../service/Auth";
+import axios from "axios";
 
 const Container = styled.div`
   padding: 60px;
@@ -59,6 +60,22 @@ const SignUp = () => {
       });
   };
 
+  const handleVerify = async () => {
+    try {
+      // API 호출
+      const response = await verify(values.email, values.verify);
+      // 인증 성공
+      alert("인증번호가 확인되었습니다.");
+    } catch (error) {
+      // 인증 실패
+      if (error.response) {
+        alert("인증번호 또는 이메일이 일치하지 않습니다.");
+      } else {
+        alert("서버 오류가 발생했습니다.");
+      }
+    }
+  };
+
   return (
     <>
       <HeaderComponent />
@@ -79,17 +96,32 @@ const SignUp = () => {
                   required
                   sx={{ width: "75%" }}
                 />
-                <ButtonOverlay variant="contained" onClick={() => setAuth(true)}>
+                <ButtonOverlay
+                  variant="contained"
+                  onClick={() => {
+                    sendMail(values.email);
+                    setAuth(true);
+                    alert("인증번호를 전송했습니다.");
+                  }}
+                >
                   인증번호 전송
                 </ButtonOverlay>
                 {/* <div className="invalid-feedback">{errors.m_email}</div> */}
               </div>
               {auth && (
                 <div className="mb-3">
-                  <label htmlFor="validateNumber">인증번호</label>
+                  <label htmlFor="verify">인증번호</label>
                   <br />
-                  <TextField id="validateNumber" className={`form-control`} required sx={{ width: "75%" }} />
-                  <ButtonOverlay variant="contained">인증번호 확인</ButtonOverlay>
+                  <TextField id="verify" onChange={handleChange} className={`form-control`} required sx={{ width: "75%" }} />
+                  <ButtonOverlay
+                    variant="contained"
+                    onClick={() => {
+                      handleVerify();
+                      setAuth(true);
+                    }}
+                  >
+                    인증번호 확인
+                  </ButtonOverlay>
                   {/* <div className="invalid-feedback">{errors.m_email}</div> */}
                 </div>
               )}
