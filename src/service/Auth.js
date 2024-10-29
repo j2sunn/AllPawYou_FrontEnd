@@ -25,3 +25,13 @@ export const signUp = async ({ email, username, password, nickname, phone, addre
   const response = await AuthApi.post(`/api/v1/auth/signup`, data);
   return response.data;
 };
+
+/** sendMail API */
+export const sendMail = (email) => axios.post("http://localhost:8081/api/email?email=" + email);
+
+/** verifyCode API */
+export const verify = async (inputEmail, verify) => {
+  // http://localhost:8081/api/email/verify?inputEmail=hyuk6589@naver.com&verify=MGIhm654
+  const response = await AuthApi.post(`/api/email/verify?inputEmail=${inputEmail}&verify=${verify}`); // 인증번호 전송
+  return response.data;
+};
