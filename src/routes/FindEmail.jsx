@@ -13,7 +13,7 @@ width:45%;
 `;
 
 const Content = styled.div`
-    padding-bottom:20px;
+    padding-bottom:60px;
 `;
 
 const ButtonAdd = styled(Button)`
@@ -225,12 +225,14 @@ const final = ()=>{
                         
                     </div>
                     <ButtonContainer>
-                        <Button variant="contained" sx={{ width: '100%', height: '56px' }}
+
+                        <Button variant="contained" sx={{ width: '100%', height: '56px', fontSize: '1.5rem' }}
                         //  disabled={!(errors.same)} 
                          //  true일 때만 버튼 활성화
                          disabled={errors.same !== "인증번호가 일치합니다."} // status가 "active"일 때만 버튼 활성화
                         onClick={final}
                         >이메일 찾기</Button>
+
                     </ButtonContainer>
                 </Content>
 

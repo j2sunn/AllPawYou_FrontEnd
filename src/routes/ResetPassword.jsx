@@ -64,7 +64,7 @@ const ResetPassword = () => {
                         <ValidationText></ValidationText>
                     </div>
                     <ButtonContainer>
-                        <Button variant="contained" sx={{ width: '100%', height: '56px' }}>확인</Button>
+                        <Button variant="contained" sx={{ width: '100%', height: '56px', fontSize: '1.5rem' }}>확인</Button>
                     </ButtonContainer>
                 </Content>
 
