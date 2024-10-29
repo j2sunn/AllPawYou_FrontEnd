@@ -5,7 +5,7 @@ import HeaderComponent from "../components/common/HeaderComponent";
 import { SiKakaotalk } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
 import { login } from "../service/Auth";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const LoginContainer = styled.div`
   text-align: center;
@@ -38,8 +38,6 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const [message, setMessage] = useState(""); // 메시지 상태 추가
-  const [error, setError] = useState(""); // 오류 메시지 상태 추가
 
   const handleChange = async (e) => {
     setValues({ ...values, [e.target.id]: e.target.value });
@@ -47,8 +45,6 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
-    setMessage(""); // 이전 메시지 초기화
-    setError(""); // 이전 오류 초기화
 
     login(values)
       .then((response) => {
@@ -56,12 +52,10 @@ export default function Login() {
         localStorage.setItem("tokenType", response.tokenType);
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);
-        setMessage("로그인 성공!"); // 성공 메시지 설정
         window.location.href = `/`; // 리디렉션
       })
       .catch((error) => {
         console.log(error);
-        setError("로그인에 실패했습니다."); // 오류 메시지 설정
       });
   };
 
