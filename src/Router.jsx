@@ -26,7 +26,7 @@ const Router = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/findEmail" element={<FindEmail />} />
-        <Route path="/findEmailResult/:email" element={<FindEmailResult />} />
+        <Route path="/findEmailResult" element={<FindEmailResult />} />
         <Route path="/resetPwd" element={<ResetPassword />} />
 
         {/* 로그인, 회원가입 */}
