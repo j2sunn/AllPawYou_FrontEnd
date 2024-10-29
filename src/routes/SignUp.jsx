@@ -58,7 +58,7 @@ const SignUp = () => {
     if (validation()) {
       signUp(values)
         .then((response) => {
-          window.location.href = `/`; // 리디렉션
+          window.location.href = `/login`; // 리디렉션
         })
         .catch((error) => {
           console.log(error);
