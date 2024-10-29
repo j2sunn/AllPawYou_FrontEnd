@@ -9,6 +9,7 @@ const HeaderComponent = () => {
 
   const handleLogout = async () => {
     localStorage.clear();
+    navigator('/');
   };
 
   return (
@@ -21,7 +22,6 @@ const HeaderComponent = () => {
           </Logo>
           <Nav>
             <NavItem onClick={() => navigator("/")}>홈</NavItem>
-            <NavItem onClick={() => navigator("/user")}>회원</NavItem>
             <NavItem onClick={() => navigator("/community")}>자유게시판</NavItem>
             <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
             <NavItem>고객센터</NavItem>

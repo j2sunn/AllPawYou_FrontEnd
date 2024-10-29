@@ -1,8 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import UserLogin from "./components/User/Login";
-import SignInPage from "./components/User/SignInPage";
-import SignUpPage from "./components/User/SignUpPage";
 
 import MainPage from "./routes/MainPage";
 import MemberList from "./routes/MemberList";
@@ -34,10 +32,6 @@ const Router = () => {
         {/* 로그인, 회원가입 */}
         {/* // http://localhost:3000/user */}
         <Route path="/user" element={<UserLogin />}></Route>
-        {/* // http://localhost:3000/user/signin */}
-        <Route path="/user/signin" element={<SignInPage />}></Route>
-        {/* // http://localhost:3000/user/signup */}
-        <Route path="/user/signup" element={<SignUpPage />}></Route>
         {/* // http://localhost:3000/user/userlist */}
         <Route path="/user/userlist" element={<UserList />}></Route>
 

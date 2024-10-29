@@ -50,7 +50,6 @@ const SignUp = () => {
 
     signUp(values)
       .then((response) => {
-        console.log(response);
         setMessage("회원가입 성공!"); // 성공 메시지 설정
         window.location.href = `/`; // 리디렉션
       })
@@ -97,13 +96,13 @@ const SignUp = () => {
 
               <div className="mb-3">
                 <label htmlFor="pwd">비밀번호</label>
-                <TextField type="password" id="pwd" className={`form-control`} onChange={handleChange} required />
+                <TextField type="password" id="password" className={`form-control`} onChange={handleChange} required />
                 {/* <div className="invalid-feedback">{errors.m_pwd}</div> */}
               </div>
 
               <div className="mb-3">
                 <label htmlFor="pwd">비밀번호 확인</label>
-                <TextField type="password" id="pwdchk" className={`form-control`} onChange={handleChange} required />
+                <TextField type="password" id="passwordCheck" className={`form-control`} onChange={handleChange} required />
                 {/* <div className="invalid-feedback">{errors.m_pwd_chk}</div> */}
               </div>
 
