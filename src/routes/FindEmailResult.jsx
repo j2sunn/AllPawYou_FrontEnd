@@ -27,10 +27,10 @@ const FindEmail = () => {
             ) : (
                 <Container>
                     <h1>이메일 찾기 결과</h1>
-                    <Content>
+                    <Result>
                         고객님의 이메일은 
                     <div>{email} 입니다 </div>
-                    </Content>
+                    </Result>
                     <Buttons>
                         <Button variant="outlined" onClick={findPw} size="large">비밀번호 찾기</Button>
                         <Button variant="contained" onClick={()=>navigator('/login')} size="large">로그인</Button>
@@ -59,6 +59,16 @@ const Content = styled.div`
     font-size: 2rem;
 `;
 
+const Result = styled.div`
+    padding: 80px 100px;
+    margin: 30px 0;
+    font-size: 1.5rem;
+    border: 3px solid #EEC759;
+    border-radius: 20px;
+`;
+
 const Buttons = styled.div`
     display: flex;
+    justify-content: space-between;
+    width: 20%;
 `;
