@@ -33,7 +33,6 @@ const Error = styled.div`
 
 const SignUp = () => {
   const [auth, setAuth] = useState(false);
-  const [authNumber, setAuthNumber] = useState(""); //인증번호
   const [values, setValues] = useState({
     email: "",
     username: "",
@@ -42,7 +41,6 @@ const SignUp = () => {
     phone: "",
     address: "",
   });
-  const [message, setMessage] = useState(""); // 성공 메시지 상태
   const [error, setError] = useState({
     email: "",
     password: "",
@@ -60,12 +58,10 @@ const SignUp = () => {
     if (validation()) {
       signUp(values)
         .then((response) => {
-          setMessage("회원가입 성공!"); // 성공 메시지 설정
           window.location.href = `/`; // 리디렉션
         })
         .catch((error) => {
           console.log(error);
-          setError("회원가입에 실패했습니다."); // 오류 메시지 설정
         });
     }
   };
@@ -85,6 +81,7 @@ const SignUp = () => {
       }
     }
   };
+
   const validation = () => {
     let valid = true;
     let obj = {};
