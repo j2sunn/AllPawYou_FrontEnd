@@ -10,7 +10,7 @@ import { useState } from "react";
 const LoginContainer = styled.div`
   text-align: center;
   padding-top: 100px;
-  height: 700px;
+  min-height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;

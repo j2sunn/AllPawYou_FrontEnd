@@ -51,7 +51,7 @@ const Container = styled.div`
     align-items: center;
     padding:80px;
     text-align: center;
-    min-height: 500px;
+    min-height: 700px;
 `;
 
 const Content = styled.div`
