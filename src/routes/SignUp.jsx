@@ -58,13 +58,24 @@ const SignUp = () => {
     if (validation()) {
       signUp(values)
         .then((response) => {
-          window.location.href = `/`; // 리디렉션
+          window.location.href = `/login`; // 리디렉션
         })
         .catch((error) => {
           console.log(error);
         });
     }
   };
+
+  const sendEmail = () => {
+    const regex = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (regex.test(values.email.trim())) {
+      sendMail(values.email);
+      setAuth(true);
+      alert("인증번호를 전송했습니다.");
+    } else {
+      alert("이메일 형식에 맞게 입력해주세요.");
+    }
+  }
 
   const handleVerify = async () => {
     try {
@@ -155,12 +166,7 @@ const SignUp = () => {
                 />
                 <ButtonOverlay
                   variant="contained"
-                  onClick={() => {
-                    sendMail(values.email);
-                    setAuth(true);
-                    alert("인증번호를 전송했습니다.");
-                  }}
-                >
+                  onClick={sendEmail}>
                   인증번호 전송
                 </ButtonOverlay>
                 <Error>{error.email}</Error>
