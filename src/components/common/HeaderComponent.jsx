@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import logo from "../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 
 const HeaderComponent = () => {
   const navigator = useNavigate();
-  const [loginState, setLoginState] = useState(true);
+  const ACCESS_TOKEN = localStorage.getItem("accessToken");
+
+  const handleLogout = async () => {
+    localStorage.clear();
+  };
 
   return (
     <>
@@ -22,7 +25,7 @@ const HeaderComponent = () => {
             <NavItem onClick={() => navigator("/community")}>자유게시판</NavItem>
             <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
             <NavItem>고객센터</NavItem>
-            {loginState ? (
+            {ACCESS_TOKEN ? (
               <>
                 <NavItem>장바구니</NavItem>
                 <NavItem>
@@ -42,7 +45,7 @@ const HeaderComponent = () => {
                     </AccordionSummary>
                     <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
                       <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
-                      <AccordianItem onClick={() => setLoginState(false)}>로그아웃</AccordianItem>
+                      <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>
                     </AccordionDetails>
                   </Accordion>
                 </NavItem>

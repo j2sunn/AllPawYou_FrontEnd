@@ -4,6 +4,8 @@ import FooterComponent from "../components/common/FooterComponent";
 import HeaderComponent from "../components/common/HeaderComponent";
 import { SiKakaotalk } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
+import { login } from "../service/Auth";
+import { useState } from "react";
 
 const LoginContainer = styled.div`
     text-align:center;
@@ -32,6 +34,39 @@ color: inherit;
 `;
 
 const Login = () => {
+    const [values, setValues] = useState({
+        email: "",
+        password: "",
+      });
+      const [message, setMessage] = useState(""); // 메시지 상태 추가
+      const [error, setError] = useState(""); // 오류 메시지 상태 추가
+    
+      const handleChange = async (e) => {
+          setValues({ ...values, [e.target.id]: e.target.value });
+          console.log(values);
+      };
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault(); // 기본 폼 제출 동작 방지
+        setMessage(""); // 이전 메시지 초기화
+        setError(""); // 이전 오류 초기화
+        console.log(values);
+        login(values)
+          .then((response) => {
+            console.log(response);
+            localStorage.clear();
+            localStorage.setItem("tokenType", response.tokenType);
+            localStorage.setItem("accessToken", response.accessToken);
+            localStorage.setItem("refreshToken", response.refreshToken);
+            setMessage("로그인 성공!"); // 성공 메시지 설정
+            window.location.href = `/`; // 리디렉션
+          })
+          .catch((error) => {
+            console.log(error);
+            setError("로그인에 실패했습니다."); // 오류 메시지 설정
+          });
+      };
+
 
     return (
         <>
@@ -39,11 +74,13 @@ const Login = () => {
             <LoginContainer>
                 <h3>통합 로그인</h3>
                 <Content>
-                    <TextField label="이메일" variant="outlined" placeholder="abc@email.com" sx={{ width: '350px', paddingBottom: '10px' }} /><br />
-                    <TextField type="password" label="비밀번호" variant="outlined" sx={{ width: '350px' }} />
+                    <TextField onChange={handleChange} label="이메일" id='email' variant="outlined" value={values.email}  placeholder="abc@email.com"  
+                        sx={{ width: '350px', paddingBottom: '10px' }} /><br />
+                    <TextField onChange={handleChange} type="password" label="비밀번호" id='password' value={values.password}  variant="outlined" sx={{ width: '350px' }} />
                 </Content>
                 <div>
-                    <Button variant="contained" sx={{ backgroundColor: '#527853', width: '350px', height: '40px', marginBottom: '3rem' }}>로그인</Button>
+                    <Button variant="contained" onClick={handleSubmit} 
+                        sx={{ backgroundColor: '#527853', width: '350px', height: '40px', marginBottom: '3rem' }}>로그인</Button>
                 </div>
                 <span>소셜 로그인</span>
                 <hr style={{ width: '350px', margin: '0 auto' }} />
