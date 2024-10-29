@@ -16,15 +16,15 @@ const HeaderComponent = () => {
     <>
       <Container>
         <Header>
-          <Logo onClick={() => navigator("/")} style={{justifyContent: 'space-evenly'}}>
+          <Logo onClick={() => navigator("/")}>
             <LogoImg src={logo} alt="로고" />
             <LogoText>All Paw You</LogoText>
           </Logo>
           <Nav>
             <NavItem onClick={() => navigator("/")}>홈</NavItem>
-            <NavItem>사용가이드</NavItem>
-            <NavItem onClick={() => navigator("/community")}>커뮤니티</NavItem>
+            <NavItem onClick={() => navigator("/community")}>자유게시판</NavItem>
             <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
+            <NavItem>고객센터</NavItem>
             {ACCESS_TOKEN ? (
               <>
                 <NavItem>장바구니</NavItem>
@@ -70,10 +70,9 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  height: 5rem;
+  height: 6rem;
   padding: 0 5rem;
   background-color: #fff7d4;
-  box-shadow: 0px 8px 6px -6px #cdcdcd;
   display: flex;
   justify-content: space-between;
   font-size: 20px;
@@ -88,7 +87,7 @@ const Logo = styled.div`
 `;
 
 const LogoImg = styled.img`
-  width: 5rem;
+  width: 6rem;
 `;
 
 const LogoText = styled.span`
