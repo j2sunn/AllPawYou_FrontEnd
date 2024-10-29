@@ -10,7 +10,7 @@ import { useState } from "react";
 const LoginContainer = styled.div`
   text-align: center;
   padding-top: 100px;
-  height: 600px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,25 +87,26 @@ export default function Login() {
             />
           </Content>
           <div>
-            <Button variant="contained" type="submit" sx={{ backgroundColor: "#527853", width: "350px", height: "40px", marginBottom: "3rem", fontSize: '1.2rem' }}>
+            <Button variant="contained" type="submit" sx={{ backgroundColor: "#527853", width: "350px", height: "40px", marginBottom: "1rem", fontSize: '1.2rem' }}>
               로그인
             </Button>
           </div>
         </form>
-        <span>소셜 로그인</span>
+        <div style={{paddingBottom : "50px"}}>
+          <Links href="/findEmail">이메일 찾기</Links> |<Links href="/resetPwd"> 비밀번호 재설정</Links> |<Links href="/signup"> 회원가입</Links>
+        </div>
+        <span style={{fontSize:"20px"}}>소셜 로그인</span>
         <hr style={{ width: "350px", margin: "0 auto" }} />
         <Icons>
           <a href="/signup">
-            <SiKakaotalk size={40} style={{ color: "yellow" }} />
+            <SiKakaotalk size={40} style={{ color: "#F7E600" }} />
           </a>
           <a href="/signup">
             <FcGoogle size={40} />
           </a>
         </Icons>
 
-        <div>
-          <Links href="/findEmail">이메일 찾기</Links> |<Links href="/resetPwd"> 비밀번호 재설정</Links> |<Links href="/signup"> 회원가입</Links>
-        </div>
+        
       </LoginContainer>
       <FooterComponent />
     </>
