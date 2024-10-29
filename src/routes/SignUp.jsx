@@ -26,6 +26,10 @@ const ButtonContainer = styled.div`
   margin-top: 50px;
 `;
 
+const Error = styled.div`
+  color: red;
+`;
+
 const SignUp = () => {
   const [auth, setAuth] = useState(false);
   const [values, setValues] = useState({
@@ -37,7 +41,12 @@ const SignUp = () => {
     address: "",
   });
   const [message, setMessage] = useState(""); // 성공 메시지 상태
-  const [error, setError] = useState(""); // 오류 메시지 상태
+  const [error, setError] = useState({
+    email: '',
+    password: '',
+    nickname: '',
+    phone: '',
+  }); // 오류 메시지 상태
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.id]: e.target.value });
@@ -45,10 +54,9 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
-    setMessage(""); // 이전 메시지 초기화
-    setError(""); // 이전 오류 초기화
-
-    signUp(values)
+    
+    if(validation()){
+      signUp(values)
       .then((response) => {
         setMessage("회원가입 성공!"); // 성공 메시지 설정
         window.location.href = `/`; // 리디렉션
@@ -57,7 +65,51 @@ const SignUp = () => {
         console.log(error);
         setError("회원가입에 실패했습니다."); // 오류 메시지 설정
       });
+    }
   };
+
+  const validation = () => {
+    let valid = true;
+    let obj = {};
+    
+    // email
+    let regex = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if(!regex.test(values.email.trim())){
+      obj = {...obj, email: "이메일이 형식에 맞지 않습니다."};
+      valid = false;
+    } else {
+      obj = {...obj, email: ''};
+    }
+
+    // password
+    regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/i;
+    if(!regex.test(values.password.trim())){
+      obj = {...obj, password: "영어, 숫자, 특수문자가 포함된 8 ~ 20 글자 사이로 입력해주세요."};
+      valid = false;
+    } else {
+      obj = {...obj, password: ''};
+    }
+
+    // nickname
+    regex = /^[A-Za-z0-9]{2,10}$/i;
+    if(!regex.test(values.nickname.trim())){
+      obj = {...obj, nickname: "2 ~ 10 글자 사이로 입력해주세요."};
+      valid = false;
+    } else {
+      obj = {...obj, nickname: ''};
+    }
+
+    // phone
+    regex = /^01[0-9]{9}$/i;
+    if(!regex.test(values.phone.trim())){
+      obj = {...obj, phone: "휴대폰 번호를 - 없이 입력하세요."};
+      valid = false;
+    } else {
+      obj = {...obj, phone: ''};
+    }
+    setError(obj);
+    return valid;
+  }
 
   return (
     <>
@@ -82,7 +134,7 @@ const SignUp = () => {
                 <ButtonOverlay variant="contained" onClick={() => setAuth(true)}>
                   인증번호 전송
                 </ButtonOverlay>
-                {/* <div className="invalid-feedback">{errors.m_email}</div> */}
+                <Error>{error.email}</Error>
               </div>
               {auth && (
                 <div className="mb-3">
@@ -90,14 +142,13 @@ const SignUp = () => {
                   <br />
                   <TextField id="validateNumber" className={`form-control`} required sx={{ width: "75%" }} />
                   <ButtonOverlay variant="contained">인증번호 확인</ButtonOverlay>
-                  {/* <div className="invalid-feedback">{errors.m_email}</div> */}
                 </div>
               )}
 
               <div className="mb-3">
                 <label htmlFor="pwd">비밀번호</label>
                 <TextField type="password" id="password" className={`form-control`} onChange={handleChange} required />
-                {/* <div className="invalid-feedback">{errors.m_pwd}</div> */}
+                <Error>{error.password}</Error>
               </div>
 
               <div className="mb-3">
@@ -110,19 +161,18 @@ const SignUp = () => {
                 <div className="col-md-6 mb-3">
                   <label htmlFor="username">이름</label>
                   <TextField id="username" className={`form-control`} onChange={handleChange} required />
-                  {/* <div className="invalid-feedback">{errors.m_name}</div> */}
                 </div>
                 <div className="col-md-6 mb-3">
                   <label htmlFor="nickname">닉네임</label>
                   <TextField id="nickname" className={`form-control`} onChange={handleChange} required />
-                  {/* <div className="invalid-feedback">{errors.m_nick}</div> */}
+                  <Error>{error.nickname}</Error>
                 </div>
               </div>
 
               <div className="mb-3">
                 <label htmlFor="phone">휴대폰 번호</label>
                 <TextField id="phone" placeholder="- 없이 숫자만 입력해주세요" className={`form-control`} onChange={handleChange} required />
-                {/* <div className="invalid-feedback">{errors.m_phone}</div> */}
+                <Error>{error.phone}</Error>
               </div>
 
               <hr className="mb-4" />
