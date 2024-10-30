@@ -94,10 +94,10 @@ const MainPage = () => {
             </BoardLike>
           </BoardCardBottom>
         </BoardCard>
-        <BoardCard>
-          <BoardImg src="/src/assets/mainImage/cat.jpg" alt="이미지2" />
+                <BoardCard>
+          <BoardImg src="/src/assets/mainImage/hamster.jpg" alt="이미지3" />
           <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-            <div>아기 고양이 사료 추천</div>
+            <div>우리집 햄스터 자랑</div>
             <BoardLike>
               <FaRegHeart style={{ color: "red" }} />
               <div style={{ color: "red" }}>175</div>
@@ -105,15 +105,16 @@ const MainPage = () => {
           </BoardCardBottom>
         </BoardCard>
         <BoardCard>
-          <BoardImg src="/src/assets/mainImage/hamster.jpg" alt="이미지3" />
+          <BoardImg src="/src/assets/mainImage/cat.jpg" alt="이미지2" />
           <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-            <div>우리집 햄스터 자랑</div>
+            <div>아기 고양이 사료 추천</div>
             <BoardLike>
               <FaRegHeart style={{ color: "red" }} />
               <div style={{ color: "red" }}>100</div>
             </BoardLike>
           </BoardCardBottom>
         </BoardCard>
+
       </Container>
 
       <IconTitle>쇼핑 카테고리</IconTitle>
