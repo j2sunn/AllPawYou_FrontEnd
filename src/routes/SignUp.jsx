@@ -16,7 +16,6 @@ const Container = styled.div`
 `;
 
 const ButtonOverlay = styled(Button)`
-  left: 10px;
   width: 23%;
   height: 56px;
 `;
@@ -121,7 +120,7 @@ const SignUp = () => {
     }
 
     // nickname
-    regex = /^[A-Za-z0-9]{2,10}$/i;
+    regex = /^[가-힣A-Za-z0-9]{2,10}$/i;
     if (!regex.test(values.nickname.trim())) {
       obj = { ...obj, nickname: "2 ~ 10 글자 사이로 입력해주세요." };
       valid = false;
@@ -152,9 +151,8 @@ const SignUp = () => {
           <div className="input-form col-md-12 mx-auto">
             <h4 className="mb-3">회원가입</h4>
             <form className="validation-form" onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="email">이메일</label>
-                <br />
+              <label htmlFor="email">이메일</label>
+              <div className="mb-3" style={{ display: 'flex', justifyContent: 'space-between', width: '100%'}}>
                 <TextField
                   type="email"
                   id="email"
@@ -166,25 +164,26 @@ const SignUp = () => {
                 />
                 <ButtonOverlay
                   variant="contained"
-                  onClick={sendEmail}>
+                  onClick={sendEmail} style={{left:'9px'}}> 
                   인증번호 전송
                 </ButtonOverlay>
                 <Error>{error.email}</Error>
               </div>
               {auth && (
-                <div className="mb-3">
+                <div>
                   <label htmlFor="verify">인증번호</label>
-                  <br />
-                  <TextField id="verify" onChange={handleChange} className={`form-control`} required sx={{ width: "75%" }} />
-                  <ButtonOverlay
-                    variant="contained"
-                    onClick={() => {
-                      handleVerify();
-                      setAuth(true);
-                    }}
-                  >
-                    인증번호 확인
-                  </ButtonOverlay>
+                  <div className="mb-3" style={{ display: 'flex',  justifyContent: 'space-between', width: '100%'}}>
+                    <TextField id="verify" onChange={handleChange} className={`form-control`} required sx={{ width: "75%" }} />
+                    <ButtonOverlay
+                      variant="contained"
+                      onClick={() => {
+                        handleVerify();
+                        setAuth(true);}
+                      }
+                    >
+                      인증번호 확인
+                    </ButtonOverlay>
+                  </div>
                 </div>
               )}
 
