@@ -4,6 +4,7 @@ const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
   background-color : #FFF7D4;
+  padding:25px;
   `;
 const StyledLink = styled.a`
   text-decoration : none;
@@ -16,7 +17,7 @@ const Content = styled.div`
 `;
 const Board = styled.div`
   text-align : left;
-  font-size: 12px;
+  font-size: 13px;
 `;
 const Info = styled.div`
   text-align : right;
@@ -24,7 +25,7 @@ const Info = styled.div`
 const Logo = styled.div`
   float : left;
   margin-left: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 60px;
   display:flex;
   width : 180px;
   flex-direction: column;
@@ -47,7 +48,7 @@ const FooterComponent = () => {
           <Content>
             <Board>
               <p><StyledLink href="/signup">공지사항 </StyledLink> | <StyledLink href=""> FAQ</StyledLink></p>
-              <span>주식회사 올포유 | 대표 홍길동</span><br/>
+              <span>주식회사 올포유 | 2렇게잘하조</span><br/>
               <p>
                 Copyright 2024. AllPawYou All rights reserved.
               </p>

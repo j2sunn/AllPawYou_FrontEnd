@@ -29,11 +29,11 @@ const FindEmail = () => {
                     <h1>이메일 찾기 결과</h1>
                     <Result>
                         고객님의 이메일은 
-                    <div>{email} 입니다 </div>
+                    <div> <span style={{fontWeight:'bold', textDecoration:'underline'}}>{email}</span> 입니다 </div>
                     </Result>
                     <Buttons>
                         <Button variant="outlined" onClick={findPw} size="large">비밀번호 찾기</Button>
-                        <Button variant="contained" onClick={()=>navigator('/login')} size="large">로그인</Button>
+                        <Button variant="contained" onClick={()=>navigator('/login')} sx={{width: '120px'}}>로그인</Button>
                     </Buttons>
                 </Container>
                 )
