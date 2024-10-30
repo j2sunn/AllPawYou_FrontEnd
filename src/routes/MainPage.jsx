@@ -119,35 +119,45 @@ const MainPage = () => {
       <IconTitle>쇼핑 카테고리</IconTitle>
       <IconContainer>
         <IconCard>
-          <IconImg src="/src/assets/mainImage/icon/mainicon_1.png" alt="사료" />
+          <IconBack>
+            <IconImg src="/src/assets/mainImage/icon/mainicon_1.png" alt="사료" />
+          </IconBack>
           <IconCardBottom style={{ textAlign: "center" }}>
             <div>사료</div>
           </IconCardBottom>
         </IconCard>
 
         <IconCard>
-          <IconImg src="/src/assets/mainImage/icon/mainicon_2.png" alt="사료" />
+          <IconBack>
+            <IconImg src="/src/assets/mainImage/icon/mainicon_2.png" alt="간식" />
+          </IconBack>
           <IconCardBottom style={{ textAlign: "center" }}>
             <div>간식</div>
           </IconCardBottom>
         </IconCard>
 
         <IconCard>
-          <IconImg src="/src/assets/mainImage/icon/mainicon_3.png" alt="사료" />
+          <IconBack>
+            <IconImg src="/src/assets/mainImage/icon/mainicon_3.png" alt="용품" />
+          </IconBack>
           <IconCardBottom style={{ textAlign: "center" }}>
             <div>용품</div>
           </IconCardBottom>
         </IconCard>
 
         <IconCard>
-          <IconImg src="/src/assets/mainImage/icon/mainicon_4.png" alt="사료" />
+          <IconBack>
+            <IconImg src="/src/assets/mainImage/icon/mainicon_4.png" alt="건강" />
+          </IconBack>
           <IconCardBottom style={{ textAlign: "center" }}>
             <div>건강</div>
           </IconCardBottom>
         </IconCard>
 
         <IconCard>
-          <IconImg src="/src/assets/mainImage/icon/mainicon_5.png" alt="사료" />
+          <IconBack>
+            <IconImg src="/src/assets/mainImage/icon/mainicon_5.png" alt="의류" />
+          </IconBack>
           <IconCardBottom style={{ textAlign: "center" }}>
             <div>의류</div>
           </IconCardBottom>
@@ -181,7 +191,7 @@ const BestItemSection = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
-  margin: 5rem 0;
+  margin: 5rem 0 7rem;
   width: 100%;
   align-items: center;
 `;
@@ -218,15 +228,25 @@ const IconTitle = styled.h4`
 const IconContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 3rem 0 7rem;
+  margin: 3rem 0 9rem;
   width: 100%;
   align-items: center;
 `;
 
 const IconCard = styled.div`
-  width: 80px;
+  width: 110px;
   height: 100px;
   margin: 0 40px;
+`;
+
+const IconBack = styled.div`
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background-color: #c4e1f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const IconImg = styled.img`
