@@ -2,14 +2,7 @@ import styled from "styled-components";
 import { FaRegHeart } from "react-icons/fa";
 import HeaderComponent from "../components/common/HeaderComponent";
 import FooterComponent from "../components/common/FooterComponent";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Slide from "../components/common/Slide";
-
-const CommunityRank = styled.h4`
-  padding-top: 30px;
-  text-align: center;
-  font-weight: bold;
-`;
 
 const itemData = [
   {
@@ -91,7 +84,6 @@ const MainPage = () => {
       <HeaderComponent />
       <CommunityRank>커뮤니티 인기글</CommunityRank>
       <Container>
-        <SlArrowLeft size={45} />
         <BoardCard>
           <BoardImg src="/src/assets/mainImage/dog.jpg" alt="이미지1" />
           <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
@@ -122,8 +114,45 @@ const MainPage = () => {
             </BoardLike>
           </BoardCardBottom>
         </BoardCard>
-        <SlArrowRight size={45} />
       </Container>
+
+      <IconTitle>쇼핑 카테고리</IconTitle>
+      <IconContainer>
+        <IconCard>
+          <IconImg src="/src/assets/mainImage/icon/mainicon_1.png" alt="사료" />
+          <IconCardBottom style={{ textAlign: "center" }}>
+            <div>사료</div>
+          </IconCardBottom>
+        </IconCard>
+
+        <IconCard>
+          <IconImg src="/src/assets/mainImage/icon/mainicon_2.png" alt="사료" />
+          <IconCardBottom style={{ textAlign: "center" }}>
+            <div>간식</div>
+          </IconCardBottom>
+        </IconCard>
+
+        <IconCard>
+          <IconImg src="/src/assets/mainImage/icon/mainicon_3.png" alt="사료" />
+          <IconCardBottom style={{ textAlign: "center" }}>
+            <div>용품</div>
+          </IconCardBottom>
+        </IconCard>
+
+        <IconCard>
+          <IconImg src="/src/assets/mainImage/icon/mainicon_4.png" alt="사료" />
+          <IconCardBottom style={{ textAlign: "center" }}>
+            <div>건강</div>
+          </IconCardBottom>
+        </IconCard>
+
+        <IconCard>
+          <IconImg src="/src/assets/mainImage/icon/mainicon_5.png" alt="사료" />
+          <IconCardBottom style={{ textAlign: "center" }}>
+            <div>의류</div>
+          </IconCardBottom>
+        </IconCard>
+      </IconContainer>
 
       <BestItemSection>
         <h4 style={{ fontWeight: "bold" }}>이번주 베스트 아이템</h4>
@@ -137,6 +166,12 @@ const MainPage = () => {
 
 export default MainPage;
 
+const CommunityRank = styled.h4`
+  padding-top: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+`;
+
 const BestItemSection = styled.div`
   text-align: center;
   margin-top: 3rem;
@@ -146,7 +181,7 @@ const BestItemSection = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
-  margin: 5rem 0 10rem;
+  margin: 5rem 0;
   width: 100%;
   align-items: center;
 `;
@@ -175,17 +210,33 @@ const BoardLike = styled.div`
   align-items: center;
 `;
 
-const ProductCard = styled(BoardCard)`
-  width: 200px;
-  height: 220px;
+const IconTitle = styled.h4`
+  text-align: center;
+  font-weight: bold;
 `;
 
-const ProductImg = styled.img`
-  width: 200px;
-  height: 150px;
-  box-shadow: 0px 0px 5px #444;
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0 7rem;
+  width: 100%;
+  align-items: center;
 `;
 
-const ProductCardBottom = styled(BoardCardBottom)`
+const IconCard = styled.div`
+  width: 80px;
+  height: 100px;
+  margin: 0 40px;
+`;
+
+const IconImg = styled.img`
+  width: 80px;
+`;
+
+const IconCardBottom = styled.div`
+  display: flex;
+  justify-content: space-between;
   flex-direction: column;
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
