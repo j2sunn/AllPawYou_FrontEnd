@@ -32,6 +32,7 @@ const Error = styled.div`
 
 const SignUp = () => {
   const [auth, setAuth] = useState(false);
+  const [authValid, setAuthValid] = useState(false);
   const [values, setValues] = useState({
     email: "",
     username: "",
@@ -45,6 +46,7 @@ const SignUp = () => {
     password: "",
     nickname: "",
     phone: "",
+    auth: "",
   }); // 오류 메시지 상태
 
   const handleChange = (e) => {
@@ -81,9 +83,12 @@ const SignUp = () => {
       // API 호출
       const response = await verify(values.email, values.verify);
       // 인증 성공
+      setAuthValid(true);
+      setError({...error, auth: ''})
       alert("인증번호가 확인되었습니다.");
     } catch (error) {
       // 인증 실패
+      setAuthValid(false);
       if (error.response) {
         alert("인증번호 또는 이메일이 일치하지 않습니다.");
       } else {
@@ -136,9 +141,16 @@ const SignUp = () => {
     } else {
       obj = { ...obj, phone: "" };
     }
-    setError(obj);
-
+    
     //인증번호 검증 로직 추가해야함
+    if(!authValid){
+      obj = { ...obj, auth: "인증을 완료해주세요." }
+      valid = false;
+    } else {
+      obj = { ...obj, auth: ""}
+    }
+    
+    setError(obj);
 
     return valid;
   };
@@ -164,26 +176,25 @@ const SignUp = () => {
                 />
                 <ButtonOverlay
                   variant="contained"
-                  onClick={sendEmail} style={{left:'9px'}}> 
+                  onClick={sendEmail}> 
                   인증번호 전송
                 </ButtonOverlay>
-                <Error>{error.email}</Error>
               </div>
+              <Error>{error.email}</Error>
               {auth && (
                 <div>
                   <label htmlFor="verify">인증번호</label>
-                  <div className="mb-3" style={{ display: 'flex',  justifyContent: 'space-between', width: '100%'}}>
-                    <TextField id="verify" onChange={handleChange} className={`form-control`} required sx={{ width: "75%" }} />
+                  <br />
+                  <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+                    <TextField id="verify" onChange={handleChange} className={`form-control`} required sx={{ width: "75%" }} disabled={authValid}/>
                     <ButtonOverlay
                       variant="contained"
-                      onClick={() => {
-                        handleVerify();
-                        setAuth(true);}
-                      }
-                    >
+                      onClick={handleVerify}
+                      disabled={authValid}>
                       인증번호 확인
                     </ButtonOverlay>
                   </div>
+                  <Error>{error.auth}</Error>
                 </div>
               )}
 
