@@ -35,7 +35,7 @@ const ValidateError = styled.div`
 
 
 const FindEmail = () => {
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(false);
     const [count, setCount] = useState(0);  // count를 상태 변수로 관리
     const [name, setName] = useState(''); //작성한 이름 저장
     const [phone, setPhone] = useState(''); //작성한 휴대폰번호저장
