@@ -2,6 +2,7 @@ import styled from "styled-components";
 import logo from "../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { IoPersonCircleSharp } from "react-icons/io5";
 
 const HeaderComponent = () => {
   const navigator = useNavigate();
@@ -41,7 +42,8 @@ const HeaderComponent = () => {
                   >
                     <AccordionSummary sx={{ marginBottom: "-1rem" }}>
                       {/* 이미지 넣기 */}
-                      <Img as="div" />
+                      {/* <Img /> */}
+                      <IoPersonCircleSharp size={60} style={{color:'gray'}} />
                     </AccordionSummary>
                     <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
                       <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
@@ -108,12 +110,12 @@ const NavItem = styled.div`
   cursor: pointer;
 `;
 
-const Img = styled.img`
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: gray;
-`;
+// const Img = styled.img`
+//   width: 4rem;
+//   height: 4rem;
+//   border-radius: 50%;
+//   background-color: gray;
+// `;
 
 const AccordianItem = styled.div`
   text-align: center;
