@@ -35,3 +35,17 @@ export const verify = async (inputEmail, verify) => {
   const response = await AuthApi.post(`/api/email/verify?inputEmail=${inputEmail}&verify=${verify}`); // 인증번호 전송
   return response.data;
 };
+
+export const fetchKakaoOAuth = async () => {
+  try {
+    // 카카오 API 호출
+    const redirectUrl =
+      "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c7295acd0ab98802d00391b7dda370c5&redirect_uri=http://localhost:8081/api/v3/kakao/callback&prompt=login";
+
+    // 리다이렉트
+    window.location.href = redirectUrl;
+  } catch (error) {
+    console.error("Error fetching Kakao OAuth URL:", error);
+    alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
+  }
+};
