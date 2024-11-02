@@ -4,7 +4,7 @@ import FooterComponent from "../components/common/FooterComponent";
 import HeaderComponent from "../components/common/HeaderComponent";
 import { SiKakaotalk } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
-import { login } from "../service/Auth";
+import { login, fetchKakaoOAuth } from "../service/Auth";
 import { useState } from "react";
 
 const LoginContainer = styled.div`
@@ -87,26 +87,28 @@ export default function Login() {
             />
           </Content>
           <div>
-            <Button variant="contained" type="submit" sx={{ backgroundColor: "#527853", width: "350px", height: "40px", marginBottom: "1rem", fontSize: '1.2rem' }}>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ backgroundColor: "#527853", width: "350px", height: "40px", marginBottom: "1rem", fontSize: "1.2rem" }}
+            >
               로그인
             </Button>
           </div>
         </form>
-        <div style={{paddingBottom : "50px"}}>
+        <div style={{ paddingBottom: "50px" }}>
           <Links href="/findEmail">이메일 찾기</Links> |<Links href="/resetPwd"> 비밀번호 재설정</Links> |<Links href="/signup"> 회원가입</Links>
         </div>
-        <span style={{fontSize:"20px"}}>소셜 로그인</span>
+        <span style={{ fontSize: "20px" }}>소셜 로그인</span>
         <hr style={{ width: "350px", margin: "0 auto" }} />
         <Icons>
-          <a href="/signup">
+          <Button onClick={fetchKakaoOAuth}>
             <SiKakaotalk size={40} style={{ color: "#F7E600" }} />
-          </a>
-          <a href="/signup">
+          </Button>
+          <Button href="/signup">
             <FcGoogle size={40} />
-          </a>
+          </Button>
         </Icons>
-
-        
       </LoginContainer>
       <FooterComponent />
     </>

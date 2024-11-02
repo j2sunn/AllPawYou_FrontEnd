@@ -12,6 +12,8 @@ import FindEmail from "./routes/FindEmail";
 import FindEmailResult from "./routes/FindEmailResult";
 import ResetPassword from "./routes/ResetPassword";
 import UserList from "./components/User/UserList";
+import KakaoLogin from "./routes/KakaoLogin";
+import LoginError from "./routes/LoginError";
 
 const Router = () => {
   return (
@@ -32,8 +34,14 @@ const Router = () => {
         {/* 로그인, 회원가입 */}
         {/* // http://localhost:3000/user */}
         <Route path="/user" element={<UserLogin />}></Route>
+        {/* 카카오 회원가입 */}
+        <Route path="/login/kakao/update" element={<KakaoLogin />}></Route>
+
+        {/* 모든 회원 리스트 - 관리자 */}
         {/* // http://localhost:3000/user/userlist */}
         <Route path="/user/userlist" element={<UserList />}></Route>
+        {/* 회원가입 중복 에러 */}
+        <Route path="/login/error" element={<LoginError />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
