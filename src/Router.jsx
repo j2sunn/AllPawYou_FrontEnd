@@ -20,7 +20,7 @@ import OrderDetail from "./routes/OrderDetail";
 import PaymentApprove from "./routes/PaymentApprove";
 import PaymentCheck from "./routes/PaymentCheck";
 import BoardWrite from "./routes/BoardWrite";
-
+import ShoppingMain from "./routes/ShoppingMain";
 
 
 const Router = () => {
@@ -63,7 +63,8 @@ const Router = () => {
         <Route path="/payment/approve" element={<PaymentApprove />} />
         <Route path="*" element={<NotFound />} />
 
-        
+        {/* 쇼핑몰 */}
+        <Route path="/shoppingMain" element = {<ShoppingMain />}/>
         {/* 게시판 */}
         <Route path="/boardWrite" element = {<BoardWrite />}/>
       </Routes>
