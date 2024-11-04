@@ -92,7 +92,7 @@ const SideBar = styled.div`
 `;
 
 const Order = styled.div`
-  width: 100%;
+  width: 75%;
 `;
 
 const InfoTitle = styled.div`
