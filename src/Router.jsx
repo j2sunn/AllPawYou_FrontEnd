@@ -12,7 +12,7 @@ import FindEmail from "./routes/FindEmail";
 import FindEmailResult from "./routes/FindEmailResult";
 import ResetPassword from "./routes/ResetPassword";
 import UserList from "./components/User/UserList";
-import KakaoLogin from "./routes/KakaoLogin";
+import KakaoLogin from "./routes/KakaoSignUp";
 import LoginError from "./routes/LoginError";
 import Cart from "./routes/Cart";
 import OrderList from "./routes/OrderList";
