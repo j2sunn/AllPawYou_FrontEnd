@@ -19,6 +19,9 @@ import OrderList from "./routes/OrderList";
 import OrderDetail from "./routes/OrderDetail";
 import PaymentApprove from "./routes/PaymentApprove";
 import PaymentCheck from "./routes/PaymentCheck";
+import BoardWrite from "./routes/BoardWrite";
+
+
 
 const Router = () => {
   return (
@@ -59,6 +62,10 @@ const Router = () => {
         {/* 결제 완료 */}
         <Route path="/payment/approve" element={<PaymentApprove />} />
         <Route path="*" element={<NotFound />} />
+
+        
+        {/* 게시판 */}
+        <Route path="/boardWrite" element = {<BoardWrite />}/>
       </Routes>
     </BrowserRouter>
   );
