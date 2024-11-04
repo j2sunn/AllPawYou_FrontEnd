@@ -163,12 +163,12 @@ const Detail = styled.div`
 `;
 
 const Buttons = styled.div`
+  width: 25%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-left: 2rem;
   button {
     margin: 0.5rem;
   }
