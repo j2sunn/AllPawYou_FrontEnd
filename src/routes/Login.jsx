@@ -49,7 +49,12 @@ export default function Login() {
 
     login(values)
       .then((response) => {
-        localStorage.clear();
+        localStorage.setItem("no", response.no);
+        localStorage.setItem("role", response.role);
+        localStorage.setItem("email", response.email);
+        localStorage.setItem("username", response.username);
+        localStorage.setItem("nickname", response.nickname);
+        localStorage.setItem("intro", response.intro);
         localStorage.setItem("tokenType", response.tokenType);
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);
@@ -57,6 +62,7 @@ export default function Login() {
       })
       .catch((error) => {
         console.log(error);
+        alert("로그인 실패:", error);
       });
   };
 

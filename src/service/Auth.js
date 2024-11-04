@@ -67,10 +67,16 @@ export const autoLogin = async () => {
     const login = async () => {
       try {
         const response = await AuthApi.post(`/api/v3/kakao/login`, { email });
-        console.log(response.data);
+        // console.log(response.data);
 
         // 토큰을 localStorage에 저장
-        localStorage.setItem("tokentype", response.data.tokentype);
+        localStorage.setItem("no", response.data.no);
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("nickname", response.data.nickname);
+        localStorage.setItem("intro", response.data.intro);
+        localStorage.setItem("tokenType", response.data.tokenType);
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
 
