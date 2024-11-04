@@ -1,6 +1,4 @@
 import { Button } from "@mui/material";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -13,7 +11,6 @@ const FindEmail = () => {
     }
     return (
         <>
-            <HeaderComponent />
             {email == undefined ? (
                 <Container>
                     <Content>잘못된 접근입니다</Content>
@@ -38,7 +35,6 @@ const FindEmail = () => {
                 </Container>
                 )
             }
-            <FooterComponent />
         </>
     );
 }

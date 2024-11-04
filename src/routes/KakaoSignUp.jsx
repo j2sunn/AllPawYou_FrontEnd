@@ -1,9 +1,6 @@
 // import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { Button, TextField } from "@mui/material";
-
 import styled from "styled-components";
 import { signUp } from "../service/Auth";
 import { useLocation } from "react-router-dom";
@@ -125,7 +122,6 @@ const KakaoLogin = () => {
 
   return (
     <>
-      <HeaderComponent />
       <Container>
         <div className="input-form-backgroud row">
           <div className="input-form col-md-12 mx-auto">
@@ -183,7 +179,6 @@ const KakaoLogin = () => {
           </div>
         </div>
       </Container>
-      <FooterComponent />
     </>
   );
 };

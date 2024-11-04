@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { useState } from "react";
+
 const BoardWrite = ()=>{
     const ACCESS_TOKEN = localStorage.getItem("accessToken");
     if(ACCESS_TOKEN){
@@ -34,7 +33,6 @@ const BoardWrite = ()=>{
     };
     return ( //강아지(1) 고양이(2) 기타(3)
         <>
-            <HeaderComponent />
                 {/* {ACCESS_TOKEN ? ( //로그인한 상태인 경우
                     <>
                         토큰이 있습니다.
@@ -105,7 +103,6 @@ const BoardWrite = ()=>{
                 </Three>
                 <EndBtn >등록</EndBtn>
             </Container>
-            <FooterComponent />
         </>
     );
 }

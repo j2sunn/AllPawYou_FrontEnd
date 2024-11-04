@@ -1,6 +1,3 @@
-import FooterComponent from "../components/common/FooterComponent";
-import HeaderComponent from "../components/common/HeaderComponent";
-import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -15,7 +12,6 @@ const Container = styled.div`
 const AddProduct = () => {
     return (
         <>
-            <HeaderComponent />
             <Container>
                 <div>
                     <h4>상품 등록</h4>
@@ -47,9 +43,6 @@ const AddProduct = () => {
 
                 </form>
             </Container>
-
-
-            <FooterComponent />
         </>
     );
 }

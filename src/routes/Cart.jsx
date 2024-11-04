@@ -1,13 +1,10 @@
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { Button, Checkbox } from "@mui/material";
 import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
 
 const Cart = () => {
   return (
     <>
-      <HeaderComponent />
       <Container>
         <Title>장바구니</Title>
         <Content>
@@ -62,7 +59,6 @@ const Cart = () => {
           </TotalPrice>
         </Content>
       </Container>
-      <FooterComponent />
     </>
   )
 };

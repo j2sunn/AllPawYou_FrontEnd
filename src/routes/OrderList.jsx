@@ -1,12 +1,9 @@
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { Button } from "@mui/material";
 
 const OrderList = () => {
   return (
     <>
-      <HeaderComponent />
       <Container>
         <Title>주문 목록</Title>
         <Content>
@@ -76,7 +73,6 @@ const OrderList = () => {
           </Orders>
         </Content>
       </Container>
-      <FooterComponent />
     </>
   )
 };

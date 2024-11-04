@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { Button, Table } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +8,6 @@ const PaymentApprove = () => {
 
   return (
     <>
-      <HeaderComponent/>
       <Container>
         <Title>주문 완료</Title>
         <Content>
@@ -56,7 +53,6 @@ const PaymentApprove = () => {
           <Button variant="contained" sx={{width: '300px', marginBottom:'5rem'}} onClick={()=>navigator('/')}>쇼핑몰 메인 페이지로 이동</Button>
         </Content>
       </Container>
-      <FooterComponent/>
     </>
   )
 };

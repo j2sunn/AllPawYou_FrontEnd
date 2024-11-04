@@ -1,7 +1,5 @@
 // import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { Button, TextField } from "@mui/material";
 
 import styled from "styled-components";
@@ -156,7 +154,6 @@ const SignUp = () => {
 
   return (
     <>
-      <HeaderComponent />
       <Container>
         <div className="input-form-backgroud row">
           <div className="input-form col-md-12 mx-auto">
@@ -239,7 +236,6 @@ const SignUp = () => {
           </div>
         </div>
       </Container>
-      <FooterComponent />
     </>
   );
 };

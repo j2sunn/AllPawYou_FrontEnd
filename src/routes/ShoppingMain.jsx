@@ -1,11 +1,8 @@
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 
 const ShoppingMain = () => {
     return (
         <>
-            <HeaderComponent />
             <GoodsSection>
                 <IconTitle>쇼핑 카테고리</IconTitle>
                 <IconContainer>
@@ -296,7 +293,6 @@ const ShoppingMain = () => {
                     </ul>
                 </div>
             </GoodsSection>
-            <FooterComponent />
         </>
     );
 }
