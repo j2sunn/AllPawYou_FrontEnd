@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { Button, TextField, Box } from '@mui/material';
 import * as React from 'react';
 import PropTypes from 'prop-types';
@@ -48,7 +46,6 @@ const ShoppingDetail = () => {
 
     return (
         <>
-            <HeaderComponent />
             <Container>
                 <ImgArea className="imgArea">
                     <ProductImage src="/src/assets/mainImage/shopping1.png"></ProductImage>
@@ -106,8 +103,6 @@ const ShoppingDetail = () => {
                     </CustomTabPanel>
                 </Box>
             </DetailArea>
-
-            <FooterComponent />
         </>
     );
 };

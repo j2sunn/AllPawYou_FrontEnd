@@ -1,12 +1,9 @@
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import { Button, Table } from "@mui/material";
 
 const PaymentCheck = () => {
   return (
     <>
-      <HeaderComponent />
       <Container>
         <Title>주문 / 결제</Title>
         <Content>
@@ -73,7 +70,6 @@ const PaymentCheck = () => {
           <Button variant="contained" sx={{width: '200px', marginBottom:'3rem'}}>결제하기</Button>
         </Content>
       </Container>
-      <FooterComponent />
     </>
   )
 };

@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { deleteMember, listMembers } from "../service/MemberService";
-import HeaderComponent from "../components/common/HeaderComponent";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import FooterComponent from "../components/common/FooterComponent";
 
 const ListEmployeeComponent = () => {
   const [members, setMembers] = useState([
@@ -57,7 +55,6 @@ const ListEmployeeComponent = () => {
 
   return (
     <>
-      <HeaderComponent />
       <Container>
         <SideBar>
           <SideBarTitle>관리자 메뉴</SideBarTitle>
@@ -108,7 +105,6 @@ const ListEmployeeComponent = () => {
           <Pages>1 2 3 4 5 6</Pages>
         </Content>
       </Container>
-      <FooterComponent />
     </>
   );
 };

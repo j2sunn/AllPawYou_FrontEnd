@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { FaRegHeart } from "react-icons/fa";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import Slide from "../components/common/Slide";
 
 const itemData = [
@@ -81,7 +79,6 @@ const itemData = [
 const MainPage = () => {
   return (
     <>
-      <HeaderComponent />
       <CommunityRank>커뮤니티 인기글</CommunityRank>
       <Container>
         <BoardCard>
@@ -169,8 +166,6 @@ const MainPage = () => {
         <h4 style={{ fontWeight: "bold" }}>이번주 베스트 아이템</h4>
         <Slide />
       </BestItemSection>
-
-      <FooterComponent />
     </>
   );
 };

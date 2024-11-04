@@ -1,6 +1,4 @@
 import { Button, TextField } from "@mui/material";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import styled from "styled-components";
 import { findMem,sendSMS, verifySMS,findEmail } from "../service/SmsService";
 import { useState } from "react";
@@ -115,9 +113,7 @@ const verify = () => {
             }
         })
     }
-   
 }
-
 
 
 const validateForm = () => { //잘 작성했는지 확인
@@ -152,22 +148,20 @@ const authWrite = () => { //인증번호 작성했는지 여부 검사
 }
 
 const final = () => {
-            findEmail(phone)
-                .then((response)=>{
-                    console.log("찾은이메일 response.data : " + response.data);
-                    let email = response.data;
-                    if(email){
-                        //null이 아닐 때 
-                        navigator('/findEmailResult', {state: {email}});
-                    }
-                    
-                })
+    findEmail(phone)
+        .then((response)=>{
+            console.log("찾은이메일 response.data : " + response.data);
+            let email = response.data;
+            if(email){
+            //null이 아닐 때 
+                navigator('/findEmailResult', {state: {email}});
+            }            
+        })
 }
+
     return (
         <>
-            <HeaderComponent />
             <Container>
-
                 <Content>
                     <h4 style={{ marginBottom: '25px' }}>이메일 찾기</h4>
                     <div style={{ marginBottom: "16px" }}>
@@ -206,9 +200,7 @@ const final = () => {
 
                     </ButtonContainer>
                 </Content>
-
             </Container>
-            <FooterComponent />
         </>
     );
 }

@@ -1,8 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
-import HeaderComponent from "../components/common/HeaderComponent";
 import { useEffect, useState } from "react";
-import FooterComponent from "../components/common/FooterComponent";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,11 +25,8 @@ const MyPage = () => {
   // },[stat]);
   return (
     <>
-      <HeaderComponent />
       {update ? ( //수정인 경우
         /* 사용자 정보 수정 */
-        
-        
           <Box>
             <SideBar> 
               <SideBarTitle>마이 페이지</SideBarTitle>
@@ -197,8 +192,6 @@ const MyPage = () => {
           </Container>
         </Box>
       )}
-      <FooterComponent />
-      <img src="../assets/푸들.png" />
     </>
   )
 };

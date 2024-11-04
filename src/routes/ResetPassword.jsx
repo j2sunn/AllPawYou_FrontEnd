@@ -1,6 +1,4 @@
 import { Button, TextField } from "@mui/material";
-import HeaderComponent from "../components/common/HeaderComponent";
-import FooterComponent from "../components/common/FooterComponent";
 import styled from "styled-components";
 import { useState } from "react";
 const Container = styled.div`
@@ -34,7 +32,6 @@ const ResetPassword = () => {
     const [auth, setAuth] = useState(false);
     return (
         <>
-            <HeaderComponent />
             <Container>
                 <Content>
                     <h4 style={{ marginBottom: '25px' }}>비밀번호 재설정</h4>
@@ -66,7 +63,6 @@ const ResetPassword = () => {
                 </Content>
 
             </Container>
-            <FooterComponent />
         </>
     );
 }
