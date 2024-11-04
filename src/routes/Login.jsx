@@ -4,8 +4,9 @@ import FooterComponent from "../components/common/FooterComponent";
 import HeaderComponent from "../components/common/HeaderComponent";
 import { SiKakaotalk } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
-import { login, fetchKakaoOAuth } from "../service/Auth";
-import { useState } from "react";
+import { login, fetchKakaoOAuth, autoLogin } from "../service/Auth";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const LoginContainer = styled.div`
   text-align: center;
@@ -58,6 +59,10 @@ export default function Login() {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    autoLogin();
+  }, []);
 
   return (
     <>

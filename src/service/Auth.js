@@ -14,9 +14,16 @@ export const AuthApi = axios.create({
 
 /** LOGIN API */
 export const login = async ({ email, password }) => {
-  const data = { email, password };
-  const response = await AuthApi.post(`/api/v1/auth/login`, data);
-  return response.data;
+  try {
+    const data = { email, password };
+    const response = await AuthApi.post(`/api/v1/auth/login`, data);
+    return response.data;
+  } catch (err) {
+    if (err?.response) {
+      console.error(err);
+      alert(err.response?.data?.message);
+    }
+  }
 };
 
 /** SIGNUP API */
@@ -40,12 +47,42 @@ export const fetchKakaoOAuth = async () => {
   try {
     // 카카오 API 호출
     const redirectUrl =
-      "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c7295acd0ab98802d00391b7dda370c5&redirect_uri=http://localhost:8081/api/v3/kakao/callback&prompt=login";
+      "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c7295acd0ab98802d00391b7dda370c5&redirect_uri=http://localhost:8081/api/v3/kakao/callback&prompt=none";
 
     // 리다이렉트
     window.location.href = redirectUrl;
   } catch (error) {
     console.error("Error fetching Kakao OAuth URL:", error);
     alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
+  }
+};
+
+export const autoLogin = async () => {
+  // URL 파라미터에서 액세스 토큰, 이메일, 비밀번호를 가져옵니다.
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get("email");
+
+  if (email) {
+    // 자동 로그인 요청
+    const login = async () => {
+      try {
+        const response = await AuthApi.post(`/api/v3/kakao/login`, { email });
+        console.log(response.data);
+
+        // 토큰을 localStorage에 저장
+        localStorage.setItem("tokentype", response.data.tokentype);
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+
+        // 이후의 API 요청에 토큰을 추가하기 위한 Axios 설정
+        AuthApi.defaults.headers.common["Authorization"] = `Bearer ${response.data.accessToken}`;
+
+        // 로그인 성공 후 페이지 이동
+        window.location.href = "/"; // 원하는 경로로 이동
+      } catch (error) {
+        alert("로그인 실패:", error);
+      }
+    };
+    login();
   }
 };
