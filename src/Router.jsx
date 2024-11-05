@@ -20,7 +20,7 @@ import PaymentCheck from "./routes/PaymentCheck";
 import BoardWrite from "./routes/BoardWrite";
 import ShoppingMain from "./routes/ShoppingMain";
 import Layout from "./components/common/Layout";
-
+import Temp from "./routes/Temp";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -62,6 +62,8 @@ const Router = () => {
           <Route path="/shoppingMain" element={<ShoppingMain />} />
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
+          <Route path="/boardDetail" element={<BoardWrite />} />
+          <Route path="/temp" element={<Temp />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
