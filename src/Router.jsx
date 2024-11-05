@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import UserLogin from "./components/User/Login";
-
 import MainPage from "./routes/MainPage";
 import MemberList from "./routes/MemberList";
 import SignUp from "./routes/SignUp";
@@ -23,7 +21,6 @@ import BoardWrite from "./routes/BoardWrite";
 import ShoppingMain from "./routes/ShoppingMain";
 import Layout from "./components/common/Layout";
 
-
 const Router = () => {
   return (
     <BrowserRouter>
@@ -31,27 +28,24 @@ const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
 
-          <Route path="/mypage" element={<MyPage />} />
-          {/* // http://localhost:3000/admin/memberList */}
-          <Route path="/admin/memberList" element={<MemberList />} />
-          {/* // http://localhost:3000/signup */}
+          {/* 회원가입 */}
           <Route path="/signup" element={<SignUp />} />
+          {/* 로그인 */}
           <Route path="/login" element={<Login />} />
-          <Route path="/findEmail" element={<FindEmail />} />
-          <Route path="/findEmailResult" element={<FindEmailResult />} />
-          <Route path="/resetPwd" element={<ResetPassword />} />
-
-          {/* 로그인, 회원가입 */}
-          {/* // http://localhost:3000/user */}
-          <Route path="/user" element={<UserLogin />} />
           {/* 카카오 회원가입 */}
           <Route path="/login/kakao/update" element={<KakaoLogin />} />
-
-          {/* 모든 회원 리스트 - 관리자 */}
+          {/* 모든 회원 리스트 */}
           {/* // http://localhost:3000/user/userlist */}
           <Route path="/user/userlist" element={<UserList />} />
           {/* 회원가입 중복 에러 */}
           <Route path="/login/error" element={<LoginError />} />
+
+          <Route path="/mypage" element={<MyPage />} />
+          {/* // http://localhost:3000/admin/memberList */}
+          <Route path="/admin/memberList" element={<MemberList />} />
+          <Route path="/findEmail" element={<FindEmail />} />
+          <Route path="/findEmailResult" element={<FindEmailResult />} />
+          <Route path="/resetPwd" element={<ResetPassword />} />
 
           {/* 장바구니 */}
           <Route path="/cart" element={<Cart />} />
@@ -65,9 +59,9 @@ const Router = () => {
           <Route path="/payment/approve" element={<PaymentApprove />} />
 
           {/* 쇼핑몰 */}
-          <Route path="/shoppingMain" element = {<ShoppingMain />}/>
+          <Route path="/shoppingMain" element={<ShoppingMain />} />
           {/* 게시판 */}
-          <Route path="/boardWrite" element = {<BoardWrite />}/>
+          <Route path="/boardWrite" element={<BoardWrite />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
