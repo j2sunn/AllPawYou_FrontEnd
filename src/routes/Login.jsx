@@ -72,7 +72,6 @@ export default function Login() {
 
   return (
     <>
-      <HeaderComponent />
       <LoginContainer>
         <h3>통합 로그인</h3>
         <form onSubmit={handleSubmit}>
@@ -121,7 +120,6 @@ export default function Login() {
           </Button>
         </Icons>
       </LoginContainer>
-      <FooterComponent />
     </>
   );
 }

@@ -41,9 +41,8 @@ const UserList = () => {
 
   return (
     <>
-      <HeaderComponent />
       <Container>
-        <SideBar> 
+        <SideBar>
           <SideBarTitle>관리자 메뉴</SideBarTitle>
           <SimpleTreeView>
             <TreeItem itemId="0" label="회원관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
@@ -92,7 +91,6 @@ const UserList = () => {
           <Pages>1 2 3 4 5 6</Pages>
         </Content>
       </Container>
-      <FooterComponent />
     </>
   );
 };
