@@ -21,6 +21,7 @@ import BoardWrite from "./routes/BoardWrite";
 import ShoppingMain from "./routes/ShoppingMain";
 import Layout from "./components/common/Layout";
 import NoticeList from "./routes/NoticeList";
+import Temp from "./routes/Temp";
 
 const Router = () => {
   return (
@@ -68,6 +69,8 @@ const Router = () => {
           <Route path="/admin/noticeList" element={<NoticeList />} />
 
           
+          <Route path="/boardDetail" element={<BoardWrite />} />
+          <Route path="/temp" element={<Temp />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -92,7 +92,7 @@ const SignUp = () => {
         alert("서버 오류가 발생했습니다.");
       }
     }
-  };
+  }; 
 
   const validation = () => {
     let valid = true;
