@@ -20,6 +20,7 @@ import PaymentCheck from "./routes/PaymentCheck";
 import BoardWrite from "./routes/BoardWrite";
 import ShoppingMain from "./routes/ShoppingMain";
 import Layout from "./components/common/Layout";
+import NoticeList from "./routes/NoticeList";
 
 const Router = () => {
   return (
@@ -62,6 +63,11 @@ const Router = () => {
           <Route path="/shoppingMain" element={<ShoppingMain />} />
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
+
+          {/* 공지사항 메인(관리자) */}
+          <Route path="/admin/noticeList" element={<NoticeList />} />
+
+          
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
