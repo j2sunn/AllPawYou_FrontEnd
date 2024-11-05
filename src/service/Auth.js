@@ -58,7 +58,7 @@ export const fetchKakaoOAuth = async () => {
   try {
     // 카카오 API 호출
     const redirectUrl =
-      "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c7295acd0ab98802d00391b7dda370c5&redirect_uri=http://localhost:8081/api/v3/kakao/callback&prompt=none";
+      "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c7295acd0ab98802d00391b7dda370c5&redirect_uri=http://localhost:8081/api/v3/kakao/callback&prompt=login";
 
     // 리다이렉트
     window.location.href = redirectUrl;
