@@ -6,6 +6,8 @@ import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { useLocation, useNavigate } from "react-router-dom";
 import poodle from "../assets/poodle.png";
 import { Table, TableCell, TableRow } from "@mui/material";
+import DaumPostcode from 'react-daum-postcode';
+
 const MyPage = () => {
   // const {state} = useLocation();
   // const stat = state?.stat;
@@ -23,6 +25,25 @@ const MyPage = () => {
   // useEffect(()=>{
   //   setUpdate(stat);
   // },[stat]);
+
+  const [enroll_company, setEnroll_company] = useState({
+    address:'',
+  });
+  
+  const [popup, setPopup] = useState(false);
+  
+  const handleInput = (e) => {
+    setEnroll_company({
+        ...enroll_company,
+          [e.target.name]:e.target.value,
+      })
+  }
+
+  const handleComplete = (data) => {
+    setPopup(!popup);
+  }
+
+
   return (
     <>
       {update ? ( //수정인 경우
@@ -118,6 +139,8 @@ const MyPage = () => {
                         // width: '60rem'
                       }}
                       onChange={()=>profileHandler(event, 'address')}/>
+                      <Button onClick={handleComplete}>검색</Button>
+                      
                     </TableCell>
                     
                   </TableRow>
