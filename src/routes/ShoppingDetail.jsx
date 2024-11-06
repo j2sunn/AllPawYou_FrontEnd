@@ -52,14 +52,14 @@ const ShoppingDetail = () => {
                 </ImgArea>
                 <ContentArea className="contentArea">
                     <div className="productName" style={{ marginBottom: '20px' }}>
-                        <h5 style={{ fontWeight: 'bold' }}>리카리카 휴대용 실리콘 파우치</h5>
+                        <h4 style={{fontFamily: 'NanumSquareRound', marginBottom: '20px'}}>리카리카 휴대용 실리콘 파우치</h4>
                     </div>
-                    <div>
-                        20,000원
+                    <div style={{fontFamily: 'NanumSquareRound'}}>
+                        <h5 style={{fontWeight: 'bold' }}>20,000원</h5>
                     </div>
 
-                    <div className="quantityIcon">
-                        <Box display="flex" alignItems="center">
+                    <quantityIcon className="quantityIcon">
+                        <Box display="flex" alignItems="center" sx={{marginTop : '20px', marginBottom : '20px'}}>
                             <Button variant="outlined" sx={{ minWidth: '40px', padding: 0, height: '40px', borderRadius: 0 }}>-</Button>
                             <TextField
                                 value={1}
@@ -76,12 +76,12 @@ const ShoppingDetail = () => {
                                 minWidth: '40px', padding: 0, height: '40px', borderRadius: 0
                             }}>+</Button>
                         </Box>
-                    </div>
+                    </quantityIcon>
                     <div className="orderArea">
-                        <Button variant="outlined">
+                        <Button sx={{fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px'}} variant="outlined">
                             장바구니에 담기
                         </Button>
-                        <Button variant="contained">
+                        <Button sx={{fontFamily: 'NanumSquareRound' , width: '150px'}} variant="contained">
                             바로 구매하기
                         </Button>
                     </div>
@@ -109,6 +109,7 @@ const ShoppingDetail = () => {
 
 export default ShoppingDetail;
 
+
 const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -116,22 +117,21 @@ const Container = styled.div`
     padding: 0;
     list-style: none;
     margin-top: 100px;
-
 `;
 
 const ContentArea = styled.div`
-    margin-left : 20px;
+    margin-left : 10rem;
     width :500px;
 `;
 
 const ImgArea = styled.div`
-    margin-left : 20px;
 `;
 
 const ProductImage = styled.img`
-    width :500px;
+    width :400px;
 `;
 
 const DetailArea = styled.div`
-
 `;
+
+
