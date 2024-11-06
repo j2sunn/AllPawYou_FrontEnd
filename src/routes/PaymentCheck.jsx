@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
+import { paymentReady } from "../service/PaymentService";
+import { useState } from "react";
 
 const PaymentCheck = () => {
+
+  const [data, setData] = useState({userNo: 1, totalPrice: 100, itemName: 'asd', totalAmount: 100});
+
   return (
     <>
       <Container>
@@ -67,7 +72,7 @@ const PaymentCheck = () => {
               </Table>
             </DetailContainer>
           </div>
-          <Button variant="contained" sx={{width: '200px', marginBottom:'3rem'}}>결제하기</Button>
+          <Button variant="contained" sx={{width: '200px', marginBottom:'3rem'}} onClick={()=>paymentReady(data)}>결제하기</Button>
         </Content>
       </Container>
     </>

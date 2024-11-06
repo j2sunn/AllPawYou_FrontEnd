@@ -1,10 +1,29 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { paymentApprove } from "../service/PaymentService";
 
 const PaymentApprove = () => {
 
   const navigator = useNavigate();
+  const location = useLocation();
+  const pg_token = location?.search.split("=")[1];
+
+  const [data, setData] = useState({
+    tid: localStorage.getItem("tid"),
+    pg_token
+  });
+
+  const call = async() => {
+    console.log(data);
+    paymentApprove(data);
+  }
+
+  useEffect(()=>{
+    call();
+  },[]);
 
   return (
     <>
