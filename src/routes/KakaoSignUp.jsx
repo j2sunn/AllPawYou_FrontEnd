@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
-import { signUp } from "../service/Auth";
+import { signUp } from "../service/Login";
 import { useLocation } from "react-router-dom";
 
 const Container = styled.div`

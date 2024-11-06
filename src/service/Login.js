@@ -1,27 +1,13 @@
 import axios from "axios";
+import { AuthApi } from "./AuthApi";
 
-const TOKEN_TYPE = localStorage.getItem("tokenType");
-let ACCESS_TOKEN = localStorage.getItem("accessToken");
-
-console.log(TOKEN_TYPE);
-console.log(ACCESS_TOKEN);
-
-/** CREATE CUSTOM AXIOS INSTANCE */
-export const AuthApi = axios.create({
-  baseURL: "http://localhost:8081",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: TOKEN_TYPE + " " + ACCESS_TOKEN,
-  },
-});
-
-AuthApi.get("/api/v1/user")
-  .then((response) => {
-    console.log(response.data);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+// AuthApi.get("/api/v1/user")
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
 
 /** LOGIN API */
 export const login = async ({ email, password }) => {

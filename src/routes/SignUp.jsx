@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, TextField } from "@mui/material";
 
 import styled from "styled-components";
-import { signUp, sendMail, verify } from "../service/Auth";
+import { signUp, sendMail, verify } from "../service/Login";
 
 const Container = styled.div`
   padding: 60px;
@@ -92,7 +92,7 @@ const SignUp = () => {
         alert("서버 오류가 발생했습니다.");
       }
     }
-  }; 
+  };
 
   const validation = () => {
     let valid = true;

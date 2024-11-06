@@ -23,6 +23,10 @@ import Layout from "./components/common/Layout";
 import NoticeList from "./routes/NoticeList";
 import Temp from "./routes/Temp";
 import BoardDetail from "./routes/BoardDetail";
+import AdminReviewList from "./components/Review/AdminReviewList";
+import UserReviewList from "./components/Review/UserReviewList";
+import UserReviewCreate from "./components/Review/UserReviewCreate";
+import { UpdateReview } from "./service/Review";
 
 const Router = () => {
   return (
@@ -69,7 +73,15 @@ const Router = () => {
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
 
-          
+          {/* 후기 전체 리스트 */}
+          <Route path="/admin/review/reviewList" element={<AdminReviewList />} />
+          {/* 사용자 후기 리스트 */}
+          <Route path="/review/myReview" element={<UserReviewList />} />
+          {/* 사용자 후기 작성 */}
+          <Route path="/review/createReview" element={<UserReviewCreate />} />
+          {/* 사용자 후기 수정 */}
+          <Route path="/review/updateReview/:reviewNo" element={<UpdateReview />} />
+
           <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
         </Route>

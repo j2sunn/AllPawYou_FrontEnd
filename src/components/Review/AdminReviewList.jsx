@@ -6,29 +6,35 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { AllReview, DeleteReview } from "../../service/Review";
 
 const ReviewList = () => {
-  const [reviews, setReviews] = useState([]); // 초기 상태를 빈 배열로 설정
+  const [reviews, setReviews] = useState([]); // reviews로 변경
 
   useEffect(() => {
     getAllReviews();
   }, []);
 
-  const getAllReviews = async () => {
-    try {
-      const response = await AllReview();
-      setReviews(response || []); // 응답이 undefined일 경우 빈 배열로 설정
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  function getAllReviews() {
+    AllReview()
+      .then((response) => {
+        console.log(response.data);
+        setReviews(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
-  const removeReview = async (reviewNo) => {
-    try {
-      await DeleteReview(reviewNo);
-      getAllReviews(); // 리뷰 삭제 후 다시 리뷰 목록을 가져옵니다.
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  function removeReview(reviewNo) {
+    console.log(reviewNo);
+
+    DeleteReview(reviewNo)
+      .then((response) => {
+        console.log(response);
+        getAllReviews();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   return (
     <>
@@ -41,6 +47,7 @@ const ReviewList = () => {
               <TreeItem itemId="1" label="공지사항" />
               <TreeItem itemId="2" label="자유게시판" />
               <TreeItem itemId="3" label="FAQ" />
+              <TreeItem itemId="4" label="리뷰관리" />
             </TreeItem>
             <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
               <TreeItem itemId="4" label="상품 관리" />
@@ -57,35 +64,41 @@ const ReviewList = () => {
                 <TableRow>
                   <TableCell align="center">번호</TableCell>
                   <TableCell align="center">별점</TableCell>
-                  <TableCell align="center">내용</TableCell>
-                  <TableCell align="center">작성일</TableCell>
-                  <TableCell align="center">사용자 번호</TableCell>
+                  <TableCell align="center">상품</TableCell>
+                  <TableCell align="center">작성자</TableCell>
                   <TableCell align="center" sx={{ width: "15rem" }}>
+                    내용
+                  </TableCell>
+                  <TableCell align="center">작성일</TableCell>
+                  <TableCell align="center" sx={{ width: "3rem" }}>
+                    수정
+                  </TableCell>
+                  <TableCell align="center" sx={{ width: "3rem" }}>
                     삭제
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Array.isArray(reviews) &&
-                  reviews.map(
-                    (
-                      item,
-                      index // 조건부 렌더링
-                    ) => (
-                      <TableRow key={item.reviewNo}>
-                        <TableCell align="center">{index + 1}</TableCell>
-                        <TableCell align="center">{item.reviewStar}</TableCell>
-                        <TableCell align="center">{item.reviewContent}</TableCell>
-                        <TableCell align="center">{item.reviewDate || "N/A"}</TableCell> {/* 작성일이 없을 경우 N/A 표시 */}
-                        <TableCell align="center">{item.userNo}</TableCell>
-                        <TableCell align="center" sx={{ width: "15rem" }}>
-                          <Button variant="outlined" color="error" onClick={() => removeReview(item.reviewNo)}>
-                            리뷰 삭제
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )}
+                {reviews.map((item) => (
+                  <TableRow key={item.reviewNo}>
+                    <TableCell align="center">{item.reviewNo}</TableCell>
+                    <TableCell align="center">{item.reviewStar}</TableCell>
+                    <TableCell align="center">{item.productName}</TableCell>
+                    <TableCell align="center">{item.username}</TableCell>
+                    <TableCell align="center">{item.reviewContent}</TableCell>
+                    <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
+                    <TableCell align="center">
+                      <Button variant="outlined" color="error" onClick={() => removeReview(item.reviewNo)}>
+                        삭제
+                      </Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button variant="outlined" color="error" onClick={() => removeReview(item.reviewNo)}>
+                        삭제
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
