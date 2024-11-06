@@ -11,39 +11,41 @@ import { AuthApi } from "../service/Auth";
 
 const MyPage = () => {
 
+  const navigator = useNavigate();
+
   //---- 회원정보 가져오기
   const [userInfo, setUserInfo] = useState(null);
+  const [profile, setProfile] = useState({});
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
-
     const username = localStorage.getItem("username");
     const email = localStorage.getItem("email");
     const nickname = localStorage.getItem("nickname");
 
-
     // 가져온 데이터를 상태에 설정
     if (username && email && nickname) {
-      setUserInfo({ username, email, nickname });
+      const userData = { username, email, nickname };
+      setUserInfo(userData);
+      setProfile(userData)
     } else {
       console.error("사용자 정보가 localStorage에 없습니다.");
     }
-
   }, []);
+
 
   // const {state} = useLocation();
   // const stat = state?.stat;
-  const [update, setUpdate] = useState(false);
-  const [profile, setProfile] = useState({});
-  const navigator = useNavigate();
 
   const profileHandler = (event, key) => {
     const newObj = {
       ...profile,
       [key]: event.target.value
     };
-    console.log(newObj);
-    setProfile(newObj);
+    // console.log(newObj);
+    // setProfile(newObj);
   }
+
   // useEffect(()=>{
   //   setUpdate(stat);
   // },[stat]);
@@ -117,18 +119,19 @@ const MyPage = () => {
           </SideBar>
 
           <UpdateContainer>
-
-            <Content>
-              <Profile>
-                <ProfileImg
-                  // as="div"
-                  src={poodle}
-                />
-                {/* <TextField variant="outlined" size="small" sx={{width: '150px'}} onChange={()=>profileHandler(event, 'nickname')}/> */}
-              </Profile>
-              <Profile>
-                {/* Table, TableCell, TableRow */}
-                {/* <ProfileDetail>
+            {userInfo ? (
+              <>
+                <Content>
+                  <Profile>
+                    <ProfileImg
+                      // as="div"
+                      src={poodle}
+                    />
+                    {/* <TextField variant="outlined" size="small" sx={{width: '150px'}} onChange={()=>profileHandler(event, 'nickname')}/> */}
+                  </Profile>
+                  <Profile>
+                    {/* Table, TableCell, TableRow */}
+                    {/* <ProfileDetail>
                   이름 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'name')}
                     value={profile.name}/>
                     
@@ -152,70 +155,79 @@ const MyPage = () => {
                 <ProfileDetail>
                   닉네임 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'nickname')}/>
                 </ProfileDetail> */}
-                {/* Table, TableCell, TableRow */}
-                <Table>
-                  <TableRow>
-                    <TableCell>이름 :</TableCell>
-                    <TableCell>
-                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'name')}
-                        value={profile.name} />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>전화번호 :</TableCell>
-                    <TableCell>
-                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'phone')} />
-                    </TableCell>
+                    {/* Table, TableCell, TableRow */}
 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>이메일 :</TableCell>
-                    <TableCell>
-                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'email')} />
-                    </TableCell>
+                    <Table>
+                      <TableRow>
+                        <TableCell>이름 :</TableCell>
+                        <TableCell>
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }}
+                            
+                            onChange={(event) => profileHandler(event, 'username')}
+                          />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>전화번호 :</TableCell>
+                        <TableCell>
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} 
+                          
+                          onChange={() => profileHandler(event, 'phone')} />
+                        </TableCell>
 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>주소 :</TableCell>
-                    <TableCell>
-                      <TextField variant="outlined" size="small" multiline maxRows={6}
-                        sx={{
-                          // margin: '1rem 0 3rem 24rem',
-                          marginLeft: '1rem',
-                          // alignSelf: 'start', 
-                          // width: '60rem'
-                        }}
-                        onChange={() => profileHandler(event, 'address')} />
-                      <Button onClick={() => isPostcodePopupVisible(true)}>검색</Button>
-                      {isPostcodePopupVisible && (
-                        <DaumPostcode
-                          style={postCodeStyle}
-                          autoClose
-                          onComplete={onCompletePost}
-                        />
-                      )}
-                    </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>이메일 :</TableCell>
+                        <TableCell>
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'email')} />
+                        </TableCell>
 
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>닉네임 :</TableCell>
-                    <TableCell>
-                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'nickname')} />
-                    </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>주소 :</TableCell>
+                        <TableCell>
+                          <TextField variant="outlined" size="small" multiline maxRows={6}
+                            sx={{
+                              // margin: '1rem 0 3rem 24rem',
+                              marginLeft: '1rem',
+                              // alignSelf: 'start', 
+                              // width: '60rem'
+                            }}
+                            onChange={() => profileHandler(event, 'address')} />
+                          <Button onClick={() => isPostcodePopupVisible(true)}>검색</Button>
+                          {isPostcodePopupVisible && (
+                            <DaumPostcode
+                              style={postCodeStyle}
+                              autoClose
+                              onComplete={onCompletePost}
+                            />
+                          )}
+                        </TableCell>
 
-                  </TableRow>
-                </Table>
-              </Profile>
-            </Content>
-            {/* <Title>주소</Title> */}
-            {/* <TextField variant="outlined" size="small" multiline maxRows={6} 
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>닉네임 :</TableCell>
+                        <TableCell>
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'nickname')} />
+                        </TableCell>
+
+                      </TableRow>
+                    </Table>
+                  </Profile>
+                </Content>
+                {/* <Title>주소</Title> */}
+                {/* <TextField variant="outlined" size="small" multiline maxRows={6} 
               sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}
               onChange={()=>profileHandler(event, 'address')}/> */}
-            <Title>자기소개</Title>
-            <TextField variant="outlined" size="small" multiline maxRows={6}
-              sx={{ alignSelf: 'start', width: '60rem' }}
-              onChange={() => profileHandler(event, 'info')} />
-            <Button variant="contained" color="primary" onClick={() => setUpdate(prev => !prev)}>저장</Button>
+                <Title>자기소개</Title>
+                <TextField variant="outlined" size="small" multiline maxRows={6}
+                  sx={{ alignSelf: 'start', width: '60rem' }}
+                  onChange={() => profileHandler(event, 'info')} />
+                <Button variant="contained" color="primary" onClick={() => setUpdate(prev => !prev)}>저장</Button>
+              </>
+            ) : (
+              <div>사용자 정보가 없습니다.</div>
+            )}
           </UpdateContainer>
         </Box>
         //-----------------------------------------------------------------------
@@ -242,28 +254,28 @@ const MyPage = () => {
             </SimpleTreeView>
           </SideBar>
           <Container>
-          {userInfo ? (
-            <>
-            <Content>
-              <Profile>
-                <ProfileImg
-                  // as="div" 
-                  src={poodle}
-                />
-                <NickName>{userInfo.nickname}</NickName>
-              </Profile>
-              <Profile>
-                <div>이름 : {userInfo.username} </div>
-                <div>전화번호 : 010-1234-5678</div>
-                <div>이메일 : {userInfo.email} </div>
-                <div>주소 : 서울특별시 마곡동로</div>
-              </Profile>
-              </Content>
+            {userInfo ? (
+              <>
+                <Content>
+                  <Profile>
+                    <ProfileImg
+                      // as="div" 
+                      src={poodle}
+                    />
+                    <NickName>{userInfo.nickname}</NickName>
+                  </Profile>
+                  <Profile>
+                    <div>이름 : {userInfo.username} </div>
+                    <div>전화번호 : 010-1234-5678</div>
+                    <div>이메일 : {userInfo.email} </div>
+                    <div>주소 : 서울특별시 마곡동로</div>
+                  </Profile>
+                </Content>
               </>
             ) : (
-                <div>해당 회원정보가 없습니다.</div>
+              <div>해당 회원정보가 없습니다.</div>
             )}
-            
+
             {/* <Title>주소</Title>
             <Content></Content> */}
             <Title>자기소개</Title>
