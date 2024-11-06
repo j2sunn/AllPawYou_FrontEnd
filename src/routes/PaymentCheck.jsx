@@ -2,8 +2,14 @@ import styled from "styled-components";
 import { Button, Table } from "@mui/material";
 import { paymentReady } from "../service/PaymentService";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const PaymentCheck = () => {
+
+  //장바구니에서 전달한 정보 받기
+  const location = useLocation();
+
+  //유저 정보는 localStorage나 유저 api 요청해서 사용
 
   const [data, setData] = useState({userNo: 1, totalPrice: 100, itemName: 'asd', totalAmount: 100});
 
