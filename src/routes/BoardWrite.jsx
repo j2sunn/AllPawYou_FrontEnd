@@ -6,7 +6,7 @@ const BoardWrite = ()=>{
     
     const navigator = useNavigate();
     let ACCESS_TOKEN = "";
-    let loginEmail="";
+    
     useEffect(()=>{
         ACCESS_TOKEN = localStorage.getItem("accessToken");
         console.log("토큰 : "+ACCESS_TOKEN);
@@ -14,9 +14,9 @@ const BoardWrite = ()=>{
         if(ACCESS_TOKEN){
             console.log("토큰 : "+ACCESS_TOKEN);
         const payload = JSON.parse(atob(ACCESS_TOKEN.split(".")[1]));
-        loginEmail = payload['user-email']; 
+        setLoginEmail(payload['user-email']);
         // console.log("email : "+ payload['user-email']);
-        console.log("email : "+loginEmail);
+        // console.log("email : "+loginEmail);
         }else{
             alert("로그인 후 이용해주세요.");
             // navigator('/login');
@@ -24,7 +24,7 @@ const BoardWrite = ()=>{
             return;
         }
     },[]);
-    
+    const [loginEmail, setLoginEmail] = useState("");
     const [selectedCategory, setSelectedCategory] = useState(1);
     const [boardTitle, setBoardTitle] = useState("");
     const [boardContent, setBoardContent] = useState("");
@@ -80,15 +80,18 @@ const BoardWrite = ()=>{
         formData.append("category", selectedCategory);
         formData.append("boardTitle", boardTitle);
         formData.append("boardContent", boardContent);
-
+        console.log("프론트 email : "+loginEmail);
         // 파일 추가
         images.forEach((image //,i
 
         ) => {
             formData.append("imgFile", image);  // 'imgFile' 이름으로 여러 파일 추가 가능
         });
-
+        console.log("프론트 email : "+loginEmail);
         uploadBoard(formData);
+    
+        
+    
         }
     }
     const validation = ()=>{ //필수값 다 작성했는지 검사
@@ -109,6 +112,7 @@ const BoardWrite = ()=>{
     }
     return ( //강아지(1) 고양이(2) 기타(3)
         <>
+        {/* <img src={`http://localhost:8080/images/board/푸들.png`} alt="푸들" /> */}
                 {/* {ACCESS_TOKEN ? ( //로그인한 상태인 경우
                     <>
                         토큰이 있습니다.
