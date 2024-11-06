@@ -23,6 +23,9 @@ import Layout from "./components/common/Layout";
 import NoticeList from "./routes/NoticeList";
 import Temp from "./routes/Temp";
 import BoardDetail from "./routes/BoardDetail";
+import ShoppingDetail from "./routes/ShoppingDetail";
+import AddProduct from "./routes/AddProduct";
+import ProductList from "./routes/ProductList";
 import BoardList from "./routes/BoardList";
 
 const Router = () => {
@@ -63,7 +66,11 @@ const Router = () => {
           <Route path="/payment/approve" element={<PaymentApprove />} />
 
           {/* 쇼핑몰 */}
-          <Route path="/shoppingMain" element={<ShoppingMain />} />
+          <Route path="/shopping" element={<ShoppingMain />} />
+          <Route path="/shoppingDetail/:id" element={<ShoppingDetail />} />
+          <Route path="/admin/addproduct" element={<AddProduct />} />
+          <Route path="/admin/productlist" element={<ProductList />} />
+       
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
           <Route path="/board/:boardNo" element={<BoardDetail />} />
@@ -72,8 +79,9 @@ const Router = () => {
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
 
-          
-          
+          <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
+          <Route path="/temp" element={<Temp />} />
+
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

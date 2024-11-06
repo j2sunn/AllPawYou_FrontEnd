@@ -7,13 +7,35 @@ import { useLocation, useNavigate } from "react-router-dom";
 import poodle from "../assets/poodle.png";
 import { Table, TableCell, TableRow } from "@mui/material";
 import DaumPostcode from 'react-daum-postcode';
+import { AuthApi } from "../service/Auth";
 
 const MyPage = () => {
+
+  //---- 회원정보 가져오기
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+    const nickname = localStorage.getItem("nickname");
+
+
+    // 가져온 데이터를 상태에 설정
+    if (username && email && nickname) {
+      setUserInfo({ username, email, nickname });
+    } else {
+      console.error("사용자 정보가 localStorage에 없습니다.");
+    }
+
+  }, []);
+
   // const {state} = useLocation();
   // const stat = state?.stat;
   const [update, setUpdate] = useState(false);
   const [profile, setProfile] = useState({});
   const navigator = useNavigate();
+
   const profileHandler = (event, key) => {
     const newObj = {
       ...profile,
@@ -27,55 +49,80 @@ const MyPage = () => {
   // },[stat]);
 
   const [enroll_company, setEnroll_company] = useState({
-    address:'',
+    address: '',
   });
-  
+
   const [popup, setPopup] = useState(false);
-  
+
+
   const handleInput = (e) => {
     setEnroll_company({
-        ...enroll_company,
-          [e.target.name]:e.target.value,
-      })
+      ...enroll_company,
+      [e.target.name]: e.target.value,
+    })
   }
 
   const handleComplete = (data) => {
     setPopup(!popup);
   }
 
+  const [isPostcodePopupVisible, setIsPostcodePopupVisible] = useState(false);
+
+  const onCompletePost = (data) => {
+    setIsPostcodePopupVisible(false); // 주소 선택 후 팝업 닫기
+    setProfile((prev) => ({
+      ...prev,
+      address: data.address, // 선택한 주소를 프로필에 저장
+    }));
+  };
+  const postCodeStyle = {
+    display: isPostcodePopupVisible ? "block" : "none", // 팝업 상태에 따라 보이기
+    position: "absolute",
+    top: "20%",
+    width: "400px",
+    height: "400px",
+    padding: "7px",
+    zIndex: 100,
+  };
+
+
+
+
+
+
 
   return (
     <>
       {update ? ( //수정인 경우
         /* 사용자 정보 수정 */
-          <Box>
-            <SideBar> 
-              <SideBarTitle>마이 페이지</SideBarTitle>
-              <SimpleTreeView>
-                <TreeItem itemId="0" label="회원정보 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} 
+        <Box>
+          <SideBar>
+            <SideBarTitle>마이 페이지</SideBarTitle>
+            <SimpleTreeView>
+              <TreeItem itemId="0" label="회원정보 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}
                 // onClick={()=>navigator('/myPage',{state:{stat: true}})}
-                onClick={()=>setUpdate(prev=>!prev)}
-                />
-                <TreeItem itemId="board" label="결제 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}/>
-                  {/* <TreeItem itemId="1" label="공지사항" />
+                onClick={() => setUpdate(prev => !prev)}
+              />
+              <TreeItem itemId="board" label="결제 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
+              {/* <TreeItem itemId="1" label="공지사항" />
                   <TreeItem itemId="2" label="자유게시판" />
                   <TreeItem itemId="3" label="FAQ" /> */}
-                {/* </TreeItem> */}
-                {/* <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
+              {/* </TreeItem> */}
+              {/* <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
                   <TreeItem itemId="4" label="상품 관리" />
                   <TreeItem itemId="5" label="매출 관리" />
                   <TreeItem itemId="6" label="주문 관리" />
                 </TreeItem> */}
-              </SimpleTreeView>
-            </SideBar>                    
-        
+            </SimpleTreeView>
+          </SideBar>
+
           <UpdateContainer>
-            
+
             <Content>
               <Profile>
-                <ProfileImg 
-                // as="div"
-                src={poodle}
+                <ProfileImg
+                  // as="div"
+                  src={poodle}
                 />
                 {/* <TextField variant="outlined" size="small" sx={{width: '150px'}} onChange={()=>profileHandler(event, 'nickname')}/> */}
               </Profile>
@@ -110,46 +157,52 @@ const MyPage = () => {
                   <TableRow>
                     <TableCell>이름 :</TableCell>
                     <TableCell>
-                      <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'name')}
-                        value={profile.name}/>
+                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'name')}
+                        value={profile.name} />
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>전화번호 :</TableCell>
                     <TableCell>
-                      <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'phone')}/>
+                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'phone')} />
                     </TableCell>
-                    
+
                   </TableRow>
                   <TableRow>
                     <TableCell>이메일 :</TableCell>
                     <TableCell>
-                      <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'email')}/>
+                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'email')} />
                     </TableCell>
-                  
+
                   </TableRow>
                   <TableRow>
                     <TableCell>주소 :</TableCell>
                     <TableCell>
-                          <TextField variant="outlined" size="small" multiline maxRows={6} 
-                      sx={{
-                        // margin: '1rem 0 3rem 24rem',
-                        marginLeft: '1rem',
-                        // alignSelf: 'start', 
-                        // width: '60rem'
-                      }}
-                      onChange={()=>profileHandler(event, 'address')}/>
-                      <Button onClick={handleComplete}>검색</Button>
-                      
+                      <TextField variant="outlined" size="small" multiline maxRows={6}
+                        sx={{
+                          // margin: '1rem 0 3rem 24rem',
+                          marginLeft: '1rem',
+                          // alignSelf: 'start', 
+                          // width: '60rem'
+                        }}
+                        onChange={() => profileHandler(event, 'address')} />
+                      <Button onClick={() => isPostcodePopupVisible(true)}>검색</Button>
+                      {isPostcodePopupVisible && (
+                        <DaumPostcode
+                          style={postCodeStyle}
+                          autoClose
+                          onComplete={onCompletePost}
+                        />
+                      )}
                     </TableCell>
-                    
+
                   </TableRow>
                   <TableRow>
                     <TableCell>닉네임 :</TableCell>
                     <TableCell>
-                      <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'nickname')}/>
+                      <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'nickname')} />
                     </TableCell>
-                    
+
                   </TableRow>
                 </Table>
               </Profile>
@@ -159,22 +212,22 @@ const MyPage = () => {
               sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}
               onChange={()=>profileHandler(event, 'address')}/> */}
             <Title>자기소개</Title>
-            <TextField variant="outlined" size="small" multiline maxRows={6} 
-              sx={{alignSelf: 'start', width: '60rem'}}
-              onChange={()=>profileHandler(event, 'info')}/>
-            <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>저장</Button>
+            <TextField variant="outlined" size="small" multiline maxRows={6}
+              sx={{ alignSelf: 'start', width: '60rem' }}
+              onChange={() => profileHandler(event, 'info')} />
+            <Button variant="contained" color="primary" onClick={() => setUpdate(prev => !prev)}>저장</Button>
           </UpdateContainer>
-          </Box>
+        </Box>
         //-----------------------------------------------------------------------
       ) : ( //수정 아닌 경우
         /* 사용자 정보 출력 */
         <Box>
-          <SideBar> 
+          <SideBar>
             <SideBarTitle>마이 페이지</SideBarTitle>
             <SimpleTreeView>
-              <TreeItem itemId="0" label="회원정보 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} 
-              // onClick={()=>navigator('/myPage',{state:{stat: true}})}
-              onClick={()=>setUpdate(prev=>!prev)}
+              <TreeItem itemId="0" label="회원정보 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}
+                // onClick={()=>navigator('/myPage',{state:{stat: true}})}
+                onClick={() => setUpdate(prev => !prev)}
               />
               <TreeItem itemId="board" label="결제 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
                 {/* <TreeItem itemId="1" label="공지사항" />
@@ -189,27 +242,34 @@ const MyPage = () => {
             </SimpleTreeView>
           </SideBar>
           <Container>
+          {userInfo ? (
+            <>
             <Content>
               <Profile>
-                <ProfileImg 
-                // as="div" 
-                src={poodle}
+                <ProfileImg
+                  // as="div" 
+                  src={poodle}
                 />
-                <NickName>건강하개</NickName>
+                <NickName>{userInfo.nickname}</NickName>
               </Profile>
               <Profile>
-                <div>이름 : 김엘지</div>
+                <div>이름 : {userInfo.username} </div>
                 <div>전화번호 : 010-1234-5678</div>
-                <div>이메일 : lg@lg.com</div>
+                <div>이메일 : {userInfo.email} </div>
                 <div>주소 : 서울특별시 마곡동로</div>
               </Profile>
-            </Content>
+              </Content>
+              </>
+            ) : (
+                <div>해당 회원정보가 없습니다.</div>
+            )}
+            
             {/* <Title>주소</Title>
             <Content></Content> */}
             <Title>자기소개</Title>
-            <Content>푸들과 포메라니안 키우고 있습니다. <br/>
-              푸들 2017.01.04일생<br/>
-              포메라니안 2023.12.23일생<br/>
+            <Content>푸들과 포메라니안 키우고 있습니다. <br />
+              푸들 2017.01.04일생<br />
+              포메라니안 2023.12.23일생<br />
             </Content>
             {/* <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>수정</Button> */}
           </Container>
