@@ -1,61 +1,167 @@
 import styled from "styled-components";
-import { Button, Checkbox } from "@mui/material";
+import { Button, Checkbox, TextField } from "@mui/material";
 import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
+import { useEffect, useState } from "react";
+import { deleteCart, listCart } from "../service/ProductService";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+
+  const navigator = useNavigate();
+
+  const [userNo, setUserNo] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+  const [productList, setProductList] = useState([{
+    id: 1,
+    name: '상품 1',
+    quantity: 1,
+    price: 10000,
+    checked: false
+  },
+  {
+    id: 2,
+    name: '상품 2',
+    quantity: 1,
+    price: 20000,
+    checked: false
+  }
+]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const loadCartList = async(no) => {
+    const response = await listCart(no);
+    setCartItems(response.data);
+  }
+
+  //confirm 기능 추가하기
+  const deleteCartItem = async(cartNo) => {
+    const response = await deleteCart(cartNo);
+    console.log(response);
+  }
+
+  const handleTotalPrice = () => {
+    if(productList.length >= 1){
+      let total = 0;
+      productList.forEach(item => item.checked ? total += item.price * item.quantity : null);
+      setTotalPrice(total);
+    }
+  };
+
+  const handleCheckBox = (event) => {
+    let arr = productList;
+    if(event.target.checked){
+      arr.forEach(i => i.id == event.target.id ? i.checked = true : null);
+    } else {
+      arr.forEach(i => i.id == event.target.id ? i.checked = false : null);
+    }
+    setProductList(arr);
+    handleTotalPrice();
+  }
+
+  const handleQuantity = (event) => {
+    // 최소 1
+    if( event.target.value === '0'){
+      event.target.value = 1;
+    }
+
+    //최대 99
+    if(event.target.value.length > 2){
+      event.target.value = +event.target.value.slice(0, 2);
+    }
+    const arr = [...productList];
+    arr.forEach(i => i.id == event.target.id ? i.quantity = +event.target.value : null);
+    setProductList(arr);
+  }
+
+  const plus = (event) => {
+    const arr = [...productList];
+    arr.forEach(i => i.id == event.target.id ? i.quantity >= 99 ? null : i.quantity++ : null);
+    setProductList(arr);
+  }
+
+  const minus = (event) => {
+    if(event.target.value <= 1){
+      console.log('err');
+      return;
+    }
+    const arr = [...productList];
+    arr.forEach(i => i.id == event.target.id ? i.quantity <= 1 ? null : i.quantity-- : null);
+    setProductList(arr);
+  }
+
+  const navigatePayment = () => {
+    const checkedData = productList.filter(i => i.checked);
+    if(checkedData.length == 0){
+      alert("선택된 상품이 없습니다.");
+    } else {
+      navigator("/payment", {
+        state: { checkedData, totalPrice }
+      })
+    }
+  }
+
+
+  useEffect(()=>{
+    //유저 번호
+    setUserNo(localStorage.getItem("no"));
+
+    //유저가 존재하면 장바구니 목록 요청
+    if(userNo > 0){
+      loadCartList(userNo);
+    }
+
+    //cartItems 반복문 돌려서 상품 상세 요청
+    if(cartItems.length >= 1){
+      const arr = [];
+      cartItems.forEach((item) => {
+        //상품 상세 api 데이터에 수량, cartId도 추가해서 push하기
+        arr.push();
+      })
+      setProductList(arr);
+    }
+  },[]);
+
+  //productList 수정되면 totalPrice 다시 계산 item에서 받는값 수정해야함
+  useEffect(()=>{
+    handleTotalPrice();
+  },[productList]);
+
   return (
     <>
       <Container>
         <Title>장바구니</Title>
         <Content>
           <ProductList>
-            <Product>
-              <Checkbox sx={{fontSize: '1.5rem'}}/>
-              <ProductImg as="div" />
-              <ProductName>상품명</ProductName>
-              <Quantity>
-                <BiMinusCircle style={{cursor:'pointer'}} />
-                0
-                <BiPlusCircle style={{cursor:'pointer'}} />
-              </Quantity>
-              <ProductPrice>10000</ProductPrice>
-              <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
-            </Product>
-
-            <Product>
-              <Checkbox sx={{fontSize: '1.5rem'}}/>
-              <ProductImg as="div" />
-              <ProductName>상품명</ProductName>
-              <Quantity>
-                <BiMinusCircle style={{cursor:'pointer'}} />
-                0
-                <BiPlusCircle style={{cursor:'pointer'}} />
-              </Quantity>
-              <ProductPrice>10000</ProductPrice>
-              <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
-            </Product>
-            
-            <Product>
-              <Checkbox sx={{fontSize: '1.5rem'}}/>
-              <ProductImg as="div" />
-              <ProductName>상품명</ProductName>
-              <Quantity>
-                <BiMinusCircle style={{cursor:'pointer'}}/>
-                0
-                <BiPlusCircle style={{cursor:'pointer'}}/>
-              </Quantity>
-              <ProductPrice>10000</ProductPrice>
-              <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
-            </Product>
+            {productList?.map((product)=>{
+                return (
+                  <Product key={product.id}>
+                    <Checkbox sx={{fontSize: '1.5rem'}} id={product.id} onChange={()=>handleCheckBox(event)}/>
+                    <ProductImg as="div" />
+                    <ProductName>{product.name}</ProductName>
+                    <Quantity>
+                      <BiMinusCircle style={{cursor:'pointer'}} id={product.id} onClick={minus} />
+                      <Input type="number" id={product.id} onChange={handleQuantity} value={product.quantity}/>
+                      <BiPlusCircle style={{cursor:'pointer'}} id={product.id} onClick={plus} />
+                    </Quantity>
+                    <ProductPrice>{product.price * product.quantity}</ProductPrice>
+                    <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
+                  </Product>
+                );
+              })
+            }
           </ProductList>
 
           <TotalPrice>
             <TotalPriceHeader>결제 정보</TotalPriceHeader>
             <TotalPriceContent>
               <div>총 결제 금액</div>
-              <div>10000원</div>
+              <div>{totalPrice}원</div>
             </TotalPriceContent>
-            <Button variant="contained" sx={{fontSize: '1.5rem', marginTop: '1.5rem'}}>구매하기</Button>
+            <Button variant="contained" sx={{fontSize: '1.5rem', marginTop: '1.5rem'}} 
+              onClick={navigatePayment}>
+                {/* navigator에 상품정보, 총 가격 실어서 보내기 */}
+                구매하기
+            </Button>
           </TotalPrice>
         </Content>
       </Container>
@@ -116,6 +222,11 @@ const Quantity = styled.div`
   align-items: center;
   font-size: 1.5rem;
   margin: 0 1rem;
+`;
+
+const Input = styled.input`
+  width: 3rem;
+  text-align: center;
 `;
 
 const ProductPrice = styled.div`
