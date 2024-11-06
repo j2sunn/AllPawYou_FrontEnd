@@ -88,7 +88,7 @@ const BoardWrite = ()=>{
             formData.append("imgFile", image);  // 'imgFile' 이름으로 여러 파일 추가 가능
         });
         console.log("프론트 email : "+loginEmail);
-        uploadBoard(formData);
+        uploadBoard(formData,navigator);
     
         
     

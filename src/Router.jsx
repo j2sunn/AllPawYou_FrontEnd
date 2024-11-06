@@ -26,6 +26,7 @@ import BoardDetail from "./routes/BoardDetail";
 import ShoppingDetail from "./routes/ShoppingDetail";
 import AddProduct from "./routes/AddProduct";
 import ProductList from "./routes/ProductList";
+import BoardList from "./routes/BoardList";
 
 const Router = () => {
   return (
@@ -72,13 +73,15 @@ const Router = () => {
        
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
-
+          <Route path="/board/:boardNo" element={<BoardDetail />} />
+          <Route path="/temp" element={<Temp />} />
+          <Route path="/boardList" element={<BoardList />}/>
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
 
-
           <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
+
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,11 +1,35 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
 import { paymentReady } from "../service/PaymentService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const PaymentCheck = () => {
 
-  const [data, setData] = useState({userNo: 1, totalPrice: 100, itemName: 'asd', totalAmount: 100});
+  //장바구니에서 전달한 정보 받기
+  const { state } = useLocation();
+  console.log(state);
+  //유저 정보는 localStorage나 유저 api 요청해서 사용
+
+
+  // let str = itemName;
+  //   productList.forEach(i => i.checked ? str.length > 0 ? str += `, ${i.name}  ${i.quantity}` : str += `${i.name}  ${i.quantity}` : null);
+  //   setItemName(str);
+  //   navigator("/payment", {
+  //     state: { itemName: str, totalPrice }
+  //   })
+  const [orderList, setOrderList] = useState([]);
+  const [data, setData] = useState({userNo: 1, totalPrice: state.totalPrice, itemName: ''});
+
+  useEffect(()=>{
+    if(state.checkedData){
+      setOrderList(state.checkedData);
+
+      let str = '';
+      state.checkedData.forEach(order => str.length > 0 ? str += `, ${order.name}  ${order.quantity}` : str += `${order.name}  ${order.quantity}`);
+      setData({...data, itemName: str})
+    }
+  }, []);
 
   return (
     <>
@@ -43,15 +67,14 @@ const PaymentCheck = () => {
             <DetailTitle>상품</DetailTitle>
             <DetailContainer>
               <Table>
-                <Tr>
-                  <Th>ㅁㅁㅁㅁ</Th>
-                  <Td>수량 : 1개</Td>
-                </Tr>
-
-                <Tr>
-                  <Th>ㅇㅇㅇㅇ</Th>
-                  <Td>수량 : 1개</Td>
-                </Tr>
+                {orderList.map(order => {
+                  return (
+                    <Tr key={order.id}>
+                      <Th>{order.name}</Th>
+                      <Td>수량 : {order.quantity}개</Td>
+                    </Tr>
+                  )
+                })}
               </Table>
             </DetailContainer>
           </div>
@@ -62,7 +85,7 @@ const PaymentCheck = () => {
               <Table>
                 <Tr>
                   <Th>결제금액</Th>
-                  <Td>10000원</Td>
+                  <Td>{state.totalPrice}원</Td>
                 </Tr>
 
                 <Tr>
