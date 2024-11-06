@@ -9,20 +9,27 @@ const PaymentApprove = () => {
 
   const navigator = useNavigate();
   const location = useLocation();
+
+  //url로 넘어오는 값 받기
   const pg_token = location?.search.split("=")[1];
 
-  const [data, setData] = useState({
+  //유저 정보는 localStorage나 유저 api 요청해서 사용
+
+  const [requestData, setRequestData] = useState({
     tid: localStorage.getItem("tid"),
     pg_token
   });
 
-  const call = async() => {
-    console.log(data);
-    paymentApprove(data);
+  const [responseData, setResponseData] = useState({});
+
+  const approve = async() => {
+    const response = await paymentApprove(requestData);
+    console.log(response);
+    setResponseData(response.data);
   }
 
   useEffect(()=>{
-    call();
+    approve();
   },[]);
 
   return (
@@ -56,11 +63,11 @@ const PaymentApprove = () => {
               <Table>
                 <Tr>
                   <Th>상품명</Th>
-                  <Td>ㅁㅁㅁㅁ</Td>
+                  <Td>{responseData?.item_name}</Td>
                 </Tr>
                 <Tr>
                   <Th>결제금액</Th>
-                  <Td>10000원</Td>
+                  <Td>{responseData?.amount?.total}원</Td>
                 </Tr>
                 <Tr>
                   <Th>결제수단</Th>

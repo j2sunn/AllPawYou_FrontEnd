@@ -1,8 +1,49 @@
 import styled from "styled-components";
 import { Button, Checkbox } from "@mui/material";
 import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
+import { useEffect, useState } from "react";
+import { deleteCart, listCart } from "../service/ProductService";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+
+  const navigator = useNavigate();
+
+  const [userNo, setUserNo] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const loadCartList = async(no) => {
+    const response = await listCart(no);
+    setCartItems(response.data);
+  }
+
+  //confirm 기능 추가하기
+  const deleteCartItem = async(cartNo) => {
+    const response = await deleteCart(cartNo);
+    console.log(response);
+  }
+
+  useEffect(()=>{
+    //유저 번호
+    setUserNo(localStorage.getItem("no"));
+
+    //유저가 존재하면 장바구니 목록 요청
+    if(userNo > 0){
+      loadCartList(userNo);
+    }
+
+    //cartItems 반복문 돌려서 상품 상세 요청
+
+    //상품 상세에 수량, cartId도 추가해서 productList에 저장
+  },[]);
+
+  //productList 수정되면 totalPrice 다시 계산
+  // useEffect(()=>{
+
+  // },[productList]);
+
   return (
     <>
       <Container>
@@ -34,19 +75,24 @@ const Cart = () => {
               <ProductPrice>10000</ProductPrice>
               <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
             </Product>
-            
-            <Product>
-              <Checkbox sx={{fontSize: '1.5rem'}}/>
-              <ProductImg as="div" />
-              <ProductName>상품명</ProductName>
-              <Quantity>
-                <BiMinusCircle style={{cursor:'pointer'}}/>
-                0
-                <BiPlusCircle style={{cursor:'pointer'}}/>
-              </Quantity>
-              <ProductPrice>10000</ProductPrice>
-              <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
-            </Product>
+            {
+              productList?.map((product)=>{
+                return (
+                  <Product key={product.id}>
+                    <Checkbox sx={{fontSize: '1.5rem'}}/>
+                    <ProductImg as="div" />
+                    <ProductName>상품명</ProductName>
+                    <Quantity>
+                      <BiMinusCircle style={{cursor:'pointer'}} />
+                      0
+                      <BiPlusCircle style={{cursor:'pointer'}} />
+                    </Quantity>
+                    <ProductPrice>10000</ProductPrice>
+                    <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
+                  </Product>
+                );
+              })
+            }
           </ProductList>
 
           <TotalPrice>
@@ -55,7 +101,11 @@ const Cart = () => {
               <div>총 결제 금액</div>
               <div>10000원</div>
             </TotalPriceContent>
-            <Button variant="contained" sx={{fontSize: '1.5rem', marginTop: '1.5rem'}}>구매하기</Button>
+            <Button variant="contained" sx={{fontSize: '1.5rem', marginTop: '1.5rem'}} 
+              onClick={()=>navigator("/payment")}>
+                {/* navigator에 상품정보, 총 가격 실어서 보내기 */}
+                구매하기
+            </Button>
           </TotalPrice>
         </Content>
       </Container>
