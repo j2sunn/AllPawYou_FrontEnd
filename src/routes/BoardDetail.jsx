@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import {loadData} from "../service/BoardService";
+import {loadData,addCommentService} from "../service/BoardService";
 import styled from "styled-components";
 import { AiOutlineLike } from "react-icons/ai";
 const BoardDetail = ()=>{
@@ -30,17 +30,21 @@ const BoardDetail = ()=>{
     const [boardNo, setBoardNo] = useState(0);
     const bNo = useRef(params?.boardNo);  // 초기값을 params.boardNo로 설정
     const [boardData, setBoardData] = useState(null);
-    const token = localStorage.getItem('accessToken');  // 로컬 스토리지에서 토큰을 가져옵니다.
-    
+    const [commentData,setCommentData] = useState(null); //댓글
+    const loginEmail = localStorage.getItem('email');  // 로컬 스토리지에서 토큰을 가져옵니다.
+    const [error, setError] = useState({});
+    const [comment,setComment] = useState("");
     useEffect(() => {
+        console.log("토큰토큰 : "+loginEmail);
         bNo.current = params?.boardNo;  // params가 변경될 때마다 bNo 업데이트
         setBoardNo(bNo.current);  // boardNo 상태 업데이트
         // console.log("boardNo : " + boardNo);
         console.log("bNo : "+bNo.current); 
         // selectOne(boardNo,setBoardData);
 
-        loadData(bNo.current,setBoardData);
+        loadData(bNo.current,setBoardData,setCommentData);
         console.log("data : "+boardData);    
+        
     }, [params?.boardNo]);  // params.boardNo가 변경될 때마다 실행
     // const imgList = boardData.imgList;
     // for(let i=0;i<imgList.length;i++){
@@ -48,7 +52,19 @@ const BoardDetail = ()=>{
     // }
     // console.log("최종 넘어온 boardData : "+boardData.imgList);
     
-    
+    const handleContentChange = (e)=>{
+        setComment(e.target.value);
+        
+        console.log("comment : "+comment);
+
+    }
+    const addComment = ()=>{
+        if(comment.trim().length==0){
+            setError({comment:"댓글을 입력해 주세요."});
+            return;
+        }
+        addCommentService(boardNo,comment,loginEmail,setCommentData);
+    }
     console.log("=======================");
     // for( let img of (boardData.imgList)){
     //     console.log(img.boardImagePath+img.boardImageRename);
@@ -95,7 +111,9 @@ const BoardDetail = ()=>{
                         </One>
                         
                         <Two>
-                            <p>{boardData.boardContent}</p>
+                            {/* <p>{boardData.boardContent.replace(/<s>/g," ").replace(/<e>/g,"\n")}</p> */}
+                            <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
+
                         </Two>
                         <Three>
                         {boardData.imgList && boardData.imgList.length > 0 ? (
@@ -119,7 +137,7 @@ const BoardDetail = ()=>{
                                     ))}
                                 <div className="like">
                                     <AiOutlineLike style={{ fontSize: "60px", color: "red" }}/>
-                                    <p>10</p>
+                                    <p>{boardData.likeCount}</p>
                                 </div>
                                 
                             </>
@@ -129,51 +147,43 @@ const BoardDetail = ()=>{
                         )}
                         </Three>
                         <Four>
-                        <p className="commentCount">댓글(3)</p>
-                        <div className="commentProfile">
-                                
-                                <div className="commentInfo">
-                                    {/* 댓글 작성자 프로필이미지 */}
-                                    <img src="http://localhost:8081/images/board/happy.png"/>
-                                    <p>{boardData.boardUsername}</p>
-                                    <p>저희 강아지는 손 요즘 너무 잘 하더라구요!!!</p>
-                                </div>
-                                <div>
-                                    <p>{boardData.boardDate.substr(0,4)+"."+
-                                            boardData.boardDate.substr(5,2)+"."+
-                                            boardData.boardDate.substr(8,2)+"  "+
-                                            boardData.boardDate.substr(11,2)+"."+
-                                            boardData.boardDate.substr(14,2)
-                                            }
-                                        </p>
-                                    <div className="commentBtns">
-                                        <button>수정</button>
-                                        <button>삭제</button>
+                        <p className="commentCount">댓글({boardData.commentCount})</p>
+                        <ContentTextarea onChange={(e) => handleContentChange(e)}/>
+                        <Error>{error.comment}</Error>
+                        <button onClick={()=>addComment()}>작성하기</button>
+                        {commentData && commentData.length > 0 ? (
+                            commentData.map((comment,ind)=>
+                                <>
+                                <div className="commentProfile" key={ind}>
+                                    
+                                    <div className="commentInfo">
+                                        {/* 댓글 작성자 프로필이미지 */}
+                                        <img src="http://localhost:8081/images/board/happy.png"/>
+                                        <p>{boardData.boardUsername}</p>
+                                        <p>저희 강아지는 손 요즘 너무 잘 하더라구요!!!</p>
+                                    </div>
+                                    <div>
+                                        <p>{boardData.boardDate.substr(0,4)+"."+
+                                                boardData.boardDate.substr(5,2)+"."+
+                                                boardData.boardDate.substr(8,2)+"  "+
+                                                boardData.boardDate.substr(11,2)+"."+
+                                                boardData.boardDate.substr(14,2)
+                                                }
+                                            </p>
+                                        <div className="commentBtns">
+                                            <button>수정</button>
+                                            <button>삭제</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="commentProfile">
-                                
-                                <div className="commentInfo">
-                                    {/* 댓글 작성자 프로필이미지 */}
-                                    <img src="http://localhost:8081/images/board/happy.png"/>
-                                    <p>{boardData.boardUsername}</p>
-                                    <p>저희 강아지는 손 요즘 너무 잘 하더라구요!!!</p>
-                                </div>
-                                <div>
-                                    <p>{boardData.boardDate.substr(0,4)+"."+
-                                            boardData.boardDate.substr(5,2)+"."+
-                                            boardData.boardDate.substr(8,2)+"  "+
-                                            boardData.boardDate.substr(11,2)+"."+
-                                            boardData.boardDate.substr(14,2)
-                                            }
-                                        </p>
-                                    <div className="commentBtns">
-                                        <button>수정</button>
-                                        <button>삭제</button>
-                                    </div>
-                                </div>
-                            </div>
+                            </>
+                            )
+                        ) : (
+                            <>
+                                댓글이 없습니다.
+                            </>
+                        )}
+                            
                         </Four>
                     </Container>
                     
@@ -287,5 +297,24 @@ const Four = styled.div`
         border-bottom: 1px solid gray;
         
     }
+`;
+//댓글
+const ContentTextarea = styled.textarea`
+    width: 100%;
+    col : 2;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 100px;
+    resize: vertical; /* 사용자가 세로 크기 조정 가능 */
+
+    &:focus {
+        outline: none;
+        border-color: #6c63ff;
+    }
+`;
+const Error = styled.div`
+    color: red;
 `;
 

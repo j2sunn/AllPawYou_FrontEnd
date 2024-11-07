@@ -2,8 +2,14 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosSearch } from "react-icons/io";
 import { AiOutlineLike } from "react-icons/ai";
+import { useState } from "react";
+import {loadList} from "../service/BoardService";
 const BoardList = ()=>{
     const navigator = useNavigate();
+    const [boardList, setBoardList] = useState([]);
+    useState(()=>{
+        loadList(setBoardList);
+    },[]);
     return(
         <>
             <Container>
@@ -16,23 +22,29 @@ const BoardList = ()=>{
                     <button>인기 순</button>
                 </Two>
                 <Three>
-                    
-                        <div className="first">
-                            <Div> 강아지</Div>
-                            <p className="boardTitle">피부에 검은 좁쌀같은 각질</p>
-                            <p className="boardContent">피부에 이런 좁쌀같은 각질이 발견되는데 관련 질병이 무엇이 있을 수 있나요ㅜㅜ</p>
-                            <div className="boardInfo">
-                                <img src="http://localhost:8081/images/board/happy.png"/>
-                                <p className="boardNick">닉네임당근</p>
-                                <p className="boardComment">댓글 : 2</p>
-                                <p className="boardLike"><AiOutlineLike />200</p>
-                                
+                    {boardList?.map((board,index)=>(
+                        <Con key={index}>
+                            {/*  Con을 반복하기 */}
+                            <div className="first">
+                                <Div> 강아지</Div>
+                                <p className="boardTitle">피부에 검은 좁쌀같은 각질</p>
+                                <p className="boardContent">피부에 이런 좁쌀같은 각질이 발견되는데 관련 질병이 무엇이 있을 수 있나요ㅜㅜ</p>
+                                <div className="boardInfo">
+                                    <img src="http://localhost:8081/images/board/happy.png"/>
+                                    <p className="boardNick">닉네임당근</p>
+                                    <p className="boardComment">댓글 : 2</p>
+                                    <p className="boardLike"><AiOutlineLike />200</p>
+                                    
+                                </div>
                             </div>
-                        </div>
-                        <div className="second">
-                            <img src="http://localhost:8081/images/board/happy.png"/>
-                        </div>
-                    
+                            <div className="second">
+                                <img src="http://localhost:8081/images/board/happy.png"/>
+                            </div>
+                        
+                        
+                        
+                    </Con>
+                    ))}
                     
                     
                 </Three>
@@ -75,6 +87,9 @@ const Two = styled.div`
 `;
 const Three = styled.div`
     width : 50%;
+`;
+const Con = styled.div`
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
