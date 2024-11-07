@@ -10,9 +10,14 @@ export const CreateReview = async ({ userNo, productNo, reviewStar, reviewConten
   return response.data;
 };
 
-export const UpdateReview = async ({ reviewNo, userNo, productNo, reviewStar, reviewContent, reviewVisible }) => {
-  const data = { reviewNo, userNo, productNo, reviewStar, reviewContent, reviewVisible };
-  const response = await AuthApi.put(`/api/review`, data);
+export const getReviewByreviewNo = async (reviewNo) => {
+  const response = await AuthApi.get(`/api/review/${reviewNo}`);
+  return response.data;
+};
+
+export const UpdateReview = async ({ reviewNo, reviewStar, reviewContent, reviewVisible }) => {
+  const data = { reviewStar, reviewContent, reviewVisible };
+  const response = await AuthApi.put(`/api/review/${reviewNo}`, data);
   return response.data;
 };
 

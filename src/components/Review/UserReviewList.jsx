@@ -3,7 +3,7 @@ import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { AllReview, DeleteReview } from "../../service/Review";
+import { AllReview, DeleteReview, getReviewByreviewNo } from "../../service/Review";
 import { useNavigate } from "react-router-dom";
 
 const ReviewList = () => {
@@ -40,7 +40,7 @@ const ReviewList = () => {
   }
 
   const handleUpdate = (reviewNo) => {
-    navigate(`/review/updateReview/${reviewNo}`); // 수정 페이지로 이동
+    navigate(`/review/updateReview/${reviewNo}`);
   };
 
   const goMyBoard = () => {

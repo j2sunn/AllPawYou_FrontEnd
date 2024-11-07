@@ -26,7 +26,7 @@ import BoardDetail from "./routes/BoardDetail";
 import AdminReviewList from "./components/Review/AdminReviewList";
 import UserReviewList from "./components/Review/UserReviewList";
 import UserReviewCreate from "./components/Review/UserReviewCreate";
-import { UpdateReview } from "./service/Review";
+import UserReviewUpdate from "./components/Review/UserReviewUpdate";
 
 const Router = () => {
   return (
@@ -80,7 +80,7 @@ const Router = () => {
           {/* 사용자 후기 작성 */}
           <Route path="/review/createReview" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
-          <Route path="/review/updateReview/:reviewNo" element={<UpdateReview />} />
+          <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
 
           <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />

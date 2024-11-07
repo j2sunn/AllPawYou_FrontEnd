@@ -3,13 +3,31 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import { Button, TextField } from "@mui/material";
-import { UpdateReview } from "../../service/Review";
 import { useNavigate, useParams } from "react-router-dom";
+import { getReviewByreviewNo, UpdateReview } from "../../service/Review";
 
-const UserReviewCreate = () => {
-  const [starScore, setStarScore] = useState(0);
-  const [reviewContent, setReviewContent] = useState(""); // 후기를 저장할 상태 추가
-  const { reviewNo } = useParams(); // URL에서 reviewId 가져오기
+const UserReviewUpdate = () => {
+  const { reviewNo } = useParams();
+  console.log(reviewNo);
+
+  useEffect(() => {
+    getReviewByreviewNo(reviewNo) // reviewNo를 API 호출에 사용
+      .then((response) => {
+        console.log(response);
+        setProductNo(response.productNo);
+        setStarScore(response.reviewStar); // 받은 데이터로 상태 업데이트
+        setReviewContent(response.reviewContent);
+      })
+      .catch((error) => {
+        console.error("리뷰 데이터를 가져오는 데 실패했습니다:", error);
+        alert("리뷰 데이터를 가져오는 데 실패했습니다.");
+      });
+  }, [reviewNo]); // reviewNo가 변경될 때마다 호출
+
+  const [productNo, setProductNo] = useState();
+  const [starScore, setStarScore] = useState();
+  const [reviewContent, setReviewContent] = useState();
+
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   const ratingStarHandler = () => {
@@ -28,8 +46,9 @@ const UserReviewCreate = () => {
     }
 
     const reviewData = {
+      reviewNo: reviewNo,
       userNo: localStorage.getItem("no"), // localStorage에서 사용자 번호 가져오기
-      productNo: "1", // 같은 방식으로 상품 번호 가져오기, 나중에 추가하기
+      productNo: productNo,
       reviewStar: starScore,
       reviewContent: reviewContent,
       reviewVisible: "Y",
@@ -38,11 +57,11 @@ const UserReviewCreate = () => {
     UpdateReview(reviewData)
       .then((response) => {
         alert("리뷰가 수정되었습니다.");
-        navigate("/review/myReview");
+        navigate("/review/myReview"); // 원하는 경로로 이동 (예: 내 후기 관리 페이지)
       })
       .catch((error) => {
-        console.error("리뷰 등록 실패:", error);
-        alert("리뷰 등록에 실패했습니다.");
+        console.error("리뷰 수정 실패:", error);
+        alert("리뷰 수정에 실패했습니다.");
       });
   };
 
@@ -102,7 +121,7 @@ const UserReviewCreate = () => {
   );
 };
 
-export default UserReviewCreate;
+export default UserReviewUpdate;
 
 const Container = styled.div`
   display: flex;
