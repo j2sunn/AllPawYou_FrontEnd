@@ -32,6 +32,7 @@ const Cart = () => {
     const arr = productList;
     const response = await getProductByProductId(productId);
     arr.push({...response, quantity: 1, cartId});
+    arr.sort((a,b)=>a.cartId-b.cartId);
     setProductList([...arr]);
   }
 
