@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
-import { paymentReady } from "../service/PaymentService";
+import { paymentReady } from "../../service/PaymentService";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -11,13 +11,6 @@ const PaymentCheck = () => {
   console.log(state);
   //유저 정보는 localStorage나 유저 api 요청해서 사용
 
-
-  // let str = itemName;
-  //   productList.forEach(i => i.checked ? str.length > 0 ? str += `, ${i.name}  ${i.quantity}` : str += `${i.name}  ${i.quantity}` : null);
-  //   setItemName(str);
-  //   navigator("/payment", {
-  //     state: { itemName: str, totalPrice }
-  //   })
   const [orderList, setOrderList] = useState([]);
   const [data, setData] = useState({userNo: 1, totalPrice: state.totalPrice, itemName: ''});
 

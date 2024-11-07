@@ -3,7 +3,7 @@ import { Button, Table } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { paymentApprove } from "../service/PaymentService";
+import { paymentApprove } from "../../service/PaymentService";
 
 const PaymentApprove = () => {
 
