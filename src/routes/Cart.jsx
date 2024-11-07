@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Button, Checkbox, TextField } from "@mui/material";
 import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
 import { useEffect, useState } from "react";
-import { deleteCart, listCart } from "../service/ProductService";
+import { deleteCart, getProductByProductId, listCart } from "../service/ProductService";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
@@ -11,32 +11,28 @@ const Cart = () => {
 
   const [userNo, setUserNo] = useState(0);
   const [cartItems, setCartItems] = useState([]);
-  const [productList, setProductList] = useState([{
-    id: 1,
-    name: '상품 1',
-    quantity: 1,
-    price: 10000,
-    checked: false
-  },
-  {
-    id: 2,
-    name: '상품 2',
-    quantity: 1,
-    price: 20000,
-    checked: false
-  }
-]);
+  const [productList, setProductList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  //장바구니 목록
   const loadCartList = async(no) => {
     const response = await listCart(no);
-    setCartItems(response.data);
+    setCartItems(response);
   }
+
 
   //confirm 기능 추가하기
   const deleteCartItem = async(cartNo) => {
     const response = await deleteCart(cartNo);
     console.log(response);
+  }
+
+  //상품 상세
+  const loadProductList = async(productId, cartId) => {
+    const arr = productList;
+    const response = await getProductByProductId(productId);
+    arr.push({...response, quantity: 1, cartId});
+    setProductList([...arr]);
   }
 
   const handleTotalPrice = () => {
@@ -58,6 +54,7 @@ const Cart = () => {
     handleTotalPrice();
   }
 
+  //수량 직접 입력
   const handleQuantity = (event) => {
     // 최소 1
     if( event.target.value === '0'){
@@ -73,12 +70,14 @@ const Cart = () => {
     setProductList(arr);
   }
 
+  // + 버튼 동작
   const plus = (event) => {
     const arr = [...productList];
     arr.forEach(i => i.id == event.target.id ? i.quantity >= 99 ? null : i.quantity++ : null);
     setProductList(arr);
   }
 
+  // -버튼 동작
   const minus = (event) => {
     if(event.target.value <= 1){
       console.log('err');
@@ -89,6 +88,7 @@ const Cart = () => {
     setProductList(arr);
   }
 
+  //결제 준비 페이지로 이동
   const navigatePayment = () => {
     const checkedData = productList.filter(i => i.checked);
     if(checkedData.length == 0){
@@ -106,22 +106,20 @@ const Cart = () => {
     setUserNo(localStorage.getItem("no"));
 
     //유저가 존재하면 장바구니 목록 요청
-    if(userNo > 0){
+    if(userNo > 0 && cartItems.length == 0){
       loadCartList(userNo);
     }
 
     //cartItems 반복문 돌려서 상품 상세 요청
     if(cartItems.length >= 1){
-      const arr = [];
       cartItems.forEach((item) => {
         //상품 상세 api 데이터에 수량, cartId도 추가해서 push하기
-        arr.push();
+        loadProductList(item.productId, item.cartId);
       })
-      setProductList(arr);
     }
-  },[]);
+  },[userNo, cartItems]);
 
-  //productList 수정되면 totalPrice 다시 계산 item에서 받는값 수정해야함
+  //productList 수정되면 totalPrice 다시 계산
   useEffect(()=>{
     handleTotalPrice();
   },[productList]);
@@ -129,7 +127,7 @@ const Cart = () => {
   return (
     <>
       <Container>
-        <Title>장바구니</Title>
+        <Title onClick={()=>console.log(productList)}>장바구니</Title>
         <Content>
           <ProductList>
             {productList?.map((product)=>{

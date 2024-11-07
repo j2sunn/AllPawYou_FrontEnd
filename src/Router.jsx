@@ -15,8 +15,8 @@ import LoginError from "./routes/LoginError";
 import Cart from "./routes/Cart";
 import OrderList from "./routes/OrderList";
 import OrderDetail from "./routes/OrderDetail";
-import PaymentApprove from "./routes/PaymentApprove";
-import PaymentCheck from "./routes/PaymentCheck";
+import PaymentApprove from "./routes/Payment/PaymentApprove";
+import PaymentCheck from "./routes/Payment/PaymentCheck";
 import BoardWrite from "./routes/BoardWrite";
 import ShoppingMain from "./routes/ShoppingMain";
 import Layout from "./components/common/Layout";
@@ -91,9 +91,6 @@ const Router = () => {
           <Route path="/review/createReview" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
-
-          <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
-          <Route path="/temp" element={<Temp />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
