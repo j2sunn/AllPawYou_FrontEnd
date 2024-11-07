@@ -4,7 +4,6 @@ import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 
 const MypageSideBar = () => {
   const navigate = useNavigate();
-
   const goMypage = () => {
     navigate(`/mypage`);
   };
