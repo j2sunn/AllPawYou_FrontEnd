@@ -55,6 +55,9 @@ export default function Login() {
         localStorage.setItem("username", response.username);
         localStorage.setItem("nickname", response.nickname);
         localStorage.setItem("intro", response.intro);
+        localStorage.setItem("phone", response.phone);
+        localStorage.setItem("address", response.address);
+        localStorage.setItem("profile", response.profile);
         localStorage.setItem("tokenType", response.tokenType);
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);

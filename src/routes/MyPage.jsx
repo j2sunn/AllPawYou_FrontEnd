@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import poodle from "../assets/poodle.png";
 import { Table, TableCell, TableRow } from "@mui/material";
 import DaumPostcode from 'react-daum-postcode';
-import { AuthApi } from "../service/AuthApi";
 
 const MyPage = () => {
 
@@ -22,10 +21,17 @@ const MyPage = () => {
     const username = localStorage.getItem("username");
     const email = localStorage.getItem("email");
     const nickname = localStorage.getItem("nickname");
+    const intro = localStorage.getItem("intro");
+    const phone = localStorage.getItem("phone");
+    const address = localStorage.getItem("address");
+    const profileImage = localStorage.getItem("profile");
 
     // 가져온 데이터를 상태에 설정
-    if (username && email && nickname) {
-      const userData = { username, email, nickname };
+    if (username && email && nickname && intro && phone && address && profileImage) {
+      const userData = {
+        username, email, nickname, intro,
+        phone, address, profileImage
+      };
       setUserInfo(userData);
       setProfile(userData)
     } else {
@@ -34,17 +40,19 @@ const MyPage = () => {
   }, []);
 
 
-  // const {state} = useLocation();
-  // const stat = state?.stat;
-
   const profileHandler = (event, key) => {
-    const newObj = {
-      ...profile,
-      [key]: event.target.value
-    };
+
+    const { value } = event.target;
+    setProfile(prev => ({ ...prev, [key]: value }));
+
+    // const newObj = {
+    //   ...profile,
+    //   [key]: event.target.value
+    // };
     // console.log(newObj);
     // setProfile(newObj);
-  }
+
+  };
 
   // useEffect(()=>{
   //   setUpdate(stat);
@@ -87,12 +95,6 @@ const MyPage = () => {
     zIndex: 100,
   };
 
-
-
-
-
-
-
   return (
     <>
       {update ? ( //수정인 경우
@@ -119,7 +121,7 @@ const MyPage = () => {
           </SideBar>
 
           <UpdateContainer>
-            {userInfo ? (
+            {profile ? (
               <>
                 <Content>
                   <Profile>
@@ -161,8 +163,8 @@ const MyPage = () => {
                       <TableRow>
                         <TableCell>이름 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }}
-                            
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                            value={profile.username}
                             onChange={(event) => profileHandler(event, 'username')}
                           />
                         </TableCell>
@@ -170,16 +172,22 @@ const MyPage = () => {
                       <TableRow>
                         <TableCell>전화번호 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} 
-                          
-                          onChange={() => profileHandler(event, 'phone')} />
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                            value={profile.phone}
+                            onChange={() => profileHandler(event, 'phone')} />
                         </TableCell>
 
                       </TableRow>
                       <TableRow>
                         <TableCell>이메일 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'email')} />
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                            value={profile.email}
+                            slotProps={{
+                              input: {
+                                readOnly: true,
+                              },
+                            }} />
                         </TableCell>
 
                       </TableRow>
@@ -188,13 +196,13 @@ const MyPage = () => {
                         <TableCell>
                           <TextField variant="outlined" size="small" multiline maxRows={6}
                             sx={{
-                              // margin: '1rem 0 3rem 24rem',
                               marginLeft: '1rem',
                               // alignSelf: 'start', 
-                              // width: '60rem'
+                              width: '25rem'
                             }}
+                            value={profile.address}
                             onChange={() => profileHandler(event, 'address')} />
-                          <Button onClick={() => isPostcodePopupVisible(true)}>검색</Button>
+                          <Button sx={{ marginLeft: '10px' }} onClick={() => isPostcodePopupVisible(true)}>검색</Button>
                           {isPostcodePopupVisible && (
                             <DaumPostcode
                               style={postCodeStyle}
@@ -208,7 +216,9 @@ const MyPage = () => {
                       <TableRow>
                         <TableCell>닉네임 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem' }} onChange={() => profileHandler(event, 'nickname')} />
+                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                            value={profile.nickname}
+                            onChange={() => profileHandler(event, 'nickname')} />
                         </TableCell>
 
                       </TableRow>
@@ -219,10 +229,13 @@ const MyPage = () => {
                 {/* <TextField variant="outlined" size="small" multiline maxRows={6} 
               sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}
               onChange={()=>profileHandler(event, 'address')}/> */}
-                <Title>자기소개</Title>
-                <TextField variant="outlined" size="small" multiline maxRows={6}
-                  sx={{ alignSelf: 'start', width: '60rem' }}
-                  onChange={() => profileHandler(event, 'info')} />
+                <div>
+                  <Title>자기소개</Title>
+                  <TextField variant="outlined" size="small" multiline maxRows={6}
+                    sx={{ alignSelf: 'start', width: '60rem', marginBottom: '2rem' }}
+                    value={profile.intro}
+                    onChange={() => profileHandler(event, 'intro')} />
+                </div>
                 <Button variant="contained" color="primary" onClick={() => setUpdate(prev => !prev)}>저장</Button>
               </>
             ) : (
@@ -266,24 +279,23 @@ const MyPage = () => {
                   </Profile>
                   <Profile>
                     <div>이름 : {userInfo.username} </div>
-                    <div>전화번호 : 010-1234-5678</div>
+                    <div>전화번호 : {userInfo.phone}</div>
                     <div>이메일 : {userInfo.email} </div>
-                    <div>주소 : 서울특별시 마곡동로</div>
+                    <div>주소 :  {userInfo.address}</div>
                   </Profile>
                 </Content>
+
+
+                {/* <Title>주소</Title>
+            <Content></Content> */}
+                <Title>자기소개</Title>
+                <Content>{userInfo.intro}
+                </Content>
+                {/* <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>수정</Button> */}
               </>
             ) : (
               <div>해당 회원정보가 없습니다.</div>
             )}
-
-            {/* <Title>주소</Title>
-            <Content></Content> */}
-            <Title>자기소개</Title>
-            <Content>푸들과 포메라니안 키우고 있습니다. <br />
-              푸들 2017.01.04일생<br />
-              포메라니안 2023.12.23일생<br />
-            </Content>
-            {/* <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>수정</Button> */}
           </Container>
         </Box>
       )}
@@ -297,7 +309,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 5rem 0 10rem;
+  // margin: 5rem 0 10rem;
+  
 `;
 
 const Content = styled.div`
@@ -318,7 +331,7 @@ const Profile = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  margin-right: 5rem;
+  margin-left: 4rem;
 `;
 
 const ProfileImg = styled.img`
@@ -342,8 +355,13 @@ const Title = styled.div`
   align-self: start;
   padding-left: 25rem;
   margin-bottom: 1rem;
-  
+
 `;
+
+// const Introduce = styled.div`
+
+// `;
+
 //--------사이드바
 const SideBar = styled.div`
   width: 25%;
