@@ -5,8 +5,11 @@ import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import { Button, TextField } from "@mui/material";
 import { CreateReview } from "../../service/Review";
 import { useNavigate } from "react-router-dom";
+import { FaPhotoFilm } from "react-icons/fa6";
+import MypageSideBar from "../common/MypageSideBar";
 
 const UserReviewCreate = () => {
+  const [images, setImages] = useState([]);
   const [starScore, setStarScore] = useState(0);
   const [reviewContent, setReviewContent] = useState(""); // 후기를 저장할 상태 추가
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -21,26 +24,29 @@ const UserReviewCreate = () => {
 
   const handleSubmit = () => {
     if (starScore === 0 || reviewContent.trim() === "") {
-      // 별점 또는 후기가 비어있을 경우 경고
       alert("별점과 후기를 모두 입력해주세요.");
       return;
     }
 
-    const reviewData = {
-      userNo: localStorage.getItem("no"), // localStorage에서 사용자 번호 가져오기
-      productNo: "1", // 같은 방식으로 상품 번호 가져오기 나중에 추가하기
-      reviewStar: starScore,
-      reviewContent: reviewContent,
-      reviewVisible: "Y",
-    };
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append("userNo", localStorage.getItem("no"));
+    formData.append("productNo", "1");
+    formData.append("reviewStar", starScore);
+    formData.append("reviewContent", reviewContent);
+    formData.append("reviewVisible", "Y");
 
-    CreateReview(reviewData)
+    images.forEach((image) => {
+      formData.append("reviewImg", image);
+    });
+
+    CreateReview(formData)
       .then((response) => {
-        // 성공적으로 리뷰가 등록된 후의 처리
         alert("리뷰가 등록되었습니다.");
-        navigate("/review/myReview"); // 원하는 경로로 이동 (예: 내 후기 관리 페이지)
+        navigate("/review/myReview");
       })
       .catch((error) => {
+        console.log("에러 :: " + formData);
         console.error("리뷰 등록 실패:", error);
         alert("리뷰 등록에 실패했습니다.");
       });
@@ -50,21 +56,28 @@ const UserReviewCreate = () => {
     navigate(-1); // 이전 페이지로 돌아가기
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    if (files.length + images.length > 8) {
+      alert("최대 8장까지 업로드할 수 있습니다.");
+      return;
+    }
+
+    // const newImages = files.map((file) => URL.createObjectURL(file));
+    setImages((prevImages) => [...prevImages, ...files]);
+    // console.log("여기여기"+e.target.files);
+  };
+
+  const handleRemoveImage = (index) => {
+    setImages(images.filter((_, i) => i !== index));
+    console.log("이미지 삭제 :: " + images);
+  };
+
   return (
     <>
       <Container>
-        <SideBar>
-          <SideBarTitle>마이 페이지</SideBarTitle>
-          <SimpleTreeView>
-            <TreeItem itemId="profile" label="프로필" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-            <TreeItem itemId="updateProfile" label="프로필 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-            <TreeItem itemId="order" label="구매 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-            <TreeItem itemId="myData" label="내 활동" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-              <TreeItem itemId="myBoard" label="내 글 관리" />
-              <TreeItem itemId="myReview" label="내 후기 관리" />
-            </TreeItem>
-          </SimpleTreeView>
-        </SideBar>
+        <MypageSideBar />
 
         <Content>
           <Title>후기 작성</Title>
@@ -73,6 +86,22 @@ const UserReviewCreate = () => {
               {ratingStarHandler()}
               <span>(필수)*</span>
             </StarSection>
+
+            <ImgUploadContainer>
+              <ImgContainer>
+                {images.map((image, index) => (
+                  <Thumbnail key={index}>
+                    <Image src={URL.createObjectURL(image)} alt={`Uploaded ${index + 1}`} />
+                    <br />
+                    <RemoveButton onClick={() => handleRemoveImage(index)}>X</RemoveButton>
+                  </Thumbnail>
+                ))}
+              </ImgContainer>
+              <Button component="label" role={undefined} variant="outlined" tabIndex={-1} startIcon={<FaPhotoFilm />}>
+                사진 첨부
+                <VisuallyHiddenInput type="file" accept="image/*" multiple onChange={(e) => handleImageChange(e)} />
+              </Button>
+            </ImgUploadContainer>
 
             <TextField
               label="후기"
@@ -85,7 +114,6 @@ const UserReviewCreate = () => {
               value={reviewContent} // 상태와 연결
               onChange={(e) => setReviewContent(e.target.value)} // 상태 업데이트
             />
-
             <ButtonContainer>
               <Button variant="outlined" onClick={handleCancel} sx={{ width: "100%", height: "56px", fontSize: "1.5rem", marginRight: "0.5rem" }}>
                 취소하기
@@ -109,19 +137,9 @@ const Container = styled.div`
 `;
 
 const ReviewContainer = styled.div`
-  padding: 10x 20px;
   margin: 2 auto;
   position: relative;
   width: 90%;
-`;
-
-const SideBar = styled.div`
-  width: 25%;
-  height: 70vh;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const SideBarTitle = styled.div`
@@ -150,5 +168,67 @@ const StarSection = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: 1rem;
 `;
+
+const ImgUploadContainer = styled.div`
+  width: 50%;
+  margin: 1rem 0 1rem;
+`;
+
+const ImgContainer = styled.div`
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  background-color: #fff3c4; /* 배경 색상 */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow-x: auto;
+  white-space: nowrap; /* 썸네일들이 한 줄로 나오도록 설정 */
+`;
+
+const Thumbnail = styled.div`
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #eee;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const RemoveButton = styled.button`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+  margin: "1rem",
+});
