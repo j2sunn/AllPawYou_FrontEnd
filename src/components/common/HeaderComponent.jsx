@@ -24,8 +24,12 @@ const HeaderComponent = () => {
           <Nav>
             <NavItem onClick={() => navigator("/")}>홈</NavItem>
             <NavItem>사용가이드</NavItem>
-            <NavItem onClick={() => navigator("/community")}>커뮤니티</NavItem>
+
+            <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
+
+        
             <NavItem onClick={() => navigator("/shoppingMain")}>쇼핑</NavItem>
+
             {ACCESS_TOKEN ? (
               <>
                 <NavItem onClick={()=>navigator("/cart")}>장바구니</NavItem>

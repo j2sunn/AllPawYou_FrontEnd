@@ -27,6 +27,10 @@ import AdminReviewList from "./components/Review/AdminReviewList";
 import UserReviewList from "./components/Review/UserReviewList";
 import UserReviewCreate from "./components/Review/UserReviewCreate";
 import UserReviewUpdate from "./components/Review/UserReviewUpdate";
+import ShoppingDetail from "./routes/ShoppingDetail";
+import AddProduct from "./routes/AddProduct";
+import ProductList from "./routes/ProductList";
+import BoardList from "./routes/BoardList";
 
 const Router = () => {
   return (
@@ -66,10 +70,16 @@ const Router = () => {
           <Route path="/payment/approve" element={<PaymentApprove />} />
 
           {/* 쇼핑몰 */}
-          <Route path="/shoppingMain" element={<ShoppingMain />} />
+          <Route path="/shopping" element={<ShoppingMain />} />
+          <Route path="/shoppingDetail/:id" element={<ShoppingDetail />} />
+          <Route path="/admin/addproduct" element={<AddProduct />} />
+          <Route path="/admin/productlist" element={<ProductList />} />
+
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
-
+          <Route path="/board/:boardNo" element={<BoardDetail />} />
+          <Route path="/temp" element={<Temp />} />
+          <Route path="/boardList" element={<BoardList />} />
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
 
