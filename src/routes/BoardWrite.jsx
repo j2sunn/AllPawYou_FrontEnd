@@ -27,9 +27,10 @@ const BoardWrite = ()=>{
     const [loginEmail, setLoginEmail] = useState("");
     const [selectedCategory, setSelectedCategory] = useState(1);
     const [boardTitle, setBoardTitle] = useState("");
-    const [boardContent, setBoardContent] = useState("");
+    const [boardContent, setBoardContent] = useState(""); //이거는 한 자라도 작성했는지 체크용
     const [images, setImages] = useState([]);
     const [error, setError] = useState({});
+    const [result,setResult] = useState("");
     // console.log("images : "+images);
     console.log("제목길이"+boardTitle.trim().length);
     const handleImageChange = (e) => {
@@ -79,7 +80,7 @@ const BoardWrite = ()=>{
         formData.append("email", loginEmail);
         formData.append("category", selectedCategory);
         formData.append("boardTitle", boardTitle);
-        formData.append("boardContent", boardContent);
+        formData.append("boardContent", result);
         console.log("프론트 email : "+loginEmail);
         // 파일 추가
         images.forEach((image //,i
@@ -109,6 +110,14 @@ const BoardWrite = ()=>{
         }
         
         return true;
+    }
+    const handleContentChange = (e)=>{
+        console.log("댓글내용 : "+e.target.value);
+        let text=e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); //script가 있을 경우 제거
+        setBoardContent(text);
+        setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
+        
+        console.log("result : "+result);
     }
     return ( //강아지(1) 고양이(2) 기타(3)
         <>
@@ -159,8 +168,8 @@ const BoardWrite = ()=>{
                     <Error>{error.title}</Error>
 
                     <h5>내용<span>*</span></h5>
-                    <ContentTextarea onChange={(e) => setBoardContent(e.target.value)}/>
-                    
+                    {/* <ContentTextarea onChange={(e) => setBoardContent(e.target.value)}/> */}
+                    <ContentTextarea onChange={(e) => handleContentChange(e)}/>
                     <Error>{error.content}</Error>
                     
                 </Two>

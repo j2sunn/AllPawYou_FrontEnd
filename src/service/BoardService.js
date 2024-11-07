@@ -3,6 +3,7 @@ import axios from "axios";
 // import { AuthApi } from "./Auth";
 
 const REST_API_BASE_URL =  'http://localhost:8081/board';
+//글 작성
 export const uploadBoard = (formData,navigator)=>{
 
         axios.post(REST_API_BASE_URL+"/insert",formData,{
@@ -48,10 +49,38 @@ export const uploadBoard = (formData,navigator)=>{
 //             console.error('게시글 상세 정보를 가져오는 데 실패했습니다.', error);
 //         });
 // }
-export const loadData = async (boardNo,setBoardData) => {
+//글 상세조회
+export const loadData = async (boardNo,setBoardData,setCommentData) => {
     console.log("heyhey");
     const response = await axios.get('http://localhost:8081/board/' + boardNo);
     console.log("클라이언트 보드 : "+response.data);
     setBoardData(response.data);
+    setCommentData(response.data.commentList);
 };
 
+//글 목록 전체조회
+export const loadList = async (setBoardList)=>{
+    const response = await axios.get('http://localhost:8081/board');
+    setBoardList(response.data);
+}
+
+//댓글 작성
+export const addCommentService = (boardNo,comment,loginEmail,setCommentData)=>{
+    axios.post('http://localhost:8081/board/comment/insert', {
+        boardNo: boardNo,
+        commentContent: comment,
+        email: loginEmail
+    })
+    .then(response => {
+        console.log("삽입된 댓글 수 : "+response.data);
+        if(response.data >0){
+            updateCommentList(boardNo,setCommentData);
+        }
+        
+    })
+}
+//전체 댓글 다시 업데이트
+const updateCommentList = async (boardNo,setCommentData)=>{
+    const resp = await axios.get('http://localhost:8081/board/comment' + boardNo);
+    setCommentData(resp.data);
+}
