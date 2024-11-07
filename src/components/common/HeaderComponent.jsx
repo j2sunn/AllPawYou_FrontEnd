@@ -16,51 +16,53 @@ const HeaderComponent = () => {
   return (
     <>
       <Container>
-        <Header>
-          <Logo onClick={() => navigator("/")} style={{justifyContent: 'space-evenly'}}>
-            <LogoImg src={logo} alt="로고" />
-            <LogoText>All Paw You</LogoText>
-          </Logo>
-          <Nav>
-            <NavItem onClick={() => navigator("/")}>홈</NavItem>
-            <NavItem>사용가이드</NavItem>
+        <HeaderContainer>
+          <Header>
+            <Logo onClick={() => navigator("/")} style={{justifyContent: 'space-evenly'}}>
+              <LogoImg src={logo} alt="로고" />
+              <LogoText>All Paw You</LogoText>
+            </Logo>
+            <Nav>
+              <NavItem onClick={() => navigator("/")}>홈</NavItem>
+              <NavItem>사용가이드</NavItem>
 
-            <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
+              <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
 
-        
-            <NavItem onClick={() => navigator("/shoppingMain")}>쇼핑</NavItem>
+          
+              <NavItem onClick={() => navigator("/shoppingMain")}>쇼핑</NavItem>
 
-            {ACCESS_TOKEN ? (
-              <>
-                <NavItem onClick={()=>navigator("/cart")}>장바구니</NavItem>
-                <NavItem>
-                  <Accordion
-                    sx={{
-                      height: "5rem",
-                      backgroundColor: "rgba(0,0,0,0)",
-                      boxShadow: "none",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <AccordionSummary sx={{ marginBottom: "-1rem" }}>
-                      {/* 이미지 넣기 */}
-                      {/* <Img /> */}
-                      <IoPersonCircleSharp size={60} style={{color:'gray'}} />
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
-                      <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
-                      <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>
-                    </AccordionDetails>
-                  </Accordion>
-                </NavItem>
-              </>
-            ) : (
-              <NavItem onClick={() => navigator("/login")}>로그인</NavItem>
-            )}
-          </Nav>
-        </Header>
+              {ACCESS_TOKEN ? (
+                <>
+                  <NavItem onClick={()=>navigator("/cart")}>장바구니</NavItem>
+                  <NavItem>
+                    <Accordion
+                      sx={{
+                        height: "5rem",
+                        backgroundColor: "rgba(0,0,0,0)",
+                        boxShadow: "none",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <AccordionSummary sx={{ marginBottom: "-1rem" }}>
+                        {/* 이미지 넣기 */}
+                        {/* <Img /> */}
+                        <IoPersonCircleSharp size={60} style={{color:'gray'}} />
+                      </AccordionSummary>
+                      <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
+                        <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
+                        <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>
+                      </AccordionDetails>
+                    </Accordion>
+                  </NavItem>
+                </>
+              ) : (
+                <NavItem onClick={() => navigator("/login")}>로그인</NavItem>
+              )}
+            </Nav>
+          </Header>
+        </HeaderContainer>
       </Container>
     </>
   );
@@ -69,9 +71,18 @@ const HeaderComponent = () => {
 export default HeaderComponent;
 
 const Container = styled.div`
+  width: 100%;
   height: 10rem;
+`;
+
+const HeaderContainer = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 7rem;
   display: flex;
-  align-items: center;
+  align-items: end;
+  background-color: white;
+  z-index: 5;
 `;
 
 const Header = styled.div`
