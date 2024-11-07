@@ -73,6 +73,10 @@ export const autoLogin = async () => {
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("nickname", response.data.nickname);
         localStorage.setItem("intro", response.data.intro);
+        localStorage.setItem("phone", response.data.phone);
+        localStorage.setItem("address", response.data.address);
+        localStorage.setItem("profile", response.data.profile);
+        
         localStorage.setItem("tokenType", response.data.tokenType);
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
