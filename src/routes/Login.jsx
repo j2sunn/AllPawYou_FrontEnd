@@ -4,7 +4,7 @@ import FooterComponent from "../components/common/FooterComponent";
 import HeaderComponent from "../components/common/HeaderComponent";
 import { SiKakaotalk } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
-import { login, fetchKakaoOAuth, autoLogin } from "../service/Auth";
+import { login, fetchKakaoOAuth, autoLogin } from "../service/Login";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

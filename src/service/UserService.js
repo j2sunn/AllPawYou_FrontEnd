@@ -1,4 +1,4 @@
-import { AuthApi } from "./Auth";
+import { AuthApi } from "./AuthApi";
 
 const REST_API_BASE_URL = "http://localhost:8081/api/v2";
 

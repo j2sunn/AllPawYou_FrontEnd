@@ -23,6 +23,10 @@ import Layout from "./components/common/Layout";
 import NoticeList from "./routes/NoticeList";
 import Temp from "./routes/Temp";
 import BoardDetail from "./routes/BoardDetail";
+import AdminReviewList from "./components/Review/AdminReviewList";
+import UserReviewList from "./components/Review/UserReviewList";
+import UserReviewCreate from "./components/Review/UserReviewCreate";
+import UserReviewUpdate from "./components/Review/UserReviewUpdate";
 import ShoppingDetail from "./routes/ShoppingDetail";
 import AddProduct from "./routes/AddProduct";
 import ProductList from "./routes/ProductList";
@@ -70,18 +74,26 @@ const Router = () => {
           <Route path="/shoppingDetail/:id" element={<ShoppingDetail />} />
           <Route path="/admin/addproduct" element={<AddProduct />} />
           <Route path="/admin/productlist" element={<ProductList />} />
-       
+
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
           <Route path="/board/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
-          <Route path="/boardList" element={<BoardList />}/>
+          <Route path="/boardList" element={<BoardList />} />
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
 
+          {/* 후기 전체 리스트 */}
+          <Route path="/admin/review/reviewList" element={<AdminReviewList />} />
+          {/* 사용자 후기 리스트 */}
+          <Route path="/review/myReview" element={<UserReviewList />} />
+          {/* 사용자 후기 작성 */}
+          <Route path="/review/createReview" element={<UserReviewCreate />} />
+          {/* 사용자 후기 수정 */}
+          <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
+
           <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
-
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
