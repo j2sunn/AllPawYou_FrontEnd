@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import poodle from "../assets/poodle.png";
 import { Table, TableCell, TableRow } from "@mui/material";
 import DaumPostcode from 'react-daum-postcode';
-import { AuthApi } from "../service/Auth";
+import { AuthApi } from "../service/AuthApi";
 
 const MyPage = () => {
 
