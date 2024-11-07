@@ -3,13 +3,12 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { getReviewByreviewNo, UpdateReview } from "../../service/Review";
+import { DeleteImage, getReviewByreviewNo, UpdateReview } from "../../service/Review";
 import MypageSideBar from "../common/MypageSideBar";
 import { FaPhotoFilm } from "react-icons/fa6";
 
 const UserReviewUpdate = () => {
   const { reviewNo } = useParams();
-  // console.log(reviewNo);
 
   useEffect(() => {
     getReviewByreviewNo(reviewNo) // reviewNo를 API 호출에 사용
@@ -29,18 +28,8 @@ const UserReviewUpdate = () => {
   const [productNo, setProductNo] = useState();
   const [starScore, setStarScore] = useState();
   const [reviewContent, setReviewContent] = useState();
-  const [images, setImages] = useState([]);
-
-  // console.log(images);
-  // console.log(images[0]);
-
-  // if (images.length > 0) {
-  //   console.log(images[0].reviewImgRename);
-  //   console.log(images[1].reviewImgRename);
-  //   console.log(`${images[0].reviewImgPath}${images[0].reviewImgRename}`);
-  // } else {
-  //   console.log("images 배열이 비어 있습니다.");
-  // }
+  const [images, setImages] = useState([]); // 기존 이미지 상태
+  const [newImages, setNewImages] = useState([]); // 새로 추가된 이미지 상태
 
   const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -59,15 +48,6 @@ const UserReviewUpdate = () => {
       return;
     }
 
-    // const reviewData = {
-    //   reviewNo: reviewNo,
-    //   userNo: localStorage.getItem("no"), // localStorage에서 사용자 번호 가져오기
-    //   productNo: productNo,
-    //   reviewStar: starScore,
-    //   reviewContent: reviewContent,
-    //   reviewVisible: "Y",
-    // };
-
     // FormData 객체 생성
     const formData = new FormData();
     formData.append("reviewNo", reviewNo);
@@ -77,11 +57,17 @@ const UserReviewUpdate = () => {
     formData.append("reviewContent", reviewContent);
     formData.append("reviewVisible", "Y");
 
+    // 기존 이미지 추가
     images.forEach((image) => {
       formData.append("reviewImg", image);
     });
 
-    UpdateReview(formData)
+    // 새 이미지 추가
+    newImages.forEach((image) => {
+      formData.append("reviewImg", image);
+    });
+
+    UpdateReview(reviewNo, formData)
       .then((response) => {
         alert("리뷰가 수정되었습니다.");
         navigate("/review/myReview"); // 원하는 경로로 이동 (예: 내 후기 관리 페이지)
@@ -104,14 +90,74 @@ const UserReviewUpdate = () => {
       return;
     }
 
-    // const newImages = files.map((file) => URL.createObjectURL(file));
     setImages((prevImages) => [...prevImages, ...files]);
-    // console.log("여기여기"+e.target.files);
   };
 
-  const handleRemoveImage = (index) => {
-    setImages(images.filter((_, i) => i !== index));
-    console.log("이미지 삭제 :: " + images);
+  // 기존 이미지 삭제
+  const handleRemoveExistingImage = (index) => {
+    if (index < 0 || index >= images.length) {
+      alert("삭제할 이미지가 없습니다.");
+      return;
+    }
+
+    const imageToRemove = images[index];
+
+    if (!imageToRemove || !imageToRemove.reviewImgNo) {
+      alert("삭제할 이미지 정보가 유효하지 않습니다.");
+      return;
+    }
+
+    // 서버에 삭제 요청
+    DeleteImage(imageToRemove.reviewImgNo)
+      .then((response) => {
+        if (response.status === 200) {
+          // 성공적으로 삭제되었으면 상태 업데이트
+          setImages(images.filter((_, i) => i !== index));
+        } else {
+          alert("기존 이미지 삭제에 실패했습니다.");
+        }
+      })
+      .catch((error) => {
+        console.error("이미지 삭제 실패:", error);
+        alert(`이미지 삭제에 실패했습니다: ${error.message}`);
+      });
+  };
+
+  // 새 이미지 삭제 함수
+  const handleRemoveNewImage = (index) => {
+    // 새 이미지에서 삭제
+    setNewImages(newImages.filter((_, i) => i !== index));
+
+    if (index < 0 || index >= newImages.length) {
+      alert("삭제할 새 이미지가 없습니다.");
+      return;
+    }
+  };
+
+  const thumbImg = () => {
+    if (images.length > 0) {
+      return (
+        <>
+          {images.map((image, index) => (
+            <Thumbnail key={index}>
+              {image.reviewImgPath && image.reviewImgRename ? (
+                <>
+                  <Image src={`http://localhost:8081${image.reviewImgPath}${image.reviewImgRename}`} alt={`Image ${index + 1}`} />
+                  <RemoveButton onClick={() => handleRemoveExistingImage(index)}>X</RemoveButton>
+                </>
+              ) : (
+                <>
+                  <Image src={URL.createObjectURL(image)} alt={`New Image ${index + 1}`} />
+                  <RemoveButton onClick={() => handleRemoveNewImage(index)}>X</RemoveButton>
+                </>
+              )}
+            </Thumbnail>
+          ))}
+        </>
+      );
+    } else {
+      return <p>이미지가 없습니다.</p>;
+    }
   };
 
   return (
@@ -127,26 +173,13 @@ const UserReviewUpdate = () => {
               <span>(필수)*</span>
             </StarSection>
 
-            {/* <ImgUploadContainer>
-              <ImgContainer>
-                {images.length > 0 ? (
-                  images.map(
-                    (images) => console.log(image[index].reviewImgRename)
-                    // <Thumbnail key={index}>
-                    //   <Image src={URL.createObjectURL(image)} alt={`Uploaded ${index + 1}`} />
-                    //   <br />
-                    //   <RemoveButton onClick={() => handleRemoveImage(index)}>X</RemoveButton>
-                    // </Thumbnail>
-                  )
-                ) : (
-                  <p>이미지가 없습니다.</p> // 이미지가 없을 경우 메시지 표시
-                )}
-              </ImgContainer>
+            <ImgUploadContainer>
+              <ImgContainer>{thumbImg()}</ImgContainer>
               <Button component="label" role={undefined} variant="outlined" tabIndex={-1} startIcon={<FaPhotoFilm />}>
                 사진 첨부
                 <VisuallyHiddenInput type="file" accept="image/*" multiple onChange={(e) => handleImageChange(e)} />
               </Button>
-            </ImgUploadContainer> */}
+            </ImgUploadContainer>
 
             <TextField
               label="후기"
