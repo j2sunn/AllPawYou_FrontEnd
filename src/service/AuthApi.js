@@ -11,3 +11,11 @@ export const AuthApi = axios.create({
     Authorization: TOKEN_TYPE + " " + ACCESS_TOKEN,
   },
 });
+
+export const AuthUploadApi = axios.create({
+  baseURL: "http://localhost:8081",
+  headers: {
+    "Content-Type": "multipart/form-data",
+    Authorization: TOKEN_TYPE + " " + ACCESS_TOKEN,
+  },
+});

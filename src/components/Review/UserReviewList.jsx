@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { AllReview, DeleteReview, getReviewByreviewNo } from "../../service/Review";
 import { useNavigate } from "react-router-dom";
+import MypageSideBar from "../common/MypageSideBar";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -43,25 +44,10 @@ const ReviewList = () => {
     navigate(`/review/updateReview/${reviewNo}`);
   };
 
-  const goMyBoard = () => {
-    navigate(`/review/myReview`);
-  };
-
   return (
     <>
       <Container>
-        <SideBar>
-          <SideBarTitle>마이 페이지</SideBarTitle>
-          <SimpleTreeView>
-            <TreeItem itemId="profile" label="프로필" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-            <TreeItem itemId="updateProfile" label="프로필 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-            <TreeItem itemId="order" label="구매 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-            <TreeItem itemId="myData" label="내 활동" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-              <TreeItem itemId="myBoard" label="내 글 관리" onClick={() => goMyBoard()} />
-              <TreeItem itemId="myReview" label="내 후기 관리" />
-            </TreeItem>
-          </SimpleTreeView>
-        </SideBar>
+        <MypageSideBar />
 
         <Content>
           <Title>내 후기 관리</Title>
@@ -89,7 +75,14 @@ const ReviewList = () => {
                   .filter((item) => item.userNo === Number(localStorage.getItem("no"))) // localStorage에서 'no' 값을 가져와 필터링
                   .map((item) => (
                     <TableRow key={item.reviewNo}>
-                      <TableCell align="center">{item.reviewNo}</TableCell>
+                      <TableCell align="center">
+                        <img
+                          key={item.reviewImgNo}
+                          src={`http://localhost:8081${item.reviewImg[0].reviewImgPath}${item.reviewImg[0].reviewImgRename}`}
+                          alt={item.reviewImgOriginName} // 원본 이름을 alt로 사용
+                          style={{ width: "100px", height: "100px" }} // 원하는 스타일 적용
+                        />
+                      </TableCell>
                       <TableCell align="center">{item.reviewStar}</TableCell>
                       <TableCell align="center">{item.productName}</TableCell>
                       <TableCell align="center">{item.reviewContent}</TableCell>
@@ -120,15 +113,6 @@ export default ReviewList;
 
 const Container = styled.div`
   display: flex;
-`;
-
-const SideBar = styled.div`
-  width: 25%;
-  height: 70vh;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const SideBarTitle = styled.div`
