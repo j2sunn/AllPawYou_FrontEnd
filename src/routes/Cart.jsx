@@ -91,7 +91,7 @@ const Cart = () => {
   //결제 준비 페이지로 이동
   const navigatePayment = () => {
     const checkedData = productList.filter(i => i.checked);
-    if(checkedData.length == 0){
+    if(checkedData.length == 0 || totalPrice == 0){
       alert("선택된 상품이 없습니다.");
     } else {
       navigator("/payment", {
