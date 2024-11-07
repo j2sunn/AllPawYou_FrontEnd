@@ -3,6 +3,7 @@ import { Button, Table } from "@mui/material";
 import { paymentReady } from "../../service/PaymentService";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { deleteCart } from "../../service/ProductService";
 
 const PaymentCheck = () => {
 
@@ -19,6 +20,11 @@ const PaymentCheck = () => {
 
   const [orderList, setOrderList] = useState([]);
   const [data, setData] = useState({userNo: 1, totalPrice: state.totalPrice, itemName: ''});
+
+  const payment = (data) => {
+    paymentReady(data);
+    state.checkedData.forEach(i => deleteCart(i.id));
+  }
 
   useEffect(()=>{
     if(state.checkedData){
@@ -94,7 +100,7 @@ const PaymentCheck = () => {
               </Table>
             </DetailContainer>
           </div>
-          <Button variant="contained" sx={{width: '200px', marginBottom:'3rem'}} onClick={()=>paymentReady(data)}>결제하기</Button>
+          <Button variant="contained" sx={{width: '200px', marginBottom:'3rem'}} onClick={()=>payment(data)}>결제하기</Button>
         </Content>
       </Container>
     </>
