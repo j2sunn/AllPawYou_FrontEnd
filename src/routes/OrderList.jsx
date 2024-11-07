@@ -18,6 +18,7 @@ const OrderList = () => {
     response.forEach(i => loadOrderList(i.tid, i.totalPrice));
   }
 
+  //주문 목록 (orderNo순으로 정렬)
   const loadOrderList = async(tid, totalPrice) => {
     const arr = paymentList;
     const response = await orderListByTid(tid);
@@ -27,6 +28,7 @@ const OrderList = () => {
     setPaymentList([...arr]);
   }
 
+  //상품 상세
   const loadProductDetail = async(productId, index1, index2) => {
     const arr = paymentList;
     const response = await getProductByProductId(productId);
@@ -34,6 +36,7 @@ const OrderList = () => {
     setPaymentList([...arr]);
   }
 
+  //결제 취소
   const cancelPayment = async(data) => {
     console.log(data);
     const response = await paymentCancel(data);
@@ -50,7 +53,6 @@ const OrderList = () => {
       if(!paymentList[index1][0].name){
         product.forEach((item, index2) => {
           loadProductDetail(item.productId, index1, index2);
-          console.log(item.productId, index1, index2);
         })
       }
       })
@@ -60,7 +62,7 @@ const OrderList = () => {
   return (
     <>
       <Container>
-        <Title onClick={()=>console.log(paymentList)}>주문 목록</Title>
+        <Title>주문 목록</Title>
         <Content>
           <SideBar>사이드바</SideBar>
           <Payments>
@@ -76,7 +78,7 @@ const OrderList = () => {
                   </PaymentHeader>
                   {payment.map(order => {
                     return (
-                      <Product key={order.orderNo} onClick={()=>console.log(order)}>
+                      <Product key={order.orderNo}>
                         <OrderInfo>
                           <ProductImg as="div" />
                           <Detail>
