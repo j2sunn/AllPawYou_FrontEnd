@@ -91,9 +91,6 @@ const Router = () => {
           <Route path="/review/createReview" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
-
-          <Route path="/boardDetail/:boardNo" element={<BoardDetail />} />
-          <Route path="/temp" element={<Temp />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
