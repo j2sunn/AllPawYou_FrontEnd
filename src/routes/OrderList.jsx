@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { orderListByTid } from "../service/OrderService";
 import { paymentCancel, payments } from "../service/PaymentService";
 import { useNavigate } from "react-router-dom";
+import { getProductByProductId } from "../service/ProductService";
 
 const OrderList = () => {
   const navigator = useNavigate();
@@ -21,9 +22,15 @@ const OrderList = () => {
     const arr = paymentList;
     const response = await orderListByTid(tid);
     response[0] = {...response[0], totalPrice};
-    console.log(response);
     arr.push(response);
     arr.sort((a,b)=>b[0].orderNo-a[0].orderNo);
+    setPaymentList([...arr]);
+  }
+
+  const loadProductDetail = async(productId, index1, index2) => {
+    const arr = paymentList;
+    const response = await getProductByProductId(productId);
+    arr[index1][index2] = {...response, ...arr[index1][index2]};
     setPaymentList([...arr]);
   }
 
@@ -36,6 +43,18 @@ const OrderList = () => {
   useEffect(()=>{
     loadPayments();
   }, []);
+
+  useEffect(()=>{
+    paymentList.forEach((product, index1) => {
+      console.log(paymentList);
+      if(!paymentList[index1][0].name){
+        product.forEach((item, index2) => {
+          loadProductDetail(item.productId, index1, index2);
+          console.log(item.productId, index1, index2);
+        })
+      }
+      })
+  }, [paymentList]);
 
 
   return (
@@ -57,13 +76,13 @@ const OrderList = () => {
                   </PaymentHeader>
                   {payment.map(order => {
                     return (
-                      <Product key={order.orderNo}>
+                      <Product key={order.orderNo} onClick={()=>console.log(order)}>
                         <OrderInfo>
                           <ProductImg as="div" />
                           <Detail>
-                            <div>제품명</div>
+                            <div>{order?.name}</div>
                             <div>설명</div>
-                            <div>가격</div>
+                            <div>{order?.price * order?.quantity}원</div>
                           </Detail>
                         </OrderInfo>
                         <Buttons>
