@@ -1,6 +1,26 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { listProducts } from "../service/ProductService";
 
 const ShoppingMain = () => {
+
+    const [product, setProducts] = useState([]);
+
+    useEffect(() => {
+        getAllProducts();
+    }, []);
+
+    function getAllProducts() {
+        listProducts()
+            .then((response) => {
+                setProducts(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     return (
         <>
             <GoodsSection>
@@ -61,235 +81,23 @@ const ShoppingMain = () => {
                 </IconContainer>
                 <div id="goods-section">
                     <ul>
-                        <li>
+                        {product.map((item, index) => (
+                            <li key={index}>
                             <a>
                                 <div className="thumb_area">
                                     <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
+                                        <img src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`}></img>
                                     </span>
                                 </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
+                                <div>
+                                    <span>{item.name}</span>
                                 </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
+                                <div>
+                                    <span style={{ fontWeight: 'bold' }} >{item.price}</span>
                                 </div>
                             </a>
                         </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src="/src/assets/mainImage/shopping1.png"></img>
-                                    </span>
-                                </div>
-                                <div className="info_area">
-                                    <span className="productName">리카리카 휴대용 실리콘 파우치</span>
-                                </div>
-                                <div className="price_wrap">
-                                    <span style={{ fontWeight: 'bold' }}>9,900</span>
-                                </div>
-                            </a>
-                        </li>
+                       ))}
                     </ul>
                 </div>
             </GoodsSection>

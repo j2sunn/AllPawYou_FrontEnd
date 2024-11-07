@@ -2,7 +2,8 @@ import { Radio, RadioGroup, FormControlLabel, Select, MenuItem, Button } from "@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addProduct } from "../service/ProductService";
+import { updateProduct, getProductByProductId } from "../service/ProductService";
+import { useParams } from "react-router-dom";
 
 const AddProduct = () => {
 
@@ -24,12 +25,48 @@ const AddProduct = () => {
         }
     }, []);
 
+    // 상품정보 불러오기
+    const { id } = useParams();
+    const [productInfo, setProductInfo] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("");   //카테고리 선택
     const [thumbnail, setThumbnail] = useState({ file: null, preview: null }); // 썸네일 이미지
     const [images, setImages] = useState([]); // 상품 설명 이미지들
     const [isRelease, setIsPublic] = useState("OPEN"); //상품 공개 여부
     const [productName, setProductName] = useState(""); //상품명
     const [productPrice, setProductPrice] = useState("");   //가격
+
+    useEffect(() => {
+        if (id) {
+            getProductByProductId(id)
+                .then(response => {
+                    setProductInfo(response.data);
+                    console.log("상품정보 : ", response.data);
+                }).catch((error) => {
+                    console.log("에러발생 : ", error);
+                });
+        }
+
+    }, [id]);
+
+    useEffect(() => {
+        if(productInfo){
+            setThumbnail({
+                file : productInfo.productFileDTO.find(file => file.productFileTypeId === 1)?.imageRename,
+                preview : `http://localhost:8081${productInfo.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`,
+            });
+
+            const detailImages = productInfo.productFileDTO
+            .filter(file => file.productFileTypeId === 2)
+            .map(file => ({
+                file: file.imageRename,
+                preview: `http://localhost:8081${productInfo.productFileDTO.find(file => file.productFileTypeId === 2)?.imagePath}`,
+            }));
+
+        setImages(detailImages);
+        }
+    }, [productInfo]);
+
+  
 
     // 상품명 변경 핸들러
     const handleNameChange = (event) => {
@@ -83,12 +120,19 @@ const AddProduct = () => {
         setImages(images.filter((_, i) => i !== index));
     };
 
+    const updateHandler = (event, key) => {
+
+        const { value } = event.target;
+        setProductInfo(prev => ({ ...prev, [key]: value }));
+
+      };
+
     const doSubmit = () => {
         const formData = new FormData();
-        formData.append("category", selectedCategory);
-        formData.append("name", productName);
-        formData.append("price", productPrice);
-        formData.append("releaseStatus", isRelease);
+        formData.append("category", productInfo.category);
+        formData.append("name", productInfo.name);
+        formData.append("price", productInfo.price);
+        formData.append("releaseStatus", productInfo.releaseStatus);
 
         if (thumbnail.file) {
             formData.append("thumbImage", thumbnail.file);
@@ -100,11 +144,11 @@ const AddProduct = () => {
 
 
         try {
-            // 상품 추가 API 호출
-            addProduct(formData);
+            // 상품 수정 API 호출
+            updateProduct(id, formData);
             // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
             navigator('/shopping');  // 이동할 페이지 URL을 설정
-            alert("상품이 등록되었습니다.");
+            alert("상품이 수정되었습니다.");
         } catch (error) {
             console.error("상품 등록 실패:", error);
             alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
@@ -114,76 +158,82 @@ const AddProduct = () => {
     return (
         <>
             <Container>
-                <One>
-                    <h4>상품 등록</h4>
-                    <h5>카테고리<span>*</span></h5>
-                    <Select
-                        labelId="category-label"
-                        id="category"
-                        style={{ width: '150px' }}
-                        onChange={handleCategoryChange}
-                        value={selectedCategory}
-                    >
-                        <MenuItem value="10">사료</MenuItem>
-                        <MenuItem value="20">간식</MenuItem>
-                        <MenuItem value="30">의류</MenuItem>
-                    </Select>
-                </One>
-                <Two>
-                    <h5>제목<span>*</span></h5>
-                    <TitleInput id="productName" value={productName} onChange={handleNameChange} />
-                    <h5>가격<span>*</span></h5>
-                    <TitleInput id="productPrice" value={productPrice} onChange={handlePriceChange} />
-                </Two>
-                <Three>
-                    <h5>썸네일 사진 업로드</h5>
-                    <ImgContainer>
-                        {thumbnail.preview && (
-                            <ThumbnailContainer>
-                                <Image src={thumbnail.preview} alt="Thumbnail" />
-                                <RemoveButton onClick={handleRemoveThumbnail}>X</RemoveButton>
-                            </ThumbnailContainer>
-                        )}
-                    </ImgContainer>
-                    <UploadButton>
-                        <FileInput
-                            type="file"
-                            accept="image/*"
-                            onChange={handleThumbnailChange}
-                        />
-                        📷 사진 첨부
-                    </UploadButton>
+                {productInfo ? (
+                    <>
+                        <One>
+                            <h4>상품 수정</h4>
+                            <h5>카테고리<span>*</span></h5>
+                            <Select
+                                labelId="category-label"
+                                id="category"
+                                style={{ width: '150px' }}
+                                onChange={(event) => updateHandler(event, 'category')}
+                                value={productInfo.category}
+                            >
+                                <MenuItem value="10">사료</MenuItem>
+                                <MenuItem value="20">간식</MenuItem>
+                                <MenuItem value="30">의류</MenuItem>
+                            </Select>
+                        </One>
+                        <Two>
+                            <h5>제목<span>*</span></h5>
+                            <TitleInput id="productName" value={productInfo.name}  onChange={(event) => updateHandler(event, 'name')} />
+                            <h5>가격<span>*</span></h5>
+                            <TitleInput id="productPrice" value={productInfo.price}  onChange={(event) => updateHandler(event, 'price')} />
+                        </Two>
+                        <Three>
+                            <h5>썸네일 사진 업로드</h5>
+                            <ImgContainer>
+                                {thumbnail.preview && (
+                                    <ThumbnailContainer>
+                                        <Image src={thumbnail.preview} alt="Thumbnail" />
+                                        <RemoveButton onClick={handleRemoveThumbnail}>X</RemoveButton>
+                                    </ThumbnailContainer>
+                                )}
+                            </ImgContainer>
+                            <UploadButton>
+                                <FileInput
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleThumbnailChange}
+                                />
+                                📷 사진 첨부
+                            </UploadButton>
 
-                    <h5>상품 설명 사진 업로드</h5>
-                    <ImgContainer>
-                        {images.map((image, index) => (
-                            <ProductDetail key={index}>
-                                <Image src={image.preview} alt={`Uploaded ${index + 1}`} />
-                                <RemoveButton onClick={() => handleRemoveDetailImage(index)}>X</RemoveButton>
-                            </ProductDetail>
-                        ))}
-                    </ImgContainer>
-                    <UploadButton>
-                        <FileInput
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={handleDetailImageChange}
-                        />
-                        📷 사진 첨부
-                    </UploadButton>
-                </Three>
-                <Three>
-                    <h5>상품 공개 여부</h5>
-                    <RadioGroup value={isRelease} onChange={handleChange} row>
-                        <FormControlLabel value="OPEN" control={<Radio />} label="공개" />
-                        <FormControlLabel value="CLOSE" control={<Radio />} label="비공개" />
-                    </RadioGroup>
-                </Three>
-                <div style={{ marginTop: "30px", marginBottom: "50px" }}>
-                    <Button variant="outlined" sx={{ margin: '10px' }}>취소</Button>
-                    <Button variant="contained" onClick={doSubmit}>등록</Button>
-                </div>
+                            <h5>상품 설명 사진 업로드</h5>
+                            <ImgContainer>
+                                {images.map((image, index) => (
+                                    <ProductDetail key={index}>
+                                        <Image src={image.preview} alt={`Uploaded ${index + 1}`} />
+                                        <RemoveButton onClick={() => handleRemoveDetailImage(index)}>X</RemoveButton>
+                                    </ProductDetail>
+                                ))}
+                            </ImgContainer>
+                            <UploadButton>
+                                <FileInput
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleDetailImageChange}
+                                />
+                                📷 사진 첨부
+                            </UploadButton>
+                        </Three>
+                        <Three>
+                            <h5>상품 공개 여부</h5>
+                            <RadioGroup value={productInfo.releaseStatus}  onChange={(event) => updateHandler(event, 'releaseStatus')} row>
+                                <FormControlLabel value="OPEN" control={<Radio />} label="공개" />
+                                <FormControlLabel value="CLOSE" control={<Radio />} label="비공개" />
+                            </RadioGroup>
+                        </Three>
+                        <div style={{ marginTop: "30px", marginBottom: "50px" }}>
+                            <Button variant="outlined" sx={{ margin: '10px' }}>취소</Button>
+                            <Button variant="contained" onClick={() => doSubmit()} >등록</Button>
+                        </div>
+                    </>
+                ) : (
+                    <div>해당하는 상품이 없습니다.</div>
+                )}
             </Container>
         </>
     );

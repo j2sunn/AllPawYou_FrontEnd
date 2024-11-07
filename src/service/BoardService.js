@@ -65,15 +65,17 @@ export const loadList = async (setBoardList)=>{
 }
 
 //댓글 작성
-export const addCommentService = (boardNo,comment,loginEmail,setCommentData)=>{
+export const addCommentService = (boardNo,result,loginEmail,setCommentData)=>{
+    console.log("nnnnnnnn");
     axios.post('http://localhost:8081/board/comment/insert', {
         boardNo: boardNo,
-        commentContent: comment,
+        commentContent: result,
         email: loginEmail
     })
     .then(response => {
         console.log("삽입된 댓글 수 : "+response.data);
         if(response.data >0){
+            // setCommentData(response.data);
             updateCommentList(boardNo,setCommentData);
         }
         
@@ -81,6 +83,6 @@ export const addCommentService = (boardNo,comment,loginEmail,setCommentData)=>{
 }
 //전체 댓글 다시 업데이트
 const updateCommentList = async (boardNo,setCommentData)=>{
-    const resp = await axios.get('http://localhost:8081/board/comment' + boardNo);
+    const resp = await axios.get('http://localhost:8081/board/comment/' + boardNo);
     setCommentData(resp.data);
 }

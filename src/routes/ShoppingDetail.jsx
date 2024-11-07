@@ -73,7 +73,7 @@ const ShoppingDetail = () => {
                 {product ? (
                     <>
                         <ImgArea className="imgArea">
-                            <ProductImage src={`http://localhost:8081/file/images/product/${product.productFileDTO.find(file => file.productFileTypeId === 1)?.imageRename}`}>
+                            <ProductImage src={`http://localhost:8081${product.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`}>
                             </ProductImage>
                         </ImgArea>
                         {/* <ImgArea className="imgArea">
