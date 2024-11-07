@@ -9,7 +9,13 @@ const PaymentCheck = () => {
   //장바구니에서 전달한 정보 받기
   const { state } = useLocation();
   console.log(state);
-  //유저 정보는 localStorage나 유저 api 요청해서 사용
+  
+  const [user, setUser] = useState({
+    username: localStorage.getItem("username"),
+    email: localStorage.getItem("email"),
+    phone: localStorage.getItem("phone"),
+    address: localStorage.getItem("address")
+  });
 
   const [orderList, setOrderList] = useState([]);
   const [data, setData] = useState({userNo: 1, totalPrice: state.totalPrice, itemName: ''});
@@ -35,22 +41,22 @@ const PaymentCheck = () => {
               <Table>
                 <Tr>
                   <Th>이름</Th>
-                  <Td>asd</Td>
+                  <Td>{user?.username}</Td>
                 </Tr>
 
                 <Tr>
                   <Th>이메일</Th>
-                  <Td>ㅁㄴㅇㄹ</Td>
+                  <Td>{user?.email}</Td>
                 </Tr>
 
                 <Tr>
                   <Th>전화번호</Th>
-                  <Td>01000000000</Td>
+                  <Td>{user?.phone}</Td>
                 </Tr>
 
                 <Tr>
                   <Th>배송주소</Th>
-                  <Td>ㅁㄴㄹㄴㅇㅁㄴ</Td>
+                  <Td>{user?.address}</Td>
                 </Tr>
               </Table>
             </DetailContainer>

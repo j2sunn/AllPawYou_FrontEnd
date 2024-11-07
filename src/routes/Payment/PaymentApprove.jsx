@@ -14,7 +14,12 @@ const PaymentApprove = () => {
   const pg_token = location?.search.split("=")[1];
 
   //유저 정보는 localStorage나 유저 api 요청해서 사용
-
+  const [user, setUser] = useState({
+    username: localStorage.getItem("username"),
+    email: localStorage.getItem("email"),
+    phone: localStorage.getItem("phone"),
+    address: localStorage.getItem("address")
+  });
   const [requestData, setRequestData] = useState({
     tid: localStorage.getItem("tid"),
     pg_token
@@ -44,15 +49,15 @@ const PaymentApprove = () => {
               <Table>
                 <Tr>
                   <Th>받으시는분</Th>
-                  <Td>asd</Td>
+                  <Td>{user?.username}</Td>
                 </Tr>
                 <Tr>
                   <Th>주소</Th>
-                  <Td>ㅁㄴㅇㄹ</Td>
+                  <Td>{user?.address}</Td>
                 </Tr>
                 <Tr>
                   <Th>전화번호</Th>
-                  <Td>01000000000</Td>
+                  <Td>{user?.phone}</Td>
                 </Tr>
               </Table>
             </DetailContainer>
