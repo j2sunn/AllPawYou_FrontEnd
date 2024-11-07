@@ -35,17 +35,17 @@ const ReviewList = () => {
       <Container>
         <SideBar>
           <SideBarTitle>관리자 메뉴</SideBarTitle>
-          <SimpleTreeView>
-            <TreeItem itemId="0" label="회원관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-            <TreeItem itemId="board" label="게시판 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-              <TreeItem itemId="1" label="공지사항" />
-              <TreeItem itemId="2" label="자유게시판" />
-              <TreeItem itemId="3" label="FAQ" />
+          <SimpleTreeView sx={{border: '3px solid #EEC759', borderRadius: '15px', padding: '4rem'}}>
+            <TreeItem itemId="0" label="회원관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }} />
+            <TreeItem itemId="board" label="게시판 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }}>
+              <TreeItem itemId="1" label="공지사항" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
+              <TreeItem itemId="2" label="자유게시판" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
+              <TreeItem itemId="3" label="FAQ" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
             </TreeItem>
-            <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-              <TreeItem itemId="4" label="상품 관리" />
-              <TreeItem itemId="5" label="매출 관리" />
-              <TreeItem itemId="6" label="주문 관리" />
+            <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }}>
+              <TreeItem itemId="4" label="상품 관리" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
+              <TreeItem itemId="5" label="매출 관리" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
+              <TreeItem itemId="6" label="주문 관리" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
             </TreeItem>
           </SimpleTreeView>
         </SideBar>
@@ -89,7 +89,7 @@ const ReviewList = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Pages>1 2 3 4 5 6</Pages>
+          <Pages></Pages>
         </Content>
       </Container>
     </>
@@ -104,7 +104,7 @@ const Container = styled.div`
 
 const SideBar = styled.div`
   width: 25%;
-  height: 70vh;
+  min-height: 700px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -113,6 +113,7 @@ const SideBar = styled.div`
 
 const SideBarTitle = styled.div`
   font-size: 2rem;
+  font-weight: bold;
   padding-bottom: 3rem;
 `;
 
