@@ -25,6 +25,20 @@ export const getProductByProductId = async (id) => {
     return response.data;
 };
 
+export const updateProduct = (id, formData) => axios.put(`${REST_API_BASE_URL}/update/${id}`, formData,
+     {
+    headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': token ? `Bearer ${token}` : '' // 인증이 필요하면 헤더에 JWT 토큰 포함
+    }
+});
+
+export const DeleteProduct = (id) => axios.delete(`${REST_API_BASE_URL}/delete/${id}`,{
+    headers:{
+        'Authorization': token ? `Bearer ${token}` : ''
+    }
+});
+
 
 //유저 별 장바구니 목록
 export const listCart = async(userNo) => {

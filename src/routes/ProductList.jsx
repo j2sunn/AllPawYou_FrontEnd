@@ -3,7 +3,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
-import { listProducts } from "../service/ProductService";
+import { listProducts, DeleteProduct } from "../service/ProductService";
 
 const ProductList = () => {
 
@@ -17,10 +17,21 @@ const ProductList = () => {
         listProducts()
             .then((response) => {
                 setProducts(response.data);
+                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
+    }
+
+    const removeProduct = async (id) => {
+        try{
+            await DeleteProduct(id);
+            getAllProducts();
+            alert("상품이 삭제되었습니다.");
+        } catch(error){
+            console.log(error);
+        }
     }
 
     return (
@@ -66,7 +77,7 @@ const ProductList = () => {
                                         <TableCell align="center" sx={{ width: '10rem' }}>{item.releaseStatus}</TableCell>
                                         <TableCell align="center" sx={{ width: "10rem" }} >
                                             <Button variant="contained" sx={{marginRight:'10px'}}>수정</Button>
-                                            <Button variant="outlined">삭제</Button>
+                                            <Button variant="outlined" onClick={() => removeProduct(item.id)}>삭제</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
