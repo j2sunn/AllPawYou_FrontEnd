@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 const OrderDetail = () => {
+  const {state} = useLocation();
+
+  console.log(state.payment);
+
   return (
     <>
       <Container>
@@ -10,20 +15,26 @@ const OrderDetail = () => {
           <SideBar>사이드바</SideBar>
           <Order>
             <InfoTitle>상품 정보</InfoTitle>
-            <InfoContainer>
-              <OrderInfo>
-                <ProductImg as="div" />
-                <Detail>
-                  <div>제품명</div>
-                  <div>설명</div>
-                  <div>가격</div>
-                </Detail>
-              </OrderInfo>
-              <Buttons>
-                <Button variant="outlined">후기 작성하기</Button>
-                <Button variant="outlined" color="error">후기 삭제하기</Button>
-              </Buttons>
-            </InfoContainer>
+            {
+              state.payment.map(order => {
+                return (
+                  <InfoContainer key={order.orderNo}>
+                    <OrderInfo>
+                      <ProductImg as="div" />
+                      <Detail>
+                        <div>{order.productId}</div>
+                        <div>설명</div>
+                        <div>가격</div>
+                      </Detail>
+                    </OrderInfo>
+                    <Buttons>
+                      <Button variant="outlined">후기 작성하기</Button>
+                      <Button variant="outlined" color="error">후기 삭제하기</Button>
+                    </Buttons>
+                  </InfoContainer>
+                )
+              })
+            }
 
             <InfoTitle>받는사람 정보</InfoTitle>
             <InfoContainer>
@@ -52,7 +63,7 @@ const OrderDetail = () => {
                 </Tr>
                 <Tr>
                   <Th>결제 금액</Th>
-                  <Td>10000</Td>
+                  <Td>{state.payment[0].totalPrice}</Td>
                 </Tr>
               </Table>
             </InfoContainer>

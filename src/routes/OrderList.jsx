@@ -7,21 +7,24 @@ import { useNavigate } from "react-router-dom";
 
 const OrderList = () => {
   const navigator = useNavigate();
-  const [orderList, setOrderList] = useState([]);
+  const [paymentList, setPaymentList] = useState([]);
 
   const loadPayments = async() => {
+    //결제 목록
     const response = await payments();
+
+    //결제 별 주문 목록
     response.forEach(i => loadOrderList(i.tid, i.totalPrice));
   }
 
   const loadOrderList = async(tid, totalPrice) => {
-    const arr = orderList;
+    const arr = paymentList;
     const response = await orderListByTid(tid);
     response[0] = {...response[0], totalPrice};
     console.log(response);
     arr.push(response);
     arr.sort((a,b)=>b[0].orderNo-a[0].orderNo);
-    setOrderList([...arr]);
+    setPaymentList([...arr]);
   }
 
   const cancelPayment = async(data) => {
@@ -38,17 +41,17 @@ const OrderList = () => {
   return (
     <>
       <Container>
-        <Title>주문 목록</Title>
+        <Title onClick={()=>console.log(paymentList)}>주문 목록</Title>
         <Content>
           <SideBar>사이드바</SideBar>
           <Payments>
-            {orderList.map(payment => {
+            {paymentList.map(payment => {
               return (
                 <Payment key={payment[0].tid}>
                   <PaymentHeader>
-                    <PaymentTitle>{payment[0].tid}</PaymentTitle>
+                    <PaymentTitle>{payment[0].createdAt.slice(0,10)} 주문</PaymentTitle>
                     <div>
-                      <Button variant="outlined" onClick={()=>navigator(`/${payment[0].tid}`)}>주문 상세</Button>
+                      <Button variant="outlined" onClick={()=>navigator(`${payment[0].tid}`, {state: {payment}})}>주문 상세</Button>
                       <Button variant="outlined" sx={{marginLeft: '1rem'}} onClick={()=>cancelPayment({tid: payment[0].tid, cancel_amount: payment[0].totalPrice})}>주문 취소</Button>
                     </div>
                   </PaymentHeader>
