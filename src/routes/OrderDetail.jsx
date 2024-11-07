@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Button, Table } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import AdminSideBar from "../components/common/AdminSideBar";
 
 const OrderDetail = () => {
   const {state} = useLocation();
@@ -17,9 +18,9 @@ const OrderDetail = () => {
   return (
     <>
       <Container>
-        <Title>주문 상세</Title>
+        <AdminSideBar />
         <Content>
-          <SideBar>사이드바</SideBar>
+          <Title>주문 상세</Title>
           <Order>
             <InfoTitle>상품 정보</InfoTitle>
             {
@@ -84,29 +85,27 @@ const OrderDetail = () => {
 export default OrderDetail;
 
 const Container = styled.div`
+  width: 100%;
   min-height: 600px;
-  margin: 2rem 10rem;
-`;
-
-const Title = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 1.5rem 0;
+  margin: 0 4rem;
+  display: flex;
 `;
 
 const Content = styled.div`
   width: 100%;
   display: flex;
-`;
-
-const SideBar = styled.div`
-  width: 25%;
-  height: 500px;
-  border: 1px solid black;
+  flex-direction: column;
+  padding-left: 5rem;
+  `;
+  
+const Title = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1.5rem 3rem;
 `;
 
 const Order = styled.div`
-  width: 75%;
+  width: 85%;
 `;
 
 const InfoTitle = styled.div`
