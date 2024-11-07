@@ -6,10 +6,10 @@ import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { useLocation, useNavigate } from "react-router-dom";
 import poodle from "../assets/poodle.png";
 import { Table, TableCell, TableRow } from "@mui/material";
-import DaumPostcode from 'react-daum-postcode';
+import DaumPostcode from "react-daum-postcode";
+import MypageSideBar from "../components/common/MypageSideBar";
 
 const MyPage = () => {
-
   const navigator = useNavigate();
 
   //---- 회원정보 가져오기
@@ -29,21 +29,24 @@ const MyPage = () => {
     // 가져온 데이터를 상태에 설정
     if (username && email && nickname && intro && phone && address && profileImage) {
       const userData = {
-        username, email, nickname, intro,
-        phone, address, profileImage
+        username,
+        email,
+        nickname,
+        intro,
+        phone,
+        address,
+        profileImage,
       };
       setUserInfo(userData);
-      setProfile(userData)
+      setProfile(userData);
     } else {
       console.error("사용자 정보가 localStorage에 없습니다.");
     }
   }, []);
 
-
   const profileHandler = (event, key) => {
-
     const { value } = event.target;
-    setProfile(prev => ({ ...prev, [key]: value }));
+    setProfile((prev) => ({ ...prev, [key]: value }));
 
     // const newObj = {
     //   ...profile,
@@ -51,7 +54,6 @@ const MyPage = () => {
     // };
     // console.log(newObj);
     // setProfile(newObj);
-
   };
 
   // useEffect(()=>{
@@ -59,22 +61,21 @@ const MyPage = () => {
   // },[stat]);
 
   const [enroll_company, setEnroll_company] = useState({
-    address: '',
+    address: "",
   });
 
   const [popup, setPopup] = useState(false);
-
 
   const handleInput = (e) => {
     setEnroll_company({
       ...enroll_company,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleComplete = (data) => {
     setPopup(!popup);
-  }
+  };
 
   const [isPostcodePopupVisible, setIsPostcodePopupVisible] = useState(false);
 
@@ -103,9 +104,12 @@ const MyPage = () => {
           <SideBar>
             <SideBarTitle>마이 페이지</SideBarTitle>
             <SimpleTreeView>
-              <TreeItem itemId="0" label="회원정보 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}
+              <TreeItem
+                itemId="0"
+                label="회원정보 수정"
+                sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}
                 // onClick={()=>navigator('/myPage',{state:{stat: true}})}
-                onClick={() => setUpdate(prev => !prev)}
+                onClick={() => setUpdate((prev) => !prev)}
               />
               <TreeItem itemId="board" label="결제 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
               {/* <TreeItem itemId="1" label="공지사항" />
@@ -163,64 +167,76 @@ const MyPage = () => {
                       <TableRow>
                         <TableCell>이름 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            sx={{ marginLeft: "1rem", width: "25rem" }}
                             value={profile.username}
-                            onChange={(event) => profileHandler(event, 'username')}
+                            onChange={(event) => profileHandler(event, "username")}
                           />
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>전화번호 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            sx={{ marginLeft: "1rem", width: "25rem" }}
                             value={profile.phone}
-                            onChange={() => profileHandler(event, 'phone')} />
+                            onChange={() => profileHandler(event, "phone")}
+                          />
                         </TableCell>
-
                       </TableRow>
                       <TableRow>
                         <TableCell>이메일 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            sx={{ marginLeft: "1rem", width: "25rem" }}
                             value={profile.email}
                             slotProps={{
                               input: {
                                 readOnly: true,
                               },
-                            }} />
+                            }}
+                          />
                         </TableCell>
-
                       </TableRow>
                       <TableRow>
                         <TableCell>주소 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" multiline maxRows={6}
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            multiline
+                            maxRows={6}
                             sx={{
-                              marginLeft: '1rem',
-                              // alignSelf: 'start', 
-                              width: '25rem'
+                              marginLeft: "1rem",
+                              // alignSelf: 'start',
+                              width: "25rem",
                             }}
                             value={profile.address}
-                            onChange={() => profileHandler(event, 'address')} />
-                          <Button sx={{ marginLeft: '10px' }} onClick={() => isPostcodePopupVisible(true)}>검색</Button>
-                          {isPostcodePopupVisible && (
-                            <DaumPostcode
-                              style={postCodeStyle}
-                              autoClose
-                              onComplete={onCompletePost}
-                            />
-                          )}
+                            onChange={() => profileHandler(event, "address")}
+                          />
+                          <Button sx={{ marginLeft: "10px" }} onClick={() => isPostcodePopupVisible(true)}>
+                            검색
+                          </Button>
+                          {isPostcodePopupVisible && <DaumPostcode style={postCodeStyle} autoClose onComplete={onCompletePost} />}
                         </TableCell>
-
                       </TableRow>
                       <TableRow>
                         <TableCell>닉네임 :</TableCell>
                         <TableCell>
-                          <TextField variant="outlined" size="small" sx={{ marginLeft: '1rem', width: '25rem' }}
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            sx={{ marginLeft: "1rem", width: "25rem" }}
                             value={profile.nickname}
-                            onChange={() => profileHandler(event, 'nickname')} />
+                            onChange={() => profileHandler(event, "nickname")}
+                          />
                         </TableCell>
-
                       </TableRow>
                     </Table>
                   </Profile>
@@ -231,48 +247,38 @@ const MyPage = () => {
               onChange={()=>profileHandler(event, 'address')}/> */}
                 <div>
                   <Title>자기소개</Title>
-                  <TextField variant="outlined" size="small" multiline maxRows={6}
-                    sx={{ alignSelf: 'start', width: '60rem', marginBottom: '2rem' }}
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    multiline
+                    maxRows={6}
+                    sx={{ alignSelf: "start", width: "60rem", marginBottom: "2rem" }}
                     value={profile.intro}
-                    onChange={() => profileHandler(event, 'intro')} />
+                    onChange={() => profileHandler(event, "intro")}
+                  />
                 </div>
-                <Button variant="contained" color="primary" onClick={() => setUpdate(prev => !prev)}>저장</Button>
+                <Button variant="contained" color="primary" onClick={() => setUpdate((prev) => !prev)}>
+                  저장
+                </Button>
               </>
             ) : (
               <div>사용자 정보가 없습니다.</div>
             )}
           </UpdateContainer>
         </Box>
+      ) : (
         //-----------------------------------------------------------------------
-      ) : ( //수정 아닌 경우
+        //수정 아닌 경우
         /* 사용자 정보 출력 */
         <Box>
-          <SideBar>
-            <SideBarTitle>마이 페이지</SideBarTitle>
-            <SimpleTreeView>
-              <TreeItem itemId="0" label="회원정보 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}
-                // onClick={()=>navigator('/myPage',{state:{stat: true}})}
-                onClick={() => setUpdate(prev => !prev)}
-              />
-              <TreeItem itemId="board" label="결제 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-                {/* <TreeItem itemId="1" label="공지사항" />
-                <TreeItem itemId="2" label="자유게시판" />
-                <TreeItem itemId="3" label="FAQ" /> */}
-              </TreeItem>
-              {/* <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-                <TreeItem itemId="4" label="상품 관리" />
-                <TreeItem itemId="5" label="매출 관리" />
-                <TreeItem itemId="6" label="주문 관리" />
-              </TreeItem> */}
-            </SimpleTreeView>
-          </SideBar>
+          <MypageSideBar />
           <Container>
             {userInfo ? (
               <>
                 <Content>
                   <Profile>
                     <ProfileImg
-                      // as="div" 
+                      // as="div"
                       src={poodle}
                     />
                     <NickName>{userInfo.nickname}</NickName>
@@ -281,16 +287,14 @@ const MyPage = () => {
                     <div>이름 : {userInfo.username} </div>
                     <div>전화번호 : {userInfo.phone}</div>
                     <div>이메일 : {userInfo.email} </div>
-                    <div>주소 :  {userInfo.address}</div>
+                    <div>주소 : {userInfo.address}</div>
                   </Profile>
                 </Content>
-
 
                 {/* <Title>주소</Title>
             <Content></Content> */}
                 <Title>자기소개</Title>
-                <Content>{userInfo.intro}
-                </Content>
+                <Content>{userInfo.intro}</Content>
                 {/* <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>수정</Button> */}
               </>
             ) : (
@@ -300,7 +304,7 @@ const MyPage = () => {
         </Box>
       )}
     </>
-  )
+  );
 };
 
 export default MyPage;
@@ -310,7 +314,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   // margin: 5rem 0 10rem;
-  
 `;
 
 const Content = styled.div`
@@ -322,7 +325,7 @@ const Content = styled.div`
   border: 1px solid black;
   border-radius: 1rem;
 
-  &:first-child{
+  &:first-child {
     border: none;
   }
 `;
@@ -335,11 +338,11 @@ const Profile = styled.div`
 `;
 
 const ProfileImg = styled.img`
-    width: 150px;
-    height: 150px;
-    border: 1px solid black;
-    border-radius: 50%;
-    margin-bottom: 2rem;
+  width: 150px;
+  height: 150px;
+  border: 1px solid black;
+  border-radius: 50%;
+  margin-bottom: 2rem;
 `;
 
 const NickName = styled.div`
@@ -355,7 +358,6 @@ const Title = styled.div`
   align-self: start;
   padding-left: 25rem;
   margin-bottom: 1rem;
-
 `;
 
 // const Introduce = styled.div`
@@ -379,8 +381,7 @@ const SideBarTitle = styled.div`
 const Box = styled.div`
   display: flex;
   flex-direction: row;
-
 `;
 const UpdateContainer = styled(Container)`
-  margin : 5rem 0;
+  margin: 5rem 0;
 `;

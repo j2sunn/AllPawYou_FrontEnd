@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { AllReview, DeleteReview, getReviewByreviewNo } from "../../service/Review";
+import { AllReview, DeleteReview } from "../../service/Review";
 import { useNavigate } from "react-router-dom";
 import MypageSideBar from "../common/MypageSideBar";
 
@@ -55,7 +53,9 @@ const ReviewList = () => {
             <Table>
               <TableHead sx={{ backgroundColor: "#EEC759" }}>
                 <TableRow>
-                  <TableCell align="center">사진</TableCell>
+                  <TableCell align="center" sx={{ width: "15rem" }}>
+                    사진
+                  </TableCell>
                   <TableCell align="center">별점</TableCell>
                   <TableCell align="center">상품</TableCell>
                   <TableCell align="center" sx={{ width: "15rem" }}>
@@ -78,9 +78,13 @@ const ReviewList = () => {
                       <TableCell align="center">
                         <img
                           key={item.reviewImgNo}
-                          src={`http://localhost:8081${item.reviewImg[0].reviewImgPath}${item.reviewImg[0].reviewImgRename}`}
-                          alt={item.reviewImgOriginName} // 원본 이름을 alt로 사용
-                          style={{ width: "100px", height: "100px" }} // 원하는 스타일 적용
+                          src={
+                            item.reviewImg && item.reviewImg.length > 0 // 이미지 배열이 존재하고 길이가 0보다 큰 경우
+                              ? `http://localhost:8081${item.reviewImg[0].reviewImgPath}${item.reviewImg[0].reviewImgRename}`
+                              : null // 이미지가 없으면 null
+                          }
+                          alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."} // 이미지가 없을 때 대체 텍스트
+                          style={{ width: "5rem", height: "5rem" }}
                         />
                       </TableCell>
                       <TableCell align="center">{item.reviewStar}</TableCell>

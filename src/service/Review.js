@@ -15,12 +15,11 @@ export const getReviewByreviewNo = async (reviewNo) => {
   return response.data;
 };
 
-export const UpdateReview = async ({ formData }) => {
-  // const data = { reviewStar, reviewContent, reviewVisible };\
-  console.log(formData);
-  const reviewNo = formData.reviewNo;
-  const response = await AuthApi.put(`/api/review/${reviewNo}`, formData);
+export const UpdateReview = async (reviewNo, formData) => {
+  const response = await AuthUploadApi.put(`/api/review/${reviewNo}`, formData);
   return response.data;
 };
 
 export const DeleteReview = (reviewNo) => AuthApi.delete(`/api/review/${reviewNo}`);
+
+export const DeleteImage = (reviewImgNo) => AuthApi.delete(`/api/review/deleteImage/${reviewImgNo}`);

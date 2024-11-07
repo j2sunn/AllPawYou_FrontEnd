@@ -64,9 +64,7 @@ const UserReviewCreate = () => {
       return;
     }
 
-    // const newImages = files.map((file) => URL.createObjectURL(file));
     setImages((prevImages) => [...prevImages, ...files]);
-    // console.log("여기여기"+e.target.files);
   };
 
   const handleRemoveImage = (index) => {
