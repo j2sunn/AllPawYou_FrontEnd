@@ -156,7 +156,6 @@ const Cart = () => {
             </TotalPriceContent>
             <Button variant="contained" sx={{fontSize: '1.5rem', marginTop: '1.5rem'}} 
               onClick={navigatePayment}>
-                {/* navigator에 상품정보, 총 가격 실어서 보내기 */}
                 구매하기
             </Button>
           </TotalPrice>
