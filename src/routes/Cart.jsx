@@ -32,6 +32,7 @@ const Cart = () => {
     const arr = productList;
     const response = await getProductByProductId(productId);
     arr.push({...response, quantity: 1, cartId});
+    arr.sort((a,b)=>a.cartId-b.cartId);
     setProductList([...arr]);
   }
 
@@ -91,7 +92,7 @@ const Cart = () => {
   //결제 준비 페이지로 이동
   const navigatePayment = () => {
     const checkedData = productList.filter(i => i.checked);
-    if(checkedData.length == 0){
+    if(checkedData.length == 0 || totalPrice == 0){
       alert("선택된 상품이 없습니다.");
     } else {
       navigator("/payment", {
@@ -156,7 +157,6 @@ const Cart = () => {
             </TotalPriceContent>
             <Button variant="contained" sx={{fontSize: '1.5rem', marginTop: '1.5rem'}} 
               onClick={navigatePayment}>
-                {/* navigator에 상품정보, 총 가격 실어서 보내기 */}
                 구매하기
             </Button>
           </TotalPrice>

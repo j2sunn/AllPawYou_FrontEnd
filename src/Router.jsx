@@ -31,6 +31,7 @@ import ShoppingDetail from "./routes/ShoppingDetail";
 import AddProduct from "./routes/AddProduct";
 import ProductList from "./routes/ProductList";
 import BoardList from "./routes/BoardList";
+import UpdateProduct from "./routes/UpdateProduct";
 
 const Router = () => {
   return (
@@ -73,7 +74,9 @@ const Router = () => {
           <Route path="/shopping" element={<ShoppingMain />} />
           <Route path="/shoppingDetail/:id" element={<ShoppingDetail />} />
           <Route path="/admin/addproduct" element={<AddProduct />} />
+          <Route path="/admin/updateproduct/:id" element={<UpdateProduct />} />
           <Route path="/admin/productlist" element={<ProductList />} />
+
 
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />

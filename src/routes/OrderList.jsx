@@ -5,6 +5,7 @@ import { orderListByTid } from "../service/OrderService";
 import { paymentCancel, payments } from "../service/PaymentService";
 import { useNavigate } from "react-router-dom";
 import { getProductByProductId } from "../service/ProductService";
+import AdminSideBar from "../components/common/AdminSideBar";
 
 const OrderList = () => {
   const navigator = useNavigate();
@@ -60,9 +61,9 @@ const OrderList = () => {
   return (
     <>
       <Container>
-        <Title>주문 목록</Title>
+        <AdminSideBar />
         <Content>
-          <SideBar>사이드바</SideBar>
+          <Title>주문 목록</Title>
           <Payments>
             {paymentList.map((payment) => {
               return (
@@ -117,29 +118,27 @@ const OrderList = () => {
 export default OrderList;
 
 const Container = styled.div`
+  width: 100%;
   min-height: 600px;
-  margin: 2rem 10rem;
-`;
-
-const Title = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 1.5rem 0;
+  margin: 2rem 4rem;
+  display: flex;
 `;
 
 const Content = styled.div`
   width: 100%;
   display: flex;
-`;
-
-const SideBar = styled.div`
-  width: 25%;
-  height: 500px;
-  border: 1px solid black;
+  flex-direction: column;
+  padding-left: 5rem;
+  `;
+  
+const Title = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1.5rem 3rem;
 `;
 
 const Payments = styled.div`
-  width: 75%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
