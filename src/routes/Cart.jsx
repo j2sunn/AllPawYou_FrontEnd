@@ -77,7 +77,7 @@ const Cart = () => {
     setProductList(arr);
   }
 
-  // -버튼 동작
+  // - 버튼 동작
   const minus = (event) => {
     if(event.target.value <= 1){
       console.log('err');
@@ -113,7 +113,6 @@ const Cart = () => {
     //cartItems 반복문 돌려서 상품 상세 요청
     if(cartItems.length >= 1){
       cartItems.forEach((item) => {
-        //상품 상세 api 데이터에 수량, cartId도 추가해서 push하기
         loadProductList(item.productId, item.cartId);
       })
     }

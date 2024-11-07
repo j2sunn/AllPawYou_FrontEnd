@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { orderListByTid } from "../service/OrderService";
 import { paymentCancel, payments } from "../service/PaymentService";
 import { useNavigate } from "react-router-dom";
+import { getProductByProductId } from "../service/ProductService";
 
 const OrderList = () => {
   const navigator = useNavigate();
@@ -17,16 +18,25 @@ const OrderList = () => {
     response.forEach(i => loadOrderList(i.tid, i.totalPrice));
   }
 
+  //주문 목록 (orderNo순으로 정렬)
   const loadOrderList = async(tid, totalPrice) => {
     const arr = paymentList;
     const response = await orderListByTid(tid);
     response[0] = {...response[0], totalPrice};
-    console.log(response);
     arr.push(response);
     arr.sort((a,b)=>b[0].orderNo-a[0].orderNo);
     setPaymentList([...arr]);
   }
 
+  //상품 상세
+  const loadProductDetail = async(productId, index1, index2) => {
+    const arr = paymentList;
+    const response = await getProductByProductId(productId);
+    arr[index1][index2] = {...response, ...arr[index1][index2]};
+    setPaymentList([...arr]);
+  }
+
+  //결제 취소
   const cancelPayment = async(data) => {
     console.log(data);
     const response = await paymentCancel(data);
@@ -37,11 +47,21 @@ const OrderList = () => {
     loadPayments();
   }, []);
 
+  useEffect(()=>{
+    paymentList.forEach((product, index1) => {
+      if(!paymentList[index1][0].name){
+        product.forEach((item, index2) => {
+          loadProductDetail(item.productId, index1, index2);
+        })
+      }
+      })
+  }, [paymentList]);
+
 
   return (
     <>
       <Container>
-        <Title onClick={()=>console.log(paymentList)}>주문 목록</Title>
+        <Title>주문 목록</Title>
         <Content>
           <SideBar>사이드바</SideBar>
           <Payments>
@@ -61,9 +81,9 @@ const OrderList = () => {
                         <OrderInfo>
                           <ProductImg as="div" />
                           <Detail>
-                            <div>제품명</div>
+                            <div>{order?.name}  ({order.quantity}개)</div>
                             <div>설명</div>
-                            <div>가격</div>
+                            <div>총 가격 : {order?.price * order?.quantity}원</div>
                           </Detail>
                         </OrderInfo>
                         <Buttons>
