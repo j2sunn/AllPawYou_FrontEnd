@@ -1,9 +1,16 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const OrderDetail = () => {
   const {state} = useLocation();
+  const [user, setUser] = useState({
+    username: localStorage.getItem("username"),
+    email: localStorage.getItem("email"),
+    phone: localStorage.getItem("phone"),
+    address: localStorage.getItem("address")
+  });
 
   console.log(state.payment);
 
@@ -22,9 +29,9 @@ const OrderDetail = () => {
                     <OrderInfo>
                       <ProductImg as="div" />
                       <Detail>
-                        <div>{order.productId}</div>
+                        <div>{order.name} ({order.quantity}개)</div>
                         <div>설명</div>
-                        <div>가격</div>
+                        <div>총 가격 : {order?.price * order?.quantity}원</div>
                       </Detail>
                     </OrderInfo>
                     <Buttons>
@@ -41,15 +48,15 @@ const OrderDetail = () => {
               <Table>
                 <Tr>
                   <Th>이름</Th>
-                  <Td>asd</Td>
+                  <Td>{user?.username}</Td>
                 </Tr>
                 <Tr>
                   <Th>연락처</Th>
-                  <Td>01000000000</Td>
+                  <Td>{user?.phone}</Td>
                 </Tr>
                 <Tr>
                   <Th>배송지 주소</Th>
-                  <Td>asdasd</Td>
+                  <Td>{user?.address}</Td>
                 </Tr>
               </Table>
             </InfoContainer>
@@ -63,7 +70,7 @@ const OrderDetail = () => {
                 </Tr>
                 <Tr>
                   <Th>결제 금액</Th>
-                  <Td>{state.payment[0].totalPrice}</Td>
+                  <Td>{state.payment[0].totalPrice}원</Td>
                 </Tr>
               </Table>
             </InfoContainer>

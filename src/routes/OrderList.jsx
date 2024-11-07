@@ -49,7 +49,6 @@ const OrderList = () => {
 
   useEffect(()=>{
     paymentList.forEach((product, index1) => {
-      console.log(paymentList);
       if(!paymentList[index1][0].name){
         product.forEach((item, index2) => {
           loadProductDetail(item.productId, index1, index2);
@@ -82,9 +81,9 @@ const OrderList = () => {
                         <OrderInfo>
                           <ProductImg as="div" />
                           <Detail>
-                            <div>{order?.name}</div>
+                            <div>{order?.name}  ({order.quantity}개)</div>
                             <div>설명</div>
-                            <div>{order?.price * order?.quantity}원</div>
+                            <div>총 가격 : {order?.price * order?.quantity}원</div>
                           </Detail>
                         </OrderInfo>
                         <Buttons>
