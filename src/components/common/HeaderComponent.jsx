@@ -29,7 +29,7 @@ const HeaderComponent = () => {
               <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
 
           
-              <NavItem onClick={() => navigator("/shoppingMain")}>쇼핑</NavItem>
+              <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
 
               {ACCESS_TOKEN ? (
                 <>
