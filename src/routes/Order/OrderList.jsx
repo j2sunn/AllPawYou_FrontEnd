@@ -1,19 +1,20 @@
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { orderListByTid } from "../service/OrderService";
-import { paymentCancel, payments } from "../service/PaymentService";
+import { orderListByTid } from "../../service/OrderService";
+import { paymentCancel, paymentsByUserNo } from "../../service/PaymentService";
 import { useNavigate } from "react-router-dom";
-import { getProductByProductId } from "../service/ProductService";
-import AdminSideBar from "../components/common/AdminSideBar";
+import { getProductByProductId } from "../../service/ProductService";
+import MypageSideBar from "../../components/common/MypageSideBar";
 
 const OrderList = () => {
   const navigator = useNavigate();
+  const userNo = localStorage.getItem("no");
   const [paymentList, setPaymentList] = useState([]);
 
   const loadPayments = async () => {
     //결제 목록
-    const response = await payments();
+    const response = await paymentsByUserNo(userNo);
 
     //결제 별 주문 목록
     response.forEach((i) => loadOrderList(i.tid, i.totalPrice));
@@ -61,7 +62,7 @@ const OrderList = () => {
   return (
     <>
       <Container>
-        <AdminSideBar />
+        <MypageSideBar />
         <Content>
           <Title>주문 목록</Title>
           <Payments>

@@ -5,6 +5,7 @@ import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { listProducts, DeleteProduct } from "../service/ProductService";
 import { useNavigate } from "react-router-dom";
+import AdminSideBar from "../components/common/AdminSideBar";
 
 const ProductList = () => {
 
@@ -47,22 +48,7 @@ const ProductList = () => {
     return (
         <>
             <Container>
-                <SideBar>
-                    <SideBarTitle>관리자 메뉴</SideBarTitle>
-                    <SimpleTreeView>
-                        <TreeItem itemId="0" label="회원관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-                        <TreeItem itemId="board" label="게시판 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-                            <TreeItem itemId="1" label="공지사항" />
-                            <TreeItem itemId="2" label="자유게시판" />
-                            <TreeItem itemId="3" label="FAQ" />
-                        </TreeItem>
-                        <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-                            <TreeItem itemId="4" label="상품 관리" />
-                            <TreeItem itemId="5" label="매출 관리" />
-                            <TreeItem itemId="6" label="주문 관리" />
-                        </TreeItem>
-                    </SimpleTreeView>
-                </SideBar>
+                <AdminSideBar />
                 <Content>
                     <Title>상품 관리</Title>
                     <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
@@ -113,15 +99,6 @@ const Container = styled.div`
   display: flex;
 `;
 
-const SideBar = styled.div`
-  width: 25%;
-  height: 70vh;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const SideBarTitle = styled.div`
   font-size: 2rem;
   padding-bottom: 3rem;
@@ -133,7 +110,7 @@ const Title = styled(SideBarTitle)`
 `;
 
 const Content = styled.div`
-  width: 100%;
+  width: 75%;
 `;
 
 const Pages = styled.div`
