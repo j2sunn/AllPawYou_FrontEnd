@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AdminSideBar from "../../components/common/AdminSideBar";
 import { fetchUserByNo } from "../../service/UserAPI";
@@ -10,6 +10,7 @@ const OrderDetail = () => {
   const { state } = useLocation();
   const [user, setUser] = useState({});
   const role = localStorage.getItem("role");
+  const navigate = useNavigate();
 
   console.log(state?.payment);
 
@@ -25,7 +26,10 @@ const OrderDetail = () => {
       <Container>
         {role == "ROLE_ADMIN" ? <AdminSideBar /> : <MypageSideBar />}
         <Content>
-          <Title>주문 상세</Title>
+          <div style={{display:"flex", justifyContent: 'space-between', alignItems:' center', width: '80%'}}>
+            <Title>주문 상세</Title>
+            <Button variant="outlined" sx={{width: '10rem', height: '3rem'}} onClick={()=>navigate(-1)}>뒤로가기</Button>
+          </div>
           <Order>
             <InfoTitle>상품 정보</InfoTitle>
             <InfoContainer>
@@ -33,7 +37,7 @@ const OrderDetail = () => {
                 return (
                   <Product key={order?.orderNo}>
                     <OrderInfo>
-                      <ProductImg as="div" />
+                      <ProductImg src={`http://localhost:8081${order.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지"/>
                       <Detail>
                         <div>
                           {order?.name} ({order?.quantity}개)
@@ -150,7 +154,6 @@ const OrderInfo = styled.div`
 const ProductImg = styled.img`
   width: 120px;
   height: 120px;
-  border: 1px solid black;
   margin-right: 30px;
 `;
 

@@ -144,14 +144,14 @@ const Cart = () => {
                 return (
                   <Product key={product.id}>
                     <Checkbox sx={{fontSize: '1.5rem'}} id={product.id} onChange={()=>handleCheckBox(event)}/>
-                    <ProductImg as="div" />
+                    <ProductImg src={`http://localhost:8081${product.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지"/>
                     <ProductName>{product.name}</ProductName>
                     <Quantity>
                       <BiMinusCircle style={{cursor:'pointer'}} id={product.id} onClick={minus} />
                       <Input type="number" id={product.id} onChange={handleQuantity} value={product.quantity}/>
                       <BiPlusCircle style={{cursor:'pointer'}} id={product.id} onClick={plus} />
                     </Quantity>
-                    <ProductPrice>{product.price * product.quantity}</ProductPrice>
+                    <ProductPrice>{product.price * product.quantity}원</ProductPrice>
                     <Button variant="outlined" color="error" sx={{height:'2.5rem'}} onClick={()=>deleteCartItem(product.cartId)}>삭제</Button>
                   </Product>
                 );
@@ -214,7 +214,6 @@ const ProductImg = styled.img`
   width: 100px;
   height: 100px;
   margin: 0 2rem;
-  border: 1px solid black;
 `;
 
 const ProductName = styled.div`
