@@ -50,12 +50,10 @@ export const uploadBoard = (formData,navigator)=>{
 //         });
 // }
 //글 상세조회
-export const loadData = async (boardNo,setBoardData,setCommentData) => {
+export const loadData = async (boardNo) => {
     console.log("heyhey");
     const response = await axios.get('http://localhost:8081/board/' + boardNo);
-    console.log("클라이언트 보드 : "+response.data);
-    setBoardData(response.data);
-    setCommentData(response.data.commentList);
+    return response.data;
 };
 
 //글 목록 전체조회

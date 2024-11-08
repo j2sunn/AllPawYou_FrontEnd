@@ -40,6 +40,25 @@ const BoardDetail = ()=>{
     // 기본값을 0으로 설정
     let loginEmail=useRef("");
     const navigate = useNavigate();
+
+    const loadBoardData = async() => {
+        const response = await loadData(bNo.current);
+
+        if (response) {
+            if (response.likeOrNot == 1) {
+                // document.querySelector("#like").classList.add("liked");  // 좋아요 상태가 1이면 빨간색으로 설정
+                setLikeStatus(1);
+            } else {
+                // document.querySelector("#like").classList.remove("liked");  // 좋아요 상태가 0이면 기본 상태로 설정
+                setLikeStatus(0);
+            }
+        }
+
+        setBoardData(response);
+        setCommentData(response.commentList);
+        
+    }
+
     useEffect(() => {
         loginEmail.current = localStorage.getItem('email');  // 로컬 스토리지에서 토큰을 가져옵니다.
         console.log("토큰토큰 : "+loginEmail);
@@ -49,21 +68,14 @@ const BoardDetail = ()=>{
         console.log("bNo : "+bNo.current); 
         // selectOne(boardNo,setBoardData);
 
-        loadData(bNo.current,setBoardData,setCommentData);
-        console.log("data : "+boardData);    
+        loadBoardData();
+        
+        console.log(boardData);    
         console.log("loginEmail:", loginEmail.current);
         // console.log("comment.email:", comment.email);
         
             // setLikeStatus(boardData.likeOrNot);
-            if (boardData) {
-                if (boardData.likeOrNot == 1) {
-                    // document.querySelector("#like").classList.add("liked");  // 좋아요 상태가 1이면 빨간색으로 설정
-                    setLikeStatus(1);
-                } else {
-                    // document.querySelector("#like").classList.remove("liked");  // 좋아요 상태가 0이면 기본 상태로 설정
-                    setLikeStatus(0);
-                }
-            }
+            
         
     }, [params?.boardNo]);  // params.boardNo가 변경될 때마다 실행
     // const imgList = boardData.imgList;
@@ -71,7 +83,6 @@ const BoardDetail = ()=>{
     //     console.log(imgList[i].boardImagePath+imgList[i].boardImageRename);
     // }
     // console.log("최종 넘어온 boardData : "+boardData.imgList);
-    console.log("문자열 같은지 비교 : "+("하하하"=="하하하"));
     const handleContentChange = (e)=>{
         setComment(e.target.value);
         
@@ -93,7 +104,6 @@ const BoardDetail = ()=>{
             commentCount: prevBoardData.commentCount + 1
         }));
     }
-    console.log("=======================");
     // for( let img of (boardData.imgList)){
     //     console.log(img.boardImagePath+img.boardImageRename);
     // }
