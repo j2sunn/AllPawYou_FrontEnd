@@ -39,7 +39,7 @@ const AddProduct = () => {
         if (id) {
             getProductByProductId(id)
                 .then(response => {
-                    setProductInfo(response.data);
+                    setProductInfo(response);
                     console.log("상품정보 : ", response.data);
                 }).catch((error) => {
                     console.log("에러발생 : ", error);
@@ -49,42 +49,23 @@ const AddProduct = () => {
     }, [id]);
 
     useEffect(() => {
-        if(productInfo){
+        if (productInfo) {
             setThumbnail({
-                file : productInfo.productFileDTO.find(file => file.productFileTypeId === 1)?.imageRename,
-                preview : `http://localhost:8081${productInfo.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`,
+                file: productInfo.productFileDTO.find(file => file.productFileTypeId === 1)?.imageRename,
+                preview: `http://localhost:8081${productInfo.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`,
             });
 
             const detailImages = productInfo.productFileDTO
-            .filter(file => file.productFileTypeId === 2)
-            .map(file => ({
-                file: file.imageRename,
-                preview: `http://localhost:8081${productInfo.productFileDTO.find(file => file.productFileTypeId === 2)?.imagePath}`,
-            }));
+                .filter(file => file.productFileTypeId === 2)
+                .map(file => ({
+                    file: file.imageRename,
+                    preview: `http://localhost:8081${productInfo.productFileDTO.find(file => file.productFileTypeId === 2)?.imagePath}`,
+                }));
 
-        setImages(detailImages);
+            setImages(detailImages);
         }
     }, [productInfo]);
 
-  
-
-    // 상품명 변경 핸들러
-    const handleNameChange = (event) => {
-        setProductName(event.target.value);
-    };
-
-    // 가격 변경 핸들러
-    const handlePriceChange = (event) => {
-        setProductPrice(event.target.value);
-    };
-
-    const handleChange = (event) => {
-        setIsPublic(event.target.value);
-    };
-
-    const handleCategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
-    };
 
     // 썸네일 이미지 업로드 핸들러 (하나만 업로드 가능)
     const handleThumbnailChange = (e) => {
@@ -94,6 +75,7 @@ const AddProduct = () => {
                 file: file, // 실제 파일 객체 저장
                 preview: URL.createObjectURL(file), // 미리보기 URL 저장
             });
+            console.log("새 썸네일 파일:", file);
         }
     };
 
@@ -114,6 +96,7 @@ const AddProduct = () => {
         }));
 
         setImages((prevImages) => [...prevImages, ...newImages]);
+        console.log("추가된 상세 이미지 파일들:", files);
     };
 
     const handleRemoveDetailImage = (index) => {
@@ -125,7 +108,7 @@ const AddProduct = () => {
         const { value } = event.target;
         setProductInfo(prev => ({ ...prev, [key]: value }));
 
-      };
+    };
 
     const doSubmit = () => {
         const formData = new FormData();
@@ -136,10 +119,12 @@ const AddProduct = () => {
 
         if (thumbnail.file) {
             formData.append("thumbImage", thumbnail.file);
+            console.log(thumbnail.file);
         }
 
         images.forEach((imageObj) => {
             formData.append("detailImage", imageObj.file);
+            console.log(imageObj.file);
         });
 
 
@@ -147,7 +132,7 @@ const AddProduct = () => {
             // 상품 수정 API 호출
             updateProduct(id, formData);
             // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
-            navigator('/shopping');  // 이동할 페이지 URL을 설정
+            navigator('/admin/productlist');  // 이동할 페이지 URL을 설정
             alert("상품이 수정되었습니다.");
         } catch (error) {
             console.error("상품 등록 실패:", error);
@@ -177,9 +162,9 @@ const AddProduct = () => {
                         </One>
                         <Two>
                             <h5>제목<span>*</span></h5>
-                            <TitleInput id="productName" value={productInfo.name}  onChange={(event) => updateHandler(event, 'name')} />
+                            <TitleInput id="productName" value={productInfo.name} onChange={(event) => updateHandler(event, 'name')} />
                             <h5>가격<span>*</span></h5>
-                            <TitleInput id="productPrice" value={productInfo.price}  onChange={(event) => updateHandler(event, 'price')} />
+                            <TitleInput id="productPrice" value={productInfo.price} onChange={(event) => updateHandler(event, 'price')} />
                         </Two>
                         <Three>
                             <h5>썸네일 사진 업로드</h5>
@@ -221,7 +206,7 @@ const AddProduct = () => {
                         </Three>
                         <Three>
                             <h5>상품 공개 여부</h5>
-                            <RadioGroup value={productInfo.releaseStatus}  onChange={(event) => updateHandler(event, 'releaseStatus')} row>
+                            <RadioGroup value={productInfo.releaseStatus} onChange={(event) => updateHandler(event, 'releaseStatus')} row>
                                 <FormControlLabel value="OPEN" control={<Radio />} label="공개" />
                                 <FormControlLabel value="CLOSE" control={<Radio />} label="비공개" />
                             </RadioGroup>

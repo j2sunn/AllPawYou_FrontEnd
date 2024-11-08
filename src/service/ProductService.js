@@ -16,16 +16,23 @@ export const listProducts = () => axios.get(REST_API_BASE_URL);
 
 
 export const getProductByProductId = async (id) => {
-    const response = await axios.get(`${REST_API_BASE_URL}/${id}`, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': token ? `Bearer ${token}` : '' // 인증이 필요하면 헤더에 JWT 토큰 포함
-        }
-    });
-    return response.data;
+
+    try {
+        const response = await axios.get(`${REST_API_BASE_URL}/${id}`, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                // 'Authorization': token ? `Bearer ${token}` : '' // 인증이 필요하면 헤더에 JWT 토큰 포함
+            }
+        });
+        console.log("getProductByProductId" , response.data);  // 응답 데이터 확인
+        return response.data;
+    } catch (error) {
+        console.error("데이터를 가져오는 중 에러 발생:", error);
+        throw error;  // 에러를 상위 함수로 전달
+    }
 };
 
-export const updateProduct = (id, formData) => axios.put(`${REST_API_BASE_URL}/update/${id}`, formData,
+export const updateProduct = (id, formData) => axios.post(`${REST_API_BASE_URL}/update/${id}`, formData,
      {
     headers: {
         'Content-Type': 'multipart/form-data',
