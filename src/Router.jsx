@@ -102,7 +102,7 @@ const Router = () => {
           {/* 사용자 후기 리스트 */}
           <Route path="/review/myReview" element={<UserReviewList />} />
           {/* 사용자 후기 작성 */}
-          <Route path="/review/createReview" element={<UserReviewCreate />} />
+          <Route path="/review/createReview/:orderName" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
 
