@@ -12,6 +12,7 @@ const PaymentCheck = () => {
   console.log(state);
   
   const [user, setUser] = useState({
+    no: localStorage.getItem("no"),
     username: localStorage.getItem("username"),
     email: localStorage.getItem("email"),
     phone: localStorage.getItem("phone"),
@@ -19,7 +20,7 @@ const PaymentCheck = () => {
   });
 
   const [orderList, setOrderList] = useState([]);
-  const [data, setData] = useState({userNo: 1, totalPrice: state.totalPrice, itemName: ''});
+  const [data, setData] = useState({userNo: user.no, totalPrice: state.totalPrice, itemName: ''});
 
   const payment = (data) => {
     paymentReady(data);
