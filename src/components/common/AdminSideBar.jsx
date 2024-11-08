@@ -26,7 +26,8 @@ const AdminSideBar = () => {
             onClick={() => navigate("/admin/noticeList")}
             sx={{ "& .MuiTreeItem-label": { fontWeight: "100" } }}
           />
-          <TreeItem itemId="2" label="자유게시판" sx={{ "& .MuiTreeItem-label": { fontWeight: "100" } }} />
+          <TreeItem itemId="2" label="자유게시판" sx={{ "& .MuiTreeItem-label": { fontWeight: "100" } }} 
+            onClick={() => navigate("/admin/boardlist")}/>
           <TreeItem itemId="3" label="FAQ" sx={{ "& .MuiTreeItem-label": { fontWeight: "100" } }} />
         </TreeItem>
         <TreeItem

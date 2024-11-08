@@ -12,6 +12,15 @@ const BoardList = ()=>{
         console.log("크카크카크")
         loadList(setBoardList);
     },[]);
+    const formatContent = (content) => {
+        // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
+        const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
+        
+        // 첫 10자만 자르고, 내용이 더 길면 "..." 추가
+        return singleLineContent.length > 10 
+            ? `${singleLineContent.slice(0, 10)}...` 
+            : singleLineContent;
+    };
     return(
         <>
             <Container>
@@ -54,7 +63,10 @@ const BoardList = ()=>{
                                             ? "고양이" 
                                             : "기타"}</Div>
                                 <p className="boardTitle">{board.boardTitle}</p>
-                                <p className="boardContent">{board.boardContent}</p>
+                                {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
+                                <p className="boardContent"
+                                    // dangerouslySetInnerHTML={{ __html: board.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }}
+                                    > {formatContent(board.boardContent)}</p>
                                 <div className="boardInfo">
                                     <img src="http://localhost:8081/images/board/happy.png"/>
                                     <p className="boardNick">{board.boardUsername}</p>
