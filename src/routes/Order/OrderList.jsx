@@ -15,6 +15,7 @@ const OrderList = () => {
   const loadPayments = async () => {
     //결제 목록
     const response = await paymentsByUserNo(userNo);
+    console.log(response);
 
     //결제 별 주문 목록
     response.forEach((i) => loadOrderList(i.tid, i.totalPrice));
@@ -51,7 +52,7 @@ const OrderList = () => {
 
   useEffect(() => {
     paymentList.forEach((product, index1) => {
-      if (!paymentList[index1][0].name) {
+      if (paymentList[index1][0]?.name == undefined) {
         product.forEach((item, index2) => {
           loadProductDetail(item.productId, index1, index2);
         });
@@ -86,12 +87,12 @@ const OrderList = () => {
                   </PaymentHeader>
                   {payment.map((order) => {
                     return (
-                      <Product key={order.orderNo}>
+                      <Product key={order?.orderNo}>
                         <OrderInfo>
                           <ProductImg as="div" />
                           <Detail>
                             <div>
-                              {order?.name} ({order.quantity}개)
+                              {order?.name} ({order?.quantity}개)
                             </div>
                             <div>설명</div>
                             <div>총 가격 : {order?.price * order?.quantity}원</div>

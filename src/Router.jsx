@@ -36,6 +36,7 @@ import BoardList from "./routes/BoardList";
 import UpdateProduct from "./routes/UpdateProduct";
 import AdminOrderList from "./routes/Order/AdminOrderList";
 import Chart from "./components/chart/Chart";
+import UpdateMyPage from "./routes/UpdateMyPage";
 
 const Router = () => {
   return (
@@ -57,6 +58,7 @@ const Router = () => {
           <Route path="/login/error" element={<LoginError />} />
 
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/update" element={<UpdateMyPage />} />
           <Route path="/findEmail" element={<FindEmail />} />
           <Route path="/findEmailResult" element={<FindEmailResult />} />
           <Route path="/resetPwd" element={<ResetPassword />} />

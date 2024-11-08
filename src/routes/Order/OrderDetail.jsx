@@ -1,20 +1,23 @@
 import styled from "styled-components";
 import { Button, Table } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminSideBar from "../../components/common/AdminSideBar";
+import { fetchUserByNo } from "../../service/UserAPI";
 
 const OrderDetail = () => {
   const {state} = useLocation();
-  const [user, setUser] = useState({
-    username: localStorage.getItem("username"),
-    email: localStorage.getItem("email"),
-    phone: localStorage.getItem("phone"),
-    address: localStorage.getItem("address")
-  });
+  const [user, setUser] = useState({});
 
   console.log(state.payment);
 
+  const getUserByNo = async(userNo) => {
+    const response = await fetchUserByNo(userNo);
+    setUser(response);
+  }
+  useEffect(()=>{
+    getUserByNo(state.payment[0].userNo);
+  },[]);
   return (
     <>
       <Container>
