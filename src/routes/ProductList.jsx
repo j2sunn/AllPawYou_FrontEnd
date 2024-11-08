@@ -4,7 +4,7 @@ import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { listProducts, DeleteProduct } from "../service/ProductService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AdminSideBar from "../components/common/AdminSideBar";
 
 const ProductList = () => {
@@ -38,7 +38,7 @@ const ProductList = () => {
     const removeProduct = async (id) => {
         try {
             await DeleteProduct(id);
-            getAllProducts();
+            await getAllProducts();
             alert("상품이 삭제되었습니다.");
         } catch (error) {
             console.log(error);
@@ -68,7 +68,8 @@ const ProductList = () => {
                                     <TableRow key={item.no}>
                                         <TableCell align="center" sx={{ width: '8rem' }}>{index + 1}</TableCell>
                                         <TableCell align="center" sx={{ width: '10rem' }}>{item.category}</TableCell>
-                                        <TableCell align="center" sx={{ width: '30rem' }}>{item.name}</TableCell>
+                                        <TableCell align="center" sx={{ width: '30rem' }}>
+                                            <Link to={`/shoppingDetail/${item.id}`} style={{textDecoration : 'none', textDecorationColor : 'inherit', color: 'inherit'}}>{item.name}</Link></TableCell>
                                         <TableCell align="center" sx={{ width: '10rem' }}>{item.price}</TableCell>
                                         <TableCell align="center" sx={{ width: '10rem' }}>{item.releaseStatus}</TableCell>
                                         <TableCell align="center" sx={{ width: "10rem" }} >
