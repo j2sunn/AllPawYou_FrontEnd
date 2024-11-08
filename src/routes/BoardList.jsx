@@ -2,54 +2,97 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosSearch } from "react-icons/io";
 import { AiOutlineLike } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {loadList} from "../service/BoardService";
+import { Button,TextField} from "@mui/material";
 const BoardList = ()=>{
     const navigator = useNavigate();
     const [boardList, setBoardList] = useState([]);
-    useState(()=>{
+    useEffect(()=>{
+        console.log("크카크카크")
         loadList(setBoardList);
     },[]);
     return(
         <>
             <Container>
                 <One>
-                    <div className="title">자유게시판</div>
-                    <div className="search"><IoIosSearch /></div>
+                    <div className="title"><span>자유게시판</span></div>
+                    <div style={{marginLeft: "auto"}} className="searchBox">
+                        <select style={{marginRight : "10px"}}>
+                            <option>제목</option>
+                            <option>내용</option>
+                            <option>작성자</option>
+                        </select>
+                        <TextField label="게시글 검색"
+                                id="search"
+                                variant="outlined"
+                                // value={values.email}
+                                placeholder="작성자/제목/내용"
+                                sx={{ width: "350px", paddingBottom: "10px" }}
+                                />
+                    </div>
                 </One>
                 <Two>
-                    <button>최신 순</button>
-                    <button>인기 순</button>
+                    {/* 최신순 인기순 할 땐 List<MyEntity> findAllByOrderByAAscBDesc(); 이용하기 */}
+                <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem', marginRight: '1rem', marginBottom: '1rem',height : '2rem'}} 
+                        >
+                최신순
+            </Button>
+            <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem', marginBottom: '1rem',height : '2rem'}} 
+                        >
+                인기순
+            </Button>
                 </Two>
                 <Three>
-                    {boardList?.map((board,index)=>(
-                        <Con key={index}>
+                    {boardList.length>0 ? boardList.map((board,index)=>(
+                        <Con key={index} onClick={()=>navigator(`/board/${board.boardNo}`)} style={{border : "1px solid gray", borderRadius : "10px", padding : "10px", marginBottom : "10px"}}>
                             {/*  Con을 반복하기 */}
                             <div className="first">
-                                <Div> 강아지</Div>
-                                <p className="boardTitle">피부에 검은 좁쌀같은 각질</p>
-                                <p className="boardContent">피부에 이런 좁쌀같은 각질이 발견되는데 관련 질병이 무엇이 있을 수 있나요ㅜㅜ</p>
+                                <Div> {board.category === 1 
+                                        ? "강아지" 
+                                        : board.category === 2 
+                                            ? "고양이" 
+                                            : "기타"}</Div>
+                                <p className="boardTitle">{board.boardTitle}</p>
+                                <p className="boardContent">{board.boardContent}</p>
                                 <div className="boardInfo">
                                     <img src="http://localhost:8081/images/board/happy.png"/>
-                                    <p className="boardNick">닉네임당근</p>
-                                    <p className="boardComment">댓글 : 2</p>
-                                    <p className="boardLike"><AiOutlineLike />200</p>
+                                    <p className="boardNick">{board.boardUsername}</p>
+                                    <p className="boardComment">댓글 : {board.commentCount}</p>
+                                    <p className="boardLike"><AiOutlineLike />{board.likeCount}</p>
                                     
                                 </div>
                             </div>
-                            <div className="second">
-                                <img src="http://localhost:8081/images/board/happy.png"/>
-                            </div>
+                            {
+                                board.imgRename ? (
+                                    <div className="second">
+                                        <img src={`http://localhost:8081/images/board/${board.imgRename}`}/>
+                                    </div>        
+                                ) : (
+                                    <>
+                                    </>
+                                )
+                            }
+                            
                         
                         
                         
                     </Con>
-                    ))}
+                    )) : (
+                        <>
+                            게시글이 존재하지 않습니다.
+                        </>
+                    )
+                }
                     
                     
                 </Three>
                 <Four>
-                    <button onClick={()=>navigator('/boardWrite')}>글 작성하기</button>
+                    
+                    <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginBottom : "2rem"}} 
+                        onClick={()=>navigator('/boardWrite')}>
+                글 작성하기
+            </Button>
                 </Four>
             </Container>
             
@@ -67,32 +110,35 @@ const Container = styled.div`
 `;
 const One = styled.div`
     width : 50%;
-    
+    display : flex;
+    .searchBox{
+        display : flex;
+        align-items : center;
+    }
     .title{
+        display : flex;
+        align-items: center;
         padding : 10px;
         border : 2px solid black;
         border-radius : 20px;
         width : 100px;
         text-align: center;
     }
-    .search{
-        border : 2px solid black;
-        border-radius : 20px;
-        width : 600px;
-        height : 50px;
-    }
+
 `;
 const Two = styled.div`
     width : 50%;
 `;
 const Three = styled.div`
     width : 50%;
+    
 `;
 const Con = styled.div`
     
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height : 170px;
     .first{
         display: flex;
         flex-direction : column;
@@ -134,6 +180,8 @@ const Con = styled.div`
 `;
 const Four = styled.div`
     width : 50%;
+    display: flex;
+    justify-content: flex-end;
 `;
 const Div = styled.div`
     background-color: #EEC759;
