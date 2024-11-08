@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Button, Table } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import AdminSideBar from "../components/common/AdminSideBar";
+import AdminSideBar from "../../components/common/AdminSideBar";
 
 const OrderDetail = () => {
   const {state} = useLocation();
