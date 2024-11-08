@@ -93,7 +93,7 @@ const ProductList = () => {
                         <Button variant="contained" sx={{ marginTop : '25px'}}
                         onClick={() => goAddProduct()}>상품 등록</Button>
                     </AddProductButton>
-                    <Pages>1 2 3 4 5 6</Pages>
+                    {/* <Pages>1 2 3 4 5 6</Pages> */}
                 </Content>
             </Container>
         </>
@@ -104,25 +104,30 @@ const ProductList = () => {
 export default ProductList;
 
 const Container = styled.div`
+  width: 100%;
+  min-height: 600px;
+  margin: 2rem 4rem;
   display: flex;
 `;
 
-const SideBarTitle = styled.div`
+const Content = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 5rem;
+  margin: 0 2rem;
+  `;
+  
+const Title = styled.div`
   font-size: 2rem;
   padding-bottom: 3rem;
-`;
-
-const Title = styled(SideBarTitle)`
   width: 90%;
   border-bottom: 3px solid #c4e1f6;
 `;
 
-const Content = styled.div`
-  width: 75%;
-`;
 
 const Pages = styled.div`
-  width: 90%;
+  width: 80%;
   margin-top: 3rem;
   display: flex;
   justify-content: center;

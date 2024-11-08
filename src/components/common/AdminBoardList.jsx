@@ -26,36 +26,36 @@ const AdminBoardList = ()=>{
         <Container>
                 <AdminSideBar />
                 <Content>
-                    <Title>상품 관리</Title>
+                    <Title>자유게시판 관리</Title>
                     {boardList ? (
                         <>
                             <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
                                 <Table>
                                     <TableHead sx={{ backgroundColor: "#EEC759" }}>
                                         <TableRow>
-                                            <TableCell align="center" sx={{ width: '8rem' }}>번호</TableCell>
-                                            <TableCell align="center" sx={{ width: '10rem' }}>제목</TableCell>
-                                            <TableCell align="center" sx={{ width: '30rem' }}>내용</TableCell>
+                                            <TableCell align="center" sx={{ width: '5rem' }}>번호</TableCell>
+                                            <TableCell align="center" sx={{ width: '20rem' }}>제목</TableCell>
+                                            <TableCell align="center" sx={{ width: '35rem' }}>내용</TableCell>
                                             <TableCell align="center" sx={{ width: '10rem' }}>작성자</TableCell>
                                             <TableCell align="center" sx={{ width: '10rem' }}>댓글 수</TableCell>
-                                            <TableCell align="center" sx={{ width: "15rem" }}>삭제</TableCell>
+                                            <TableCell align="center" sx={{ width: "8rem" }}>삭제</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {boardList.map((board, index) => (
                                             <TableRow key={board.boardNo} >
                                                 {/* {`공개여부 : ${board.boardVisible}`} */}
-                                                <TableCell align="center" sx={{ width: '8rem' }}>{board.boardNo}</TableCell>
-                                                <TableCell align="center" sx={{ width: '10rem' }}>
+                                                <TableCell align="center" sx={{ width: '5rem' }}>{board.boardNo}</TableCell>
+                                                <TableCell align="center" sx={{ width: '20rem' }}>
                                                     <Link to={`/board/${board.boardNo}`} style={{textDecoration : 'none', textDecorationColor : 'inherit', color: 'inherit'}}>
                                                         {board.boardTitle}
                                                     </Link>
                                                 </TableCell>
                                                 {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
-                                                <TableCell align="center" sx={{ width: '30rem' }}>{formatContent(board.boardContent)}</TableCell>
+                                                <TableCell align="center" sx={{ width: '25rem' }}>{formatContent(board.boardContent)}</TableCell>
                                                 <TableCell align="center" sx={{ width: '10rem' }}>{board.boardUsername}</TableCell>
                                                 <TableCell align="center" sx={{ width: '10rem' }}>{board.commentCount}</TableCell>
-                                                <TableCell align="center" sx={{ width: "10rem" }} >
+                                                <TableCell align="center" sx={{ width: "8rem" }} >
                                                     <Button variant="outlined" >삭제</Button>
                                                 </TableCell>
                                             </TableRow>
@@ -64,9 +64,9 @@ const AdminBoardList = ()=>{
                                 </Table>
                             </TableContainer>
                             <AddProductButton>
-                                <Button variant="contained" sx={{ marginTop : '25px'}}>상품 등록</Button>
+                                <Button variant="contained" sx={{ marginTop : '25px'}}>게시글 등록</Button>
                             </AddProductButton>
-                            <Pages>1 2 3 4 5 6</Pages>
+                            {/* <Pages>1 2 3 4 5 6</Pages> */}
                         </>
                     ) : (
                         <>
@@ -81,27 +81,35 @@ const AdminBoardList = ()=>{
         );
 }
 export default AdminBoardList;
+
 const Container = styled.div`
-    display: flex;
-`;
-const SideBarTitle = styled.div`
-    font-size: 2rem;
-    padding-bottom: 3rem;
-`;
-const Title = styled(SideBarTitle)`
-    width: 90%;
-    border-bottom: 3px solid #c4e1f6;
+  width: 100%;
+  min-height: 600px;
+  margin: 2rem 4rem;
+  display: flex;
 `;
 
 const Content = styled.div`
-    width: 75%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 5rem;
+  margin: 0 2rem;
+  `;
+  
+const Title = styled.div`
+  font-size: 2rem;
+  padding-bottom: 3rem;
+  width: 90%;
+  border-bottom: 3px solid #c4e1f6;
 `;
 
+
 const Pages = styled.div`
-    width: 90%;
-    margin-top: 3rem;
-    display: flex;
-    justify-content: center;
+  width: 80%;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
 `;
 
 const AddProductButton = styled.div`

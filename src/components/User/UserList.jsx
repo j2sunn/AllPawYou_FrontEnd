@@ -74,7 +74,7 @@ const UserList = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Pages>1 2 3 4 5 6</Pages>
+          {/* <Pages>1 2 3 4 5 6</Pages> */}
         </Content>
       </Container>
     </>
@@ -84,34 +84,30 @@ const UserList = () => {
 export default UserList;
 
 const Container = styled.div`
+  width: 100%;
+  min-height: 600px;
+  margin: 2rem 4rem;
   display: flex;
 `;
 
-const SideBar = styled.div`
-  width: 25%;
-  height: 70vh;
-  padding: 2rem;
+const Content = styled.div`
+  width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-`;
-
-const SideBarTitle = styled.div`
+  padding-left: 5rem;
+  margin: 0 2rem;
+  `;
+  
+const Title = styled.div`
   font-size: 2rem;
   padding-bottom: 3rem;
-`;
-
-const Title = styled(SideBarTitle)`
   width: 90%;
   border-bottom: 3px solid #c4e1f6;
 `;
 
-const Content = styled.div`
-  width: 100%;
-`;
 
 const Pages = styled.div`
-  width: 90%;
+  width: 80%;
   margin-top: 3rem;
   display: flex;
   justify-content: center;
