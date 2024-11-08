@@ -51,7 +51,7 @@ const AdminOrderList = () => {
 
   useEffect(() => {
     paymentList.forEach((product, index1) => {
-      if (!paymentList[index1][0].name) {
+      if (paymentList[index1][0]?.name == undefined) {
         product.forEach((item, index2) => {
           loadProductDetail(item.productId, index1, index2);
         });
@@ -66,20 +66,20 @@ const AdminOrderList = () => {
           <>
           <AdminSideBar />
           <Content>
-            <Title>주문 목록</Title>
+            <Title onClick={()=>console.log(paymentList)}>주문 목록</Title>
             <Payments>
-              {paymentList.map((payment) => {
+              {paymentList?.map((payment) => {
                 return (
-                  <Payment key={payment[0].tid}>
+                  <Payment key={payment[0]?.tid}>
                     <PaymentHeader>
-                      <PaymentTitle>{payment[0].createdAt.slice(0, 10)} 주문</PaymentTitle>
+                      <PaymentTitle>{payment[0]?.createdAt?.slice(0, 10)} 주문</PaymentTitle>
                       <div>
-                        <Button variant="outlined" onClick={() => navigator(`${payment[0].tid}`, { state: { payment } })}>
+                        <Button variant="outlined" onClick={() => navigator(`/order/${payment[0].tid}`, { state: { payment } })}>
                           주문 상세
                         </Button>
                       </div>
                     </PaymentHeader>
-                    {payment.map((order) => {
+                    {payment?.map((order) => {
                       return (
                         <Product key={order.orderNo}>
                           <OrderInfo>

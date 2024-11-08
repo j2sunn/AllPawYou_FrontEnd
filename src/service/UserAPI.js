@@ -42,6 +42,12 @@ export const fetchUser = async () => {
   return response.data;
 };
 
+/** 회원번호로 회원조회 API */
+export const fetchUserByNo = async (userNo) => {
+  const response = await UserApi.get(`/api/v1/user/${userNo}`);
+  return response.data;
+};
+
 /** 회원수정 API */
 export const updateUser = async (data) => {
   const response = await UserApi.put(`/api/v1/user`, data);
