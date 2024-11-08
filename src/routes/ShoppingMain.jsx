@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { listProducts } from "../service/ProductService";
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingMain = () => {
 
     const [product, setProducts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getAllProducts();
@@ -20,6 +22,10 @@ const ShoppingMain = () => {
                 console.log(error);
             });
     }
+
+    const goDetail = ( productId ) => {
+        navigate(`/shoppingDetail/${productId}`);
+    };
 
     return (
         <>
@@ -82,7 +88,7 @@ const ShoppingMain = () => {
                 <div id="goods-section">
                     <ul>
                         {product.map((item, index) => (
-                            <li key={index}>
+                            <li key={index}  onClick={() => goDetail(item.id)}>
                             <a>
                                 <div className="thumb_area">
                                     <span className="thumb">
