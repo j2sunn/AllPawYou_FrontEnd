@@ -52,15 +52,14 @@ const ShoppingDetail = () => {
     const [product, setProduct] = useState(null);
     const [files, setFiles] = useState(null);
 
-
+  
     useEffect(() => {
         if (id) {
             getProductByProductId(id)
                 .then(response => {
-                    setProduct(response.data);
-                    console.log("상품정보 : ", response.data);
+                    console.log("response 정보 : ", response);
+                    setProduct(response);
                     
-                    console.log("Product File DTO:", response.data.productFileDTO);
                 }).catch((error) => {
                     console.log("에러발생 : ", error);
                 });
