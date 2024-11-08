@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {loadData,addCommentService} from "../service/BoardService";
 import styled from "styled-components";
 import { AiOutlineLike } from "react-icons/ai";
+import { Button} from "@mui/material";
 const BoardDetail = ()=>{
     /*
     const { state } = useLocation();
@@ -35,7 +36,10 @@ const BoardDetail = ()=>{
     const [error, setError] = useState({});
     const [comment,setComment] = useState("");
     const [result,setResult] = useState("");
+    const [likeStatus, setLikeStatus] = useState(0); //로그인 회원이 좋아요 누른지 여부
+    // 기본값을 0으로 설정
     let loginEmail=useRef("");
+    const navigate = useNavigate();
     useEffect(() => {
         loginEmail.current = localStorage.getItem('email');  // 로컬 스토리지에서 토큰을 가져옵니다.
         console.log("토큰토큰 : "+loginEmail);
@@ -49,13 +53,25 @@ const BoardDetail = ()=>{
         console.log("data : "+boardData);    
         console.log("loginEmail:", loginEmail.current);
         // console.log("comment.email:", comment.email);
+        
+            // setLikeStatus(boardData.likeOrNot);
+            if (boardData) {
+                if (boardData.likeOrNot == 1) {
+                    // document.querySelector("#like").classList.add("liked");  // 좋아요 상태가 1이면 빨간색으로 설정
+                    setLikeStatus(1);
+                } else {
+                    // document.querySelector("#like").classList.remove("liked");  // 좋아요 상태가 0이면 기본 상태로 설정
+                    setLikeStatus(0);
+                }
+            }
+        
     }, [params?.boardNo]);  // params.boardNo가 변경될 때마다 실행
     // const imgList = boardData.imgList;
     // for(let i=0;i<imgList.length;i++){
     //     console.log(imgList[i].boardImagePath+imgList[i].boardImageRename);
     // }
     // console.log("최종 넘어온 boardData : "+boardData.imgList);
-    
+    console.log("문자열 같은지 비교 : "+("하하하"=="하하하"));
     const handleContentChange = (e)=>{
         setComment(e.target.value);
         
@@ -94,7 +110,23 @@ const BoardDetail = ()=>{
                 ...prevBoardData,
                 likeCount: response.data
             }));
+            // document.querySelector("#like").classList.toggle("liked");
+            setLikeStatus(prevLikeStatus => {
+                if (prevLikeStatus == 1) setLikeStatus(0); 
+                    else setLikeStatus(1);
+            })
         });
+    }
+    const boardDelete = (boardNo)=>{
+        console.log("boardNo : "+boardNo);
+        if(confirm("정말 삭제하시겠습니까?")){
+            axios.delete("/board/delete/"+boardNo)
+            .then(resp=>{
+                console.log(resp.data);
+                alert("삭제되었습니다.");
+                navigate("/boardList");
+            })
+        }
     }
     return (
         <>
@@ -130,8 +162,17 @@ const BoardDetail = ()=>{
                                 </div>
                                 <div className="btns">
                                     
-                                    <button>수정</button>
-                                    <button>삭제</button>
+                                            <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
+                                                    >
+                                            수정
+                                        </Button>
+                                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem'}} 
+                                            onClick={() => boardDelete(boardData.boardNo)}        >
+                                            삭제
+                                        </Button>
+                                
+                                
+                                
                                 </div>
                                 
                             </div>
@@ -170,7 +211,9 @@ const BoardDetail = ()=>{
                             <p>이미지가 없습니다.</p>
                         )}
                         <div className="like" onClick={()=>toggleLike(boardNo, loginEmail.current)}>
-                                    <AiOutlineLike style={{ fontSize: "60px", color: "red" }} />
+                                    <AiOutlineLike style={{ fontSize: "60px"}} id="like" 
+                                    className={likeStatus == 1 ? "liked" : ""}
+                                    />
                                     <p>{boardData.likeCount}</p>
                         </div>
                         </Three>
@@ -202,9 +245,14 @@ const BoardDetail = ()=>{
                                             </p>
                                         <div className="commentBtns">
                                             
-                                                        <button>수정</button>
-                                                        <button>삭제</button>
-                                            
+                                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
+                                                    >
+                                            수정
+                                        </Button>
+                                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem'}} 
+                                                    >
+                                            삭제
+                                        </Button>
                                             
                                         </div>
                                     </div>
@@ -309,6 +357,9 @@ const Three = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+    .liked{
+        color : red;
     }
 `;
 const Four = styled.div`
