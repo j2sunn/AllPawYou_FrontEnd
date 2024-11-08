@@ -35,7 +35,9 @@ import ProductList from "./routes/ProductList";
 import BoardList from "./routes/BoardList";
 import UpdateProduct from "./routes/UpdateProduct";
 import AdminOrderList from "./routes/Order/AdminOrderList";
+import Chart from "./components/chart/Chart";
 import UpdateMyPage from "./routes/UpdateMyPage";
+
 
 const Router = () => {
   return (
@@ -104,6 +106,8 @@ const Router = () => {
           <Route path="/review/createReview" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
+
+          <Route path="/chart" element={<Chart />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
