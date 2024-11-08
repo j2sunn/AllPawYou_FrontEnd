@@ -81,7 +81,10 @@ const PaymentApprove = () => {
               </Table>
             </DetailContainer>
           </div>
-          <Button variant="contained" sx={{width: '300px', marginBottom:'5rem'}} onClick={()=>navigator('/')}>쇼핑몰 메인 페이지로 이동</Button>
+          <Buttons>
+            <Button variant="contained" sx={{width: '250px', marginRight: '5rem'}} onClick={()=>navigator('/order')}>주문 목록으로</Button>
+            <Button variant="contained" sx={{width: '250px'}} onClick={()=>navigator('/shopping')}>쇼핑몰 메인 페이지로 이동</Button>
+          </Buttons>
         </Content>
       </Container>
     </>
@@ -144,4 +147,8 @@ const Th = styled.th`
 const Td = styled.td`
   display: block;
   padding-left: 2rem;
+`;
+
+const Buttons = styled.div`
+  display: flex;
 `;

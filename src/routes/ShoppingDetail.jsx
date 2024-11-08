@@ -52,7 +52,7 @@ const ShoppingDetail = () => {
     const [product, setProduct] = useState(null);
     const [files, setFiles] = useState(null);
     const [cart, setCart] = useState([]);
-    const [disabled, setDisabled] = useState(false);
+    const [goCart, setGoCart] = useState(false); 
     const [data, setData] = useState({
         userNo: localStorage.getItem("no"),
         productId: id,
@@ -70,7 +70,7 @@ const ShoppingDetail = () => {
             alert("해당 상품이 이미 장바구니에 있습니다.");
         }else{
             addCart(data);
-            setDisabled(true);
+            setGoCart(true);
             alert("장바구니에 추가되었습니다.");
         }
     }
@@ -172,9 +172,16 @@ const ShoppingDetail = () => {
                                 </Box>
                             </quantityIcon>
                             <div className="orderArea">
-                                <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="outlined" onClick={addCartItem} disabled={disabled}>
+                                {goCart ? (
+                                    <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="contained" onClick={()=>navigator("/cart")}>
+                                    장바구니로 가기
+                                </Button>
+                                ) : (
+                                    <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="outlined" onClick={addCartItem}>
                                     장바구니에 담기
                                 </Button>
+                                )}
+                                
                                 <Button sx={{ fontFamily: 'NanumSquareRound', width: '150px' }} variant="contained" onClick={navigatePayment}>
                                     바로 구매하기
                                 </Button>
