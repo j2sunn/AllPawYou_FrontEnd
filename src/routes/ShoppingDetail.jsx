@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductByProductId } from "../service/ProductService";
+import { addCart, getProductByProductId } from "../service/ProductService";
 import axios from "axios";
 
 function CustomTabPanel(props) {
@@ -51,7 +51,15 @@ const ShoppingDetail = () => {
     const { id } = useParams();   //url에서 id 파라미터 가져온다.
     const [product, setProduct] = useState(null);
     const [files, setFiles] = useState(null);
+    const [data, setData] = useState({
+        userNo: localStorage.getItem("no"),
+        productId: id,
+        quantity: 1
+    });
 
+    const addCartItem = () => {
+        addCart(data);
+    }
   
     useEffect(() => {
         if (id) {
@@ -109,7 +117,7 @@ const ShoppingDetail = () => {
                                 </Box>
                             </quantityIcon>
                             <div className="orderArea">
-                                <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="outlined">
+                                <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="outlined" onClick={addCartItem}>
                                     장바구니에 담기
                                 </Button>
                                 <Button sx={{ fontFamily: 'NanumSquareRound', width: '150px' }} variant="contained">
