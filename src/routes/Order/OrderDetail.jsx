@@ -7,19 +7,19 @@ import { fetchUserByNo } from "../../service/UserAPI";
 import MypageSideBar from "../../components/common/MypageSideBar";
 
 const OrderDetail = () => {
-  const {state} = useLocation();
+  const { state } = useLocation();
   const [user, setUser] = useState({});
   const role = localStorage.getItem("role");
 
   console.log(state?.payment);
 
-  const getUserByNo = async(userNo) => {
+  const getUserByNo = async (userNo) => {
     const response = await fetchUserByNo(userNo);
     setUser(response);
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     getUserByNo(state?.payment[0]?.userNo);
-  },[]);
+  }, []);
   return (
     <>
       <Container>
@@ -29,27 +29,28 @@ const OrderDetail = () => {
           <Order>
             <InfoTitle>상품 정보</InfoTitle>
             <InfoContainer>
-
-            {
-              state?.payment?.map(order => {
+              {state?.payment?.map((order) => {
                 return (
                   <Product key={order?.orderNo}>
                     <OrderInfo>
                       <ProductImg as="div" />
                       <Detail>
-                        <div>{order?.name} ({order?.quantity}개)</div>
+                        <div>
+                          {order?.name} ({order?.quantity}개)
+                        </div>
                         <div>설명</div>
                         <div>총 가격 : {order?.price * order?.quantity}원</div>
                       </Detail>
                     </OrderInfo>
-                    <Buttons>
+                    {/* <Buttons>
                       <Button variant="outlined">후기 작성하기</Button>
-                      <Button variant="outlined" color="error">후기 삭제하기</Button>
-                    </Buttons>
+                      <Button variant="outlined" color="error">
+                        후기 삭제하기
+                      </Button>
+                    </Buttons> */}
                   </Product>
-                )
-              })
-            }
+                );
+              })}
             </InfoContainer>
 
             <InfoTitle>받는사람 정보</InfoTitle>
@@ -87,7 +88,7 @@ const OrderDetail = () => {
         </Content>
       </Container>
     </>
-  )
+  );
 };
 
 export default OrderDetail;
@@ -104,8 +105,8 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 5rem;
-  `;
-  
+`;
+
 const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
@@ -132,7 +133,7 @@ const InfoContainer = styled.div`
 
 const Product = styled.div`
   display: flex;
-  border: 1px solid #EEC759;
+  border: 1px solid #eec759;
   border-radius: 10px;
   width: 90%;
   margin: 1rem 2rem 2rem;

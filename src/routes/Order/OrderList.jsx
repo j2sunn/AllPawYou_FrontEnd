@@ -99,7 +99,9 @@ const OrderList = () => {
                           </Detail>
                         </OrderInfo>
                         <Buttons>
-                          <Button variant="outlined" onClick={() => navigator('/review/createreview')}>후기 작성하기</Button>
+                          <Button variant="outlined" onClick={() => navigator(`/review/createreview/${order?.name}`)}>
+                            후기 작성하기
+                          </Button>
                           <Button variant="outlined" color="error">
                             후기 삭제하기
                           </Button>
@@ -131,8 +133,8 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 5rem;
-  `;
-  
+`;
+
 const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
