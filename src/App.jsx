@@ -6,12 +6,12 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#527853'
-      }
+        main: "#527853",
+      },
     },
     typography: {
       fontFamily: "'GowunDodum-Regular', 'NanumSquareRound'",
-      fontSize: '1.5rem'
+      fontSize: "1.5rem",
     },
   });
 

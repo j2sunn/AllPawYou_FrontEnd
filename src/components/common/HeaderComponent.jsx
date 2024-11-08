@@ -7,7 +7,7 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 const HeaderComponent = () => {
   const navigator = useNavigate();
   const ACCESS_TOKEN = localStorage.getItem("accessToken");
-  const ADMIN = localStorage.getItem("role");
+  // const ADMIN = localStorage.getItem("role");
 
   const handleLogout = async () => {
     localStorage.clear();
@@ -52,7 +52,7 @@ const HeaderComponent = () => {
                       </AccordionSummary>
                       <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
                         {localStorage.getItem("role") == "ROLE_ADMIN" ? (
-                          <AccordianItem onClick={() => navigator("/admin/userList")}>관리자 페이지</AccordianItem>
+                          <AccordianItem onClick={() => navigator("/admin/dashboard")}>관리자 페이지</AccordianItem>
                         ) : (
                           <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
                         )}

@@ -1,16 +1,6 @@
-import * as React from "react";
 import { ResponsivePie } from "@nivo/pie";
 
 const Piechart = () => {
-  const handle = {
-    padClick: (data) => {
-      console.log("Pad clicked:", data);
-    },
-    legendClick: (data) => {
-      console.log("Legend clicked:", data);
-    },
-  };
-
   const data = [
     { id: "사료", label: "사료", value: 40, color: "hsl(205, 70%, 50%)" },
     { id: "간식", label: "간식", value: 25, color: "hsl(85, 70%, 50%)" },
@@ -20,7 +10,7 @@ const Piechart = () => {
   ];
 
   return (
-    <div style={{ width: "800px", height: "500px", margin: "0 auto" }}>
+    <div style={{ width: "20rem", height: "20rem", margin: "0 auto" }}>
       <ResponsivePie
         data={data}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -120,12 +110,12 @@ const Piechart = () => {
             translateX: 0,
             translateY: 56,
             itemsSpacing: 0,
-            itemWidth: 100,
+            itemWidth: 60,
             itemHeight: 18,
             itemTextColor: "#999",
             itemDirection: "left-to-right",
             itemOpacity: 1,
-            symbolSize: 18,
+            symbolSize: 15,
             symbolShape: "circle",
             effects: [
               {

@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { orderListByTid } from "../../service/OrderService";
-import { paymentCancel, payments } from "../../service/PaymentService";
+import { orderListByTid } from "../../../service/OrderService";
+import { payments } from "../../../service/PaymentService";
 import { useNavigate } from "react-router-dom";
-import { getProductByProductId } from "../../service/ProductService";
-import AdminSideBar from "../../components/common/AdminSideBar";
+import { getProductByProductId } from "../../../service/ProductService";
 
 const AdminOrderList = () => {
-  const role = localStorage.getItem('role');
+  const role = localStorage.getItem("role");
   const navigator = useNavigate();
   const [paymentList, setPaymentList] = useState([]);
 
@@ -38,13 +37,6 @@ const AdminOrderList = () => {
     setPaymentList([...arr]);
   };
 
-  //결제 취소
-  const cancelPayment = async (data) => {
-    console.log(data);
-    const response = await paymentCancel(data);
-    console.log(response);
-  };
-
   useEffect(() => {
     loadPayments();
   }, []);
@@ -61,6 +53,7 @@ const AdminOrderList = () => {
 
   return (
     <>
+<<<<<<< Updated upstream:src/routes/Order/AdminOrderList.jsx
       <Container>
         {role == "ROLE_ADMIN" ? (
           <>
@@ -105,34 +98,61 @@ const AdminOrderList = () => {
               })}
             </Payments>
           </Content>
+=======
+      {role == "ROLE_ADMIN" ? (
+        <>
+          <Title onClick={() => console.log(paymentList)}>주문 목록</Title>
+          <Payments>
+            {paymentList?.map((payment) => {
+              return (
+                <Payment key={payment[0]?.tid}>
+                  <PaymentHeader>
+                    <PaymentTitle>{payment[0]?.createdAt?.slice(0, 10)} 주문</PaymentTitle>
+                    <div>
+                      <Button variant="outlined" onClick={() => navigator(`/order/${payment[0].tid}`, { state: { payment } })}>
+                        주문 상세
+                      </Button>
+                    </div>
+                  </PaymentHeader>
+                  {payment?.map((order) => {
+                    return (
+                      <Product key={order.orderNo}>
+                        <OrderInfo>
+                          <ProductImg as="div" />
+                          <Detail>
+                            <div>
+                              {order?.name} ({order.quantity}개)
+                            </div>
+                            <div>설명</div>
+                            <div>총 가격 : {order?.price * order?.quantity}원</div>
+                          </Detail>
+                        </OrderInfo>
+                        <Buttons>
+                          <Button variant="outlined" color="error">
+                            {/* 후기 관리로 이동? */}
+                            후기 삭제하기
+                          </Button>
+                        </Buttons>
+                      </Product>
+                    );
+                  })}
+                </Payment>
+              );
+            })}
+          </Payments>
+>>>>>>> Stashed changes:src/routes/Admin/components/aOrderList.jsx
         </>
-        ) : (
-          <>
-            <div>권한이 없습니다.</div>
-          </>
-        )}
-        
-      </Container>
+      ) : (
+        <>
+          <div>권한이 없습니다.</div>
+        </>
+      )}
     </>
   );
 };
 
 export default AdminOrderList;
 
-const Container = styled.div`
-  width: 100%;
-  min-height: 600px;
-  margin: 2rem 4rem;
-  display: flex;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding-left: 5rem;
-  `;
-  
 const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
