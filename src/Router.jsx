@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainPage from "./routes/MainPage";
-import MemberList from "./routes/MemberList";
+
 import SignUp from "./routes/SignUp";
 import MyPage from "./routes/MyPage";
 import NotFound from "./routes/NotFound";
@@ -38,6 +38,7 @@ import AdminOrderList from "./routes/Order/AdminOrderList";
 import Chart from "./components/chart/Chart";
 import UpdateMyPage from "./routes/UpdateMyPage";
 import AdminBoardList from "./components/common/AdminBoardList";
+import BoardUpdate from "./routes/BoardUpdate";
 
 const Router = () => {
   return (
@@ -90,6 +91,7 @@ const Router = () => {
           <Route path="/board/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
           <Route path="/boardList" element={<BoardList />} />
+          <Route path = "/boardUpdate" element={<BoardUpdate />}/>
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
 

@@ -142,7 +142,7 @@ const UserReviewUpdate = () => {
             <Thumbnail key={index}>
               {image.reviewImgPath && image.reviewImgRename ? (
                 <>
-                  <Image src={`http://localhost:8081${image.reviewImgPath}${image.reviewImgRename}`} alt={`Image ${index + 1}`} />
+                  <Image src={`http://localhost:8080${image.reviewImgPath}${image.reviewImgRename}`} alt={`Image ${index + 1}`} />
                   <RemoveButton onClick={() => handleRemoveExistingImage(index)}>X</RemoveButton>
                 </>
               ) : (
