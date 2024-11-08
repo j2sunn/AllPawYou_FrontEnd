@@ -4,7 +4,7 @@ import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { listProducts, DeleteProduct } from "../service/ProductService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AdminSideBar from "../components/common/AdminSideBar";
 
 const ProductList = () => {
@@ -38,7 +38,7 @@ const ProductList = () => {
     const removeProduct = async (id) => {
         try {
             await DeleteProduct(id);
-            getAllProducts();
+            await getAllProducts();
             alert("상품이 삭제되었습니다.");
         } catch (error) {
             console.log(error);
