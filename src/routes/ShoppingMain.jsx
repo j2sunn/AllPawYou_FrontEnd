@@ -112,7 +112,11 @@ const ShoppingMain = () => {
                             </li>
                         ))}
                     </ul>) : (
-                        <NoData>해당 카테고리의 상품이 없습니다.</NoData>
+                        category == "all" ? (
+                            <NoData>등록된 상품이 없습니다.</NoData>
+                        ) : (
+                            <NoData>해당 카테고리의 상품이 없습니다.</NoData>
+                        )
                     )}
                     
                 </div>
