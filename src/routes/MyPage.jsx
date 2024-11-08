@@ -44,6 +44,9 @@ const MyPage = () => {
     }
   }, []);
 
+  const goUpdate = () => {
+    navigator('/mypage/update');
+  }
 
   return (
     <>
@@ -69,6 +72,9 @@ const MyPage = () => {
               </Content>
               <Title>자기소개</Title>
               <Content>{userInfo.intro}</Content>
+              <Button variant="contained" color="primary" onClick={goUpdate}>
+                  수정
+              </Button>
             </>
           ) : (
             <div>해당 회원정보가 없습니다.</div>
