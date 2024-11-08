@@ -32,11 +32,13 @@ const BoardDetail = ()=>{
     const bNo = useRef(params?.boardNo);  // 초기값을 params.boardNo로 설정
     const [boardData, setBoardData] = useState(null);
     const [commentData,setCommentData] = useState(null); //댓글
-    
+    // const [profile, setProfile] = useState({}); //로그인한 회원 정보
     const [error, setError] = useState({});
     const [comment,setComment] = useState("");
     const [result,setResult] = useState("");
     const [likeStatus, setLikeStatus] = useState(0); //로그인 회원이 좋아요 누른지 여부
+    // const [loginUserEmail, setLoginUserEmail] = useState(""); //로그인한 회원의 이메일
+    // const [writeUserEmail, setWriteUserEmail] = useState(""); //글을 작성한 회원의 이메일
     // 기본값을 0으로 설정
     let loginEmail=useRef("");
     const navigate = useNavigate();
@@ -53,15 +55,40 @@ const BoardDetail = ()=>{
                 setLikeStatus(0);
             }
         }
-
+        console.log("받은데이터 : "+response.email); //이게 글 작성자 이메일
         setBoardData(response);
         setCommentData(response.commentList);
         
     }
-
+    // useEffect(() => {
+    //     const username = localStorage.getItem("username");
+    //     const email = localStorage.getItem("email");
+    //     const nickname = localStorage.getItem("nickname");
+    //     const intro = localStorage.getItem("intro");
+    //     const phone = localStorage.getItem("phone");
+    //     const address = localStorage.getItem("address");
+    //     const profileImage = localStorage.getItem("profile");
+    
+    //     // 가져온 데이터를 상태에 설정
+    //     if (username && email && nickname && intro && phone && address && profileImage) {
+    //         const userData = {
+    //         username,
+    //         email,
+    //         nickname,
+    //         intro,
+    //         phone,
+    //         address,
+    //         profileImage,
+    //                 };
+        
+    //         setProfile(userData);
+    //     } else {
+    //             console.error("사용자 정보가 localStorage에 없습니다.");
+    //                 }
+    //             }, []);
     useEffect(() => {
         loginEmail.current = localStorage.getItem('email');  // 로컬 스토리지에서 토큰을 가져옵니다.
-        console.log("토큰토큰 : "+loginEmail);
+        // console.log("토큰토큰 : "+loginEmail);
         bNo.current = params?.boardNo;  // params가 변경될 때마다 bNo 업데이트
         setBoardNo(bNo.current);  // boardNo 상태 업데이트
         // console.log("boardNo : " + boardNo);
@@ -71,7 +98,11 @@ const BoardDetail = ()=>{
         loadBoardData();
         
         console.log(boardData);    
-        console.log("loginEmail:", loginEmail.current);
+        console.log("로그인 이메일:", loginEmail.current); //이게 제대로 나온다!
+        if(boardData){
+            console.log("작성자이메일 : "+boardData.email);
+        }
+        
         // console.log("comment.email:", comment.email);
         
             // setLikeStatus(boardData.likeOrNot);
@@ -132,7 +163,7 @@ const BoardDetail = ()=>{
         if(confirm("정말 삭제하시겠습니까?")){
             axios.delete("/board/delete/"+boardNo)
             .then(resp=>{
-                console.log(resp.data);
+                console.log("결과느으으은"+resp.data);
                 alert("삭제되었습니다.");
                 navigate("/boardList");
             })
@@ -171,8 +202,9 @@ const BoardDetail = ()=>{
                                     </p>
                                 </div>
                                 <div className="btns">
-                                    
-                                            <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
+                                {boardData.email == loginEmail.current ? (
+                                    <>
+                                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
                                                     >
                                             수정
                                         </Button>
@@ -180,6 +212,12 @@ const BoardDetail = ()=>{
                                             onClick={() => boardDelete(boardData.boardNo)}        >
                                             삭제
                                         </Button>
+                                    </>
+                                ) : (
+                                    <>
+                                    </>
+                                )}
+                                            
                                 
                                 
                                 
@@ -254,15 +292,22 @@ const BoardDetail = ()=>{
                                                 }
                                             </p>
                                         <div className="commentBtns">
-                                            
-                                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
+                                        {loginEmail.current == comment.email ? (
+                                            <>
+                                                <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
                                                     >
-                                            수정
-                                        </Button>
-                                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem'}} 
-                                                    >
-                                            삭제
-                                        </Button>
+                                                    수정
+                                                </Button>
+                                                <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem'}} 
+                                                            >
+                                                    삭제
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <>
+                                            </>
+                                        )}
+                                        
                                             
                                         </div>
                                     </div>
