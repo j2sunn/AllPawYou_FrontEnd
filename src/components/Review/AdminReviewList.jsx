@@ -62,13 +62,13 @@ const ReviewList = () => {
                 <TableRow>
                   <TableCell align="center">번호</TableCell>
                   <TableCell align="center">별점</TableCell>
-                  <TableCell align="center">상품</TableCell>
+                  <TableCell align="center" sx={{width:'10rem'}}>상품</TableCell>
                   <TableCell align="center">작성자</TableCell>
                   <TableCell align="center" sx={{ width: "15rem" }}>
                     내용
                   </TableCell>
                   <TableCell align="center">작성일</TableCell>
-                  <TableCell align="center" sx={{ width: "15rem" }}>
+                  <TableCell align="center" sx={{ width: "10rem" }}>
                     출력 / 삭제
                   </TableCell>
                 </TableRow>
@@ -78,7 +78,7 @@ const ReviewList = () => {
                   <TableRow key={item.reviewNo}>
                     <TableCell align="center">{item.reviewNo}</TableCell>
                     <TableCell align="center">{item.reviewStar}</TableCell>
-                    <TableCell align="center">{item.productName}</TableCell>
+                    <TableCell align="center" sx={{width:'10rem'}}>{item.productName}</TableCell>
                     <TableCell align="center">{item.username}</TableCell>
                     <TableCell align="center">{item.reviewContent}</TableCell>
                     <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
@@ -102,7 +102,7 @@ const ReviewList = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Pages>1 2 3 4 5 6</Pages>
+          {/* <Pages>1 2 3 4 5 6</Pages> */}
         </Content>
       </Container>
     </>
@@ -118,6 +118,14 @@ const Container = styled.div`
   display: flex;
 `;
 
+const Content = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 5rem;
+  margin: 0 2rem;
+  `;
+  
 const Title = styled.div`
   font-size: 2rem;
   padding-bottom: 3rem;
@@ -125,12 +133,9 @@ const Title = styled.div`
   border-bottom: 3px solid #c4e1f6;
 `;
 
-const Content = styled.div`
-  width: 100%;
-`;
 
 const Pages = styled.div`
-  width: 90%;
+  width: 80%;
   margin-top: 3rem;
   display: flex;
   justify-content: center;

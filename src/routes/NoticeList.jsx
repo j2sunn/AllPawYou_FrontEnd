@@ -63,20 +63,20 @@ const ListNoticeComponent = () => {
         <Content>
           <Title>공지사항 관리</Title>
           <br/>
-          <Button variant="outlined" color="error">
+          <Button variant="outlined" color="error" sx={{width: '20%'}}>
             새 공지사항
           </Button>
           <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
             <Table>
               <TableHead sx={{ backgroundColor: "#EEC759" }}>
                 <TableRow>
-                  <TableCell align="center">번호</TableCell>
-                  <TableCell align="center">제목</TableCell>
-                  <TableCell align="center">등록일</TableCell>
-                  <TableCell align="center" sx={{ width: "3rem" }}>
+                  <TableCell align="center" sx={{width: '14%'}}>번호</TableCell>
+                  <TableCell align="center" sx={{width: '30%'}}>제목</TableCell>
+                  <TableCell align="center" sx={{width: '30%'}}>등록일</TableCell>
+                  <TableCell align="center" sx={{ width: "8%" }}>
                     수정
                   </TableCell>
-                  <TableCell align="center" sx={{ width: "3rem" }}>
+                  <TableCell align="center" sx={{ width: "8%" }}>
                     삭제
                   </TableCell>
                 </TableRow>
@@ -84,15 +84,15 @@ const ListNoticeComponent = () => {
               <TableBody>
                 {notices.map((item, index) => (
                   <TableRow key={item.noticeTitle}>
-                    <TableCell align="center">{index + 1}</TableCell>
-                    <TableCell align="center">{item.noticeTitle}</TableCell>
-                    <TableCell align="center">{item.noticeDate}</TableCell>
-                    <TableCell align="center" sx={{ width: "3rem" }}>
+                    <TableCell align="center" sx={{width: '14%'}}>{index + 1}</TableCell>
+                    <TableCell align="center" sx={{width: '30%'}}>{item.noticeTitle}</TableCell>
+                    <TableCell align="center" sx={{width: '30%'}}>{item.noticeDate}</TableCell>
+                    <TableCell align="center" sx={{ width: "8%" }}>
                       <Button variant="outlined" color="error">
                         수정
                       </Button>
                     </TableCell>
-                    <TableCell align="center" sx={{ width: "3rem" }} onClick={() => removeNotice(item.noticeNo)}>
+                    <TableCell align="center" sx={{ width: "8%" }} onClick={() => removeNotice(item.noticeNo)}>
                       <Button variant="outlined" color="error">
                         삭제
                       </Button>
@@ -111,6 +111,7 @@ const ListNoticeComponent = () => {
 
 export default ListNoticeComponent;
 
+
 const Container = styled.div`
   width: 100%;
   min-height: 600px;
@@ -118,6 +119,14 @@ const Container = styled.div`
   display: flex;
 `;
 
+const Content = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 5rem;
+  margin: 0 2rem;
+  `;
+  
 const Title = styled.div`
   font-size: 2rem;
   padding-bottom: 3rem;
@@ -125,13 +134,11 @@ const Title = styled.div`
   border-bottom: 3px solid #c4e1f6;
 `;
 
-const Content = styled.div`
-  width: 100%;
-`;
 
 const Pages = styled.div`
-  width: 90%;
+  width: 80%;
   margin-top: 3rem;
   display: flex;
   justify-content: center;
 `;
+
