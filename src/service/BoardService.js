@@ -62,6 +62,11 @@ export const loadList = async (setBoardList)=>{
     setBoardList(response.data);
 }
 
+//글 수정
+export const updateBoard = (formData,navigator,boardNo)=>{
+    
+}
+
 //댓글 작성
 export const addCommentService = (boardNo,result,loginEmail,setCommentData)=>{
     console.log("nnnnnnnn");
@@ -84,3 +89,4 @@ const updateCommentList = async (boardNo,setCommentData)=>{
     const resp = await axios.get('http://localhost:8081/board/comment/' + boardNo);
     setCommentData(resp.data);
 }
+

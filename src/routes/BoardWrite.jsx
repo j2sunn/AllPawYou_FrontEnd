@@ -17,6 +17,7 @@ const BoardWrite = ()=>{
         setLoginEmail(payload['user-email']);
         // console.log("email : "+ payload['user-email']);
         // console.log("email : "+loginEmail);
+        setIsLoading(false); // 로그인한 경우 로딩 완료로 설정
         }else{
             alert("로그인 후 이용해주세요.");
             // navigator('/login');
@@ -31,12 +32,13 @@ const BoardWrite = ()=>{
     const [images, setImages] = useState([]);
     const [error, setError] = useState({});
     const [result,setResult] = useState("");
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
     // console.log("images : "+images);
     console.log("제목길이"+boardTitle.trim().length);
     const handleImageChange = (e) => {
 
         const files = Array.from(e.target.files);
-        
+        console.log("여기보기!!!e.target.files : "+e.target.files);
         if (files.length + images.length > 8) {
             alert("최대 8장까지 업로드할 수 있습니다.");
             return;
@@ -119,6 +121,7 @@ const BoardWrite = ()=>{
         
         console.log("result : "+result);
     }
+    if (isLoading) return null; // 로딩 중일 때 아무것도 렌더링하지 않음
     return ( //강아지(1) 고양이(2) 기타(3)
         <>
         {/* <img src={`http://localhost:8080/images/board/푸들.png`} alt="푸들" /> */}
@@ -143,59 +146,68 @@ const BoardWrite = ()=>{
                 </div>
                 
                 */}
-            <Container>
-                <One>
-                
-                    <h5>카테고리<span>*</span></h5>
-                    <div className="cateCon">
-                        <Div className="category"
-                        onClick={() => setSelectedCategory(1)}
-                        selected={selectedCategory === 1}
-                        >강아지</Div>
-                        <Div className="category"
-                        onClick={() => setSelectedCategory(2)}
-                        selected={selectedCategory === 2}
-                        >고양이</Div>
-                        <Div className="category"
-                        onClick={() => setSelectedCategory(3)}
-                        selected={selectedCategory === 3}
-                        >기타</Div>
-                    </div>
-                </One>
-                <Two>
-                    <h5>제목<span>*</span></h5>
-                    <TitleInput onChange={(e) => setBoardTitle(e.target.value)}/>
-                    <Error>{error.title}</Error>
+                {ACCESS_TOKEN !=null ? (
+                    <>
+                            <Container>
+                                <One>
+                                
+                                    <h5>카테고리<span>*</span></h5>
+                                    <div className="cateCon">
+                                        <Div className="category"
+                                        onClick={() => setSelectedCategory(1)}
+                                        selected={selectedCategory === 1}
+                                        >강아지</Div>
+                                        <Div className="category"
+                                        onClick={() => setSelectedCategory(2)}
+                                        selected={selectedCategory === 2}
+                                        >고양이</Div>
+                                        <Div className="category"
+                                        onClick={() => setSelectedCategory(3)}
+                                        selected={selectedCategory === 3}
+                                        >기타</Div>
+                                    </div>
+                                </One>
+                                <Two>
+                                    <h5>제목<span>*</span></h5>
+                                    <TitleInput onChange={(e) => setBoardTitle(e.target.value)}/>
+                                    <Error>{error.title}</Error>
 
-                    <h5>내용<span>*</span></h5>
-                    {/* <ContentTextarea onChange={(e) => setBoardContent(e.target.value)}/> */}
-                    <ContentTextarea onChange={(e) => handleContentChange(e)}/>
-                    <Error>{error.content}</Error>
+                                    <h5>내용<span>*</span></h5>
+                                    {/* <ContentTextarea onChange={(e) => setBoardContent(e.target.value)}/> */}
+                                    <ContentTextarea onChange={(e) => handleContentChange(e)}/>
+                                    <Error>{error.content}</Error>
+                                    
+                                </Two>
+                                <Three>
+                                    <h5>사진 업로드</h5>
+                                    <ImgContainer>
+                                        {images.map((image, index) => (
+                                            <Thumbnail key={index}>
+                                                <Image src={URL.createObjectURL(image)} alt={`Uploaded ${index + 1}`} />
+                                                <RemoveButton onClick={() => handleRemoveImage(index)}>X</RemoveButton>
+                                            </Thumbnail>
+                                        ))}
+                                    </ImgContainer>
+                                    <UploadButton>
+                                        <FileInput
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            onChange={(e)=>handleImageChange(e)}
+                                        />
+                                        📷 사진 첨부
+                                    </UploadButton>
+                                    <p>최대 8장까지 업로드 가능합니다.</p>
+                                </Three>
+                                <EndBtn onClick={doSubmit}>등록</EndBtn>
+                </Container>
+                    </>
+                ) : (
+                    <>
                     
-                </Two>
-                <Three>
-                    <h5>사진 업로드</h5>
-                    <ImgContainer>
-                        {images.map((image, index) => (
-                            <Thumbnail key={index}>
-                                <Image src={URL.createObjectURL(image)} alt={`Uploaded ${index + 1}`} />
-                                <RemoveButton onClick={() => handleRemoveImage(index)}>X</RemoveButton>
-                            </Thumbnail>
-                        ))}
-                    </ImgContainer>
-                    <UploadButton>
-                        <FileInput
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={(e)=>handleImageChange(e)}
-                        />
-                        📷 사진 첨부
-                    </UploadButton>
-                    <p>최대 8장까지 업로드 가능합니다.</p>
-                </Three>
-                <EndBtn onClick={doSubmit}>등록</EndBtn>
-            </Container>
+                    </>
+                )}
+            
         </>
     );
 }
