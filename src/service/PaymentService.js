@@ -31,6 +31,6 @@ export const payments = async() => {
 
 export const paymentsByUserNo = async(userNo) => {
   const response = await axios.get(REST_API_URL + `/user/${userNo}`);
-  return response;
+  return response.data;
 }
 
