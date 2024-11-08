@@ -42,6 +42,12 @@ const AdminSideBar = () => {
           />
           <TreeItem itemId="5" label="매출 관리" sx={{ "& .MuiTreeItem-label": { fontWeight: "100" } }} />
           <TreeItem itemId="6" label="주문 관리" onClick={() => navigate("/admin/order")} sx={{ "& .MuiTreeItem-label": { fontWeight: "100" } }} />
+          <TreeItem
+            itemId="7"
+            label="후기 관리"
+            onClick={() => navigate("/admin/reviewlist")}
+            sx={{ "& .MuiTreeItem-label": { fontWeight: "100" } }}
+          />
         </TreeItem>
       </SimpleTreeView>
     </SideBar>

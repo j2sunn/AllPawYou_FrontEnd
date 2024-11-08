@@ -35,6 +35,7 @@ import ProductList from "./routes/ProductList";
 import BoardList from "./routes/BoardList";
 import UpdateProduct from "./routes/UpdateProduct";
 import AdminOrderList from "./routes/Order/AdminOrderList";
+import UpdateMyPage from "./routes/UpdateMyPage";
 
 const Router = () => {
   return (
@@ -56,6 +57,7 @@ const Router = () => {
           <Route path="/login/error" element={<LoginError />} />
 
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/update" element={<UpdateMyPage />} />
           <Route path="/findEmail" element={<FindEmail />} />
           <Route path="/findEmailResult" element={<FindEmailResult />} />
           <Route path="/resetPwd" element={<ResetPassword />} />
@@ -95,7 +97,7 @@ const Router = () => {
           <Route path="/notice/:noticeNo" element={<NoticeDetail />} />
 
           {/* 후기 전체 리스트 */}
-          <Route path="/admin/review/reviewList" element={<AdminReviewList />} />
+          <Route path="/admin/reviewList" element={<AdminReviewList />} />
           {/* 사용자 후기 리스트 */}
           <Route path="/review/myReview" element={<UserReviewList />} />
           {/* 사용자 후기 작성 */}
