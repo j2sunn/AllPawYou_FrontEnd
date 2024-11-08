@@ -99,7 +99,7 @@ const OrderList = () => {
                           </Detail>
                         </OrderInfo>
                         <Buttons>
-                          <Button variant="outlined">후기 작성하기</Button>
+                          <Button variant="outlined" onClick={() => navigator('/review/createreview')}>후기 작성하기</Button>
                           <Button variant="outlined" color="error">
                             후기 삭제하기
                           </Button>

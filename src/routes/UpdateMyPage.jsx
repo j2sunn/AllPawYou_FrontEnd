@@ -28,7 +28,6 @@ const MyPage = () => {
     const profileImage = localStorage.getItem("profile");
 
     // 가져온 데이터를 상태에 설정
-    if (username && email && nickname && intro && phone && address && profileImage) {
       const userData = {
         username,
         email,
@@ -40,9 +39,7 @@ const MyPage = () => {
       };
       setUserInfo(userData);
       setProfile(userData);
-    } else {
-      console.error("사용자 정보가 localStorage에 없습니다.");
-    }
+  
   }, []);
 
   const goMypage = () => {
