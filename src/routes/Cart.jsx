@@ -11,20 +11,25 @@ const Cart = () => {
 
   const [userNo, setUserNo] = useState(0);
   const [cartItems, setCartItems] = useState([]);
+  const [load, setLoad] = useState(false);
   const [productList, setProductList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   //장바구니 목록
   const loadCartList = async(no) => {
     const response = await listCart(no);
-    setCartItems(response);
+    setCartItems([...response]);
+    setLoad(true);
   }
 
 
   //confirm 기능 추가하기
-  const deleteCartItem = async(cartNo) => {
-    const response = await deleteCart(cartNo);
-    console.log(response);
+  const deleteCartItem = async(cartId) => {
+    if(confirm("삭제하시겠습니까?")){
+      const arr = cartItems.filter(i => i.cartId != cartId);
+      deleteCart(cartId);
+      setCartItems([...arr]);
+    }
   }
 
   //상품 상세
@@ -107,7 +112,7 @@ const Cart = () => {
     setUserNo(localStorage.getItem("no"));
 
     //유저가 존재하면 장바구니 목록 요청
-    if(userNo > 0 && cartItems.length == 0){
+    if(userNo > 0 && !load){
       loadCartList(userNo);
     }
 
@@ -121,8 +126,12 @@ const Cart = () => {
 
   //productList 수정되면 totalPrice 다시 계산
   useEffect(()=>{
-    handleTotalPrice();
-  },[productList]);
+    if(cartItems.length >= 1){
+      handleTotalPrice();
+    }else{
+      setProductList([]);
+    }
+  },[cartItems, productList]);
 
   return (
     <>
@@ -142,7 +151,7 @@ const Cart = () => {
                       <BiPlusCircle style={{cursor:'pointer'}} id={product.id} onClick={plus} />
                     </Quantity>
                     <ProductPrice>{product.price * product.quantity}</ProductPrice>
-                    <Button variant="outlined" color="error" sx={{height:'2.5rem'}}>삭제</Button>
+                    <Button variant="outlined" color="error" sx={{height:'2.5rem'}} onClick={()=>deleteCartItem(product.cartId)}>삭제</Button>
                   </Product>
                 );
               })
