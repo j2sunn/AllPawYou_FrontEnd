@@ -44,265 +44,37 @@ const MyPage = () => {
     }
   }, []);
 
-  const profileHandler = (event, key) => {
-    const { value } = event.target;
-    setProfile((prev) => ({ ...prev, [key]: value }));
-
-    // const newObj = {
-    //   ...profile,
-    //   [key]: event.target.value
-    // };
-    // console.log(newObj);
-    // setProfile(newObj);
-  };
-
-  // useEffect(()=>{
-  //   setUpdate(stat);
-  // },[stat]);
-
-  const [enroll_company, setEnroll_company] = useState({
-    address: "",
-  });
-
-  const [popup, setPopup] = useState(false);
-
-  const handleInput = (e) => {
-    setEnroll_company({
-      ...enroll_company,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleComplete = (data) => {
-    setPopup(!popup);
-  };
-
-  const [isPostcodePopupVisible, setIsPostcodePopupVisible] = useState(false);
-
-  const onCompletePost = (data) => {
-    setIsPostcodePopupVisible(false); // 주소 선택 후 팝업 닫기
-    setProfile((prev) => ({
-      ...prev,
-      address: data.address, // 선택한 주소를 프로필에 저장
-    }));
-  };
-  const postCodeStyle = {
-    display: isPostcodePopupVisible ? "block" : "none", // 팝업 상태에 따라 보이기
-    position: "absolute",
-    top: "20%",
-    width: "400px",
-    height: "400px",
-    padding: "7px",
-    zIndex: 100,
-  };
 
   return (
     <>
-      {update ? ( //수정인 경우
-        /* 사용자 정보 수정 */
-        <Box>
-          <SideBar>
-            <SideBarTitle>마이 페이지</SideBarTitle>
-            <SimpleTreeView>
-              <TreeItem
-                itemId="0"
-                label="회원정보 수정"
-                sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}
-                // onClick={()=>navigator('/myPage',{state:{stat: true}})}
-                onClick={() => setUpdate((prev) => !prev)}
-              />
-              <TreeItem itemId="board" label="결제 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
-              {/* <TreeItem itemId="1" label="공지사항" />
-                  <TreeItem itemId="2" label="자유게시판" />
-                  <TreeItem itemId="3" label="FAQ" /> */}
-              {/* </TreeItem> */}
-              {/* <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-                  <TreeItem itemId="4" label="상품 관리" />
-                  <TreeItem itemId="5" label="매출 관리" />
-                  <TreeItem itemId="6" label="주문 관리" />
-                </TreeItem> */}
-            </SimpleTreeView>
-          </SideBar>
-
-          <UpdateContainer>
-            {profile ? (
-              <>
-                <Content>
-                  <Profile>
-                    <ProfileImg
-                      // as="div"
-                      src={poodle}
-                    />
-                    {/* <TextField variant="outlined" size="small" sx={{width: '150px'}} onChange={()=>profileHandler(event, 'nickname')}/> */}
-                  </Profile>
-                  <Profile>
-                    {/* Table, TableCell, TableRow */}
-                    {/* <ProfileDetail>
-                  이름 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'name')}
-                    value={profile.name}/>
-                    
-                </ProfileDetail>
-                <ProfileDetail>
-                  전화번호 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'phone')}/>
-                </ProfileDetail>
-                <ProfileDetail>
-                  이메일 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'email')}/>
-                </ProfileDetail>
-                <ProfileDetail>
-                  주소 : <TextField variant="outlined" size="small" multiline maxRows={6} 
-              sx={{
-                // margin: '1rem 0 3rem 24rem',
-                marginLeft: '1rem',
-                // alignSelf: 'start', 
-                // width: '60rem'
-              }}
-              onChange={()=>profileHandler(event, 'address')}/>
-                </ProfileDetail>
-                <ProfileDetail>
-                  닉네임 : <TextField variant="outlined" size="small" sx={{marginLeft: '1rem'}} onChange={()=>profileHandler(event, 'nickname')}/>
-                </ProfileDetail> */}
-                    {/* Table, TableCell, TableRow */}
-
-                    <Table>
-                      <TableRow>
-                        <TableCell>이름 :</TableCell>
-                        <TableCell>
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            sx={{ marginLeft: "1rem", width: "25rem" }}
-                            value={profile.username}
-                            onChange={(event) => profileHandler(event, "username")}
-                          />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>전화번호 :</TableCell>
-                        <TableCell>
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            sx={{ marginLeft: "1rem", width: "25rem" }}
-                            value={profile.phone}
-                            onChange={() => profileHandler(event, "phone")}
-                          />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>이메일 :</TableCell>
-                        <TableCell>
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            sx={{ marginLeft: "1rem", width: "25rem" }}
-                            value={profile.email}
-                            slotProps={{
-                              input: {
-                                readOnly: true,
-                              },
-                            }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>주소 :</TableCell>
-                        <TableCell>
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            multiline
-                            maxRows={6}
-                            sx={{
-                              marginLeft: "1rem",
-                              // alignSelf: 'start',
-                              width: "25rem",
-                            }}
-                            value={profile.address}
-                            onChange={() => profileHandler(event, "address")}
-                          />
-                          <Button sx={{ marginLeft: "10px" }} onClick={() => isPostcodePopupVisible(true)}>
-                            검색
-                          </Button>
-                          {isPostcodePopupVisible && <DaumPostcode style={postCodeStyle} autoClose onComplete={onCompletePost} />}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>닉네임 :</TableCell>
-                        <TableCell>
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            sx={{ marginLeft: "1rem", width: "25rem" }}
-                            value={profile.nickname}
-                            onChange={() => profileHandler(event, "nickname")}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </Table>
-                  </Profile>
-                </Content>
-                {/* <Title>주소</Title> */}
-                {/* <TextField variant="outlined" size="small" multiline maxRows={6} 
-              sx={{margin: '1rem 0 3rem 24rem', alignSelf: 'start', width: '60rem'}}
-              onChange={()=>profileHandler(event, 'address')}/> */}
-                <div>
-                  <Title>자기소개</Title>
-                  <TextField
-                    variant="outlined"
-                    size="small"
-                    multiline
-                    maxRows={6}
-                    sx={{ alignSelf: "start", width: "60rem", marginBottom: "2rem" }}
-                    value={profile.intro}
-                    onChange={() => profileHandler(event, "intro")}
+      <Box>
+        <MypageSideBar />
+        <Container>
+          {userInfo ? (
+            <>
+              <Content>
+                <Profile>
+                  <ProfileImg
+                    // as="div"
+                    src={poodle}
                   />
-                </div>
-                <Button variant="contained" color="primary" onClick={() => setUpdate((prev) => !prev)}>
-                  저장
-                </Button>
-              </>
-            ) : (
-              <div>사용자 정보가 없습니다.</div>
-            )}
-          </UpdateContainer>
-        </Box>
-      ) : (
-        //-----------------------------------------------------------------------
-        //수정 아닌 경우
-        /* 사용자 정보 출력 */
-        <Box>
-          <MypageSideBar />
-          <Container>
-            {userInfo ? (
-              <>
-                <Content>
-                  <Profile>
-                    <ProfileImg
-                      // as="div"
-                      src={poodle}
-                    />
-                    <NickName>{userInfo.nickname}</NickName>
-                  </Profile>
-                  <Profile>
-                    <div>이름 : {userInfo.username} </div>
-                    <div>전화번호 : {userInfo.phone}</div>
-                    <div>이메일 : {userInfo.email} </div>
-                    <div>주소 : {userInfo.address}</div>
-                  </Profile>
-                </Content>
-
-                {/* <Title>주소</Title>
-            <Content></Content> */}
-                <Title>자기소개</Title>
-                <Content>{userInfo.intro}</Content>
-                {/* <Button variant="contained" color="primary" onClick={()=>setUpdate(prev=>!prev)}>수정</Button> */}
-              </>
-            ) : (
-              <div>해당 회원정보가 없습니다.</div>
-            )}
-          </Container>
-        </Box>
-      )}
+                  <NickName>{userInfo.nickname}</NickName>
+                </Profile>
+                <Profile>
+                  <div>이름 : {userInfo.username} </div>
+                  <div>전화번호 : {userInfo.phone}</div>
+                  <div>이메일 : {userInfo.email} </div>
+                  <div>주소 : {userInfo.address}</div>
+                </Profile>
+              </Content>
+              <Title>자기소개</Title>
+              <Content>{userInfo.intro}</Content>
+            </>
+          ) : (
+            <div>해당 회원정보가 없습니다.</div>
+          )}
+        </Container>
+      </Box>
     </>
   );
 };
