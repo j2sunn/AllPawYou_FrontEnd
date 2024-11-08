@@ -51,13 +51,11 @@ const Router = () => {
           <Route path="/login/kakao/update" element={<KakaoLogin />} />
           {/* 모든 회원 리스트 */}
           {/* // http://localhost:3000/user/userlist */}
-          <Route path="/user/userlist" element={<UserList />} />
+          <Route path="/admin/userlist" element={<UserList />} />
           {/* 회원가입 중복 에러 */}
           <Route path="/login/error" element={<LoginError />} />
 
           <Route path="/mypage" element={<MyPage />} />
-          {/* // http://localhost:3000/admin/memberList */}
-          <Route path="/admin/memberList" element={<MemberList />} />
           <Route path="/findEmail" element={<FindEmail />} />
           <Route path="/findEmailResult" element={<FindEmailResult />} />
           <Route path="/resetPwd" element={<ResetPassword />} />
@@ -81,7 +79,6 @@ const Router = () => {
           <Route path="/admin/addproduct" element={<AddProduct />} />
           <Route path="/admin/updateproduct/:id" element={<UpdateProduct />} />
           <Route path="/admin/productlist" element={<ProductList />} />
-
 
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />

@@ -7,10 +7,11 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 const HeaderComponent = () => {
   const navigator = useNavigate();
   const ACCESS_TOKEN = localStorage.getItem("accessToken");
+  const ADMIN = localStorage.getItem("role");
 
   const handleLogout = async () => {
     localStorage.clear();
-    navigator('/');
+    navigator("/");
   };
 
   return (
@@ -18,7 +19,7 @@ const HeaderComponent = () => {
       <Container>
         <HeaderContainer>
           <Header>
-            <Logo onClick={() => navigator("/")} style={{justifyContent: 'space-evenly'}}>
+            <Logo onClick={() => navigator("/")} style={{ justifyContent: "space-evenly" }}>
               <LogoImg src={logo} alt="로고" />
               <LogoText>All Paw You</LogoText>
             </Logo>
@@ -28,12 +29,11 @@ const HeaderComponent = () => {
 
               <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
 
-          
               <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
 
               {ACCESS_TOKEN ? (
                 <>
-                  <NavItem onClick={()=>navigator("/cart")}>장바구니</NavItem>
+                  <NavItem onClick={() => navigator("/cart")}>장바구니</NavItem>
                   <NavItem>
                     <Accordion
                       sx={{
@@ -48,10 +48,14 @@ const HeaderComponent = () => {
                       <AccordionSummary sx={{ marginBottom: "-1rem" }}>
                         {/* 이미지 넣기 */}
                         {/* <Img /> */}
-                        <IoPersonCircleSharp size={60} style={{color:'gray'}} />
+                        <IoPersonCircleSharp size={60} style={{ color: "gray" }} />
                       </AccordionSummary>
                       <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
-                        <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
+                        {localStorage.getItem("role") == "ROLE_ADMIN" ? (
+                          <AccordianItem onClick={() => navigator("/admin/userList")}>관리자 페이지</AccordianItem>
+                        ) : (
+                          <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
+                        )}
                         <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>
                       </AccordionDetails>
                     </Accordion>
