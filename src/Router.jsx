@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainPage from "./routes/MainPage";
-
 import SignUp from "./routes/SignUp";
 import MyPage from "./routes/MyPage";
 import NotFound from "./routes/NotFound";
@@ -9,7 +8,6 @@ import Login from "./routes/Login";
 import FindEmail from "./routes/FindEmail";
 import FindEmailResult from "./routes/FindEmailResult";
 import ResetPassword from "./routes/ResetPassword";
-import UserList from "./components/User/UserList";
 import KakaoLogin from "./routes/KakaoSignUp";
 import LoginError from "./routes/LoginError";
 import Cart from "./routes/Cart";
@@ -25,7 +23,7 @@ import NoticeWrite from "./routes/NoticeWrite";
 import NoticeDetail from "./routes/NoticeDetail";
 import Temp from "./routes/Temp";
 import BoardDetail from "./routes/BoardDetail";
-import AdminReviewList from "./components/Review/AdminReviewList";
+
 import UserReviewList from "./components/Review/UserReviewList";
 import UserReviewCreate from "./components/Review/UserReviewCreate";
 import UserReviewUpdate from "./components/Review/UserReviewUpdate";
@@ -34,11 +32,14 @@ import AddProduct from "./routes/AddProduct";
 import ProductList from "./routes/ProductList";
 import BoardList from "./routes/BoardList";
 import UpdateProduct from "./routes/UpdateProduct";
-import AdminOrderList from "./routes/Order/AdminOrderList";
-import Chart from "./components/chart/Chart";
+
 import UpdateMyPage from "./routes/UpdateMyPage";
-import AdminBoardList from "./components/common/AdminBoardList";
-import BoardUpdate from "./routes/BoardUpdate";
+
+import AdminBoardList from "./routes/Admin/AdminBoardList";
+import AdminDashboard from "./routes/Admin/AdminDashBoard";
+import AdminReviewList from "./routes/Admin/AdminReviewList";
+import AdminUserList from "./routes/Admin/AdminUserList";
+import AdminOrderList from "./routes/Admin/AdminOrderList";
 
 const Router = () => {
   return (
@@ -55,8 +56,7 @@ const Router = () => {
           <Route path="/login/kakao/update" element={<KakaoLogin />} />
           {/* 모든 회원 리스트 */}
           {/* // http://localhost:3000/user/userlist */}
-          <Route path="/admin/userlist" element={<UserList />} />
-          <Route path="/admin/boardlist" element={<AdminBoardList />} />
+
           {/* 회원가입 중복 에러 */}
           <Route path="/login/error" element={<LoginError />} />
 
@@ -71,7 +71,7 @@ const Router = () => {
           {/* 주문 목록 */}
           <Route path="/order" element={<OrderList />} />
           {/* 관리자 주문 목록 */}
-          <Route path="/admin/order" element={<AdminOrderList />} />
+
           {/* 주문 상세 */}
           <Route path="/order/:orderId" element={<OrderDetail />} />
           {/* 주문결제 */}
@@ -91,7 +91,7 @@ const Router = () => {
           <Route path="/board/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
           <Route path="/boardList" element={<BoardList />} />
-          <Route path = "/boardUpdate" element={<BoardUpdate />}/>
+          {/* <Route path="/boardUpdate" element={<BoardUpdate />} /> */}
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
 
@@ -101,17 +101,21 @@ const Router = () => {
           {/* 공지사항 글 상세 */}
           <Route path="/notice/:noticeNo" element={<NoticeDetail />} />
 
-          {/* 후기 전체 리스트 */}
-          <Route path="/admin/reviewList" element={<AdminReviewList />} />
           {/* 사용자 후기 리스트 */}
           <Route path="/review/myReview" element={<UserReviewList />} />
           {/* 사용자 후기 작성 */}
           <Route path="/review/createReview/:orderName" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
-
-          <Route path="/chart" element={<Chart />} />
         </Route>
+
+        {/* 관리자 페이지 */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/reviewlist" element={<AdminReviewList />} />
+        <Route path="/admin/userlist" element={<AdminUserList />} />
+        <Route path="/admin/boardlist" element={<AdminBoardList />} />
+        <Route path="/admin/orderlist" element={<AdminOrderList />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
