@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, TextField, Box } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -7,7 +7,7 @@ import Tab from '@mui/material/Tab';
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addCart, getProductByProductId, listCart } from "../service/ProductService";
-import axios from "axios";
+import Swal from "sweetalert2";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -62,16 +62,29 @@ const ShoppingDetail = () => {
     const addCartItem = () => {
         let cartExist = false;
         if(data.quantity <= 0) {
-            alert("수량이 0입니다.");
+            Swal.fire({
+                icon: "error",
+                title:"수량이 0 입니다.",
+                confirmButtonColor: '#527853'
+              });
             return;
         }
         cart.forEach(i => i.productId == id ? cartExist = true : null);
         if(cartExist){
-            alert("해당 상품이 이미 장바구니에 있습니다.");
+            Swal.fire({
+                icon: "warning",
+                title:"해당 상품이 이미 장바구니에 있습니다.",
+                width: "40%",
+                confirmButtonColor: '#527853'
+              });
         }else{
             addCart(data);
             setGoCart(true);
-            alert("장바구니에 추가되었습니다.");
+            Swal.fire({
+                icon: "success",
+                title: "장바구니에 추가되었습니다.",
+                confirmButtonColor: '#527853'
+              });
         }
     }
 
@@ -145,8 +158,9 @@ const ShoppingDetail = () => {
     return (
         <>
             <Container>
+                <Button variant="outlined" onClick={()=>navigator(-1)} sx={{alignSelf: 'start', marginLeft: '10rem', marginBottom: '5rem'}}>뒤로가기</Button>
                 {product ? (
-                    <>
+                    <div style={{display: 'flex'}}>
                         <ImgArea className="imgArea">
                             <ProductImage src={`http://localhost:8081${product.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`}>
                             </ProductImage>
@@ -187,7 +201,7 @@ const ShoppingDetail = () => {
                                 </Button>
                             </div>
                         </ContentArea>
-                    </>
+                    </div>
                 ) : (<p>오류입니다.</p>)}
             </Container>
             <DetailArea style={{ marginTop: "50px" }}>
@@ -215,11 +229,12 @@ export default ShoppingDetail;
 
 const Container = styled.div`
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
     padding: 0;
     list-style: none;
-    margin-top: 100px;
+    margin-top: 30px;
 `;
 
 const ContentArea = styled.div`
