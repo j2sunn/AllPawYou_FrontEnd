@@ -26,7 +26,7 @@ const AdminBoardList = ()=>{
         <Container>
                 <AdminSideBar />
                 <Content>
-                    <Title>상품 관리</Title>
+                    <Title>자유게시판 관리</Title>
                     {boardList ? (
                         <>
                             <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
