@@ -1,102 +1,86 @@
 import { useEffect, useState } from "react";
+import { listUsers, deleteUser } from "../../service/UserService";
+
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { AllReview, DeleteReview } from "../../service/Review";
+import AdminSideBar from "../common/AdminSideBar";
 
-const ReviewList = () => {
-  const [reviews, setReviews] = useState([]); // 초기 상태를 빈 배열로 설정
+const UserList = () => {
+  const [user, setUsers] = useState([]);
 
   useEffect(() => {
-    getAllReviews();
+    getAllUsers();
   }, []);
 
-  const getAllReviews = async () => {
-    try {
-      const response = await AllReview();
-      setReviews(response || []); // 응답이 undefined일 경우 빈 배열로 설정
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  function getAllUsers() {
+    listUsers()
+      .then((response) => {
+        console.log(response.data);
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
-  const removeReview = async (reviewNo) => {
-    try {
-      await DeleteReview(reviewNo);
-      getAllReviews(); // 리뷰 삭제 후 다시 리뷰 목록을 가져옵니다.
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  function removeUser(no) {
+    console.log(no);
+
+    deleteUser(no)
+      .then((response) => {
+        console.log(response);
+        getAllUsers();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   return (
     <>
       <Container>
-        <SideBar>
-          <SideBarTitle>관리자 메뉴</SideBarTitle>
-          <SimpleTreeView sx={{border: '3px solid #EEC759', borderRadius: '15px', padding: '4rem'}}>
-            <TreeItem itemId="0" label="회원관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }} />
-            <TreeItem itemId="board" label="게시판 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }}>
-              <TreeItem itemId="1" label="공지사항" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
-              <TreeItem itemId="2" label="자유게시판" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
-              <TreeItem itemId="3" label="FAQ" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
-            </TreeItem>
-            <TreeItem itemId="shopping-mall" label="쇼핑몰 관리" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }}>
-              <TreeItem itemId="4" label="상품 관리" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
-              <TreeItem itemId="5" label="매출 관리" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
-              <TreeItem itemId="6" label="주문 관리" sx={{"& .MuiTreeItem-label": {fontWeight: '100'}}}/>
-            </TreeItem>
-          </SimpleTreeView>
-        </SideBar>
+        <AdminSideBar />
+
         <Content>
-          <Title>리뷰 관리</Title>
+          <Title>유저 관리</Title>
           <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
             <Table>
               <TableHead sx={{ backgroundColor: "#EEC759" }}>
                 <TableRow>
                   <TableCell align="center">번호</TableCell>
-                  <TableCell align="center">별점</TableCell>
-                  <TableCell align="center">내용</TableCell>
-                  <TableCell align="center">작성일</TableCell>
-                  <TableCell align="center">사용자 번호</TableCell>
+                  <TableCell align="center">이름</TableCell>
+                  <TableCell align="center">이메일</TableCell>
                   <TableCell align="center" sx={{ width: "15rem" }}>
                     삭제
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Array.isArray(reviews) &&
-                  reviews.map(
-                    (
-                      item,
-                      index // 조건부 렌더링
-                    ) => (
-                      <TableRow key={item.reviewNo}>
-                        <TableCell align="center">{index + 1}</TableCell>
-                        <TableCell align="center">{item.reviewStar}</TableCell>
-                        <TableCell align="center">{item.reviewContent}</TableCell>
-                        <TableCell align="center">{item.reviewDate || "N/A"}</TableCell> {/* 작성일이 없을 경우 N/A 표시 */}
-                        <TableCell align="center">{item.userNo}</TableCell>
-                        <TableCell align="center" sx={{ width: "15rem" }}>
-                          <Button variant="outlined" color="error" onClick={() => removeReview(item.reviewNo)}>
-                            리뷰 삭제
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )}
+                {user.map((item, index) => (
+                  <TableRow key={item.no}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">{item.username}</TableCell>
+                    <TableCell align="center">{item.email}</TableCell>
+                    <TableCell align="center" sx={{ width: "15rem" }} onClick={() => removeUser(item.no)}>
+                      <Button variant="outlined" color="error">
+                        회원 삭제
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <Pages></Pages>
+          <Pages>1 2 3 4 5 6</Pages>
         </Content>
       </Container>
     </>
   );
 };
 
-export default ReviewList;
+export default UserList;
 
 const Container = styled.div`
   display: flex;
@@ -104,7 +88,7 @@ const Container = styled.div`
 
 const SideBar = styled.div`
   width: 25%;
-  min-height: 700px;
+  height: 70vh;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -113,7 +97,6 @@ const SideBar = styled.div`
 
 const SideBarTitle = styled.div`
   font-size: 2rem;
-  font-weight: bold;
   padding-bottom: 3rem;
 `;
 
