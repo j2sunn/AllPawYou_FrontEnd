@@ -1,5 +1,6 @@
 import axios from "axios";
 import { AuthApi } from "./AuthApi";
+import Swal from "sweetalert2";
 
 // AuthApi.get("/api/v1/user")
 //   .then((response) => {
@@ -18,7 +19,6 @@ export const login = async ({ email, password }) => {
   } catch (err) {
     if (err?.response) {
       console.error(err);
-      alert(err.response?.data?.message);
     }
   }
 };
@@ -50,7 +50,12 @@ export const fetchKakaoOAuth = async () => {
     window.location.href = redirectUrl;
   } catch (error) {
     console.error("Error fetching Kakao OAuth URL:", error);
-    alert("카카오 로그인에 실패했습니다. 다시 시도해주세요.");
+    Swal.fire({
+      icon: "error",
+      title: "카카오 로그인에 실패했습니다. 다시 시도해주세요.",
+      confirmButtonColor: '#527853',
+      confirmButtonText: '닫기'
+    });
   }
 };
 
@@ -87,7 +92,13 @@ export const autoLogin = async () => {
         // 로그인 성공 후 페이지 이동
         window.location.href = "/"; // 원하는 경로로 이동
       } catch (error) {
-        alert("로그인 실패:", error);
+        Swal.fire({
+          icon: "error",
+          title: "로그인 실패",
+          confirmButtonColor: '#527853',
+          confirmButtonText: '닫기'
+        });
+        console.log(error);
       }
     };
     login();

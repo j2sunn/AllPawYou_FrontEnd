@@ -88,7 +88,6 @@ const AdminOrderList = () => {
                               <div>
                                 {order?.name} ({order.quantity}개)
                               </div>
-                              <div>설명</div>
                               <div>총 가격 : {order?.price * order?.quantity}원</div>
                             </Detail>
                           </OrderInfo>
@@ -194,6 +193,7 @@ const Detail = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-size: 1.2rem;
 `;
 
 const Buttons = styled.div`

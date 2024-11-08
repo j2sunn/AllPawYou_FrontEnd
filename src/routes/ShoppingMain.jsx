@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { getProductsByCategory, listProducts } from "../service/ProductService";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ShoppingMain = () => {
 
@@ -9,9 +9,7 @@ const ShoppingMain = () => {
     const navigate = useNavigate();
     const [category, setCategory] = useState("all");
 
-    useEffect(() => {
-        getAllProducts();
-    }, []);
+    const {state} = useLocation();
 
     function getAllProducts() {
         listProducts()
@@ -29,6 +27,9 @@ const ShoppingMain = () => {
     };
 
     useEffect(() => {
+        if(state){
+            setCategory(state);
+        }
         if (category === "all") {
             getAllProducts();
         } else {

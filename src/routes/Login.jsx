@@ -1,12 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
-import FooterComponent from "../components/common/FooterComponent";
-import HeaderComponent from "../components/common/HeaderComponent";
 import { SiKakaotalk } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
 import { login, fetchKakaoOAuth, autoLogin } from "../service/Login";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import Swal from "sweetalert2";
 
 const LoginContainer = styled.div`
   text-align: center;
@@ -65,7 +63,13 @@ export default function Login() {
       })
       .catch((error) => {
         console.log(error);
-        alert("로그인 실패:", error);
+        Swal.fire({
+          icon: "error",
+          title: "로그인 실패",
+          text: "이메일과 비밀번호를 올바르게 입력해주세요.",
+          confirmButtonColor: '#527853',
+          confirmButtonText: '닫기'
+        });
       });
   };
 

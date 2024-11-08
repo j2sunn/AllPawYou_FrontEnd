@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { findMem,sendSMS, verifySMS,findEmail } from "../service/SmsService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 const Container = styled.div`
 padding: 100px 70px;
 margin:auto;
@@ -48,7 +50,12 @@ const FindEmail = () => {
     const send = () => {
         if(validateForm()){
             if (count >= 1) {
-                alert("이미 인증 문자를 발송하였습니다.");
+                Swal.fire({
+                    icon: "warning",
+                    title: "이미 인증 문자를 발송하였습니다.",
+                    confirmButtonColor: '#527853',
+                    confirmButtonText: '닫기'
+                  });
                 return;
             }
             
@@ -61,7 +68,12 @@ const FindEmail = () => {
                     console.log("response.data : "+ response.data);
                     if(result==0){
                         //그 멤버가 존재하지 않는 경우
-                        alert("존재하지 않는 회원입니다.");
+                        Swal.fire({
+                            icon: "error",
+                            title: "존재하지 않는 회원입니다.",
+                            confirmButtonColor: '#527853',
+                            confirmButtonText: '닫기'
+                          });
                         return;
                     }
     
@@ -73,18 +85,33 @@ const FindEmail = () => {
             // sendSMS(member); : undefined가 리턴된다
                 sendSMS(member)
                     .then(()=>{
-                        alert('인증 문자를 전송하였습니다.');
+                        Swal.fire({
+                            icon: "info",
+                            title: '인증 문자를 전송하였습니다.',
+                            confirmButtonColor: '#527853',
+                            confirmButtonText: '닫기'
+                          });
                         setShow(true);
                         setCount(count + 1);  // count 값을 1 증가
                     })
                     .catch((error) => {
                         console.error("문자 전송 실패", error);
-                        alert("문자 전송에 실패했습니다.");
+                        Swal.fire({
+                            icon: "error",
+                            title: "문자 전송에 실패했습니다.",
+                            confirmButtonColor: '#527853',
+                            confirmButtonText: '닫기'
+                          });
                     });
                 })
                 .catch((error) => {
                     console.error("회원 조회 실패", error);
-                    alert("회원 조회에 실패했습니다.");
+                    Swal.fire({
+                        icon: "error",
+                        title: "회원 조회에 실패했습니다.",
+                        confirmButtonColor: '#527853',
+                        confirmButtonText: '닫기'
+                      });
                 }
             );
         }
@@ -99,7 +126,12 @@ const verify = () => {
             console.log("인증번호일치 response.data : " + response.data);
             if(data==0){
                 //불일치하는 인증번호 작성 시
-                alert("인증번호가 일치하지 않습니다.");
+                Swal.fire({
+                    icon: "error",
+                    title: "인증번호가 일치하지 않습니다.",
+                    confirmButtonColor: '#527853',
+                    confirmButtonText: '닫기'
+                  });
                 return;
             }else{
                 const errorCopy = {...error, same: ''}; //스프레드 연산자
