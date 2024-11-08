@@ -21,7 +21,6 @@ export const getProductByProductId = async (id) => {
   }
 };
 
-
 export const getProductsByCategory = async (category) => {
     try{
         const response = await AuthApi.get(`${REST_API_BASE_URL}/list/${category}`);
