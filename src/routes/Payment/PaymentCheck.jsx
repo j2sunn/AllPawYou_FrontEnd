@@ -24,15 +24,15 @@ const PaymentCheck = () => {
 
   const payment = (data) => {
     paymentReady(data);
-    state.checkedData.forEach(i => deleteCart(i.id));
+    state?.checkedData?.forEach(i => deleteCart(i.id));
   }
 
   useEffect(()=>{
-    if(state.checkedData){
-      setOrderList(state.checkedData);
+    if(state?.checkedData){
+      setOrderList(state?.checkedData);
 
       let str = '';
-      state.checkedData.forEach(order => str.length > 0 ? str += `, ${order.name}  ${order.quantity}` : str += `${order.name}  ${order.quantity}`);
+      state?.checkedData?.forEach(order => str.length > 0 ? str += `, ${order.name}  ${order.quantity}` : str += `${order.name}  ${order.quantity}`);
       setData({...data, itemName: str})
     }
   }, []);

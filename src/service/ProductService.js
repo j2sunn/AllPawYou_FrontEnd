@@ -37,10 +37,7 @@ export const listCart = async (userNo) => {
 };
 
 //장바구니 삭제
-export const deleteCart = async (cartNo) => {
-  const response = await AuthApi.delete(REST_API_BASE_URL + `/cart/${cartNo}`);
-  return response;
-};
+export const deleteCart = (cartId) => axios.delete(REST_API_URL + `/cart/${cartId}`);
 
 // 이름으로 상품 찾기
 export const findByName = async (orderName) => {
