@@ -1,6 +1,8 @@
 import axios from "axios";
 import { AuthApi, AuthUploadApi } from "./AuthApi";
 
+const REST_API_URL = `http://localhost:8081/api/shopping`;
+
 const REST_API_BASE_URL = "/api/shopping";
 const token = localStorage.getItem("accessToken");
 
@@ -25,6 +27,12 @@ export const updateProduct = (id, formData) =>
 
 export const DeleteProduct = (id) =>
     AuthApi.delete(`${REST_API_BASE_URL}/delete/${id}`);
+
+
+export const addCart = async(data) => {
+    const response = await axios.post(REST_API_URL + `/cart`,data);
+    console.log(response);
+}
 
 //유저 별 장바구니 목록
 export const listCart = async (userNo) => {
