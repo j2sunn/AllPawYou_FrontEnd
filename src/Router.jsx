@@ -21,6 +21,8 @@ import BoardWrite from "./routes/BoardWrite";
 import ShoppingMain from "./routes/ShoppingMain";
 import Layout from "./components/common/Layout";
 import NoticeList from "./routes/NoticeList";
+import NoticeWrite from "./routes/NoticeWrite";
+import NoticeDetail from "./routes/NoticeDetail";
 import Temp from "./routes/Temp";
 import BoardDetail from "./routes/BoardDetail";
 import AdminReviewList from "./components/Review/AdminReviewList";
@@ -85,6 +87,12 @@ const Router = () => {
           <Route path="/boardList" element={<BoardList />} />
           {/* 공지사항 메인(관리자) */}
           <Route path="/admin/noticeList" element={<NoticeList />} />
+
+          {/* 공지사항 글 작성(관리자) */}
+          <Route path="/admin/noticeWrite" element={<NoticeWrite />} />
+
+          {/* 공지사항 글 상세 */}
+          <Route path="/notice/:noticeNo" element={<NoticeDetail />} />
 
           {/* 후기 전체 리스트 */}
           <Route path="/admin/review/reviewList" element={<AdminReviewList />} />
