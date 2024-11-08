@@ -68,7 +68,8 @@ const ProductList = () => {
                                     <TableRow key={item.no}>
                                         <TableCell align="center" sx={{ width: '8rem' }}>{index + 1}</TableCell>
                                         <TableCell align="center" sx={{ width: '10rem' }}>{item.category}</TableCell>
-                                        <TableCell align="center" sx={{ width: '30rem' }}>{item.name}</TableCell>
+                                        <TableCell align="center" sx={{ width: '30rem' }}>
+                                            <Link to={`/shoppingDetail/${item.id}`} style={{textDecoration : 'none', textDecorationColor : 'inherit', color: 'inherit'}}>{item.name}</Link></TableCell>
                                         <TableCell align="center" sx={{ width: '10rem' }}>{item.price}</TableCell>
                                         <TableCell align="center" sx={{ width: '10rem' }}>{item.releaseStatus}</TableCell>
                                         <TableCell align="center" sx={{ width: "10rem" }} >
