@@ -37,6 +37,7 @@ import UpdateProduct from "./routes/UpdateProduct";
 import AdminOrderList from "./routes/Order/AdminOrderList";
 import Chart from "./components/chart/Chart";
 import UpdateMyPage from "./routes/UpdateMyPage";
+import AdminBoardList from "./components/common/AdminBoardList";
 
 const Router = () => {
   return (
@@ -54,6 +55,7 @@ const Router = () => {
           {/* 모든 회원 리스트 */}
           {/* // http://localhost:3000/user/userlist */}
           <Route path="/admin/userlist" element={<UserList />} />
+          <Route path="/admin/boardlist" element={<AdminBoardList />} />
           {/* 회원가입 중복 에러 */}
           <Route path="/login/error" element={<LoginError />} />
 
@@ -102,7 +104,7 @@ const Router = () => {
           {/* 사용자 후기 리스트 */}
           <Route path="/review/myReview" element={<UserReviewList />} />
           {/* 사용자 후기 작성 */}
-          <Route path="/review/createReview" element={<UserReviewCreate />} />
+          <Route path="/review/createReview/:orderName" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
 

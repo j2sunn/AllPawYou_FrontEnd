@@ -1,16 +1,18 @@
 import { FaRegStar, FaStar } from "react-icons/fa";
 import styled from "styled-components";
-import { useState } from "react";
-import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
+import { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { CreateReview } from "../../service/Review";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaPhotoFilm } from "react-icons/fa6";
 import MypageSideBar from "../common/MypageSideBar";
+import { findByName } from "../../service/ProductService";
 
 const UserReviewCreate = () => {
+  const { orderName } = useParams(); // URL 파라미터에서 orderName 추출
   const [images, setImages] = useState([]);
   const [starScore, setStarScore] = useState(0);
+  const [productId, setProductId] = useState(null); // 상품 ID 상태 추가
   const [reviewContent, setReviewContent] = useState(""); // 후기를 저장할 상태 추가
   const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -22,6 +24,29 @@ const UserReviewCreate = () => {
     ));
   };
 
+  findByName(orderName);
+
+  useEffect(() => {
+    const fetchProductId = async () => {
+      if (orderName) {
+        try {
+          const response = await findByName(orderName); // findByName 호출
+          const productData = response.data; // Axios 응답에서 data 추출
+
+          // 데이터에서 id만 추출
+          setProductId(productData.id); // id를 상태로 설정
+          console.log("Product ID:", productData.id);
+        } catch (error) {
+          console.error("Error fetching product by name:", error);
+        }
+      } else {
+        console.warn("orderName is not provided.");
+      }
+    };
+
+    fetchProductId(); // 함수 호출
+  }, [orderName]); // orderName이 변경될 때마다 실행
+
   const handleSubmit = () => {
     if (starScore === 0 || reviewContent.trim() === "") {
       alert("별점과 후기를 모두 입력해주세요.");
@@ -31,7 +56,7 @@ const UserReviewCreate = () => {
     // FormData 객체 생성
     const formData = new FormData();
     formData.append("userNo", localStorage.getItem("no"));
-    formData.append("productNo", "1");
+    formData.append("productNo", productId);
     formData.append("reviewStar", starScore);
     formData.append("reviewContent", reviewContent);
     formData.append("reviewVisible", "Y");
