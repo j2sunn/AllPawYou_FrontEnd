@@ -6,6 +6,7 @@ import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import AdminSideBar from "../common/AdminSideBar";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const UserList = () => {
   const [user, setUsers] = useState([]);
@@ -64,8 +65,8 @@ const UserList = () => {
                     <TableCell align="center">{item.username}</TableCell>
                     <TableCell align="center">{item.email}</TableCell>
                     <TableCell align="center" sx={{ width: "15rem" }} onClick={() => removeUser(item.no)}>
-                      <Button variant="outlined" color="error">
-                        회원 삭제
+                      <Button variant="contained" color="error">
+                        <FaRegTrashAlt size="25" />
                       </Button>
                     </TableCell>
                   </TableRow>
