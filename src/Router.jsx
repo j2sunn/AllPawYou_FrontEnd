@@ -38,7 +38,6 @@ import AdminOrderList from "./routes/Order/AdminOrderList";
 import Chart from "./components/chart/Chart";
 import UpdateMyPage from "./routes/UpdateMyPage";
 
-
 const Router = () => {
   return (
     <BrowserRouter>
