@@ -25,12 +25,12 @@ const MypageSideBar = () => {
           <TreeItem
             itemId="profile"
             label="프로필"
-            sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }}
+            sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem"} }}
             onClick={goMypage}
           />
-          <TreeItem itemId="updateProfile" label="프로필 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }} />
-          <TreeItem itemId="order" label="구매 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }} />
-          <TreeItem itemId="myData" label="내 활동" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem", fontWeight: 'bold' } }}>
+          <TreeItem itemId="updateProfile" label="프로필 수정" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem"} }} />
+          <TreeItem itemId="order" label="구매 내역" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem"} }} />
+          <TreeItem itemId="myData" label="내 활동" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem"} }}>
             <TreeItem itemId="myBoard" label="내 글 관리" onClick={goMyBoard} />
             <TreeItem itemId="myReview" label="내 후기 관리" onClick={goMyReview} />
           </TreeItem>
