@@ -4,36 +4,40 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AdminSideBar from "../../components/common/AdminSideBar";
 import { fetchUserByNo } from "../../service/UserAPI";
+import MypageSideBar from "../../components/common/MypageSideBar";
 
 const OrderDetail = () => {
   const {state} = useLocation();
   const [user, setUser] = useState({});
+  const role = localStorage.getItem("role");
 
-  console.log(state.payment);
+  console.log(state?.payment);
 
   const getUserByNo = async(userNo) => {
     const response = await fetchUserByNo(userNo);
     setUser(response);
   }
   useEffect(()=>{
-    getUserByNo(state.payment[0].userNo);
+    getUserByNo(state?.payment[0]?.userNo);
   },[]);
   return (
     <>
       <Container>
-        <AdminSideBar />
+        {role == "ROLE_ADMIN" ? <AdminSideBar /> : <MypageSideBar />}
         <Content>
           <Title>주문 상세</Title>
           <Order>
             <InfoTitle>상품 정보</InfoTitle>
+            <InfoContainer>
+
             {
-              state.payment.map(order => {
+              state?.payment?.map(order => {
                 return (
-                  <InfoContainer key={order.orderNo}>
+                  <Product key={order?.orderNo}>
                     <OrderInfo>
                       <ProductImg as="div" />
                       <Detail>
-                        <div>{order.name} ({order.quantity}개)</div>
+                        <div>{order?.name} ({order?.quantity}개)</div>
                         <div>설명</div>
                         <div>총 가격 : {order?.price * order?.quantity}원</div>
                       </Detail>
@@ -42,10 +46,11 @@ const OrderDetail = () => {
                       <Button variant="outlined">후기 작성하기</Button>
                       <Button variant="outlined" color="error">후기 삭제하기</Button>
                     </Buttons>
-                  </InfoContainer>
+                  </Product>
                 )
               })
             }
+            </InfoContainer>
 
             <InfoTitle>받는사람 정보</InfoTitle>
             <InfoContainer>
@@ -74,7 +79,7 @@ const OrderDetail = () => {
                 </Tr>
                 <Tr>
                   <Th>결제 금액</Th>
-                  <Td>{state.payment[0].totalPrice}원</Td>
+                  <Td>{state?.payment[0]?.totalPrice}원</Td>
                 </Tr>
               </Table>
             </InfoContainer>
@@ -118,8 +123,16 @@ const InfoTitle = styled.div`
 `;
 
 const InfoContainer = styled.div`
+  width: 90%;
+  border: 3px solid #eec759;
+  border-radius: 10px;
+  margin: 1rem 2rem 2rem;
+  padding: 1rem;
+`;
+
+const Product = styled.div`
   display: flex;
-  border: 3px solid #EEC759;
+  border: 1px solid #EEC759;
   border-radius: 10px;
   width: 90%;
   margin: 1rem 2rem 2rem;
