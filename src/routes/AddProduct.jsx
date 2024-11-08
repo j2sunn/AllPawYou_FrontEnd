@@ -103,7 +103,7 @@ const AddProduct = () => {
             // 상품 추가 API 호출
             addProduct(formData);
             // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
-            navigator('/shopping');  // 이동할 페이지 URL을 설정
+            navigator('/admin/productlist');  // 이동할 페이지 URL을 설정
             alert("상품이 등록되었습니다.");
         } catch (error) {
             console.error("상품 등록 실패:", error);
