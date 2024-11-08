@@ -126,7 +126,7 @@ const AddProduct = () => {
                     >
                         <MenuItem value="food">사료</MenuItem>
                         <MenuItem value="goods">용품</MenuItem>
-                        <MenuItem value="health">용품</MenuItem>
+                        <MenuItem value="health">건강용품</MenuItem>
                         <MenuItem value="clothes">의류</MenuItem>
                     </Select>
                 </One>
