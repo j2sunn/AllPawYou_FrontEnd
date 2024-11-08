@@ -4,6 +4,8 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { AllReview, DeleteReview } from "../../service/Review";
 import { useNavigate } from "react-router-dom";
 import MypageSideBar from "../common/MypageSideBar";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { MdDriveFileRenameOutline } from "react-icons/md";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -53,7 +55,7 @@ const ReviewList = () => {
             <Table>
               <TableHead sx={{ backgroundColor: "#EEC759" }}>
                 <TableRow>
-                  <TableCell align="center" sx={{ width: "15rem" }}>
+                  <TableCell align="center" sx={{ width: "10rem" }}>
                     사진
                   </TableCell>
                   <TableCell align="center">별점</TableCell>
@@ -62,11 +64,8 @@ const ReviewList = () => {
                     내용
                   </TableCell>
                   <TableCell align="center">작성일</TableCell>
-                  <TableCell align="center" sx={{ width: "3rem" }}>
-                    수정
-                  </TableCell>
-                  <TableCell align="center" sx={{ width: "3rem" }}>
-                    삭제
+                  <TableCell align="center" sx={{ width: "15rem" }}>
+                    수정 / 삭제
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -92,13 +91,11 @@ const ReviewList = () => {
                       <TableCell align="center">{item.reviewContent}</TableCell>
                       <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">
-                        <Button variant="outlined" color="error" onClick={() => handleUpdate(item.reviewNo)}>
-                          수정
+                        <Button variant="contained" onClick={() => handleUpdate(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
+                          <MdDriveFileRenameOutline size="25" />
                         </Button>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button variant="outlined" color="error" onClick={() => removeReview(item.reviewNo)}>
-                          삭제
+                        <Button variant="contained" color="error" onClick={() => removeReview(item.reviewNo)}>
+                          <FaRegTrashAlt size="25" />
                         </Button>
                       </TableCell>
                     </TableRow>

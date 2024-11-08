@@ -95,7 +95,7 @@ const Router = () => {
           <Route path="/notice/:noticeNo" element={<NoticeDetail />} />
 
           {/* 후기 전체 리스트 */}
-          <Route path="/admin/review/reviewList" element={<AdminReviewList />} />
+          <Route path="/admin/reviewList" element={<AdminReviewList />} />
           {/* 사용자 후기 리스트 */}
           <Route path="/review/myReview" element={<UserReviewList />} />
           {/* 사용자 후기 작성 */}

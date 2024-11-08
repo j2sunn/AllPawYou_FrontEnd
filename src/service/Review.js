@@ -22,3 +22,5 @@ export const UpdateReview = async (reviewNo, formData) => {
 export const DeleteReview = (reviewNo) => AuthApi.delete(`/api/review/${reviewNo}`);
 
 export const DeleteImage = (reviewImgNo) => AuthApi.delete(`/api/review/deleteImage/${reviewImgNo}`);
+
+export const ToggleVisibility = (reviewNo) => AuthApi.patch(`/api/review/${reviewNo}/visibility`);
