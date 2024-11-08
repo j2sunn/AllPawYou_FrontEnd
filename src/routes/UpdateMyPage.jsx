@@ -144,6 +144,7 @@ const MyPage = () => {
                           sx={{ marginLeft: "1rem", width: "25rem" }}
                           value={profile.username}
                           onChange={(event) => profileHandler(event, "username")}
+                          required
                         />
                       </TableCell>
                     </TableRow>
@@ -156,6 +157,7 @@ const MyPage = () => {
                           sx={{ marginLeft: "1rem", width: "25rem" }}
                           value={profile.phone}
                           onChange={() => profileHandler(event, "phone")}
+                          required
                         />
                       </TableCell>
                     </TableRow>
@@ -190,6 +192,7 @@ const MyPage = () => {
                           }}
                           value={profile.address}
                           onChange={() => profileHandler(event, "address")}
+                          required
                         />
                         <Button sx={{ marginLeft: "10px" }} onClick={() => isPostcodePopupVisible(true)}>
                           검색
@@ -206,6 +209,7 @@ const MyPage = () => {
                           sx={{ marginLeft: "1rem", width: "25rem" }}
                           value={profile.nickname}
                           onChange={() => profileHandler(event, "nickname")}
+                          required
                         />
                       </TableCell>
                     </TableRow>

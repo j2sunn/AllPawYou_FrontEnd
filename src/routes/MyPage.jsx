@@ -65,11 +65,11 @@ const MyPage = () => {
                   <div>이름 : {userInfo.username} </div>
                   <div>전화번호 : {userInfo.phone}</div>
                   <div>이메일 : {userInfo.email} </div>
-                  <div>주소 : {userInfo.address}</div>
+                  <div>주소 : {userInfo.address || ""}</div>
                 </Profile>
               </Content>
               <Title>자기소개</Title>
-              <Content>{userInfo.intro}</Content>
+              <Content>{userInfo.intro || ""}</Content>
               <Button variant="contained" color="primary" onClick={goUpdate}>
                   수정
               </Button>
