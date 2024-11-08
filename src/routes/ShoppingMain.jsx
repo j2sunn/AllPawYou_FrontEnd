@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { listProducts } from "../service/ProductService";
+import { getProductsByCategory, listProducts } from "../service/ProductService";
 import { useNavigate } from 'react-router-dom';
 
 const ShoppingMain = () => {
 
     const [product, setProducts] = useState([]);
     const navigate = useNavigate();
+    const [category, setCategory] = useState("all");
 
     useEffect(() => {
         getAllProducts();
@@ -23,16 +24,30 @@ const ShoppingMain = () => {
             });
     }
 
-    const goDetail = ( productId ) => {
+    const goDetail = (productId) => {
         navigate(`/shoppingDetail/${productId}`);
     };
+
+    useEffect(() => {
+        if (category === "all") {
+            getAllProducts();
+        } else {
+            getProductsByCategory(category)
+                .then(response => {
+                    console.log("response 정보 : ", response);
+                    setProducts(response);
+                }).catch((error) => {
+                    console.log("에러발생 : ", error);
+                });
+        }
+    }, [category]);
 
     return (
         <>
             <GoodsSection>
                 <IconTitle>쇼핑 카테고리</IconTitle>
                 <IconContainer>
-                    <IconCard>
+                    <IconCard onClick={() => setCategory("all")}>
                         <IconBack>
                             <IconImg src="/src/assets/mainImage/icon/mainicon_1.png" alt="사료" />
                         </IconBack>
@@ -40,25 +55,17 @@ const ShoppingMain = () => {
                             <div>전체</div>
                         </IconCardBottom>
                     </IconCard>
-                    <IconCard>
+
+                    <IconCard onClick={() => setCategory("food")}>
                         <IconBack>
-                            <IconImg src="/src/assets/mainImage/icon/mainicon_1.png" alt="사료" />
+                            <IconImg src="/src/assets/mainImage/icon/mainicon_2.png" alt="간식" />
                         </IconBack>
                         <IconCardBottom style={{ textAlign: "center" }}>
                             <div>사료</div>
                         </IconCardBottom>
                     </IconCard>
 
-                    <IconCard>
-                        <IconBack>
-                            <IconImg src="/src/assets/mainImage/icon/mainicon_2.png" alt="간식" />
-                        </IconBack>
-                        <IconCardBottom style={{ textAlign: "center" }}>
-                            <div>간식</div>
-                        </IconCardBottom>
-                    </IconCard>
-
-                    <IconCard>
+                    <IconCard onClick={() => setCategory("goods")}>
                         <IconBack>
                             <IconImg src="/src/assets/mainImage/icon/mainicon_3.png" alt="용품" />
                         </IconBack>
@@ -67,7 +74,7 @@ const ShoppingMain = () => {
                         </IconCardBottom>
                     </IconCard>
 
-                    <IconCard>
+                    <IconCard onClick={() => setCategory("health")}>
                         <IconBack>
                             <IconImg src="/src/assets/mainImage/icon/mainicon_4.png" alt="건강" />
                         </IconBack>
@@ -76,7 +83,7 @@ const ShoppingMain = () => {
                         </IconCardBottom>
                     </IconCard>
 
-                    <IconCard>
+                    <IconCard onClick={() => setCategory("clothes")}>
                         <IconBack>
                             <IconImg src="/src/assets/mainImage/icon/mainicon_5.png" alt="의류" />
                         </IconBack>
@@ -88,22 +95,22 @@ const ShoppingMain = () => {
                 <div id="goods-section">
                     <ul>
                         {product.map((item, index) => (
-                            <li key={index}  onClick={() => goDetail(item.id)}>
-                            <a>
-                                <div className="thumb_area">
-                                    <span className="thumb">
-                                        <img src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`}></img>
-                                    </span>
-                                </div>
-                                <div>
-                                    <span>{item.name}</span>
-                                </div>
-                                <div>
-                                    <span style={{ fontWeight: 'bold' }} >{item.price}</span>
-                                </div>
-                            </a>
-                        </li>
-                       ))}
+                            <li key={index} onClick={() => goDetail(item.id)}>
+                                <a>
+                                    <div className="thumb_area">
+                                        <span className="thumb">
+                                            <img src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`}></img>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>{item.name}</span>
+                                    </div>
+                                    <div>
+                                        <span style={{ fontWeight: 'bold' }} >{item.price}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </GoodsSection>

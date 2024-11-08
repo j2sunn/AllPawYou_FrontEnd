@@ -21,7 +21,23 @@ export const getProductByProductId = async (id) => {
   }
 };
 
-export const updateProduct = (id, formData) => AuthUploadApi.post(`${REST_API_BASE_URL}/update/${id}`, formData);
+
+export const getProductsByCategory = async (category) => {
+    try{
+        const response = await AuthApi.get(`${REST_API_BASE_URL}/list/${category}`);
+        console.log("getProductsByCategory", response.data); // 응답 데이터 확인
+        return response.data;
+    } catch (error) {
+        console.error("데이터를 가져오는 중 에러 발생:", error);
+        throw error; // 에러를 상위 함수로 전달
+    }
+}
+
+export const updateProduct = (id, formData) =>
+    AuthUploadApi.post(`${REST_API_BASE_URL}/update/${id}`, formData);
+
+export const DeleteProduct = (id) =>
+    AuthApi.delete(`${REST_API_BASE_URL}/delete/${id}`);
 
 export const DeleteProduct = (id) => AuthApi.delete(`${REST_API_BASE_URL}/delete/${id}`);
 

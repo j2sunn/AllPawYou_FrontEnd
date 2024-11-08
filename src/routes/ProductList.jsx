@@ -4,13 +4,14 @@ import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { listProducts, DeleteProduct } from "../service/ProductService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AdminSideBar from "../components/common/AdminSideBar";
 
 const ProductList = () => {
 
     const [product, setProducts] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         getAllProducts();
@@ -26,6 +27,12 @@ const ProductList = () => {
                 console.log(error);
             });
     }
+
+    useEffect(() => {
+        if (location.state?.refresh) {
+            getAllProducts(); // AddProduct에서 상품 등록 후 이동 시 목록을 갱신합니다.
+        }
+    }, [location]);
 
     const goUpdate = (id) => {
         navigate(`/admin/updateproduct/${id}`);
