@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Piechart from "./Piechart";
+import Piechart from "./PieChart";
 
 const Chart = () => {
   return (
