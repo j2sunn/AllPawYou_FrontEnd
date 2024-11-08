@@ -18,6 +18,7 @@ const Cart = () => {
   //장바구니 목록
   const loadCartList = async(no) => {
     const response = await listCart(no);
+    console.log(response);
     setCartItems([...response]);
     setLoad(true);
   }
@@ -33,10 +34,10 @@ const Cart = () => {
   }
 
   //상품 상세
-  const loadProductList = async(productId, cartId) => {
+  const loadProductList = async(productId, cartId, quantity) => {
     const arr = productList;
     const response = await getProductByProductId(productId);
-    arr.push({...response, quantity: 1, cartId});
+    arr.push({...response, quantity, cartId});
     arr.sort((a,b)=>a.cartId-b.cartId);
     setProductList([...arr]);
   }
@@ -119,7 +120,7 @@ const Cart = () => {
     //cartItems 반복문 돌려서 상품 상세 요청
     if(cartItems.length >= 1){
       cartItems.forEach((item) => {
-        loadProductList(item.productId, item.cartId);
+        loadProductList(item.productId, item.cartId, item.quantity);
       })
     }
   },[userNo, cartItems]);
