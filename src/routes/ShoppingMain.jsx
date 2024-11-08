@@ -93,7 +93,7 @@ const ShoppingMain = () => {
                     </IconCard>
                 </IconContainer>
                 <div id="goods-section">
-                    <ul>
+                    {product.length > 0 ? (<ul>
                         {product.map((item, index) => (
                             <li key={index} onClick={() => goDetail(item.id)}>
                                 <a>
@@ -111,7 +111,10 @@ const ShoppingMain = () => {
                                 </a>
                             </li>
                         ))}
-                    </ul>
+                    </ul>) : (
+                        <NoData>해당 카테고리의 상품이 없습니다.</NoData>
+                    )}
+                    
                 </div>
             </GoodsSection>
         </>
@@ -121,6 +124,7 @@ export default ShoppingMain;
 
 
 const GoodsSection = styled.div`
+    min-height: 700px;
   #goods-section ul {
     display: flex;
     flex-wrap: wrap;
@@ -180,4 +184,9 @@ const IconCardBottom = styled.div`
   flex-direction: column;
   font-size: 1.5rem;
   font-weight: bold;
+`;
+
+const NoData = styled.ul`
+    font-size: 3rem;
+
 `;
