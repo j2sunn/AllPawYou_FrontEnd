@@ -13,8 +13,8 @@ import UserList from "./components/User/UserList";
 import KakaoLogin from "./routes/KakaoSignUp";
 import LoginError from "./routes/LoginError";
 import Cart from "./routes/Cart";
-import OrderList from "./routes/OrderList";
-import OrderDetail from "./routes/OrderDetail";
+import OrderList from "./routes/Order/OrderList";
+import OrderDetail from "./routes/Order/OrderDetail";
 import PaymentApprove from "./routes/Payment/PaymentApprove";
 import PaymentCheck from "./routes/Payment/PaymentCheck";
 import BoardWrite from "./routes/BoardWrite";
@@ -34,6 +34,7 @@ import AddProduct from "./routes/AddProduct";
 import ProductList from "./routes/ProductList";
 import BoardList from "./routes/BoardList";
 import UpdateProduct from "./routes/UpdateProduct";
+import AdminOrderList from "./routes/Order/AdminOrderList";
 
 const Router = () => {
   return (
@@ -65,6 +66,8 @@ const Router = () => {
           <Route path="/cart" element={<Cart />} />
           {/* 주문 목록 */}
           <Route path="/order" element={<OrderList />} />
+          {/* 관리자 주문 목록 */}
+          <Route path="/admin/order" element={<AdminOrderList />} />
           {/* 주문 상세 */}
           <Route path="/order/:orderId" element={<OrderDetail />} />
           {/* 주문결제 */}
