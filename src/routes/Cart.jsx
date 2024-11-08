@@ -4,6 +4,7 @@ import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { deleteCart, getProductByProductId, listCart } from "../service/ProductService";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Cart = () => {
 
@@ -26,12 +27,29 @@ const Cart = () => {
 
   //confirm 기능 추가하기
   const deleteCartItem = async(cartId) => {
-    if(confirm("삭제하시겠습니까?")){
+    Swal.fire({
+      title: "삭제하시겠습니까?",
+      icon: 'warning',
       
-      const arr = productList.filter(i => i.cartId != cartId);
-      deleteCart(cartId);
-      setProductList([...arr]);
-    }
+      showCancelButton: true,
+      confirmButtonColor: '#527853',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+      reverseButtons: true
+      
+   }).then(result => {
+      if (result.isConfirmed) { 
+        const arr = productList.filter(i => i.cartId != cartId);
+        deleteCart(cartId);
+        setProductList([...arr]);
+         Swal.fire({
+          icon: "success",
+          title:'삭제가 완료되었습니다.',
+          confirmButtonColor: '#527853'
+        });
+      }
+   });
   }
 
   //상품 상세
@@ -81,7 +99,13 @@ const Cart = () => {
   // + 버튼 동작
   const plus = (event) => {
     const arr = [...productList];
-    arr.forEach(i => i.id == event.target.id ? i.quantity >= 99 ? null : i.quantity++ : null);
+    arr.forEach(i => i.id == event.target.id ? i.quantity >= 99 ? (
+      Swal.fire({
+        icon: "warning",
+        title:"최대 수량입니다.",
+        confirmButtonColor: '#527853'
+      })
+    ) : i.quantity++ : null);
     setProductList(arr);
   }
 
@@ -92,7 +116,13 @@ const Cart = () => {
       return;
     }
     const arr = [...productList];
-    arr.forEach(i => i.id == event.target.id ? i.quantity <= 1 ? null : i.quantity-- : null);
+    arr.forEach(i => i.id == event.target.id ? i.quantity <= 1 ? (
+      Swal.fire({
+        icon: "warning",
+        title:"최소 수량입니다.",
+        confirmButtonColor: '#527853'
+      })
+    ) : i.quantity-- : null);
     setProductList(arr);
   }
 
@@ -100,7 +130,11 @@ const Cart = () => {
   const navigatePayment = () => {
     const checkedData = productList.filter(i => i.checked);
     if(checkedData.length == 0 || totalPrice == 0){
-      alert("선택된 상품이 없습니다.");
+      Swal.fire({
+        icon: "error",
+        title:"선택된 상품이 없습니다.",
+        confirmButtonColor: '#527853'
+      })
     } else {
       navigator("/payment", {
         state: { checkedData, totalPrice }
