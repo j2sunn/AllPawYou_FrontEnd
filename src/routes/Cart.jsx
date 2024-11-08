@@ -27,9 +27,10 @@ const Cart = () => {
   //confirm 기능 추가하기
   const deleteCartItem = async(cartId) => {
     if(confirm("삭제하시겠습니까?")){
-      const arr = cartItems.filter(i => i.cartId != cartId);
+      
+      const arr = productList.filter(i => i.cartId != cartId);
       deleteCart(cartId);
-      setCartItems([...arr]);
+      setProductList([...arr]);
     }
   }
 
