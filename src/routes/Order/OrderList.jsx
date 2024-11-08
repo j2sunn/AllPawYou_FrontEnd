@@ -6,6 +6,7 @@ import { paymentCancel, paymentsByUserNo } from "../../service/PaymentService";
 import { useNavigate } from "react-router-dom";
 import { getProductByProductId } from "../../service/ProductService";
 import MypageSideBar from "../../components/common/MypageSideBar";
+import Swal from "sweetalert2";
 
 const OrderList = () => {
   const navigator = useNavigate();
@@ -18,14 +19,14 @@ const OrderList = () => {
     console.log(response);
 
     //결제 별 주문 목록
-    response.forEach((i) => loadOrderList(i.tid, i.totalPrice));
+    response.forEach((i) => loadOrderList(i.tid, i.totalPrice, i.paymentState));
   };
 
   //주문 목록 (orderNo순으로 정렬)
-  const loadOrderList = async (tid, totalPrice) => {
+  const loadOrderList = async (tid, totalPrice, paymentState) => {
     const arr = paymentList;
     const response = await orderListByTid(tid);
-    response[0] = { ...response[0], totalPrice };
+    response[0] = { ...response[0], totalPrice, paymentState };
     arr.push(response);
     arr.sort((a, b) => b[0].orderNo - a[0].orderNo);
     setPaymentList([...arr]);
@@ -40,10 +41,29 @@ const OrderList = () => {
   };
 
   //결제 취소
-  const cancelPayment = async (data) => {
-    console.log(data);
-    const response = await paymentCancel(data);
-    console.log(response);
+  const cancelPayment = (data) => {
+    Swal.fire({
+      title: "주문을 취소 하시겠습니까?",
+      icon: 'warning',
+      
+      showCancelButton: true,
+      confirmButtonColor: '#527853',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '주문 취소',
+      cancelButtonText: '뒤로가기',
+      reverseButtons: true
+      
+   }).then(result => {
+      if (result.isConfirmed) { 
+        paymentCancel(data);
+         Swal.fire({
+          icon: "success",
+          title:'주문이 취소되었습니다.',
+          confirmButtonColor: '#527853'
+        });
+      }
+   });
+    
   };
 
   useEffect(() => {
@@ -65,13 +85,13 @@ const OrderList = () => {
       <Container>
         <MypageSideBar />
         <Content>
-          <Title>주문 목록</Title>
+          <Title onClick={()=>console.log(paymentList)}>주문 목록</Title>
           <Payments>
             {paymentList.map((payment) => {
               return (
                 <Payment key={payment[0].tid}>
                   <PaymentHeader>
-                    <PaymentTitle>{payment[0].createdAt.slice(0, 10)} 주문</PaymentTitle>
+                    <PaymentTitle>{payment[0].createdAt.slice(0, 10)} 주문 {payment[0].paymentState ? '' : '(주문 취소)'}</PaymentTitle>
                     <div>
                       <Button variant="outlined" onClick={() => navigator(`${payment[0].tid}`, { state: { payment } })}>
                         주문 상세
@@ -80,6 +100,7 @@ const OrderList = () => {
                         variant="outlined"
                         sx={{ marginLeft: "1rem" }}
                         onClick={() => cancelPayment({ tid: payment[0].tid, cancel_amount: payment[0].totalPrice })}
+                        disabled={!payment[0].paymentState}
                       >
                         주문 취소
                       </Button>
@@ -94,7 +115,6 @@ const OrderList = () => {
                             <div>
                               {order?.name} ({order?.quantity}개)
                             </div>
-                            <div>설명</div>
                             <div>총 가격 : {order?.price * order?.quantity}원</div>
                           </Detail>
                         </OrderInfo>
@@ -195,6 +215,7 @@ const Detail = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-size: 1.2rem;
 `;
 
 const Buttons = styled.div`

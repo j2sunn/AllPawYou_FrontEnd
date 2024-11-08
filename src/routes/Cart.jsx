@@ -112,7 +112,6 @@ const Cart = () => {
   // - 버튼 동작
   const minus = (event) => {
     if(event.target.value <= 1){
-      console.log('err');
       return;
     }
     const arr = [...productList];
