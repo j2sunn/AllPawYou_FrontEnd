@@ -89,7 +89,7 @@ const OrderList = () => {
                     return (
                       <Product key={order?.orderNo}>
                         <OrderInfo>
-                          <ProductImg as="div" />
+                          <ProductImg src={`http://localhost:8081${order.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지" />
                           <Detail>
                             <div>
                               {order?.name} ({order?.quantity}개)
@@ -186,7 +186,6 @@ const OrderInfo = styled.div`
 const ProductImg = styled.img`
   width: 120px;
   height: 120px;
-  border: 1px solid black;
   margin-right: 30px;
 `;
 
