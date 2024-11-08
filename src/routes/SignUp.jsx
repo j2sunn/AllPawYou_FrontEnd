@@ -4,6 +4,7 @@ import { Button, TextField } from "@mui/material";
 
 import styled from "styled-components";
 import { signUp, sendMail, verify } from "../service/Login";
+import Swal from "sweetalert2";
 
 const Container = styled.div`
   padding: 60px;
@@ -69,9 +70,19 @@ const SignUp = () => {
     if (regex.test(values.email.trim())) {
       sendMail(values.email);
       setAuth(true);
-      alert("인증번호를 전송했습니다.");
+      Swal.fire({
+        icon: "info",
+        title: "인증번호를 전송했습니다.",
+        confirmButtonColor: '#527853',
+          confirmButtonText: '닫기'
+      });
     } else {
-      alert("이메일 형식에 맞게 입력해주세요.");
+      Swal.fire({
+        icon: "warning",
+        title: "이메일 형식에 맞게 입력해주세요.",
+        confirmButtonColor: '#527853',
+          confirmButtonText: '닫기'
+      });
     }
   };
 
@@ -82,14 +93,29 @@ const SignUp = () => {
       // 인증 성공
       setAuthValid(true);
       setError({ ...error, auth: "" });
-      alert("인증번호가 확인되었습니다.");
+      Swal.fire({
+        icon: "success",
+        title: "인증번호가 확인되었습니다.",
+        confirmButtonColor: '#527853',
+          confirmButtonText: '닫기'
+      });
     } catch (error) {
       // 인증 실패
       setAuthValid(false);
       if (error.response) {
-        alert("인증번호 또는 이메일이 일치하지 않습니다.");
+        Swal.fire({
+          icon: "warning",
+          title: "인증번호 또는 이메일이 일치하지 않습니다.",
+          confirmButtonColor: '#527853',
+          confirmButtonText: '닫기'
+        });
       } else {
-        alert("서버 오류가 발생했습니다.");
+        Swal.fire({
+          icon: "error",
+          title: "서버 오류가 발생했습니다.",
+          confirmButtonColor: '#527853',
+          confirmButtonText: '닫기'
+        });
       }
     }
   };
