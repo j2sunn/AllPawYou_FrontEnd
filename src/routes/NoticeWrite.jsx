@@ -80,11 +80,12 @@ const NoticeWrite = ()=>{
         // 필드 추가
         formData.append("noticeTitle", noticeTitle);
         formData.append("noticeContent", noticeContent);
-        createNotice(formData,navigator);
-    
-        
+        let data = {noticeTitle,noticeContent};
+        createNotice(data,navigator);
+            navigator("/admin/noticeList");
         }
     }
+    
     const validation = ()=>{ //필수값 다 작성했는지 검사
         let obj={};
         if(noticeTitle.trim().length==0){
