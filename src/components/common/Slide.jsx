@@ -10,11 +10,11 @@ export default function SimpleSlider() {
   const slideRef = useRef(null);
 
   function SamplePrevArrow() {
-    return <IoIosArrowBack size={64} onClick={() => slideRef.current.slickPrev()} style={{display: 'block', color: 'white', position: 'sticky', left: '10px', zIndex: 10}} />;
+    return <IoIosArrowBack size={64} onClick={() => slideRef.current.slickPrev()} style={{display: 'block', color: 'white', position: 'sticky', left: '10px', zIndex: 5}} />;
   }
 
   function SampleNextArrow() {
-    return <IoIosArrowForward size={64} onClick={() => slideRef.current.slickNext()} style={{display: 'block', color: 'white', position: 'sticky', right: '10px',  zIndex: 10}} />;
+    return <IoIosArrowForward size={64} onClick={() => slideRef.current.slickNext()} style={{display: 'block', color: 'white', position: 'sticky', right: '10px',  zIndex: 5}} />;
   }
   
   const settings = {

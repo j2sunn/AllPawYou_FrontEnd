@@ -179,7 +179,7 @@ const ShoppingDetail = () => {
                                 <h4 style={{ fontFamily: 'NanumSquareRound', fontSize: '2rem', fontWeight:'bold' }}>{product.name}</h4>
                             </div>
                             <div style={{ fontFamily: 'NanumSquareRound', marginBottom: '20px' }}>
-                                <h5 style={{ fontWeight: 'bold' }}>{product.price}원</h5>
+                                <h5 style={{ fontWeight: 'bold' }}>{product.price.toLocaleString()}원</h5>
                             </div>
                             <div>
                                 후기
