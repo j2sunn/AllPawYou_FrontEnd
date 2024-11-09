@@ -11,7 +11,17 @@ import { FaUpload } from "react-icons/fa";
 import { GrContactInfo } from "react-icons/gr";
 import { FaInfoCircle } from "react-icons/fa";
 import Barchart from "../../components/chart/BarChart";
-import { TotalVisitor, DailyVisitor, DailyOrder, DailyTotalPrice, DailyBoardCount, TotalPrice } from "../../service/DashBoard";
+import aCurrentUser from "./components/aCurrentUserList.jsx";
+import {
+  TotalVisitor,
+  DailyVisitor,
+  DailyOrder,
+  DailyTotalPrice,
+  DailyBoardCount,
+  TotalPrice,
+  TotalBoardCount,
+  TotalOrder,
+} from "../../service/DashBoard";
 import { useEffect, useState } from "react";
 
 export default function PermanentDrawerLeft() {
@@ -19,9 +29,13 @@ export default function PermanentDrawerLeft() {
   const [totalVisitors, setTotalVisitors] = useState(0);
 
   const [dailtyOrders, setDailyorders] = useState(0);
+  const [totalOrder, setTotalOrder] = useState(0);
+
   const [dailtyTotalPrice, setDailyTotalPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+
   const [dailyBoardCount, setDailyBoardCount] = useState(0);
+  const [totalBoardCount, setTotalBoardCount] = useState(0);
 
   // 일일 방문자 변수에 저장하는 함수
   const fetchDailyVisitors = async () => {
@@ -34,7 +48,7 @@ export default function PermanentDrawerLeft() {
     }
   };
 
-  // 전체 방문자 변수에 저장하는 함수
+  // 누적 방문자 변수에 저장하는 함수
   const fetchTotalVisitors = async () => {
     try {
       const totalVisitorCount = await TotalVisitor(); // TotalVisitor 호출
@@ -52,6 +66,17 @@ export default function PermanentDrawerLeft() {
       return DailyOrderCount; // 총 주문 수량 반환
     } catch (error) {
       console.error("Error fetching Daily Order:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 누적 주문수 저장하는 함수
+  const fetchTotalOrder = async () => {
+    try {
+      const aTotalOrder = await TotalOrder();
+      return aTotalOrder; // 총 주문수 반환
+    } catch (error) {
+      console.error("Error fetching total TotalOrder:", error);
       return 0; // 에러 발생 시 기본값으로 0 반환
     }
   };
@@ -89,6 +114,17 @@ export default function PermanentDrawerLeft() {
     }
   };
 
+  // 누적 게시물 등록수  저장하는 함수
+  const fetchTotalBoardCount = async () => {
+    try {
+      const aTotalBoardCount = await TotalBoardCount();
+      return aTotalBoardCount; // 주문수 만환
+    } catch (error) {
+      console.error("Error fetching TotalBoardCount:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
   useEffect(() => {
     const getDailyVisitors = async () => {
       const count = await fetchDailyVisitors(); // 일일 방문자 수 가져오기
@@ -105,6 +141,11 @@ export default function PermanentDrawerLeft() {
       setDailyorders(count);
     };
 
+    const getTotalOrder = async () => {
+      const count = await fetchTotalOrder(); // 총 방문자 수 가져오기
+      setTotalOrder(count); // 상태 업데이트
+    };
+
     const getDailyTotalPrice = async () => {
       const count = await fetchDailyTotalPrice();
       const formattedPrice = new Intl.NumberFormat("ko-KR").format(count);
@@ -117,16 +158,26 @@ export default function PermanentDrawerLeft() {
     };
 
     const getDailyBoardCount = async () => {
-      const count = await fetchDailyBoardCount();
+      const count = await fetchDailyBoardCount(); // 일일 게시글 등록수 가져오기
       setDailyBoardCount(count);
+    };
+
+    const getTotalBoardCount = async () => {
+      const count = await fetchTotalBoardCount(); // 총  게시글 등록수 가져오기
+      setTotalBoardCount(count); // 상태 업데이트
     };
 
     getDailyVisitors(); // 일일 방문자 수 함수 호출
     getTotalVisitors(); // 누적 방문자 수 함수 호출
+
     getDailyOrders(); // 일일 주문 수
+    getTotalOrder(); // 누적 주문 수
+
     getDailyTotalPrice(); //일일 총 수입
     getTotalPrice(); // 누적 수입
+
     getDailyBoardCount(); // 일일 게시글 등록수
+    getTotalBoardCount(); // 누적 게시글 수
   }, []);
 
   return (
@@ -203,16 +254,13 @@ export default function PermanentDrawerLeft() {
             {/* 최근 가입 사용자 */}
             <Grid item xs={12} md={8}>
               <Paper elevation={3} sx={{ padding: 2 }}>
-                <Typography variant="h6" gutterBottom>
+                {/* <Typography variant="h6" gutterBottom>
                   <GrContactInfo size={30} />
                   최근 가입 사용자
-                </Typography>
+                </Typography> */}
                 {/* You can replace this with the actual list of users */}
                 <Box>
-                  <Typography variant="body1">User 1</Typography>
-                  <Typography variant="body1">User 2</Typography>
-                  <Typography variant="body1">User 3</Typography>
-                  <Typography variant="body1">User 4</Typography>
+                  <aCurrentUser />
                 </Box>
               </Paper>
             </Grid>
@@ -226,9 +274,9 @@ export default function PermanentDrawerLeft() {
                 {/* You can replace this with the actual list of users */}
                 <Box>
                   <Typography variant="body1">누적 접속횟수 :: {totalVisitors}</Typography>
-                  <Typography variant="body1">누적 거래횟수</Typography>
+                  <Typography variant="body1">누적 거래횟수:: {totalOrder}</Typography>
                   <Typography variant="body1">누적 수익 :: {totalPrice}</Typography>
-                  <Typography variant="body1">누적 게시물 수</Typography>
+                  <Typography variant="body1">누적 게시물 수 :: {totalBoardCount}</Typography>
                 </Box>
               </Paper>
             </Grid>

@@ -25,7 +25,7 @@ export const DailyVisitor = async () => {
 
 // 누적 주문
 export const TotalOrder = async () => {
-  const response = await AuthApi.get(`${REST_API_URL}/order/orderCount`);
+  const response = await AuthApi.get(`${REST_API_URL}/order/totalCount`);
   return response.data;
 };
 
@@ -51,7 +51,7 @@ export const DailyTotalPrice = async () => {
 
 //누적 등록수
 export const TotalBoardCount = async () => {
-  const response = await AuthApi.get(`/board/dailyCount`);
+  const response = await AuthApi.get(`/board/totalCount`);
   return response.data;
 };
 
