@@ -90,7 +90,7 @@ const PaymentCheck = () => {
               <Table>
                 <Tr>
                   <Th>결제금액</Th>
-                  <Td>{state.totalPrice}원</Td>
+                  <Td>{state.totalPrice.toLocaleString()}원</Td>
                 </Tr>
 
                 <Tr>

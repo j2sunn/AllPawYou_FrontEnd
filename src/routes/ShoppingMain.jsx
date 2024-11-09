@@ -120,7 +120,7 @@ const ShoppingMain = () => {
                                 <GridItem key={index} onClick={() => goDetail(item.id)}>
                                 <GridImage src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="상품 이미지" />
                                 <GridTitle>{item.name}</GridTitle>
-                                <GridText>{item.price}원</GridText>
+                                <GridText>{item.price.toLocaleString()}원</GridText>
                                 </GridItem>
                             ))}
                       </Grid>
