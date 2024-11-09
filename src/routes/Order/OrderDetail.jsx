@@ -146,7 +146,6 @@ const OrderInfo = styled.div`
   display: flex;
   padding: 1rem;
   width: 75%;
-  border-right: 1px solid black;
 `;
 
 const ProductImg = styled.img`
