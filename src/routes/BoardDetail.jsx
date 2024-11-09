@@ -7,7 +7,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { Button} from "@mui/material";
 import { IoMdHeartEmpty } from "react-icons/io"; //빈 하트
 import { IoHeart } from "react-icons/io5"; //채워진 하트
-const BoardDetail = ()=>{
+const BoardDetail = ()=>{ //백업해놨다
     /*
     const { state } = useLocation();
     const email = state?.email;
@@ -34,7 +34,7 @@ const BoardDetail = ()=>{
 
     const { state } = useLocation();
     const cp = state?.cp;
-    console.log("cp : "+cp.currentPage);
+    console.log("cp : "+cp);
     //************************************************************************************** */
     //************************************************************************************** */
     const [onUpdateCommentNo, setOnUpdateCommentNo] = useState(0); //수정중인 댓글 번호 저장
@@ -54,8 +54,11 @@ const BoardDetail = ()=>{
     // 기본값을 0으로 설정
     let loginEmail=useRef("");
     const navigate = useNavigate();
-
+    const updateCommentCnt = ()=>{
+        setBoardData(prev => ({...prev, commentCount: prev.commentCount - 1}))
+    }
     const loadBoardData = async() => {
+        console.log("kokoko : "+bNo.current);
         const response = await loadData(bNo.current);
 
         if (response) {
@@ -136,6 +139,11 @@ const BoardDetail = ()=>{
         console.log("댓글result : "+result);
     }
     const addComment = ()=>{
+        if(localStorage.getItem('email') == null){
+            alert("로그인 후 댓글 작성이 가능합니다.");
+            navigate('/login');
+            return;
+        }
         if(comment.trim().length==0){
             setError({comment:"댓글을 입력해 주세요."});
             return;
@@ -155,6 +163,11 @@ const BoardDetail = ()=>{
     const toggleLike=(boardNo, loginEmail)=>{
         console.log("boardNo : "+boardNo);
         console.log("loginEmail : "+loginEmail);
+        if(localStorage.getItem('email') == null){
+            alert("로그인 후 이용해 주세요.");
+            navigate('/login');
+            return;
+        }
         axios.post('http://localhost:8081/board/like/insert', {boardNo, 
             email : loginEmail})
         .then(response => {
@@ -190,6 +203,7 @@ const BoardDetail = ()=>{
                 if(resp.data>0){
                     alert("삭제되었습니다.");
                     // window.location.reload();
+                    updateCommentCnt();
                     updateCommentList(boardNo,setCommentData);
                 }else{
                     alert("삭제에 실패하였습니다.");
@@ -209,7 +223,8 @@ const BoardDetail = ()=>{
             if(resp.data>0){
                 alert("댓글이 수정되었습니다.");
                 // window.location.reload();
-                updateCommentList(boardNo,setCommentData);
+                setTimeout(()=>navigate("/board/"+boardNo),1000);
+                // updateCommentList(boardNo,setCommentData);
             }else{
                 alert("수정에 실패하였습니다.");
             }
@@ -226,8 +241,8 @@ const BoardDetail = ()=>{
                 {boardData ? (
                     <>
                     <Container>
-                        <One>
-                            <Div>  {boardData.category === 1 
+                        <One style={{marginTop: '3rem'}}>
+                            <Div >  {boardData.category === 1 
                                         ? "강아지" 
                                         : boardData.category === 2 
                                             ? "고양이" 
@@ -359,7 +374,7 @@ const BoardDetail = ()=>{
                                             <>
                                                 {/* 수정중이지 않은 경우 */}
                                                 {/* 댓글 작성자 프로필이미지 */}
-                                                <img src="http://localhost:8081/images/board/happy.png"/>
+                                                <img src="http://localhost:8080/images/board/happy.png"/>
                                                 <p>{comment.commentUsername}</p>
                                                 {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
                                                 <p dangerouslySetInnerHTML={{ __html: comment.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
