@@ -1,14 +1,12 @@
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { useLocation, useNavigate } from "react-router-dom";
-import poodle from "../assets/poodle.png";
+import {  useNavigate } from "react-router-dom";
 import { Table, TableCell, TableRow } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
 import MypageSideBar from "../components/common/MypageSideBar";
 import { updateUser } from "../service/UserAPI";
+import defaultProfile from "../assets/defaultprofile.png";
 
 const MyPage = () => {
   const navigator = useNavigate();
@@ -25,43 +23,74 @@ const MyPage = () => {
     const intro = localStorage.getItem("intro");
     const phone = localStorage.getItem("phone");
     const address = localStorage.getItem("address");
-    const profileImage = localStorage.getItem("profile");
+    const profile = localStorage.getItem("profile");
 
     // 가져온 데이터를 상태에 설정
-      const userData = {
-        username,
-        email,
-        nickname,
-        intro,
-        phone,
-        address,
-        profileImage,
-      };
-      setUserInfo(userData);
-      setProfile(userData);
-  
+    const userData = {
+      username,
+      email,
+      nickname,
+      intro,
+      phone,
+      address,
+      profile,
+    };
+    setUserInfo(userData);
+    setProfile(userData);
+
   }, []);
 
   const goMypage = () => {
     navigator('/mypage');
   }
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        profile: file
+      }));
+      console.log("-- file-- : ", file);
+    }
+  }
+
   const updateProfile = async () => {
     try {
-      const updatedUserInfo = await updateUser(profile);
-      alert("프로필이 업데이트되었습니다.");
-      goMypage();
+      const formData = new FormData();
+      formData.append('username', profile.username);
+      formData.append('email', profile.email);
+      formData.append('nickname', profile.nickname);
+      formData.append('intro', profile.intro);
+      formData.append('phone', profile.phone);
+      formData.append('address', profile.address);
+      if(profile.profile){
+        formData.append('profile', profile.profile);
+      }
 
-      localStorage.setItem("username", updatedUserInfo.username);
-      localStorage.setItem("email", updatedUserInfo.email);
-      localStorage.setItem("nickname", updatedUserInfo.nickname);
-      localStorage.setItem("intro", updatedUserInfo.intro);
-      localStorage.setItem("phone", updatedUserInfo.phone);
-      localStorage.setItem("address", updatedUserInfo.address);
-      localStorage.setItem("profile", updatedUserInfo.profileImage);
+      console.log("-- formData.file -- : ", formData.profile);
 
-      setUserInfo(updatedUserInfo);
-     
+      // const updatedUserInfo = await updateUser(formData);
+      // alert("프로필이 업데이트되었습니다.");
+      updateUser(formData)
+        .then((updatedUserInfo) => {
+          alert("프로필이 업데이트되었습니다.");
+
+          localStorage.setItem("username", updatedUserInfo.username);
+          localStorage.setItem("email", updatedUserInfo.email);
+          localStorage.setItem("nickname", updatedUserInfo.nickname);
+          localStorage.setItem("intro", updatedUserInfo.intro);
+          localStorage.setItem("phone", updatedUserInfo.phone);
+          localStorage.setItem("address", updatedUserInfo.address);
+          localStorage.setItem("profile", updatedUserInfo.profile);
+
+          setUserInfo(updatedUserInfo);
+
+          goMypage();
+        })
+        .catch((error) => {
+          console.error("프로필 업데이트 중 오류 발생:", error);
+        });
     } catch (error) {
       console.error("프로필 업데이트 중 오류 발생:", error);
     }
@@ -71,17 +100,8 @@ const MyPage = () => {
     const { value } = event.target;
     setProfile((prev) => ({ ...prev, [key]: value }));
 
-    // const newObj = {
-    //   ...profile,
-    //   [key]: event.target.value
-    // };
-    // console.log(newObj);
-    // setProfile(newObj);
-  };
 
-  // useEffect(()=>{
-  //   setUpdate(stat);
-  // },[stat]);
+  };
 
   const [enroll_company, setEnroll_company] = useState({
     address: "",
@@ -119,6 +139,21 @@ const MyPage = () => {
     zIndex: 100,
   };
 
+  const deleteProfileImg = () => {
+    // 기본 프로필 이미지로 변경
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      profile: defaultProfile, // public 폴더 내 이미지 경로
+    }));
+
+    // VisuallyHiddenInput 초기화
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      profile: null, // 파일 초기화
+    }));
+  };
+
+
   return (
     <>
       <Box>
@@ -129,9 +164,17 @@ const MyPage = () => {
               <Content>
                 <Profile>
                   <ProfileImg
-                    // as="div"
-                    src={poodle}
+                    src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
                   />
+                  <Button component="label" variant="contained">
+                    이미지 변경
+                    <VisuallyHiddenInput
+                      type="file" accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
+                  <Button
+                    variant='outlined' onClick={deleteProfileImg}>삭제</Button>
                 </Profile>
                 <Profile>
                   <Table>
@@ -156,7 +199,7 @@ const MyPage = () => {
                           size="small"
                           sx={{ marginLeft: "1rem", width: "25rem" }}
                           value={profile.phone}
-                          onChange={() => profileHandler(event, "phone")}
+                          onChange={(event) => profileHandler(event, "phone")}
                           required
                         />
                       </TableCell>
@@ -191,7 +234,7 @@ const MyPage = () => {
                             width: "25rem",
                           }}
                           value={profile.address}
-                          onChange={() => profileHandler(event, "address")}
+                          onChange={(event) => profileHandler(event, "address")}
                           required
                         />
                         <Button sx={{ marginLeft: "10px" }} onClick={() => isPostcodePopupVisible(true)}>
@@ -208,7 +251,7 @@ const MyPage = () => {
                           size="small"
                           sx={{ marginLeft: "1rem", width: "25rem" }}
                           value={profile.nickname}
-                          onChange={() => profileHandler(event, "nickname")}
+                          onChange={(event) => profileHandler(event, "nickname")}
                           required
                         />
                       </TableCell>
@@ -225,7 +268,7 @@ const MyPage = () => {
                   maxRows={6}
                   sx={{ alignSelf: "start", width: "60rem", marginBottom: "2rem" }}
                   value={profile.intro}
-                  onChange={() => profileHandler(event, "intro")}
+                  onChange={(event) => profileHandler(event, "intro")}
                 />
               </div>
               <div>
@@ -279,7 +322,6 @@ const Profile = styled.div`
 const ProfileImg = styled.img`
   width: 150px;
   height: 150px;
-  border: 1px solid black;
   border-radius: 50%;
   margin-bottom: 2rem;
 `;
@@ -324,3 +366,40 @@ const Box = styled.div`
 const UpdateContainer = styled(Container)`
   margin: 5rem 0;
 `;
+
+const UploadButton = styled.label`
+    border-radius: 15px;
+    padding : 5px;
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align : center;
+`;
+
+// const UploadButton = styled.label`
+//     background-color: RGB(240, 240, 243);
+//     border-radius: 15px;
+//     padding : 5px;
+//     display: inline-block;
+//     cursor: pointer;
+//     margin-top: 10px;
+//     font-size: 14px;
+//     text-align : center;
+// `;
+
+const FileInput = styled.input`
+    display: none;
+`;
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});

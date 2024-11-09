@@ -49,8 +49,16 @@ export const fetchUserByNo = async (userNo) => {
 };
 
 /** 회원수정 API */
-export const updateUser = async (data) => {
-  const response = await UserApi.put(`/api/v1/user`, data);
+export const updateUser = async (FormData) => {
+  const response = await UserApi.put(`/api/v1/user`, FormData, {
+      headers : {
+        "Content-Type": "multipart/form-data",
+        Authorization: `${TOKEN_TYPE} ${ACCESS_TOKEN}`,
+        REFRESH_TOKEN: REFRESH_TOKEN,
+      },
+      
+  });
+  console.log("updateUser 데이터 : " , response.data);
   return response.data;
 };
 

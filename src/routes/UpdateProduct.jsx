@@ -155,9 +155,10 @@ const AddProduct = () => {
                                 onChange={(event) => updateHandler(event, 'category')}
                                 value={productInfo.category}
                             >
-                                <MenuItem value="10">사료</MenuItem>
-                                <MenuItem value="20">간식</MenuItem>
-                                <MenuItem value="30">의류</MenuItem>
+                                <MenuItem value="food">사료</MenuItem>
+                                <MenuItem value="goods">용품</MenuItem>
+                                <MenuItem value="health">건강용품</MenuItem>
+                                <MenuItem value="clothes">의류</MenuItem>
                             </Select>
                         </One>
                         <Two>
