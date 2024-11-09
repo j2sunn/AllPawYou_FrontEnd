@@ -55,6 +55,9 @@ const OrderList = () => {
       
    }).then(result => {
       if (result.isConfirmed) { 
+        const arr = paymentList;
+        arr.forEach(i=>i[0].tid == data.tid ? i[0].paymentState = false : null);
+        setPaymentList([...arr]);
         paymentCancel(data);
          Swal.fire({
           icon: "success",
@@ -85,7 +88,7 @@ const OrderList = () => {
       <Container>
         <MypageSideBar />
         <Content>
-          <Title onClick={()=>console.log(paymentList)}>주문 목록</Title>
+          <Title>주문 목록</Title>
           <Payments>
             {paymentList.map((payment) => {
               return (

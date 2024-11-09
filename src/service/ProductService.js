@@ -62,7 +62,6 @@ export const DeleteProduct = (id) => AuthApi.delete(`${REST_API_BASE_URL}/delete
 
 export const addCart = async (data) => {
   const response = await axios.post(REST_API_URL + `/cart`, data);
-  console.log(response);
 };
 
 //유저 별 장바구니 목록

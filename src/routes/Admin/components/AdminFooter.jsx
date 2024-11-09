@@ -8,10 +8,7 @@ const AdminFooter = () => {
         py: 2,
         px: 3,
         bgcolor: "#527853",
-        textAlign: "center",
-        position: "fixed",
-        bottom: 0,
-        left: 0,
+        textAlign: "center"
       }}
     >
       <Typography variant="body2" color="textSecondary">

@@ -52,7 +52,7 @@ const ShoppingDetail = () => {
     const [product, setProduct] = useState(null);
     const [files, setFiles] = useState(null);
     const [cart, setCart] = useState([]);
-    const [goCart, setGoCart] = useState(false); 
+    const [disabled, setDisabled] = useState(false); 
     const [data, setData] = useState({
         userNo: localStorage.getItem("no"),
         productId: id,
@@ -70,7 +70,7 @@ const ShoppingDetail = () => {
             return;
         }
         cart.forEach(i => i.productId == id ? cartExist = true : null);
-        if(cartExist){
+        if(cartExist || disabled){
             Swal.fire({
                 icon: "warning",
                 title:"해당 상품이 이미 장바구니에 있습니다.",
@@ -79,11 +79,20 @@ const ShoppingDetail = () => {
               });
         }else{
             addCart(data);
-            setGoCart(true);
+            setDisabled(true);
             Swal.fire({
-                icon: "success",
-                title: "장바구니에 추가되었습니다.",
-                confirmButtonColor: '#527853'
+                icon: "info",
+                title: "장바구니로 이동하시겠습니까?.",
+
+                showCancelButton: true,
+                confirmButtonColor: '#527853',      
+                cancelButtonColor: '#d33',
+                confirmButtonText: '장바구니로 이동',
+                cancelButtonText: '취소',
+              }).then(result => {
+                if(result.isConfirmed){
+                    navigator("/cart");  
+                }
               });
         }
     }
@@ -186,16 +195,9 @@ const ShoppingDetail = () => {
                                 </Box>
                             </quantityIcon>
                             <div className="orderArea">
-                                {goCart ? (
-                                    <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="contained" onClick={()=>navigator("/cart")}>
-                                    장바구니로 가기
-                                </Button>
-                                ) : (
-                                    <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="outlined" onClick={addCartItem}>
+                                <Button sx={{ fontFamily: 'NanumSquareRound', marginRight: '10px', width: '150px' }} variant="outlined" onClick={addCartItem}>
                                     장바구니에 담기
                                 </Button>
-                                )}
-                                
                                 <Button sx={{ fontFamily: 'NanumSquareRound', width: '150px' }} variant="contained" onClick={navigatePayment}>
                                     바로 구매하기
                                 </Button>

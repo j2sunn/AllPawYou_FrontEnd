@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Button, Table } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import AdminSideBar from "../../components/common/AdminSideBar";
 import { fetchUserByNo } from "../../service/UserAPI";
 import MypageSideBar from "../../components/common/MypageSideBar";
 
@@ -24,7 +23,7 @@ const OrderDetail = () => {
   return (
     <>
       <Container>
-        {role == "ROLE_ADMIN" ? <AdminSideBar /> : <MypageSideBar />}
+        <MypageSideBar />
         <Content>
           <div style={{display:"flex", justifyContent: 'space-between', alignItems:' center', width: '80%'}}>
             <Title>주문 상세</Title>

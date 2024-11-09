@@ -29,7 +29,6 @@ const PaymentApprove = () => {
 
   const approve = async() => {
     const response = await paymentApprove(requestData);
-    console.log(response);
     setResponseData(response.data);
   }
 
