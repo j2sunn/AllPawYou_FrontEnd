@@ -86,7 +86,7 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: end;
   background-color: white;
-  z-index: 5;
+  z-index: 10;
 `;
 
 const Header = styled.div`
