@@ -28,10 +28,9 @@ import UserReviewList from "./components/Review/UserReviewList";
 import UserReviewCreate from "./components/Review/UserReviewCreate";
 import UserReviewUpdate from "./components/Review/UserReviewUpdate";
 import ShoppingDetail from "./routes/ShoppingDetail";
-import AddProduct from "./routes/AddProduct";
 
 import BoardList from "./routes/BoardList";
-import UpdateProduct from "./routes/UpdateProduct";
+
 import UpdateMyPage from "./routes/UpdateMyPage";
 
 // Admin
@@ -40,7 +39,9 @@ import AdminDashboard from "./routes/Admin/AdminDashBoard";
 import AdminReviewList from "./routes/Admin/AdminReviewList";
 import AdminUserList from "./routes/Admin/AdminUserList";
 import AdminOrderList from "./routes/Admin/AdminOrderList";
-import ProductList from "./routes/Admin/AdminProductList";
+import AdminProductList from "./routes/Admin/AdminProductList";
+import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
+import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
 
 const Router = () => {
   return (
@@ -90,11 +91,6 @@ const Router = () => {
           <Route path="/temp" element={<Temp />} />
           <Route path="/boardList" element={<BoardList />} />
           {/* <Route path="/boardUpdate" element={<BoardUpdate />} /> */}
-          {/* 공지사항 메인(관리자) */}
-          <Route path="/admin/noticeList" element={<NoticeList />} />
-
-          {/* 공지사항 글 작성(관리자) */}
-          <Route path="/admin/noticeWrite" element={<NoticeWrite />} />
 
           {/* 공지사항 글 상세 */}
           <Route path="/notice/:noticeNo" element={<NoticeDetail />} />
@@ -113,11 +109,15 @@ const Router = () => {
         <Route path="/admin/userlist" element={<AdminUserList />} />
         <Route path="/admin/boardlist" element={<AdminBoardList />} />
         <Route path="/admin/orderlist" element={<AdminOrderList />} />
+        <Route path="/admin/productlist" element={<AdminProductList />} />
+        <Route path="/admin/addproduct" element={<AdmiinAddProduct />} />
+        <Route path="/admin/updateproduct/:id" element={<AdminUpdateProduct />} />
 
-        <Route path="/admin/productlist" element={<ProductList />} />
+        {/* 공지사항 메인(관리자) */}
+        <Route path="/admin/noticeList" element={<NoticeList />} />
 
-        <Route path="/admin/addproduct" element={<AddProduct />} />
-        <Route path="/admin/updateproduct/:id" element={<UpdateProduct />} />
+        {/* 공지사항 글 작성(관리자) */}
+        <Route path="/admin/noticeWrite" element={<NoticeWrite />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
