@@ -11,13 +11,17 @@ import { FaUpload } from "react-icons/fa";
 import { GrContactInfo } from "react-icons/gr";
 import { FaInfoCircle } from "react-icons/fa";
 import Barchart from "../../components/chart/BarChart";
-import { TotalVisitor, DailyVisitor } from "../../service/Visitor";
+import { TotalVisitor, DailyVisitor, DailyOrder, DailyTotalPrice, DailyBoardCount } from "../../service/DashBoard";
 import { useEffect, useState } from "react";
 
 export default function PermanentDrawerLeft() {
   const [dailyVisitors, setDailyVisitors] = useState(0);
   const [totalVisitors, setTotalVisitors] = useState(0);
+  const [dailtyOrders, setDailyorders] = useState(0);
+  const [dailtyTotalPrice, setDailyTotalPrice] = useState(0);
+  const [dailyBoardCount, setDailyBoardCount] = useState(0);
 
+  // 일일 방문자 변수에 저장하는 함수
   const fetchDailyVisitors = async () => {
     try {
       const dailyVisitorCount = await DailyVisitor(); // TotalVisitor 호출
@@ -28,13 +32,47 @@ export default function PermanentDrawerLeft() {
     }
   };
 
-  // 데이터를 변수에 저장하는 함수
+  // 전체 방문자 변수에 저장하는 함수
   const fetchTotalVisitors = async () => {
     try {
       const totalVisitorCount = await TotalVisitor(); // TotalVisitor 호출
       return totalVisitorCount; // 총 방문자 수 반환
     } catch (error) {
       console.error("Error fetching total visitors:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 일일 주문수 저장하는 함수
+  const fetchDailyOrder = async () => {
+    try {
+      const DailyOrderCount = await DailyOrder();
+      return DailyOrderCount; // 총 주문 수량 반환
+    } catch (error) {
+      console.error("Error fetching Daily Order:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 일일 주문수 저장하는 함수
+  const fetchDailyTotalPrice = async () => {
+    try {
+      const aDailyTotalPrice = await DailyTotalPrice();
+      console.log(aDailyTotalPrice);
+      return aDailyTotalPrice; // 주문수 만환
+    } catch (error) {
+      console.error("Error fetching dailyTotalPrice:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 일일 게시물 등록수 저장하는 함수
+  const fetchDailyBoardCount = async () => {
+    try {
+      const aDailyBoardCount = await DailyBoardCount();
+      return aDailyBoardCount; // 게시물 등록수 반환
+    } catch (error) {
+      console.error("Error fetching daily BoardCount:", error);
       return 0; // 에러 발생 시 기본값으로 0 반환
     }
   };
@@ -50,8 +88,27 @@ export default function PermanentDrawerLeft() {
       setTotalVisitors(count); // 상태 업데이트
     };
 
+    const getDailyOrders = async () => {
+      const count = await fetchDailyOrder();
+      setDailyorders(count);
+    };
+
+    const getDailyTotalPrice = async () => {
+      const count = await fetchDailyTotalPrice();
+      const formattedPrice = new Intl.NumberFormat("ko-KR").format(count);
+      setDailyTotalPrice(formattedPrice);
+    };
+
+    const getDailyBoardCount = async () => {
+      const count = await fetchDailyBoardCount();
+      setDailyBoardCount(count);
+    };
+
     getDailyVisitors(); // 일일 방문자 수 함수 호출
     getTotalVisitors(); // 총 방문자 수 함수 호출
+    getDailyOrders(); // 일일 주문 수
+    getDailyTotalPrice(); //일일 총 수입
+    getDailyBoardCount(); // 일일 게시글 등록수
   }, []);
 
   return (
@@ -63,9 +120,9 @@ export default function PermanentDrawerLeft() {
             {/* 일일 정보 카드 */}
             {[
               { title: "일일 접속자", value: dailyVisitors, icon: <CgProfile size={40} /> },
-              { title: "일일 거래수", value: 50, icon: <FaHandHoldingDollar size={40} /> },
-              { title: "일일 수익", value: "$1,200", icon: <FaMoneyBillTrendUp size={40} /> },
-              { title: "일일 게시물 등록 수", value: 25, icon: <FaUpload size={40} /> },
+              { title: "일일 거래수", value: dailtyOrders, icon: <FaHandHoldingDollar size={40} /> },
+              { title: "일일 수익", value: `${dailtyTotalPrice}원`, icon: <FaMoneyBillTrendUp size={40} /> },
+              { title: "일일 게시물 등록 수", value: dailyBoardCount, icon: <FaUpload size={40} /> },
             ].map((data, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Paper
