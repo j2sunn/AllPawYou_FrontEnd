@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { listNotices } from "../service/NoticeService";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-
 import { useNavigate } from "react-router-dom";
+
 
 const ListNoticeComponent = () => {
   const [notices, setNotices] = useState([
@@ -55,9 +55,7 @@ const ListNoticeComponent = () => {
         axios.delete("http://localhost:8081/api/notice/delete/"+noticeNo)
         .then(resp=>{
             console.log("결과느으으은"+resp.data);
-              // alert("삭제되었습니다.");
-              navigate("/admin/noticeList");
-            
+            getAllNotices();
         })
     }
 
