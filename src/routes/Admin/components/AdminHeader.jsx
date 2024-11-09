@@ -77,6 +77,10 @@ const AdminHeader = () => {
     navigate("/admin/reviewlist"); // 클릭 시 navigate 호출
   };
 
+  const goOrderList = () => {
+    navigate("/admin/orderlist"); // 클릭 시 navigate 호출
+  };
+
   const goProductList = () => {
     navigate("/admin/productlist"); // 클릭 시 navigate 호출
   };
@@ -87,12 +91,13 @@ const AdminHeader = () => {
       <AppBar
         position="fixed"
         sx={{
-          width: `calc(100% - ${drawerWidth}px)`,
+          width: `100%`,
           ml: `${drawerWidth}px`,
+          height: '70px'
         }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{fontSize: '1.5rem', fontWeight: 'bold'}}>
             ADMIN PAGE
           </Typography>
           <div style={{ flexGrow: 1 }} />
@@ -115,6 +120,7 @@ const AdminHeader = () => {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            marginTop: '70px',
           },
         }}
         variant="permanent"
@@ -200,7 +206,7 @@ const AdminHeader = () => {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton sx={{ pl: 4 }} onClick={goOrderList}>
                   <ListItemIcon>
                     <LiaShoppingBagSolid />
                   </ListItemIcon>

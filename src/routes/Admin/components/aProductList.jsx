@@ -16,6 +16,7 @@ const ProductList = () => {
   function getAllProducts() {
     listProducts()
       .then((response) => {
+        console.log(response.data);
         setProducts(response.data);
         console.log(response.data);
       })
@@ -24,11 +25,11 @@ const ProductList = () => {
       });
   }
 
-  useEffect(() => {
-    if (location.state?.refresh) {
-      getAllProducts(); // AddProduct에서 상품 등록 후 이동 시 목록을 갱신합니다.
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.state?.refresh) {
+  //     getAllProducts(); // AddProduct에서 상품 등록 후 이동 시 목록을 갱신합니다.
+  //   }
+  // }, [location]);
 
   const goUpdate = (id) => {
     navigate(`/admin/updateproduct/${id}`);
@@ -40,9 +41,11 @@ const ProductList = () => {
 
   const removeProduct = async (id) => {
     try {
-      await DeleteProduct(id);
-      await getAllProducts();
-      alert("상품이 삭제되었습니다.");
+      if (confirm("상품을 삭제 하시겠습니까?")) {
+        await DeleteProduct(id);
+        await getAllProducts();
+        alert("상품이 삭제되었습니다.");
+      }
     } catch (error) {
       console.log(error);
     }
