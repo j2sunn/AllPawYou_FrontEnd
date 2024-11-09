@@ -11,14 +11,16 @@ import { FaUpload } from "react-icons/fa";
 import { GrContactInfo } from "react-icons/gr";
 import { FaInfoCircle } from "react-icons/fa";
 import Barchart from "../../components/chart/BarChart";
-import { TotalVisitor, DailyVisitor, DailyOrder, DailyTotalPrice, DailyBoardCount } from "../../service/DashBoard";
+import { TotalVisitor, DailyVisitor, DailyOrder, DailyTotalPrice, DailyBoardCount, TotalPrice } from "../../service/DashBoard";
 import { useEffect, useState } from "react";
 
 export default function PermanentDrawerLeft() {
   const [dailyVisitors, setDailyVisitors] = useState(0);
   const [totalVisitors, setTotalVisitors] = useState(0);
+
   const [dailtyOrders, setDailyorders] = useState(0);
   const [dailtyTotalPrice, setDailyTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [dailyBoardCount, setDailyBoardCount] = useState(0);
 
   // 일일 방문자 변수에 저장하는 함수
@@ -54,14 +56,24 @@ export default function PermanentDrawerLeft() {
     }
   };
 
-  // 일일 주문수 저장하는 함수
+  // 일일 수익 저장하는 함수
   const fetchDailyTotalPrice = async () => {
     try {
       const aDailyTotalPrice = await DailyTotalPrice();
-      console.log(aDailyTotalPrice);
       return aDailyTotalPrice; // 주문수 만환
     } catch (error) {
       console.error("Error fetching dailyTotalPrice:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 누적 수익 저장하는 함수
+  const fetchTotalPrice = async () => {
+    try {
+      const aTotalPrice = await TotalPrice();
+      return aTotalPrice; // 주문수 만환
+    } catch (error) {
+      console.error("Error fetching TotalPrice:", error);
       return 0; // 에러 발생 시 기본값으로 0 반환
     }
   };
@@ -89,7 +101,7 @@ export default function PermanentDrawerLeft() {
     };
 
     const getDailyOrders = async () => {
-      const count = await fetchDailyOrder();
+      const count = await fetchDailyOrder(); // 일일 주문 수 가져오기
       setDailyorders(count);
     };
 
@@ -99,21 +111,27 @@ export default function PermanentDrawerLeft() {
       setDailyTotalPrice(formattedPrice);
     };
 
+    const getTotalPrice = async () => {
+      const count = await fetchTotalPrice(); // 총 방문자 수 가져오기
+      setTotalPrice(count); // 상태 업데이트
+    };
+
     const getDailyBoardCount = async () => {
       const count = await fetchDailyBoardCount();
       setDailyBoardCount(count);
     };
 
     getDailyVisitors(); // 일일 방문자 수 함수 호출
-    getTotalVisitors(); // 총 방문자 수 함수 호출
+    getTotalVisitors(); // 누적 방문자 수 함수 호출
     getDailyOrders(); // 일일 주문 수
     getDailyTotalPrice(); //일일 총 수입
+    getTotalPrice(); // 누적 수입
     getDailyBoardCount(); // 일일 게시글 등록수
   }, []);
 
   return (
     <>
-      <Box sx={{ display: "flex", marginLeft: '240px', minHeight: '850px' }}>
+      <Box sx={{ display: "flex", minHeight: "850px" }}>
         <AdminHeader />
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
           <Grid container spacing={3}>
@@ -209,7 +227,7 @@ export default function PermanentDrawerLeft() {
                 <Box>
                   <Typography variant="body1">누적 접속횟수 :: {totalVisitors}</Typography>
                   <Typography variant="body1">누적 거래횟수</Typography>
-                  <Typography variant="body1">누적 수익</Typography>
+                  <Typography variant="body1">누적 수익 :: {totalPrice}</Typography>
                   <Typography variant="body1">누적 게시물 수</Typography>
                 </Box>
               </Paper>
