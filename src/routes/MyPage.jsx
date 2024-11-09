@@ -56,8 +56,7 @@ const MyPage = () => {
               <Content>
                 <Profile>
                   <ProfileImg
-                    // as="div"
-                    src={poodle}
+                    src={`http://localhost:8081${userInfo.profileImage}`}
                   />
                   <NickName>{userInfo.nickname}</NickName>
                 </Profile>
