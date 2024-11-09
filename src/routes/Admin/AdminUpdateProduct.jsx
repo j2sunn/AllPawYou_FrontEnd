@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import UpdateProduct from "./components/aUpdateProduct";
+import UpdateProduct from "./components/adUpdateProduct";
 import AdminHeader from "./components/AdminHeader";
 import AdminFooter from "./components/AdminFooter";
 
