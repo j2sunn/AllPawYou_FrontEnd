@@ -8,7 +8,10 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <Box>
+      <Slider>
+        <Slide/>
+      </Slider>
       <CommunityRank>커뮤니티 인기글</CommunityRank>
       <Container>
         <BoardCard>
@@ -91,27 +94,29 @@ const MainPage = () => {
           </IconCardBottom>
         </IconCard>
       </IconContainer>
-
-      <BestItemSection>
-        <h4 style={{ fontWeight: "bold" }}>이번주 베스트 아이템</h4>
-        <Slide />
-      </BestItemSection>
-    </>
+    </Box>
   );
 };
 
 export default MainPage;
 
+const Box = styled.div`
+  overflow-x: hidden;
+`;
+
+const Slider = styled.div`
+  margin: 0;
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5rem;
+`;
+
 const CommunityRank = styled.h4`
   padding-top: 1.5rem;
   text-align: center;
   font-weight: bold;
-`;
-
-const BestItemSection = styled.div`
-  text-align: center;
-  margin-top: 3rem;
-  position: relative;
 `;
 
 const Container = styled.div`
