@@ -2,16 +2,6 @@ import { AuthApi } from "./AuthApi";
 
 const REST_API_URL = `/api`;
 
-export const TotalVisitor = async () => {
-  const response = await AuthApi.get(REST_API_URL + `/visitor/total`);
-  return response.data; // 방문자 수 데이터 반환
-};
-
-export const DailyVisitor = async () => {
-  const response = await AuthApi.get(REST_API_URL + `/visitor/daily`);
-  return response.data;
-};
-
 // 현재 날짜를 yyyy-MM-dd 형식으로 추출
 const getCurrentDate = () => {
   const now = new Date();
@@ -21,20 +11,51 @@ const getCurrentDate = () => {
   return `${year}-${month}-${day}`;
 };
 
-// API 호출 함수
+// 누적 방문자
+export const TotalVisitor = async () => {
+  const response = await AuthApi.get(REST_API_URL + `/visitor/total`);
+  return response.data; // 방문자 수 데이터 반환
+};
+
+// 일일 방문자
+export const DailyVisitor = async () => {
+  const response = await AuthApi.get(REST_API_URL + `/visitor/daily`);
+  return response.data;
+};
+
+// 누적 주문
+export const TotalOrder = async () => {
+  const response = await AuthApi.get(`${REST_API_URL}/order/orderCount`);
+  return response.data;
+};
+
+// 일일 주문
 export const DailyOrder = async () => {
   const datetime = getCurrentDate(); // 현재 날짜를 yyyy-MM-dd 형식으로 받음
   const response = await AuthApi.get(`${REST_API_URL}/order/orderCount/${datetime}`);
   return response.data;
 };
 
-// API 호출 함수
+// 누적 수익
+export const TotalPrice = async () => {
+  const response = await AuthApi.get(`${REST_API_URL}/payment/totalPriceSum`);
+  return response.data;
+};
+
+// 일일 수익
 export const DailyTotalPrice = async () => {
   const datetime = getCurrentDate(); // 현재 날짜를 yyyy-MM-dd 형식으로 받음
   const response = await AuthApi.get(`${REST_API_URL}/payment/totalPrice/${datetime}`);
   return response.data;
 };
 
+//누적 등록수
+export const TotalBoardCount = async () => {
+  const response = await AuthApi.get(`/board/dailyCount`);
+  return response.data;
+};
+
+// 일일 등록수
 export const DailyBoardCount = async () => {
   const datetime = getCurrentDate(); // 현재 날짜를 yyyy-MM-dd 형식으로 받음
   const response = await AuthApi.get(`/board/dailyCount/${datetime}`);
