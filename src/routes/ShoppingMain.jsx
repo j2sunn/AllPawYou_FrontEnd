@@ -63,9 +63,6 @@ const ShoppingMain = () => {
         }
     }, [category, status]);
 
-
-    
-
     return (
         <>
             <GoodsSection>
@@ -117,25 +114,17 @@ const ShoppingMain = () => {
                     </IconCard>
                 </IconContainer>
                 <div id="goods-section">
-                    {product.length > 0 ? (<ul>
-                        {product.map((item, index) => (
-                            <li key={index} onClick={() => goDetail(item.id)}>
-                                <a>
-                                    <div className="thumb_area">
-                                        <span className="thumb">
-                                            <img src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`}></img>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span>{item.name}</span>
-                                    </div>
-                                    <div>
-                                        <span style={{ fontWeight: 'bold' }} >{item.price}</span>
-                                    </div>
-                                </a>
-                            </li>
-                        ))}
-                    </ul>) : (
+                    {product.length > 0 ? (
+                        <Grid>
+                            {product.map((item, index) => (
+                                <GridItem key={index} onClick={() => goDetail(item.id)}>
+                                <GridImage src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="상품 이미지" />
+                                <GridTitle>{item.name}</GridTitle>
+                                <GridText>{item.price}원</GridText>
+                                </GridItem>
+                            ))}
+                      </Grid>
+                    ) : (
                         category == "all" ? (
                             <NoData>등록된 상품이 없습니다.</NoData>
                         ) : (
@@ -153,6 +142,7 @@ export default ShoppingMain;
 
 const GoodsSection = styled.div`
     min-height: 700px;
+    margin: 5rem 0;
   #goods-section ul {
     display: flex;
     flex-wrap: wrap;
@@ -175,6 +165,7 @@ const GoodsSection = styled.div`
 
 const IconTitle = styled.h4`
   text-align: center;
+  font-size: 2rem;
   font-weight: bold;
 `;
 
@@ -190,6 +181,11 @@ const IconCard = styled.div`
   width: 90px;
   height: 90px;
   margin: 0 40px;
+  cursor: pointer;
+  &:hover img{
+    scale: 1.2;
+    transition: 0.5s;
+  }
 `;
 
 const IconBack = styled.div`
@@ -216,5 +212,35 @@ const IconCardBottom = styled.div`
 
 const NoData = styled.ul`
     font-size: 3rem;
+`;
 
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5rem 1rem;
+  margin: 0 8rem;
+`;
+
+const GridItem = styled.div`
+  min-width: 200px;
+  border
+`;
+
+const GridImage = styled.img`
+  width: 100%;
+  height: 250px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+`;
+
+const GridTitle = styled.div`
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0.2rem 1rem;
+  cursor: pointer;
+`;
+
+const GridText = styled.div`
+  margin: 0.2rem 1rem;
+  cursor: pointer;
 `;
