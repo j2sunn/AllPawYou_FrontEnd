@@ -51,18 +51,22 @@ export const fetchUserByNo = async (userNo) => {
 /** 회원수정 API */
 export const updateUser = async (FormData) => {
   const response = await UserApi.put(`/api/v1/user`, FormData, {
-      headers : {
-        "Content-Type": "multipart/form-data",
-        Authorization: `${TOKEN_TYPE} ${ACCESS_TOKEN}`,
-        REFRESH_TOKEN: REFRESH_TOKEN,
-      },
-      
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `${TOKEN_TYPE} ${ACCESS_TOKEN}`,
+      REFRESH_TOKEN: REFRESH_TOKEN,
+    },
   });
-  console.log("updateUser 데이터 : " , response.data);
+  console.log("updateUser 데이터 : ", response.data);
   return response.data;
 };
 
 /** 회원탈퇴 API */
 export const deleteUser = async () => {
   await UserApi.delete(`/api/v1/user`);
+};
+
+// 방문자 카운터
+export const customerCount = async () => {
+  await axios.get(`http://localhost:8081/api/visitor`);
 };
