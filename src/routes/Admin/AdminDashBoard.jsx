@@ -2,16 +2,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Piechart from "../../components/chart/PieChart"; // Assuming these exist
 import AdminHeader from "./components/AdminHeader";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import AdminFooter from "./components/AdminFooter";
 import { CgProfile } from "react-icons/cg";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { FaUpload } from "react-icons/fa";
-import { GrContactInfo } from "react-icons/gr";
+import { FaRegTrashAlt, FaUpload } from "react-icons/fa";
+// import { GrContactInfo } from "react-icons/gr";
 import { FaInfoCircle } from "react-icons/fa";
 import Barchart from "../../components/chart/BarChart";
-import aCurrentUser from "./components/aCurrentUserList.jsx";
+import CurrentUser from "./components/aCurrentUserList.jsx";
 import {
   TotalVisitor,
   DailyVisitor,
@@ -23,6 +23,7 @@ import {
   TotalOrder,
 } from "../../service/DashBoard";
 import { useEffect, useState } from "react";
+import { Button } from "bootstrap";
 
 export default function PermanentDrawerLeft() {
   const [dailyVisitors, setDailyVisitors] = useState(0);
@@ -253,32 +254,48 @@ export default function PermanentDrawerLeft() {
 
             {/* 최근 가입 사용자 */}
             <Grid item xs={12} md={8}>
-              <Paper elevation={3} sx={{ padding: 2 }}>
-                {/* <Typography variant="h6" gutterBottom>
-                  <GrContactInfo size={30} />
-                  최근 가입 사용자
-                </Typography> */}
-                {/* You can replace this with the actual list of users */}
-                <Box>
-                  <aCurrentUser />
-                </Box>
-              </Paper>
+              <Box>
+                <CurrentUser />
+              </Box>
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Paper elevation={3} sx={{ padding: 2 }}>
-                <Typography variant="h6" gutterBottom>
-                  <FaInfoCircle />
-                  누계 정보
-                </Typography>
-                {/* You can replace this with the actual list of users */}
-                <Box>
-                  <Typography variant="body1">누적 접속횟수 :: {totalVisitors}</Typography>
-                  <Typography variant="body1">누적 거래횟수:: {totalOrder}</Typography>
-                  <Typography variant="body1">누적 수익 :: {totalPrice}</Typography>
-                  <Typography variant="body1">누적 게시물 수 :: {totalBoardCount}</Typography>
-                </Box>
-              </Paper>
+              <Box>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead sx={{ backgroundColor: "#EEC759" }}>
+                      <TableRow>
+                        <TableCell sx={{ display: "flex", alignItems: "center", height: "60px" }}>
+                          <FaInfoCircle style={{ marginRight: "1rem" }} size={25} />
+                          누적 데이터
+                        </TableCell>
+                        <TableCell align="center"></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 접속횟수</TableCell>
+                        <TableCell>{totalVisitors}</TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 거래횟수</TableCell>
+                        <TableCell>{totalOrder}</TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 수익</TableCell>
+                        <TableCell>{totalPrice}</TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 게시물 수</TableCell>
+                        <TableCell>{totalBoardCount}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
             </Grid>
           </Grid>
         </Box>
