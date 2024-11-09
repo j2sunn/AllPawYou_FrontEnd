@@ -122,11 +122,8 @@ const OrderList = () => {
                           </Detail>
                         </OrderInfo>
                         <Buttons>
-                          <Button variant="outlined" onClick={() => navigator(`/review/createreview/${order?.name}`)}>
+                          <Button variant="outlined" onClick={() => navigator(`/review/createreview/${order?.name}`)} disabled={!payment[0].paymentState}>
                             후기 작성하기
-                          </Button>
-                          <Button variant="outlined" color="error">
-                            후기 삭제하기
                           </Button>
                         </Buttons>
                       </Product>

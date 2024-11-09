@@ -3,6 +3,7 @@ import logo from "../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { IoPersonCircleSharp } from "react-icons/io5";
+import Swal from "sweetalert2";
 
 const HeaderComponent = () => {
   const navigator = useNavigate();
@@ -10,6 +11,12 @@ const HeaderComponent = () => {
   // const ADMIN = localStorage.getItem("role");
 
   const handleLogout = async () => {
+    Swal.fire({
+      icon: "success",
+      title: "로그아웃 되었습니다.",
+      confirmButtonColor: '#527853',
+        confirmButtonText: '닫기'
+    });
     localStorage.clear();
     navigator("/");
   };
