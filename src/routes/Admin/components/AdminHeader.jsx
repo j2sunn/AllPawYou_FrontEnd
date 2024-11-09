@@ -77,6 +77,10 @@ const AdminHeader = () => {
     navigate("/admin/reviewlist"); // 클릭 시 navigate 호출
   };
 
+  const goOrderList = () => {
+    navigate("/admin/orderlist"); // 클릭 시 navigate 호출
+  };
+
   const goProductList = () => {
     navigate("/admin/productlist"); // 클릭 시 navigate 호출
   };
@@ -200,7 +204,7 @@ const AdminHeader = () => {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton sx={{ pl: 4 }} onClick={goOrderList}>
                   <ListItemIcon>
                     <LiaShoppingBagSolid />
                   </ListItemIcon>
