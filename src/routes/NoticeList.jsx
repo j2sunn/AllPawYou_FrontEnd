@@ -5,7 +5,6 @@ import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import AdminSideBar from "../components/common/AdminSideBar";
 //import FooterComponent from "../components/common/FooterComponent";
 
 const ListNoticeComponent = () => {
@@ -59,7 +58,6 @@ const ListNoticeComponent = () => {
   return (
     <>
       <Container>
-        <AdminSideBar />
         <Content>
           <Title>공지사항 관리</Title>
           <br/>

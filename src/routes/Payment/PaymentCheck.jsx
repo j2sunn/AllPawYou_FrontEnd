@@ -9,7 +9,6 @@ const PaymentCheck = () => {
 
   //장바구니에서 전달한 정보 받기
   const { state } = useLocation();
-  console.log(state);
   
   const [user, setUser] = useState({
     no: localStorage.getItem("no"),
