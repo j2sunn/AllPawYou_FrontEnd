@@ -24,7 +24,7 @@ const AddProduct = () => {
         }
     }, []);
 
-    const [selectedCategory, setSelectedCategory] = useState("");   //카테고리 선택
+    const [selectedCategory, setSelectedCategory] = useState("food");   //카테고리 선택
     const [thumbnail, setThumbnail] = useState({ file: null, preview: null }); // 썸네일 이미지
     const [images, setImages] = useState([]); // 상품 설명 이미지들
     const [isRelease, setIsPublic] = useState("OPEN"); //상품 공개 여부
@@ -98,13 +98,15 @@ const AddProduct = () => {
             formData.append("detailImage", imageObj.file);
         });
 
-
         try {
             // 상품 추가 API 호출
             addProduct(formData);
             // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
             navigator('/admin/productlist', { state: { refresh: true } }); 
             alert("상품이 등록되었습니다.");
+            setTimeout(()=>{
+                console.log(1);
+            },3000);
         } catch (error) {
             console.error("상품 등록 실패:", error);
             alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
@@ -182,7 +184,7 @@ const AddProduct = () => {
                     </RadioGroup>
                 </Three>
                 <div style={{ marginTop: "30px", marginBottom: "50px" }}>
-                    <Button variant="outlined" sx={{ margin: '10px' }}>취소</Button>
+                    <Button variant="outlined" sx={{ margin: '10px' }} onClick={() => navigator('/admin/productlist')}>취소</Button>
                     <Button variant="contained" onClick={doSubmit}>등록</Button>
                 </div>
             </Container>

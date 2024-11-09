@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { getProductsByCategory, listProducts } from "../service/ProductService";
+import { getProductsByCategory, getProductsByCategoryAndStatus, getProductsByStatus, listProducts } from "../service/ProductService";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const ShoppingMain = () => {
@@ -8,8 +8,7 @@ const ShoppingMain = () => {
     const [product, setProducts] = useState([]);
     const navigate = useNavigate();
     const [category, setCategory] = useState("all");
-
-    const {state} = useLocation();
+    const [status, setStatus] = useState("OPEN");
 
     function getAllProducts() {
         listProducts()
@@ -22,18 +21,39 @@ const ShoppingMain = () => {
             });
     }
 
+
     const goDetail = (productId) => {
         navigate(`/shoppingDetail/${productId}`);
     };
 
-    useEffect(() => {
-        if(state){
-            setCategory(state);
-        }
-        if (category === "all") {
-            getAllProducts();
+    // useEffect(() => {
+    //     if(state){
+    //         setCategory(state);
+    //     }
+    //     if (category === "all" ) {
+    //         getAllProducts();
+    //     } else {
+    //         getProductsByCategory(category)
+    //             .then(response => {
+    //                 console.log("response 정보 : ", response);
+    //                 setProducts(response);
+    //             }).catch((error) => {
+    //                 console.log("에러발생 : ", error);
+    //             });
+    //     }
+    // }, [category]);
+
+    const loadProducts = async() => {
+        const response = await getProductsByStatus(status);
+        setProducts(response);
+    }
+
+        useEffect(() => {
+   
+        if (category === "all" ) {
+            loadProducts();
         } else {
-            getProductsByCategory(category)
+            getProductsByCategoryAndStatus(category, status)
                 .then(response => {
                     console.log("response 정보 : ", response);
                     setProducts(response);
@@ -41,7 +61,10 @@ const ShoppingMain = () => {
                     console.log("에러발생 : ", error);
                 });
         }
-    }, [category]);
+    }, [category, status]);
+
+
+    
 
     return (
         <>
