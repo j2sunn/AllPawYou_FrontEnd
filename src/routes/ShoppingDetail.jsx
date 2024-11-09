@@ -14,7 +14,7 @@ function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} style={{display: 'flex', justifyContent: 'center', width: '100%'}} {...other}>
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
@@ -240,16 +240,11 @@ const ShoppingDetail = () => {
             <div>
               {reviews.length > 0 ? (
                 reviews.map((review, index) => (
-                  <div key={index}>
-                    <h4>유저 이름: {review.username}</h4>
-                    <p>별점: {review.reviewStar}</p>
-                    <p>내용: {review.reviewContent}</p>
-                    <p>
-                      이미지:
+                  <Review key={index}>
                       <div>
                         {review.reviewImg.length > 0
                           ? review.reviewImg.map((item, index) => (
-                              <img
+                              <ReviewImg
                                 key={index}
                                 src={
                                   item?.reviewImgPath // 이미지 배열이 존재하고 길이가 0보다 큰 경우
@@ -261,10 +256,11 @@ const ShoppingDetail = () => {
                             ))
                           : null}
                       </div>
-                    </p>
-
-                    <p>작성자: {review.reviewDate}</p>
-                  </div>
+                    <p>별점: {review.reviewStar}</p>
+                    <h4>유저 이름: {review.username}</h4>
+                    <p>작성시간: {review.reviewDate}</p>
+                    <p>내용: {review.reviewContent}</p>
+                  </Review>
                 ))
               ) : (
                 <p>리뷰가 없습니다.</p>
@@ -302,9 +298,21 @@ const ProductImage = styled.img`
   width: 400px;
 `;
 
-const DetailArea = styled.div``;
+const DetailArea = styled.div`
+`;
 
 const Input = styled.input`
   width: 3rem;
   text-align: center;
+`;
+
+const Review = styled.div`
+    border: 1px solid black;
+    padding: 2rem 5rem;
+    width: 1000px;
+`;
+
+const ReviewImg = styled.img`
+    width: 200px;
+    height: 200px;
 `;
