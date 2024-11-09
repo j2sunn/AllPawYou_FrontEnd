@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Table, TableCell, TableRow } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
 import MypageSideBar from "../components/common/MypageSideBar";
@@ -64,7 +64,7 @@ const MyPage = () => {
       formData.append('intro', profile.intro);
       formData.append('phone', profile.phone);
       formData.append('address', profile.address);
-      if(profile.profile){
+      if (profile.profile) {
         formData.append('profile', profile.profile);
       }
 
@@ -103,41 +103,6 @@ const MyPage = () => {
 
   };
 
-  const [enroll_company, setEnroll_company] = useState({
-    address: "",
-  });
-
-  const [popup, setPopup] = useState(false);
-
-  const handleInput = (e) => {
-    setEnroll_company({
-      ...enroll_company,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleComplete = (data) => {
-    setPopup(!popup);
-  };
-
-  const [isPostcodePopupVisible, setIsPostcodePopupVisible] = useState(false);
-
-  const onCompletePost = (data) => {
-    setIsPostcodePopupVisible(false); // 주소 선택 후 팝업 닫기
-    setProfile((prev) => ({
-      ...prev,
-      address: data.address, // 선택한 주소를 프로필에 저장
-    }));
-  };
-  const postCodeStyle = {
-    display: isPostcodePopupVisible ? "block" : "none", // 팝업 상태에 따라 보이기
-    position: "absolute",
-    top: "20%",
-    width: "400px",
-    height: "400px",
-    padding: "7px",
-    zIndex: 100,
-  };
 
   const deleteProfileImg = () => {
     // 기본 프로필 이미지로 변경
@@ -153,6 +118,31 @@ const MyPage = () => {
     }));
   };
 
+  //카카오 api
+
+  const [apiAddress, setapiAddress] = useState("");
+  const [detailaddress, setDetailaddress] = useState(""); //api상의 주소
+  const [detail2address, setDetail2address] = useState(""); //상세주소
+
+  const [openPostcode, setOpenPostcode] = useState(false); //카카오api
+
+  const clickAddrButton = () => {
+    setOpenPostcode(current => !current);
+  }
+
+  const selectAddress = (data) => {
+    console.log(
+      `주소: ${data.address} , 우편번호 : ${data.zonecode} `
+    )
+    setapiAddress(data.zonecode);
+    setDetailaddress(data.address);
+
+    setProfile((prevProfile) => ({
+        ...prevProfile,
+        address: `${data.address}`,  
+    }));
+    setOpenPostcode(false);
+  };
 
   return (
     <>
@@ -237,10 +227,13 @@ const MyPage = () => {
                           onChange={(event) => profileHandler(event, "address")}
                           required
                         />
-                        <Button sx={{ marginLeft: "10px" }} onClick={() => isPostcodePopupVisible(true)}>
+                        <Button sx={{ marginLeft: "10px" }} onClick={clickAddrButton}>
                           검색
                         </Button>
-                        {isPostcodePopupVisible && <DaumPostcode style={postCodeStyle} autoClose onComplete={onCompletePost} />}
+                        {openPostcode &&
+                          <DaumPostcode
+                            autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                            onComplete={selectAddress} />}
                       </TableCell>
                     </TableRow>
                     <TableRow>
