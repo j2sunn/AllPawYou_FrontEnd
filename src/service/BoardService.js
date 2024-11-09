@@ -85,7 +85,7 @@ export const addCommentService = (boardNo,result,loginEmail,setCommentData)=>{
     })
 }
 //전체 댓글 다시 업데이트
-const updateCommentList = async (boardNo,setCommentData)=>{
+export const updateCommentList = async (boardNo,setCommentData)=>{
     const resp = await axios.get('http://localhost:8081/board/comment/' + boardNo);
     setCommentData(resp.data);
 }

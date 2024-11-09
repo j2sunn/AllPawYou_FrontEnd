@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import {loadData,addCommentService} from "../service/BoardService";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {loadData,addCommentService,updateCommentList} from "../service/BoardService";
 import styled from "styled-components";
 import { AiOutlineLike } from "react-icons/ai";
 import { Button} from "@mui/material";
+import { IoMdHeartEmpty } from "react-icons/io"; //빈 하트
+import { IoHeart } from "react-icons/io5"; //채워진 하트
 const BoardDetail = ()=>{
     /*
     const { state } = useLocation();
@@ -29,6 +31,10 @@ const BoardDetail = ()=>{
     // );
     const params = useParams();
     const [boardNo, setBoardNo] = useState(0);
+
+    const { state } = useLocation();
+    const cp = state?.cp;
+    console.log("cp : "+cp.currentPage);
     //************************************************************************************** */
     //************************************************************************************** */
     const [onUpdateCommentNo, setOnUpdateCommentNo] = useState(0); //수정중인 댓글 번호 저장
@@ -104,7 +110,7 @@ const BoardDetail = ()=>{
 
         loadBoardData();
         
-        console.log(boardData);    
+        console.log("보드데이터"+boardData);    
         console.log("로그인 이메일:", loginEmail.current); //이게 제대로 나온다!
         if(boardData){
             console.log("작성자이메일 : "+boardData.email);
@@ -177,7 +183,37 @@ const BoardDetail = ()=>{
         }
     }
     const deleteComment = (commentNo)=>{
-        console.log("commentNo : "+commentNo);
+        if(confirm("정말 삭제하시겠습니까?")){
+            axios.delete("http://localhost:8081/board/comment/delete/"+commentNo)
+            .then(resp =>{
+                console.log("삭제 resp.data : "+resp.data);
+                if(resp.data>0){
+                    alert("삭제되었습니다.");
+                    // window.location.reload();
+                    updateCommentList(boardNo,setCommentData);
+                }else{
+                    alert("삭제에 실패하였습니다.");
+                }
+            })
+        }
+        
+    }
+
+    //댓글 수정 API 요청
+    const updateComment = (onUpdateComment,onUpdateCommentNo)=>{
+        axios.put('http://localhost:8081/board/comment/update', {
+            commentContent :onUpdateComment,
+            commentNo : onUpdateCommentNo})
+        .then(resp=>{
+            console.log("수정 resp.data : "+resp.data);
+            if(resp.data>0){
+                alert("댓글이 수정되었습니다.");
+                // window.location.reload();
+                updateCommentList(boardNo,setCommentData);
+            }else{
+                alert("수정에 실패하였습니다.");
+            }
+        })
     }
     return (
         <>
@@ -269,17 +305,36 @@ const BoardDetail = ()=>{
                             <p>이미지가 없습니다.</p>
                         )}
                         <div className="like" onClick={()=>toggleLike(boardNo, loginEmail.current)}>
-                                    <AiOutlineLike style={{ fontSize: "60px"}} id="like" 
-                                    className={likeStatus == 1 ? "liked" : ""}
-                                    />
-                                    <p>{boardData.likeCount}</p>
+                            
+                                {likeStatus ==1 ? (
+                                        <IoHeart className="heart"/>
+                                    ) : (
+                                        <IoMdHeartEmpty className="heart"/>
+                                    )}
+                                    <p className="likeNum">{boardData.likeCount}</p>
+                            
+                                    
                         </div>
+                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
+                                        onClick={() => navigate(`/boardList`,{state:{ cp : cp}})}  
+                                        >
+                                            목록으로
+                                        </Button>
                         </Three>
                         <Four>
-                        <p className="commentCount">댓글({boardData.commentCount})</p>
+                            <div className="commentBoxes">
+                                <p className="commentCount">댓글({boardData.commentCount})</p>
+                                <Button variant="contained" sx={{fontSize: '1rem', width:'6rem',marginLeft: 'auto',height:'2.7rem',marginTop: '0.5rem'}}  
+                                            onClick={()=>addComment()}  
+                                            >
+                                                작성하기
+                                            </Button>
+                            </div>
+                        
                         <ContentTextarea id="comment" onChange={(e) => handleContentChange(e)}/>
                         <Error>{error.comment}</Error>
-                        <button onClick={()=>addComment()}>작성하기</button>
+                        
+                        {/* <button onClick={()=>addComment()}>작성하기</button> */}
                         {commentData && commentData.length > 0 ? (
                             commentData.map((comment,ind)=>
                                 
@@ -290,7 +345,15 @@ const BoardDetail = ()=>{
                                         {onUpdateCommentNo == comment.commentNo ? (
                                             <>
                                                 {/* 수정중인 경우 */}
-                                                <textarea placeholder="수정할 내용을 작성해주세요" value={comment.commentContent}/>
+                                                {/* <textarea placeholder="수정할 내용을 작성해주세요" 
+                                                value={onUpdateComment}
+                                                onChange={(e) => setOnUpdateComment(e.target.value)}
+                                                /> */}
+                                                <ContentTextarea 
+                                                placeholder={comment.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />")} 
+                                                value={onUpdateComment}
+                                                onChange={(e) => setOnUpdateComment(e.target.value)}
+                                                />
                                             </>
                                         ) : (
                                             <>
@@ -312,44 +375,50 @@ const BoardDetail = ()=>{
                                                 comment.commentDate.substr(11,2)+"."+
                                                 comment.commentDate.substr(14,2)
                                                 }
-                                            </p>
+                                        </p>
                                         <div className="commentBtns">
-                                        {loginEmail.current == comment.email &&onUpdateCommentNo !=comment.commentNo ? (
-                                            <>
-                                                <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
+                                        {loginEmail.current === comment.email && onUpdateCommentNo !== comment.commentNo ? (
+                                                <>   
+                                                    {/* 로그인한 회원이 작성자인데 수정 중이 아닐 경우 */}
+                                                    <Button variant="contained" sx={{ fontSize: '1rem', marginTop: '1rem' }}
+                                                    onClick={()=>setOnUpdateCommentNo(comment.commentNo)}>
+                                                        수정
+                                                    </Button>
+                                                    <Button
+                                                        onClick={() => deleteComment(comment.commentNo)}
+                                                        variant="contained"
+                                                        sx={{ fontSize: '1rem', marginTop: '1rem', marginLeft: '1rem' }}
+                                                        
                                                     >
-                                                    수정
-                                                </Button>
-                                                <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem'}} 
-                                                            onClick={()=>deleteComment(comment.commentNo)}
-                                                            >
-                                                    삭제
-                                                </Button>
-                                            </>
-                                        ) : (
-                                            <>
-                                            </>
-                                        )}
-                                        {onUpdateComment === comment.commentNo ? (
-                                    <>
-                                        <Button
-                                            variant="contained"
-                                            sx={{ fontSize: '1rem', marginTop: '1rem' }}
-                                            //onClick={() => saveUpdatedComment(comment.commentNo)}
-                                        >
-                                            저장
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            sx={{ fontSize: '1rem', marginTop: '1rem', marginLeft: '1rem' }}
-                                            //onClick={cancelEditComment}
-                                        >
-                                            취소
-                                        </Button>
-                                    </>
-                                ) : (
-                                    ""
-                                )}
+                                                        삭제
+                                                    </Button>
+                                                </>
+                                            ) : loginEmail.current === comment.email && onUpdateCommentNo === comment.commentNo ? (
+                                                <>
+                                                    {/* 로그인한 회원이 작성자인데 수정 중인 경우 */}
+                                                    {/* 수정 중일 때 보여줄 JSX 컴포넌트를 여기에 추가 */}
+                                                    
+                                                    <Button variant="contained" sx={{ fontSize: '1rem', marginTop: '1rem' }}
+                                                    onClick={()=>updateComment(onUpdateComment,onUpdateCommentNo)}
+                                                    >
+                                                        저장
+                                                    </Button>
+                                                    <Button
+                                                        
+                                                        variant="contained"
+                                                        sx={{ fontSize: '1rem', marginTop: '1rem', marginLeft: '1rem' }}
+                                                        onClick={()=>setOnUpdateCommentNo(0)}
+                                                    >
+                                                        취소
+                                                    </Button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {/* 로그인한 회원이 작성자가 아닐 경우 */}
+                                                    {/* 다른 사용자에게 보여줄 JSX 컴포넌트를 여기에 추가 */}
+                                                </>
+                                            )}
+
 
                                             
                                         </div>
@@ -450,14 +519,19 @@ const Three = styled.div`
         }
         width : 100px;
         height : 100px;
-        border: 1px solid black;
+        margin-top : 30px;
         border-radius: 50%;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    .liked{
+    .heart{
         color : red;
+        font-weight : bold;
+        font-size : 40px;
+    }
+    .likeNum{
+        font-size : 20px;
     }
 `;
 const Four = styled.div`
@@ -481,6 +555,9 @@ const Four = styled.div`
     .commentProfile:not(:last-child){
         border-bottom: 1px solid gray;
         
+    }
+    .commentBoxes{
+        display : flex;
     }
 `;
 //댓글
