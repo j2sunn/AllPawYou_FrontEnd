@@ -53,52 +53,6 @@ const AdminOrderList = () => {
 
   return (
     <>
-<<<<<<< Updated upstream:src/routes/Order/AdminOrderList.jsx
-      <Container>
-        {role == "ROLE_ADMIN" ? (
-          <>
-          <AdminSideBar />
-          <Content>
-            <Title onClick={()=>console.log(paymentList)}>주문 목록</Title>
-            <Payments>
-              {paymentList?.map((payment) => {
-                return (
-                  <Payment key={payment[0]?.tid}>
-                    <PaymentHeader>
-                      <PaymentTitle>{payment[0]?.createdAt?.slice(0, 10)} 주문</PaymentTitle>
-                      <div>
-                        <Button variant="outlined" onClick={() => navigator(`/order/${payment[0].tid}`, { state: { payment } })}>
-                          주문 상세
-                        </Button>
-                      </div>
-                    </PaymentHeader>
-                    {payment?.map((order) => {
-                      return (
-                        <Product key={order.orderNo}>
-                          <OrderInfo>
-                            <ProductImg src={`http://localhost:8081${order.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지"/>
-                            <Detail>
-                              <div>
-                                {order?.name} ({order.quantity}개)
-                              </div>
-                              <div>총 가격 : {order?.price * order?.quantity}원</div>
-                            </Detail>
-                          </OrderInfo>
-                          <Buttons>
-                            <Button variant="outlined" color="error">
-                              {/* 후기 관리로 이동? */}
-                              후기 삭제하기
-                            </Button>
-                          </Buttons>
-                        </Product>
-                      );
-                    })}
-                  </Payment>
-                );
-              })}
-            </Payments>
-          </Content>
-=======
       {role == "ROLE_ADMIN" ? (
         <>
           <Title onClick={() => console.log(paymentList)}>주문 목록</Title>
@@ -140,7 +94,6 @@ const AdminOrderList = () => {
               );
             })}
           </Payments>
->>>>>>> Stashed changes:src/routes/Admin/components/aOrderList.jsx
         </>
       ) : (
         <>

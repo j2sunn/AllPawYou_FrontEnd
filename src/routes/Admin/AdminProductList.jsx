@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
-import BoardList from "./components/aBoardList";
 import AdminHeader from "./components/AdminHeader";
 import AdminFooter from "./components/AdminFooter";
+import ProductList from "./components/aProductList";
 
 export default function PermanentDrawerLeft() {
   return (
@@ -10,7 +10,7 @@ export default function PermanentDrawerLeft() {
         <AdminHeader />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
-          <BoardList />
+          <ProductList />
         </Box>
       </Box>
       <AdminFooter />

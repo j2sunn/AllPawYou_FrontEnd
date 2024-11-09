@@ -77,6 +77,10 @@ const AdminHeader = () => {
     navigate("/admin/reviewlist"); // 클릭 시 navigate 호출
   };
 
+  const goProductList = () => {
+    navigate("/admin/productlist"); // 클릭 시 navigate 호출
+  };
+
   return (
     <>
       <CssBaseline />
@@ -188,7 +192,7 @@ const AdminHeader = () => {
           <Collapse in={openShop} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItem disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton sx={{ pl: 4 }} onClick={goProductList}>
                   <ListItemIcon>
                     <LuGift />
                   </ListItemIcon>

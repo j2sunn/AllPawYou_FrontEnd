@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
-import AdminHeader from "../../components/common/AdminHeader";
-import AdminFooter from "../../components/common/AdminFooter";
+import AdminHeader from "./components/AdminHeader";
+import AdminFooter from "./components/AdminFooter";
 import UserList from "./components/aUserList";
 
 export default function PermanentDrawerLeft() {
