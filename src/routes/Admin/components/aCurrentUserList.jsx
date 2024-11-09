@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-const UserList = () => {
+const CurrentUser = () => {
   const [user, setUsers] = useState([]);
 
   useEffect(() => {
@@ -42,12 +42,13 @@ const UserList = () => {
 
   return (
     <>
-      <Title>최근 가입자 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
+      <TableContainer component={Paper}>
         <Table>
           <TableHead sx={{ backgroundColor: "#EEC759" }}>
             <TableRow>
-              <TableCell align="center">번호</TableCell>
+              <TableCell align="center" sx={{ height: "60px", fontSize: "" }}>
+                번호
+              </TableCell>
               <TableCell align="center">이름</TableCell>
               <TableCell align="center">이메일</TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
@@ -75,11 +76,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
-
-const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
-  width: 90%;
-  border-bottom: 3px solid #c4e1f6;
-`;
+export default CurrentUser;
