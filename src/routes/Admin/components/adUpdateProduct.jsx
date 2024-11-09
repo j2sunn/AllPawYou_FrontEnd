@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { updateProduct, getProductByProductId } from "../../../service/ProductService";
 import { useParams } from "react-router-dom";
 
-const AddProduct = () => {
+const UpdateProduct = () => {
   const navigator = useNavigate();
   const [ACCESS_TOKEN, setAccessToken] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -214,7 +214,7 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;
 
 const One = styled.div`
   width: 50%;
