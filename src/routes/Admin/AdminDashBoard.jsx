@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Piechart from "../../components/chart/PieChart"; // Assuming these exist
-import AdminHeader from "../../components/common/AdminHeader";
+import AdminHeader from "./components/AdminHeader";
 import { Grid, Paper } from "@mui/material";
-import AdminFooter from "../../components/common/AdminFooter";
+import AdminFooter from "./components/AdminFooter";
 import { CgProfile } from "react-icons/cg";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";

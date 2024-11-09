@@ -29,17 +29,18 @@ import UserReviewCreate from "./components/Review/UserReviewCreate";
 import UserReviewUpdate from "./components/Review/UserReviewUpdate";
 import ShoppingDetail from "./routes/ShoppingDetail";
 import AddProduct from "./routes/AddProduct";
-import ProductList from "./routes/ProductList";
+
 import BoardList from "./routes/BoardList";
 import UpdateProduct from "./routes/UpdateProduct";
-
 import UpdateMyPage from "./routes/UpdateMyPage";
 
+// Admin
 import AdminBoardList from "./routes/Admin/AdminBoardList";
 import AdminDashboard from "./routes/Admin/AdminDashBoard";
 import AdminReviewList from "./routes/Admin/AdminReviewList";
 import AdminUserList from "./routes/Admin/AdminUserList";
 import AdminOrderList from "./routes/Admin/AdminOrderList";
+import ProductList from "./routes/Admin/AdminProductList";
 
 const Router = () => {
   return (
@@ -82,9 +83,6 @@ const Router = () => {
           {/* 쇼핑몰 */}
           <Route path="/shopping" element={<ShoppingMain />} />
           <Route path="/shoppingDetail/:id" element={<ShoppingDetail />} />
-          <Route path="/admin/addproduct" element={<AddProduct />} />
-          <Route path="/admin/updateproduct/:id" element={<UpdateProduct />} />
-          <Route path="/admin/productlist" element={<ProductList />} />
 
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
@@ -115,6 +113,11 @@ const Router = () => {
         <Route path="/admin/userlist" element={<AdminUserList />} />
         <Route path="/admin/boardlist" element={<AdminBoardList />} />
         <Route path="/admin/orderlist" element={<AdminOrderList />} />
+
+        <Route path="/admin/productlist" element={<ProductList />} />
+
+        <Route path="/admin/addproduct" element={<AddProduct />} />
+        <Route path="/admin/updateproduct/:id" element={<UpdateProduct />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
