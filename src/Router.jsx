@@ -43,6 +43,7 @@ import AdminProductList from "./routes/Admin/AdminProductList";
 import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
 import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
 import BoardUpdate from "./routes/BoardUpdate";
+import MyPageBoardList from "./routes/MyPageBoardList";
 
 const Router = () => {
   return (
@@ -102,6 +103,9 @@ const Router = () => {
           <Route path="/review/createReview/:orderName" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
+
+          {/* 마이페이지 글 목록 */}
+          <Route path="/board/myBoard" element={<MyPageBoardList />} />
         </Route>
 
         {/* 관리자 페이지 */}

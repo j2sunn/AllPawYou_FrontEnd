@@ -9,18 +9,45 @@ const BoardList = ()=>{
     const navigator = useNavigate();
     const [boardList, setBoardList] = useState([]);
 
-    const { state } = useLocation();
-    const cp = state?.cp;
     
+    //===========================================================================================================
+    //상세조회,리스트 조회 페이지 서로 이동 시 전달해야할 데이터 5개!!
+    const location = useLocation();
+    // const cp = state?.cp;
+    const [currentPage, setCurrentPage] = useState(location.state?.cp||1); // 현재 페이지쪽수 초기값
+    const [selectedCategory, setSelectedCategory] = useState(location.state?.selectedCategory||0); //필터해서 볼 카테고리(강아지고양이) 0==전체
+    
+    // const [orderOpt,setOrderOpt] = useState(location.state?.orderOpt||"choi"); //choi : 최신순, in : 인기순
+
+    const [searchOpt, setSearchOpt] = useState(location.state?.searchOpt||""); //검색옵션(작성자u,제목t,내용c)
+    const [keyword, setKeyword] = useState(location.state?.keyword||""); //검색키워드
+    //========
+    // // 검색용 상태 (검색 버튼 클릭 시 적용할 값) 이건 없어도 되지 않을까..?
+    // const [appliedSearchOpt, setAppliedSearchOpt] = useState("a");
+    // const [appliedKeyword, setAppliedKeyword] = useState('');
+
+    //===========================================================================================================
     useEffect(()=>{
-        console.log("크카크카크");
-        loadList(setBoardList,selectedCategory,currentPage,searchOpt,keyword);
-        console.log("cpcp : "+cp);
-        if(cp !=null) {
-            setCurrentPage(cp.currentPage);
-        }
-        // console.log("currentPage : "+currentPage);
-    },[]);
+        loadList(selectedCategory,  searchOpt, keyword, setBoardList);
+    },[//currentPage, 
+        selectedCategory,  searchOpt, keyword]);
+
+    //카테고리 버튼 클릭
+    const handleSelectedCategoryClick = (selectedCategory)=>{
+        setSelectedCategory(selectedCategory);
+        setSearchOpt("");
+        setKeyword("");
+        setCurrentPage(1); //페이지 번호 초기화
+    }
+    //정렬순서 버튼 클릭
+    
+     // 검색 버튼 클릭 시 검색 옵션과 키워드 적용
+    // const handleSearchBtnClick = () => {
+    //     setSearchOpt(searchOpt);
+    //     setKeyword(keyword);
+    //     setCurrentPage(1); // 페이지 번호 초기화
+    // };
+
     const formatContent = (content) => {
         // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
         const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
@@ -33,14 +60,7 @@ const BoardList = ()=>{
     const ITEMS_PER_PAGE = 8; // 한 페이지에 표시할 게시글 수
     
 
-    //===========================================================================================================
-    //상세조회,리스트 조회 페이지 서로 이동 시 전달해야할 데이터
-    const [selectedCategory, setSelectedCategory] = useState(1); //필터해서 볼 카테고리(강아지고양이)
-    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지쪽수 초기값
-    const [searchOpt, setSearchOpt] = useState(""); //검색옵션(작성자,제목,내용)
-    const [keyword, setKeyword] = useState(""); //검색키워드
     
-    //===========================================================================================================
     const totalPages = Math.ceil(boardList.length / ITEMS_PER_PAGE);
      // 현재 페이지에 해당하는 게시글 슬라이싱
         const currentBoardList = boardList.slice(
@@ -69,13 +89,13 @@ const BoardList = ()=>{
                         <Select onChange={(e)=>setSearchOpt(e.target.value)}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={''}
+                            value={searchOpt}
                             label="선택하세요"
                             style={{width: "120px"}}
                         >
-                            <MenuItem value={'u'}>작성자</MenuItem>
-                            <MenuItem value={'t'}>제목</MenuItem>
-                            <MenuItem value={'c'}>내용</MenuItem>
+                            <MenuItem value={'작성자'}>작성자</MenuItem>
+                            <MenuItem value={'제목'}>제목</MenuItem>
+                            <MenuItem value={'내용'}>내용</MenuItem>
                         </Select>
                         </FormControl>
                         <TextField label="게시글 검색"
@@ -84,46 +104,52 @@ const BoardList = ()=>{
                                 // value={values.email}
                                 placeholder="작성자/제목/내용"
                                 sx={{ width: "350px" }}
+                                onChange={(e) => setKeyword(e.target.value)}
                                 />
-                        <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem', marginLeft: '1rem', marginBottom: '1rem',height : '2rem'}} 
-                            // onClick={}
+                        {/* <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem', marginLeft: '1rem', marginBottom: '1rem',height : '2rem'}} 
+                            onClick={handleSearchBtnClick}
                             >
                         검색
-                        </Button>
+                        </Button> */}
                     </div>
                 </One>
                 <Two>
                     <div className="div2Con">
                         <Div2 className="category"
-                            onClick={() => setSelectedCategory(1)}
+                            onClick={() => handleSelectedCategoryClick(1)}
                             selected={selectedCategory === 1}
                             >강아지</Div2>
                         <Div2 className="category"
-                        onClick={() => setSelectedCategory(2)}
+                        onClick={() => handleSelectedCategoryClick(2)}
                         selected={selectedCategory === 2}
                         >고양이</Div2>
                         <Div2 className="category"
-                        onClick={() => setSelectedCategory(3)}
+                        onClick={() => handleSelectedCategoryClick(3)}
                         selected={selectedCategory === 3}
                         >기타
                         </Div2>
                     </div>
-                    <div className="div2ConBro">
+                    {/* <div className="div2ConBro">
                         <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem', marginRight: '1rem', marginBottom: '1rem',height : '2rem'}} 
+                        onClick={()=>handleOrderOptClick("choi")}
                                     >
                             최신순
                         </Button>
                         <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem', marginBottom: '1rem',height : '2rem'}} 
+                        onClick={()=>handleOrderOptClick("in")}            
                                     >
                             인기순
                         </Button>
-                    </div>
+                    </div> */}
                     {/* 최신순 인기순 할 땐 List<MyEntity> findAllByOrderByAAscBDesc(); 이용하기 */}
                 
                 </Two>
                 <Three>
                     {currentBoardList.length>0 ? currentBoardList.map((board,index)=>(
-                        <Con key={index} onClick={()=>navigator(`/board/${board.boardNo}`, {state : {cp : {currentPage}}})} style={{border : "1px solid gray", borderRadius : "10px", padding : "10px", marginBottom : "10px"}}>
+                        <Con key={index} onClick={()=>navigator(`/board/${board.boardNo}`, 
+                        {state : {cp : {currentPage}, selectedCategory : {selectedCategory}, searchOpt : {searchOpt}, keyword : {keyword}}})} 
+                        
+                        style={{border : "1px solid gray", borderRadius : "10px", padding : "10px", marginBottom : "10px"}}>
                             {/*  Con을 반복하기 */}
                             <div className="first">
                                 <Div> {board.category === 1 
@@ -137,7 +163,7 @@ const BoardList = ()=>{
                                     // dangerouslySetInnerHTML={{ __html: board.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }}
                                     > {formatContent(board.boardContent)}</p>
                                 <div className="boardInfo">
-                                    <img src="http://localhost:8081/images/board/happy.png"/>
+                                    <img src={`http://localhost:8081/images/board/happy.png`}/>
                                     <p className="boardNick">{board.boardUsername}</p>
                                     <p className="boardComment">댓글 : {board.commentCount}</p>
                                     <p className="boardLike"><AiOutlineLike />{board.likeCount}</p>
@@ -202,6 +228,7 @@ const One = styled.div`
     width : 50%;
     display : flex;
     align-items: center;
+    margin-top : 20px;
     .searchBox{
         display : flex;
         align-items : center;
@@ -220,6 +247,7 @@ const One = styled.div`
 const Two = styled.div`
     width : 50%;
     display : flex;
+    margin-top : 20px;
     .div2Con{
         display : flex;
         align-items: center;
@@ -238,6 +266,7 @@ const Con = styled.div`
     align-items: center;
     justify-content: space-between;
     height : 170px;
+    margin-top : 10px;
     .first{
         display: flex;
         flex-direction : column;
