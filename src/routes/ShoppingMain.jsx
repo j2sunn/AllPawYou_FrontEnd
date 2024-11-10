@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { getProductsByCategory, getProductsByCategoryAndStatus, getProductsByStatus, listProducts } from "../service/ProductService";
+import { getProductsByCategory, getProductsByCategoryAndStatus, getProductsBySearch, getProductsByStatus, listProducts } from "../service/ProductService";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, TextField } from "@mui/material";
+
 
 const ShoppingMain = () => {
-
     const [product, setProducts] = useState([]);
     const navigate = useNavigate();
     const [category, setCategory] = useState("all");
@@ -21,36 +22,18 @@ const ShoppingMain = () => {
             });
     }
 
-
     const goDetail = (productId) => {
         navigate(`/shoppingDetail/${productId}`);
     };
 
-    // useEffect(() => {
-    //     if(state){
-    //         setCategory(state);
-    //     }
-    //     if (category === "all" ) {
-    //         getAllProducts();
-    //     } else {
-    //         getProductsByCategory(category)
-    //             .then(response => {
-    //                 console.log("response 정보 : ", response);
-    //                 setProducts(response);
-    //             }).catch((error) => {
-    //                 console.log("에러발생 : ", error);
-    //             });
-    //     }
-    // }, [category]);
-
-    const loadProducts = async() => {
+    const loadProducts = async () => {
         const response = await getProductsByStatus(status);
         setProducts(response);
     }
 
-        useEffect(() => {
-   
-        if (category === "all" ) {
+    useEffect(() => {
+
+        if (category === "all") {
             loadProducts();
         } else {
             getProductsByCategoryAndStatus(category, status)
@@ -62,15 +45,27 @@ const ShoppingMain = () => {
                 });
         }
     }, [category, status]);
-    
-  useEffect(()=>{
-    scrollTo(0,0);
-  },[])
+
+    useEffect(() => {
+        scrollTo(0, 0);
+    }, [])
+
+    const [searchItem, setSearchItem] = useState("");
+
+    //상품 검색
+    const getAllProductsBySearch = async () => {
+
+        console.log("searchItem:", searchItem);
+        const response = await getProductsBySearch(searchItem)
+        setProducts(response);
+    }
+
 
     return (
         <>
             <GoodsSection>
                 <IconTitle>쇼핑 카테고리</IconTitle>
+                <TextField onChange={() => setSearchItem(event.target.value)} /><Button onClick={getAllProductsBySearch}>검색</Button>
                 <IconContainer>
                     <IconCard onClick={() => setCategory("all")}>
                         <IconBack>
@@ -118,16 +113,16 @@ const ShoppingMain = () => {
                     </IconCard>
                 </IconContainer>
                 <div id="goods-section">
-                    {product.length > 0 ? (
+                    {product?.length > 0 ? (
                         <Grid>
-                            {product.map((item, index) => (
+                            {product?.map((item, index) => (
                                 <GridItem key={index} onClick={() => goDetail(item.id)}>
-                                <GridImage src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="상품 이미지" />
-                                <GridTitle>{item.name}</GridTitle>
-                                <GridText>{item.price.toLocaleString()}원</GridText>
+                                    <GridImage src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="상품 이미지" />
+                                    <GridTitle>{item.name}</GridTitle>
+                                    <GridText>{item.price.toLocaleString()}원</GridText>
                                 </GridItem>
                             ))}
-                      </Grid>
+                        </Grid>
                     ) : (
                         category == "all" ? (
                             <NoData>등록된 상품이 없습니다.</NoData>
@@ -135,7 +130,7 @@ const ShoppingMain = () => {
                             <NoData>해당 카테고리의 상품이 없습니다.</NoData>
                         )
                     )}
-                    
+
                 </div>
             </GoodsSection>
         </>
