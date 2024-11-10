@@ -23,7 +23,6 @@ import {
   TotalOrder,
 } from "../../service/DashBoard";
 import { useEffect, useState } from "react";
-import { Button } from "bootstrap";
 
 export default function PermanentDrawerLeft() {
   const [dailyVisitors, setDailyVisitors] = useState(0);
@@ -127,7 +126,7 @@ export default function PermanentDrawerLeft() {
   };
 
   useEffect(() => {
-    scrollTo(0,0);
+    scrollTo(0, 0);
     const getDailyVisitors = async () => {
       const count = await fetchDailyVisitors(); // 일일 방문자 수 가져오기
       setDailyVisitors(count); // 상태 업데이트
