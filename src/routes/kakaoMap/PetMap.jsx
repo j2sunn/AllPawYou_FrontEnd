@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { useEffect } from "react";
-import Kakao from "./kakaoMap";
+import BasicMap from "./kakaoMap";
 
 export default function PetMap() {
   useEffect(() => {
@@ -10,7 +10,7 @@ export default function PetMap() {
   return (
     <>
       <div>
-        <Kakao />
+        <BasicMap />
       </div>
 
       <Box>123123</Box>
