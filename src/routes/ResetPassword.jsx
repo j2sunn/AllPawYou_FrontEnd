@@ -27,11 +27,6 @@ const ButtonContainer = styled.div`
   margin-top: 16px;
 `;
 
-const ValidationText = styled.span`
-  color: red;
-  fontsize: "0.75rem";
-`;
-
 const Error = styled.div`
   color: red;
 `;
@@ -42,11 +37,13 @@ const ResetPassword = () => {
   const [values, setValues] = useState({
     email: "",
     password: "",
+    passwordConfirm: "",
   });
 
   const [error, setError] = useState({
     email: "",
     password: "",
+    passwordConfirm: "",
     auth: "",
   }); // 오류 메시지 상태
 
@@ -178,7 +175,7 @@ const ResetPassword = () => {
       <Container>
         <Content>
           <h4 style={{ marginBottom: "25px" }}>비밀번호 재설정</h4>
-          <form className="validation-form" onClick={handleSubmit}>
+          <form className="validation-form" onSubmit={handleSubmit}>
             <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", width: "100%" }}>
               <TextField
                 id="email"
@@ -242,7 +239,7 @@ const ResetPassword = () => {
               <Error>{error.passwordConfirm}</Error>
             </div>
             <ButtonContainer>
-              <Button variant="contained" sx={{ width: "100%", height: "56px", fontSize: "1.5rem" }}>
+              <Button type="submit" variant="contained" sx={{ width: "100%", height: "56px", fontSize: "1.5rem" }}>
                 확인
               </Button>
             </ButtonContainer>

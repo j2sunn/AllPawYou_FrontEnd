@@ -2,40 +2,55 @@ import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { resetPassword } from "../../service/Login";
-import { useNavigate } from "react-router-dom";
+import { updateOnMypage } from "../../service/Login";
 import MypageSideBar from "../../components/common/MypageSideBar";
 
 const ChangePassword = () => {
   const [values, setValues] = useState({
-    email: "",
+    currentPassword: "",
     password: "",
+    passwordConfirm: "",
   });
 
   const [error, setError] = useState({
-    email: "",
+    currentPassword: "",
     password: "",
-    auth: "",
+    passwordConfirm: "",
   }); // 오류 메시지 상태
 
-  const navigate = useNavigate();
+  // 이메일값 받기
+  const email = localStorage.getItem("email");
 
   const handleSubmit = async (e) => {
+    console.log("실행됨");
     e.preventDefault(); // 기본 폼 제출 동작 방지
 
     if (validation()) {
-      resetPassword(values.email, values.password)
-        .then((response) => {
+      updateOnMypage(email, values.currentPassword, values.password)
+        .then(() => {
           Swal.fire({
             icon: "success",
             title: "비밀번호를 변경했습니다.",
             confirmButtonColor: "#527853",
             confirmButtonText: "닫기",
           });
-          navigate("/login");
+          window.location.reload();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          Swal.fire({
+            icon: "warning",
+            title: "비밀번호가 일치하지 않습니다.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          });
+        })
+        .catch(() => {
+          Swal.fire({
+            icon: "error",
+            title: "비밀번호를 변경하지 못했습니다.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          });
         });
     }
   };
@@ -48,17 +63,18 @@ const ChangePassword = () => {
     let valid = true;
     let obj = {};
 
-    // password
+    // currentPassword
     let regex = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
     regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
-    if (!regex.test(values.password.trim())) {
-      obj = { ...obj, password: "영어, 숫자, 특수문자가 포함된 8 ~ 20 글자의 비밀번호를 입력해주세요." };
+    if (!regex.test(values.currentPassword.trim())) {
+      obj = { ...obj, currentPassword: "" };
       valid = false;
     } else {
-      obj = { ...obj, password: "" };
+      obj = { ...obj, currentPassword: "" };
     }
 
+    // password
     if (!regex.test(values.password.trim())) {
       obj = { ...obj, password: "영어, 숫자, 특수문자가 포함된 8 ~ 20 글자의 비밀번호를 입력해주세요." };
       valid = false;
@@ -85,57 +101,52 @@ const ChangePassword = () => {
 
         <Content>
           <Title>비밀번호 변경</Title>
-          <PasswordForm>
-            {/* <h4 style={{ marginBottom: "25px" }}>비밀번호 변경</h4> */}
-            <form className="validation-form" onClick={handleSubmit}>
-              <div style={{ marginBottom: "16px" }}>
-                <TextField
-                  id="currentPassword"
-                  label="현재 비밀번호"
-                  className={`form-control`}
-                  type="password"
-                  variant="outlined"
-                  placeholder="현재 비밀번호를 입력해주세요"
-                  sx={{ width: "100%" }}
-                  onChange={handleChange}
-                  required
-                />
-                <Error>{error.currentPassword}</Error>
-              </div>
-              <div style={{ marginBottom: "16px" }}>
-                <TextField
-                  id="password"
-                  label="새 비밀번호"
-                  className={`form-control`}
-                  type="password"
-                  variant="outlined"
-                  placeholder="비밀번호를 입력해주세요"
-                  sx={{ width: "100%" }}
-                  onChange={handleChange}
-                  required
-                />
-                <Error>{error.password}</Error>
-              </div>
-              <div style={{ marginBottom: "16px" }}>
-                <TextField
-                  id="passwordConfirm"
-                  label="새 비밀번호 확인"
-                  type="password"
-                  variant="outlined"
-                  placeholder="비밀번호를 입력해주세요"
-                  sx={{ width: "100%" }}
-                  onChange={handleChange}
-                  required
-                />
-                <Error>{error.passwordConfirm}</Error>
-              </div>
-              <ButtonContainer>
-                <Button variant="contained" sx={{ width: "100%", height: "56px", fontSize: "1.5rem" }}>
-                  확인
-                </Button>
-              </ButtonContainer>
-            </form>
-          </PasswordForm>
+          <form className="validation-form" onSubmit={handleSubmit}>
+            <div style={{ marginBottom: "16px" }}>
+              <TextField
+                id="currentPassword"
+                label="현재 비밀번호"
+                type="password"
+                variant="outlined"
+                placeholder="현재 비밀번호를 입력해주세요"
+                sx={{ width: "100%" }}
+                onChange={handleChange}
+                required
+              />
+              <Error>{error.currentPassword}</Error>
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <TextField
+                id="password"
+                label="새 비밀번호"
+                type="password"
+                variant="outlined"
+                placeholder="비밀번호를 입력해주세요"
+                sx={{ width: "100%" }}
+                onChange={handleChange}
+                required
+              />
+              <Error>{error.password}</Error>
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <TextField
+                id="passwordConfirm"
+                label="새 비밀번호 확인"
+                type="password"
+                variant="outlined"
+                placeholder="비밀번호를 입력해주세요"
+                sx={{ width: "100%" }}
+                onChange={handleChange}
+                required
+              />
+              <Error>{error.passwordConfirm}</Error>
+            </div>
+            <ButtonContainer>
+              <Button type="submit" variant="contained" sx={{ width: "100%", height: "56px", fontSize: "1.5rem" }}>
+                확인
+              </Button>
+            </ButtonContainer>
+          </form>
         </Content>
       </Container>
     </>
@@ -152,10 +163,6 @@ const Container = styled.div`
 const Content = styled.div`
   width: 90%;
   padding-bottom: 20px;
-`;
-
-const PasswordForm = styled.div`
-  width: 90%;
 `;
 
 const SideBarTitle = styled.div`
