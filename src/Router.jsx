@@ -44,10 +44,15 @@ import AdminProductList from "./routes/Admin/AdminProductList";
 import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
 import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
 
+import BoardUpdate from "./routes/BoardUpdate";
+import MyPageBoardList from "./routes/MyPageBoardList";
+
+
 import TheaterLocation from "./routes/kakaoMap/KakaoMapComponent";
 import ChangePassword from "./routes/Mypage/ChangePassword";
 
 import Forbidden from "./routes/Forbidden";
+
 
 const Router = () => {
   return (
@@ -99,12 +104,17 @@ const Router = () => {
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
 
+
+          {/* 마이페이지 글 목록 */}
+          <Route path="/board/myBoard" element={<MyPageBoardList />} />
+
           {/* 지도 실험 */}
           <Route path="/kakaoMap" element={<PetMap />} />
           <Route path="/map2" element={<TheaterLocation />} />
 
           {/* 마이페이지 비밀번호 수정 */}
           <Route path="/mypage/passwordChange" element={<ChangePassword />} />
+
         </Route>
 
         {/* 관리자 페이지 */}

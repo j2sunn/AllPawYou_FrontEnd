@@ -9,7 +9,7 @@ const MypageSideBar = () => {
   };
 
   const goMyBoard = () => {
-    navigate(`/`);
+    navigate(`/board/myBoard`);
   };
 
   const goMyReview = () => {

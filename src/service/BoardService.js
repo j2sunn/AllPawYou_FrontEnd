@@ -51,14 +51,15 @@ export const uploadBoard = (formData,navigator)=>{
 // }
 //글 상세조회
 export const loadData = async (boardNo) => {
-    console.log("heyhey");
+    
     const response = await axios.get('http://localhost:8081/board/' + boardNo);
     return response.data;
 };
 
 //글 목록 전체조회
-export const loadList = async (setBoardList)=>{
-    const response = await axios.get('http://localhost:8081/board');
+export const loadList = async (selectedCategory,  searchOpt, keyword, setBoardList)=>{
+    console.log("목록요청함!")
+    const response = await axios.get('http://localhost:8081/board?selectedCategory='+selectedCategory+'&searchOpt='+searchOpt+'&keyword='+keyword);
     setBoardList(response.data);
 }
 
@@ -78,7 +79,7 @@ export const addCommentService = (boardNo,result,loginEmail,setCommentData)=>{
         commentContent: result,
         email: loginEmail
     })
-    .then(response => {
+    .then(response => { // 썸네일, 제목, 내용, 댓글 수, 좋아요 수, 작성일
         console.log("삽입된 댓글 수 : "+response.data);
         if(response.data >0){
             // setCommentData(response.data);
@@ -92,4 +93,7 @@ export const updateCommentList = async (boardNo,setCommentData)=>{
     const resp = await axios.get('http://localhost:8081/board/comment/' + boardNo);
     setCommentData(resp.data);
 }
+
+
+
 

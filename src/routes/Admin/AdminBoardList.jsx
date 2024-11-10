@@ -12,6 +12,7 @@ export default function PermanentDrawerLeft() {
 
   return (
     <>
+    
       <Box sx={{ display: "flex", minHeight: "850px" }}>
         <AdminHeader />
 
