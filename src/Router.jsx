@@ -28,10 +28,11 @@ import UserReviewList from "./components/Review/UserReviewList";
 import UserReviewCreate from "./components/Review/UserReviewCreate";
 import UserReviewUpdate from "./components/Review/UserReviewUpdate";
 import ShoppingDetail from "./routes/ShoppingDetail";
-
 import BoardList from "./routes/BoardList";
-
 import UpdateMyPage from "./routes/UpdateMyPage";
+import BoardUpdate from "./routes/BoardUpdate";
+
+import PetMap from "./routes/kakaoMap/PetMap";
 
 // Admin
 import AdminBoardList from "./routes/Admin/AdminBoardList";
@@ -42,7 +43,6 @@ import AdminOrderList from "./routes/Admin/AdminOrderList";
 import AdminProductList from "./routes/Admin/AdminProductList";
 import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
 import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
-import BoardUpdate from "./routes/BoardUpdate";
 
 const Router = () => {
   return (
@@ -102,6 +102,7 @@ const Router = () => {
           <Route path="/review/createReview/:orderName" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
+          <Route path="/kakaoMap" element={<PetMap />} />
         </Route>
 
         {/* 관리자 페이지 */}
