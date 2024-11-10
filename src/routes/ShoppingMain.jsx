@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { getProductsByCategory, getProductsByCategoryAndStatus, getProductsByStatus, listProducts } from "../service/ProductService";
+import { getProductsByCategory, getProductsByCategoryAndStatus, getProductsBySearch, getProductsByStatus, listProducts } from "../service/ProductService";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, TextField } from "@mui/material";
+import Swal from "sweetalert2";
+
 
 const ShoppingMain = () => {
-
     const [product, setProducts] = useState([]);
     const navigate = useNavigate();
     const [category, setCategory] = useState("all");
@@ -21,36 +23,18 @@ const ShoppingMain = () => {
             });
     }
 
-
     const goDetail = (productId) => {
         navigate(`/shoppingDetail/${productId}`);
     };
 
-    // useEffect(() => {
-    //     if(state){
-    //         setCategory(state);
-    //     }
-    //     if (category === "all" ) {
-    //         getAllProducts();
-    //     } else {
-    //         getProductsByCategory(category)
-    //             .then(response => {
-    //                 console.log("response 정보 : ", response);
-    //                 setProducts(response);
-    //             }).catch((error) => {
-    //                 console.log("에러발생 : ", error);
-    //             });
-    //     }
-    // }, [category]);
-
-    const loadProducts = async() => {
+    const loadProducts = async () => {
         const response = await getProductsByStatus(status);
         setProducts(response);
     }
 
-        useEffect(() => {
-   
-        if (category === "all" ) {
+    useEffect(() => {
+
+        if (category === "all") {
             loadProducts();
         } else {
             getProductsByCategoryAndStatus(category, status)
@@ -62,14 +46,39 @@ const ShoppingMain = () => {
                 });
         }
     }, [category, status]);
-    
-  useEffect(()=>{
-    scrollTo(0,0);
-  },[])
+
+    useEffect(() => {
+        scrollTo(0, 0);
+    }, [])
+
+    const [searchItem, setSearchItem] = useState("");
+
+    //상품 검색
+    const getAllProductsBySearch = async () => {
+
+        if(searchItem.trim().length > 0){
+            const response = await getProductsBySearch(searchItem)
+            setProducts(response);
+        }else{
+            Swal.fire({
+                title: "검색어를 입력해주세요.",
+                icon: 'warning',
+                
+                confirmButtonColor: '#527853',
+                confirmButtonText: '닫기',
+                
+             })
+        }
+    }
+
 
     return (
         <>
             <GoodsSection>
+                <div style={{alignSelf: 'end', marginRight: '10rem'}}>
+                    <Input onChange={() => setSearchItem(event.target.value)} />
+                    <Button onClick={getAllProductsBySearch} sx={{height: '3rem'}}>검색</Button>
+                </div>
                 <IconTitle>쇼핑 카테고리</IconTitle>
                 <IconContainer>
                     <IconCard onClick={() => setCategory("all")}>
@@ -118,16 +127,16 @@ const ShoppingMain = () => {
                     </IconCard>
                 </IconContainer>
                 <div id="goods-section">
-                    {product.length > 0 ? (
+                    {product?.length > 0 ? (
                         <Grid>
-                            {product.map((item, index) => (
+                            {product?.map((item, index) => (
                                 <GridItem key={index} onClick={() => goDetail(item.id)}>
-                                <GridImage src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="상품 이미지" />
-                                <GridTitle>{item.name}</GridTitle>
-                                <GridText>{item.price.toLocaleString()}원</GridText>
+                                    <GridImage src={`http://localhost:8081${item.productFileDTO.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="상품 이미지" />
+                                    <GridTitle>{item.name}</GridTitle>
+                                    <GridText>{item.price.toLocaleString()}원</GridText>
                                 </GridItem>
                             ))}
-                      </Grid>
+                        </Grid>
                     ) : (
                         category == "all" ? (
                             <NoData>등록된 상품이 없습니다.</NoData>
@@ -135,7 +144,7 @@ const ShoppingMain = () => {
                             <NoData>해당 카테고리의 상품이 없습니다.</NoData>
                         )
                     )}
-                    
+
                 </div>
             </GoodsSection>
         </>
@@ -145,8 +154,12 @@ export default ShoppingMain;
 
 
 const GoodsSection = styled.div`
+    width: 100%;
     min-height: 700px;
     margin: 5rem 0;
+    display: flex;
+    flex-direction: column;
+
   #goods-section ul {
     display: flex;
     flex-wrap: wrap;
@@ -165,6 +178,13 @@ const GoodsSection = styled.div`
     height: 380px;
     // border : 1px solid red;
   }
+`;
+
+const Input = styled.input`
+    border-width: 0;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    outline: none;
+    height: 2rem;
 `;
 
 const IconTitle = styled.h4`

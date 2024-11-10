@@ -54,6 +54,17 @@ export const getProductsByStatus = async (status) => {
   }
 };
 
+export const getProductsBySearch = async (name) => {
+  try {
+    const response = await AuthApi.get(`${REST_API_BASE_URL}/search/${name}`);
+    console.log("getProductsBySearch", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("데이터를 가져오는 중 에러 발생:", error);
+    throw error; // 에러를 상위 함수로 전달
+  }
+}
+
 
 
 export const updateProduct = (id, formData) => AuthUploadApi.post(`${REST_API_BASE_URL}/update/${id}`, formData);
