@@ -8,7 +8,6 @@ import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import AdminSideBar from "../components/common/AdminSideBar";
 
 
 const ListNoticeComponent = () => {
