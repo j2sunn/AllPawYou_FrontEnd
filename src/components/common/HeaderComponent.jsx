@@ -14,8 +14,8 @@ const HeaderComponent = () => {
     Swal.fire({
       icon: "success",
       title: "로그아웃 되었습니다.",
-      confirmButtonColor: '#527853',
-        confirmButtonText: '닫기'
+      confirmButtonColor: "#527853",
+      confirmButtonText: "닫기",
     });
     localStorage.clear();
     navigator("/");

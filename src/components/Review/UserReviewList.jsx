@@ -13,7 +13,7 @@ const ReviewList = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
-    scrollTo(0,0);
+    scrollTo(0, 0);
     getAllReviews();
   }, []);
 
