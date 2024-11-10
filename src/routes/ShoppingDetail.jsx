@@ -64,6 +64,16 @@ const ShoppingDetail = () => {
 
   const addCartItem = () => {
     let cartExist = false;
+    if(data.userNo == null){
+      Swal.fire({
+        icon: "warning",
+        title: "로그인이 필요합니다.",
+
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기"
+      })
+      return;
+    }
     if (data.quantity <= 0) {
       Swal.fire({
         icon: "error",
@@ -85,7 +95,7 @@ const ShoppingDetail = () => {
       setDisabled(true);
       Swal.fire({
         icon: "info",
-        title: "장바구니로 이동하시겠습니까?.",
+        title: "장바구니로 이동하시겠습니까?",
 
         showCancelButton: true,
         confirmButtonColor: "#527853",
@@ -99,8 +109,17 @@ const ShoppingDetail = () => {
       });
     }
   };
-
   const navigatePayment = () => {
+    if(data.userNo == null){
+      Swal.fire({
+        icon: "warning",
+        title: "로그인이 필요합니다.",
+
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기"
+      })
+      return;
+    }
     const checkedData = [
       {
         ...product,
