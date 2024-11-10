@@ -7,6 +7,7 @@ import DaumPostcode from "react-daum-postcode";
 import MypageSideBar from "../components/common/MypageSideBar";
 import { updateUser } from "../service/UserAPI";
 import defaultProfile from "../assets/defaultprofile.png";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const MyPage = () => {
   const navigator = useNavigate();
@@ -15,6 +16,7 @@ const MyPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [profile, setProfile] = useState({});
   const [update, setUpdate] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -183,6 +185,7 @@ const MyPage = () => {
   const [openPostcode, setOpenPostcode] = useState(false); //카카오api
 
   const clickAddrButton = () => {
+    setModalOpen(true);
     setOpenPostcode(current => !current);
     setShowDetailAddress(current => !current);
   }
@@ -199,6 +202,7 @@ const MyPage = () => {
       address: `${data.address}`,
     }));
     setOpenPostcode(false);
+    setModalOpen(false);
   };
 
   const [showDetailAddress, setShowDetailAddress] = useState(false);
@@ -207,6 +211,24 @@ const MyPage = () => {
     <>
       <Box>
         <MypageSideBar />
+        {modalOpen ? (
+          <>
+            <ModalBackground onClick={()=>setModalOpen(false)}/>
+            <Modal>
+              <div style={{display: 'flex'}}>
+                <div style={{fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem'}}>주소 검색</div>
+                <IoIosCloseCircleOutline size={32} style={{position: 'absolute', right: '2rem', cursor: 'pointer'}} onClick={()=>setModalOpen(false)}/>
+              </div>
+              <DaumPostcode
+              autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+              onComplete={selectAddress} />
+            </Modal>
+          </>
+        ) : (
+          null
+        )
+                          
+                        }
         <UpdateContainer>
           {profile ? (
             <>
@@ -290,10 +312,6 @@ const MyPage = () => {
                         <Button variant="outlined" sx={{ marginLeft: "10px" }} onClick={clickAddrButton}>
                           검색
                         </Button>
-                        {openPostcode &&
-                          <DaumPostcode
-                            autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
-                            onComplete={selectAddress} />}
                       </TableCell>
                     </TableRow>
                     {showDetailAddress && (
@@ -477,3 +495,26 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
+
+const ModalBackground = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.6);
+  z-index: 3;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 30%;
+  left: 35%;
+  width: 600px;
+  border: 3px solid #EEC759;
+  border-radius: 20px;
+  z-index: 5;
+  padding: 2rem 0;
+  background-color: white;
+`;

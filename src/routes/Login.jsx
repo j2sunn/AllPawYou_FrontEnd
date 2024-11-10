@@ -117,15 +117,8 @@ export default function Login() {
           <Links href="/findEmail">이메일 찾기</Links> |<Links href="/resetPwd"> 비밀번호 재설정</Links> |<Links href="/signup"> 회원가입</Links>
         </div>
         <span style={{ fontSize: "20px" }}>소셜 로그인</span>
-        <hr style={{ width: "350px", margin: "0 auto" }} />
-        <Icons>
-          <Button onClick={fetchKakaoOAuth}>
-            <SiKakaotalk size={40} style={{ color: "#F7E600" }} />
-          </Button>
-          <Button href="/signup">
-            <FcGoogle size={40} />
-          </Button>
-        </Icons>
+        <hr style={{ width: "350px", margin: "0 auto 3rem" }} />
+        <img src="src/assets/kakaoLogin.png" alt="카카오 로그인" style={{width: '350px', cursor: 'pointer'}} onClick={fetchKakaoOAuth}/>
       </LoginContainer>
     </>
   );
