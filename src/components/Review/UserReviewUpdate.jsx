@@ -90,7 +90,7 @@ const UserReviewUpdate = () => {
       return;
     }
 
-    setImages((prevImages) => [...prevImages, ...files]);
+    setNewImages((prevnewImages) => [...prevnewImages, ...files]);
   };
 
   // 기존 이미지 삭제
@@ -125,13 +125,14 @@ const UserReviewUpdate = () => {
 
   // 새 이미지 삭제 함수
   const handleRemoveNewImage = (index) => {
-    // 새 이미지에서 삭제
-    setNewImages(newImages.filter((_, i) => i !== index));
-
     if (index < 0 || index >= newImages.length) {
       alert("삭제할 새 이미지가 없습니다.");
       return;
     }
+    const updatedImages = newImages.filter((_, i) => i !== index);
+    console.log("Updated newImages:", updatedImages);
+    // 새 이미지에서 삭제
+    setNewImages(newImages.filter((_, i) => i !== index));
   };
 
   const thumbImg = () => {
@@ -140,22 +141,28 @@ const UserReviewUpdate = () => {
         <>
           {images.map((image, index) => (
             <Thumbnail key={index}>
-              {image.reviewImgPath && image.reviewImgRename ? (
-                <>
-                  <Image src={`http://localhost:8080${image.reviewImgPath}${image.reviewImgRename}`} alt={`Image ${index + 1}`} />
-                  <RemoveButton onClick={() => handleRemoveExistingImage(index)}>X</RemoveButton>
-                </>
-              ) : (
-                <>
-                  <Image src={URL.createObjectURL(image)} alt={`New Image ${index + 1}`} />
-                  <RemoveButton onClick={() => handleRemoveNewImage(index)}>X</RemoveButton>
-                </>
-              )}
+              <Image src={`http://localhost:8081${image.reviewImgPath}${image.reviewImgRename}`} alt={`Image ${index + 1}`} />
+              <RemoveButton onClick={() => handleRemoveExistingImage(index)}>X</RemoveButton>
             </Thumbnail>
           ))}
         </>
       );
-    } else {
+    }
+  };
+
+  const newthumbImg = () => {
+    if (newImages.length > 0) {
+      return (
+        <>
+          {newImages.map((newimg, index) => (
+            <Thumbnail key={index}>
+              <Image src={URL.createObjectURL(newimg)} alt={`New Image ${index + 1}`} />
+              <RemoveButton onClick={() => handleRemoveNewImage(index)}>X</RemoveButton>
+            </Thumbnail>
+          ))}
+        </>
+      );
+    } else if (newImages.length == 0 && images.length == 0) {
       return <p>이미지가 없습니다.</p>;
     }
   };
@@ -174,7 +181,10 @@ const UserReviewUpdate = () => {
             </StarSection>
 
             <ImgUploadContainer>
-              <ImgContainer>{thumbImg()}</ImgContainer>
+              <ImgContainer>
+                {thumbImg()}
+                {newthumbImg()}
+              </ImgContainer>
               <Button component="label" role={undefined} variant="outlined" tabIndex={-1} startIcon={<FaPhotoFilm />}>
                 사진 첨부
                 <VisuallyHiddenInput type="file" accept="image/*" multiple onChange={(e) => handleImageChange(e)} />
@@ -257,6 +267,7 @@ const ImgUploadContainer = styled.div`
 `;
 
 const ImgContainer = styled.div`
+  display: flex;
   width: 100%;
   height: 100px;
   padding: 10px;

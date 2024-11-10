@@ -185,7 +185,7 @@ const Cart = () => {
                       <Input type="number" id={product.id} onChange={handleQuantity} value={product.quantity}/>
                       <BiPlusCircle style={{cursor:'pointer'}} id={product.id} onClick={plus} />
                     </Quantity>
-                    <ProductPrice>{product.price * product.quantity}원</ProductPrice>
+                    <ProductPrice>{(product.price * product.quantity).toLocaleString()}원</ProductPrice>
                     <Button variant="outlined" color="error" sx={{height:'2.5rem'}} onClick={()=>deleteCartItem(product.cartId)}>삭제</Button>
                   </Product>
                 );
@@ -197,7 +197,7 @@ const Cart = () => {
             <TotalPriceHeader>결제 정보</TotalPriceHeader>
             <TotalPriceContent>
               <div>총 결제 금액</div>
-              <div>{totalPrice}원</div>
+              <div>{totalPrice.toLocaleString()}원</div>
             </TotalPriceContent>
             <Button variant="contained" sx={{fontSize: '1.5rem', marginTop: '1.5rem'}} 
               onClick={navigatePayment}>

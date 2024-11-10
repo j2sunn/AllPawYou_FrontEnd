@@ -42,6 +42,7 @@ import AdminOrderList from "./routes/Admin/AdminOrderList";
 import AdminProductList from "./routes/Admin/AdminProductList";
 import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
 import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
+import BoardUpdate from "./routes/BoardUpdate";
 
 const Router = () => {
   return (
@@ -90,7 +91,7 @@ const Router = () => {
           <Route path="/board/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
           <Route path="/boardList" element={<BoardList />} />
-          {/* <Route path="/boardUpdate" element={<BoardUpdate />} /> */}
+          <Route path="/boardUpdate" element={<BoardUpdate />} />
 
           {/* 공지사항 글 상세 */}
           <Route path="/notice/:noticeNo" element={<NoticeDetail />} />

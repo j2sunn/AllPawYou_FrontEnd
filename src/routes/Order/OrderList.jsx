@@ -102,7 +102,7 @@ const OrderList = () => {
                       <Button
                         variant="outlined"
                         sx={{ marginLeft: "1rem" }}
-                        onClick={() => cancelPayment({ tid: payment[0].tid, cancel_amount: payment[0].totalPrice })}
+                        onClick={() => cancelPayment({ tid: payment[0].tid, cancel_amount: payment[0].totalPrice.toLocaleString() })}
                         disabled={!payment[0].paymentState}
                       >
                         주문 취소
@@ -118,15 +118,12 @@ const OrderList = () => {
                             <div>
                               {order?.name} ({order?.quantity}개)
                             </div>
-                            <div>총 가격 : {order?.price * order?.quantity}원</div>
+                            <div>총 가격 : {(order?.price * order?.quantity).toLocaleString()}원</div>
                           </Detail>
                         </OrderInfo>
                         <Buttons>
-                          <Button variant="outlined" onClick={() => navigator(`/review/createreview/${order?.name}`)}>
+                          <Button variant="outlined" onClick={() => navigator(`/review/createreview/${order?.name}`)} disabled={!payment[0].paymentState}>
                             후기 작성하기
-                          </Button>
-                          <Button variant="outlined" color="error">
-                            후기 삭제하기
                           </Button>
                         </Buttons>
                       </Product>

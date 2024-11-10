@@ -63,8 +63,11 @@ export const loadList = async (setBoardList)=>{
 }
 
 //글 수정
-export const updateBoard = (formData,navigator,boardNo)=>{
-    
+export const updateBoard = async (formData,navigator,boardNo)=>{
+    const response = await axios.put('http://localhost:8081/board/update/'+boardNo,formData);
+    console.log("응답은? "+response); //수정된 정보 받아와보기
+    setTimeout(()=>navigator("/board/"+boardNo),1000); //반영된 후에 페이지 이동?
+    // navigator("/board/"+boardNo);
 }
 
 //댓글 작성

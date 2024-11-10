@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { deleteNotice, listNotices } from "../service/NoticeService";
-//import HeaderComponent from "../components/common/HeaderComponent";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
+import { listNotices } from "../service/NoticeService";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
+
 
 
 const ListNoticeComponent = () => {
@@ -59,9 +57,7 @@ const ListNoticeComponent = () => {
         axios.delete("http://localhost:8081/api/notice/delete/"+noticeNo)
         .then(resp=>{
             console.log("결과느으으은"+resp.data);
-              // alert("삭제되었습니다.");
-              navigate("/admin/noticeList");
-            
+            getAllNotices();
         })
     }
 

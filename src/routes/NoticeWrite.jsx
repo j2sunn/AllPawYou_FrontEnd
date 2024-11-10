@@ -83,6 +83,9 @@ const NoticeWrite = ()=>{
         let data = {noticeTitle,noticeContent};
         createNotice(data,navigator);
             navigator("/admin/noticeList");
+            setTimeout(()=>{
+                console.log(1);
+            },3000);
         }
     }
     

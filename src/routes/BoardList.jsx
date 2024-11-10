@@ -11,15 +11,15 @@ const BoardList = ()=>{
 
     const { state } = useLocation();
     const cp = state?.cp;
-    console.log("여기 cp : "+JSON.stringify(cp));
-
+    
     useEffect(()=>{
-        console.log("크카크카크")
-        loadList(setBoardList);
+        console.log("크카크카크");
+        loadList(setBoardList,selectedCategory,currentPage,searchOpt,keyword);
+        console.log("cpcp : "+cp);
         if(cp !=null) {
             setCurrentPage(cp.currentPage);
         }
-        console.log("currentPage : "+currentPage);
+        // console.log("currentPage : "+currentPage);
     },[]);
     const formatContent = (content) => {
         // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
@@ -37,8 +37,9 @@ const BoardList = ()=>{
     //상세조회,리스트 조회 페이지 서로 이동 시 전달해야할 데이터
     const [selectedCategory, setSelectedCategory] = useState(1); //필터해서 볼 카테고리(강아지고양이)
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지쪽수 초기값
-    const [searchOpt, setSearchOpt] = useState("a"); //검색옵션(작성자,제목,내용)
-    // console.log("검색 옵션 : "+searchOpt);
+    const [searchOpt, setSearchOpt] = useState(""); //검색옵션(작성자,제목,내용)
+    const [keyword, setKeyword] = useState(""); //검색키워드
+    
     //===========================================================================================================
     const totalPages = Math.ceil(boardList.length / ITEMS_PER_PAGE);
      // 현재 페이지에 해당하는 게시글 슬라이싱

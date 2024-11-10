@@ -41,7 +41,7 @@ const OrderDetail = () => {
                         <div>
                           {order?.name} ({order?.quantity}개)
                         </div>
-                        <div>총 가격 : {order?.price * order?.quantity}원</div>
+                        <div>총 가격 : {(order?.price * order?.quantity).toLocaleString()}원</div>
                       </Detail>
                     </OrderInfo>
                     {/* <Buttons>
@@ -82,7 +82,7 @@ const OrderDetail = () => {
                 </Tr>
                 <Tr>
                   <Th>결제 금액</Th>
-                  <Td>{state?.payment[0]?.totalPrice}원</Td>
+                  <Td>{state?.payment[0]?.totalPrice.toLocaleString()}원</Td>
                 </Tr>
               </Table>
             </InfoContainer>
@@ -146,7 +146,6 @@ const OrderInfo = styled.div`
   display: flex;
   padding: 1rem;
   width: 75%;
-  border-right: 1px solid black;
 `;
 
 const ProductImg = styled.img`

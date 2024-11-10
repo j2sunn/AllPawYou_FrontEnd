@@ -71,7 +71,7 @@ const PaymentApprove = () => {
                 </Tr>
                 <Tr>
                   <Th>결제금액</Th>
-                  <Td>{responseData?.amount?.total}원</Td>
+                  <Td>{responseData?.amount?.total.toLocaleString()}원</Td>
                 </Tr>
                 <Tr>
                   <Th>결제수단</Th>

@@ -2,123 +2,174 @@ import styled from "styled-components";
 import { FaRegHeart } from "react-icons/fa";
 import Slide from "../components/common/Slide";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { customerCount } from "../service/UserAPI";
 
 const MainPage = () => {
 
   const navigate = useNavigate();
+  useEffect(()=>{
+    customerCount();
+  },[]);
 
   return (
-    <>
-      <CommunityRank>커뮤니티 인기글</CommunityRank>
+    <Box>
+      <Slider>
+        <Slide/>
+      </Slider>
       <Container>
-        <BoardCard>
-          <BoardImg src="/src/assets/mainImage/dog.jpg" alt="이미지1" />
-          <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-            <div>강아지 산책 하루에 얼마나.. </div>
-            <BoardLike>
-              <FaRegHeart style={{ color: "red" }} />
-              <div style={{ color: "red" }}>220</div>
-            </BoardLike>
-          </BoardCardBottom>
-        </BoardCard>
-                <BoardCard>
-          <BoardImg src="/src/assets/mainImage/hamster.jpg" alt="이미지3" />
-          <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-            <div>우리집 햄스터 자랑</div>
-            <BoardLike>
-              <FaRegHeart style={{ color: "red" }} />
-              <div style={{ color: "red" }}>175</div>
-            </BoardLike>
-          </BoardCardBottom>
-        </BoardCard>
-        <BoardCard>
-          <BoardImg src="/src/assets/mainImage/cat.jpg" alt="이미지2" />
-          <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-            <div>아기 고양이 사료 추천</div>
-            <BoardLike>
-              <FaRegHeart style={{ color: "red" }} />
-              <div style={{ color: "red" }}>100</div>
-            </BoardLike>
-          </BoardCardBottom>
-        </BoardCard>
-
+        <Title>추천 아이템</Title>
+        <Grid>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping1.png" alt="상품 이미지" />
+            <GridTitle>상품 1</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping2.png" alt="상품 이미지" />
+            <GridTitle>상품 2</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping3.png" alt="상품 이미지" />
+            <GridTitle>상품 3</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping4.jpg" alt="상품 이미지" />
+            <GridTitle>상품 4</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping5.jpg" alt="상품 이미지" />
+            <GridTitle>상품 5</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping6.jpg" alt="상품 이미지" />
+            <GridTitle>상품 6</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping1.png" alt="상품 이미지" />
+            <GridTitle>상품 1</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping2.png" alt="상품 이미지" />
+            <GridTitle>상품 2</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping3.png" alt="상품 이미지" />
+            <GridTitle>상품 3</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+          <GridItem>
+            <GridImage src="/src/assets/mainImage/shopping4.jpg" alt="상품 이미지" />
+            <GridTitle>상품 4</GridTitle>
+            <GridText>10000원</GridText>
+          </GridItem>
+        </Grid>
       </Container>
-
-      <IconTitle>쇼핑 카테고리</IconTitle>
-      <IconContainer>
-        <IconCard>
-          <IconBack>
-            <IconImg src="/src/assets/mainImage/icon/mainicon_1.png" alt="전체" onClick={()=>navigate("/shopping")}/>
-          </IconBack>
-          <IconCardBottom style={{ textAlign: "center" }}>
-            <div>전체</div>
-          </IconCardBottom>
-        </IconCard>
-
-        <IconCard>
-          <IconBack>
-            <IconImg src="/src/assets/mainImage/icon/mainicon_2.png" alt="사료" onClick={()=>navigate("/shopping", {state: "food"})}/>
-          </IconBack>
-          <IconCardBottom style={{ textAlign: "center" }}>
-            <div>사료</div>
-          </IconCardBottom>
-        </IconCard>
-
-        <IconCard>
-          <IconBack>
-            <IconImg src="/src/assets/mainImage/icon/mainicon_3.png" alt="용품" onClick={()=>navigate("/shopping", {state: "goods"})}/>
-          </IconBack>
-          <IconCardBottom style={{ textAlign: "center" }}>
-            <div>용품</div>
-          </IconCardBottom>
-        </IconCard>
-
-        <IconCard>
-          <IconBack>
-            <IconImg src="/src/assets/mainImage/icon/mainicon_4.png" alt="건강" onClick={()=>navigate("/shopping", {state: "health"})}/>
-          </IconBack>
-          <IconCardBottom style={{ textAlign: "center" }}>
-            <div>건강</div>
-          </IconCardBottom>
-        </IconCard>
-
-        <IconCard>
-          <IconBack>
-            <IconImg src="/src/assets/mainImage/icon/mainicon_5.png" alt="의류" onClick={()=>navigate("/shopping", {state: "clothes"})}/>
-          </IconBack>
-          <IconCardBottom style={{ textAlign: "center" }}>
-            <div>의류</div>
-          </IconCardBottom>
-        </IconCard>
-      </IconContainer>
-
-      <BestItemSection>
-        <h4 style={{ fontWeight: "bold" }}>이번주 베스트 아이템</h4>
-        <Slide />
-      </BestItemSection>
-    </>
+      <Container>
+        <Title>커뮤니티 인기글</Title>
+        <BoardList>
+          <BoardCard>
+            <BoardImg src="/src/assets/mainImage/dog.jpg" alt="이미지1" />
+            <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
+              <div>강아지 산책 하루에 얼마나.. </div>
+              <BoardLike>
+                <FaRegHeart style={{ color: "red" }} />
+                <div style={{ color: "red" }}>220</div>
+              </BoardLike>
+            </BoardCardBottom>
+          </BoardCard>
+                  <BoardCard>
+            <BoardImg src="/src/assets/mainImage/hamster.jpg" alt="이미지3" />
+            <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
+              <div>우리집 햄스터 자랑</div>
+              <BoardLike>
+                <FaRegHeart style={{ color: "red" }} />
+                <div style={{ color: "red" }}>175</div>
+              </BoardLike>
+            </BoardCardBottom>
+          </BoardCard>
+          <BoardCard>
+            <BoardImg src="/src/assets/mainImage/cat.jpg" alt="이미지2" />
+            <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
+              <div>아기 고양이 사료 추천</div>
+              <BoardLike>
+                <FaRegHeart style={{ color: "red" }} />
+                <div style={{ color: "red" }}>100</div>
+              </BoardLike>
+            </BoardCardBottom>
+          </BoardCard>
+        </BoardList>
+      </Container>
+    </Box>
   );
 };
 
 export default MainPage;
 
-const CommunityRank = styled.h4`
-  padding-top: 1.5rem;
-  text-align: center;
-  font-weight: bold;
+const Box = styled.div`
+  overflow-x: hidden;
 `;
 
-const BestItemSection = styled.div`
-  text-align: center;
-  margin-top: 3rem;
-  position: relative;
+const Slider = styled.div`
+  margin: 0;
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5rem;
+`;
+
+const Title = styled.h4`
+  padding: 3rem 10rem;
+  font-size: 1.8rem;
+  font-weight: bold;
 `;
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  margin: 5rem 0 7rem;
+  flex-direction: column;
   width: 100%;
+  margin: 5rem 0;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5rem 1rem;
+  margin: 0 8rem;
+`;
+
+const GridItem = styled.div`
+  min-width: 200px;
+  border
+`;
+
+const GridImage = styled.img`
+  width: 100%;
+  height: 250px;
+  margin-bottom: 1rem;
+`;
+
+const GridTitle = styled.div`
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.2rem 1rem;
+`;
+
+const GridText = styled.div`
+  padding: 0.2rem 1rem;
+`;
+
+const BoardList = styled.div`
+  display: flex;
+  justify-content: space-evenly;
   align-items: center;
 `;
 
@@ -144,46 +195,4 @@ const BoardLike = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const IconTitle = styled.h4`
-  text-align: center;
-  font-weight: bold;
-`;
-
-const IconContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 3rem 0 9rem;
-  width: 100%;
-  align-items: center;
-`;
-
-const IconCard = styled.div`
-  width: 110px;
-  height: 100px;
-  margin: 0 40px;
-`;
-
-const IconBack = styled.div`
-  cursor: pointer;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background-color: #c4e1f6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const IconImg = styled.img`
-  width: 80px;
-`;
-
-const IconCardBottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  font-size: 1.5rem;
-  font-weight: bold;
 `;

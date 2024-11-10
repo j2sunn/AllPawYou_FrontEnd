@@ -2,24 +2,41 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Piechart from "../../components/chart/PieChart"; // Assuming these exist
 import AdminHeader from "./components/AdminHeader";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import AdminFooter from "./components/AdminFooter";
 import { CgProfile } from "react-icons/cg";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { FaUpload } from "react-icons/fa";
-import { GrContactInfo } from "react-icons/gr";
+import { FaRegTrashAlt, FaUpload } from "react-icons/fa";
+// import { GrContactInfo } from "react-icons/gr";
 import { FaInfoCircle } from "react-icons/fa";
 import Barchart from "../../components/chart/BarChart";
-import { TotalVisitor, DailyVisitor, DailyOrder, DailyTotalPrice, DailyBoardCount } from "../../service/DashBoard";
+import CurrentUser from "./components/aCurrentUserList.jsx";
+import {
+  TotalVisitor,
+  DailyVisitor,
+  DailyOrder,
+  DailyTotalPrice,
+  DailyBoardCount,
+  TotalPrice,
+  TotalBoardCount,
+  TotalOrder,
+} from "../../service/DashBoard";
 import { useEffect, useState } from "react";
+import { Button } from "bootstrap";
 
 export default function PermanentDrawerLeft() {
   const [dailyVisitors, setDailyVisitors] = useState(0);
   const [totalVisitors, setTotalVisitors] = useState(0);
+
   const [dailtyOrders, setDailyorders] = useState(0);
+  const [totalOrder, setTotalOrder] = useState(0);
+
   const [dailtyTotalPrice, setDailyTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
   const [dailyBoardCount, setDailyBoardCount] = useState(0);
+  const [totalBoardCount, setTotalBoardCount] = useState(0);
 
   // 일일 방문자 변수에 저장하는 함수
   const fetchDailyVisitors = async () => {
@@ -32,7 +49,7 @@ export default function PermanentDrawerLeft() {
     }
   };
 
-  // 전체 방문자 변수에 저장하는 함수
+  // 누적 방문자 변수에 저장하는 함수
   const fetchTotalVisitors = async () => {
     try {
       const totalVisitorCount = await TotalVisitor(); // TotalVisitor 호출
@@ -54,14 +71,35 @@ export default function PermanentDrawerLeft() {
     }
   };
 
-  // 일일 주문수 저장하는 함수
+  // 누적 주문수 저장하는 함수
+  const fetchTotalOrder = async () => {
+    try {
+      const aTotalOrder = await TotalOrder();
+      return aTotalOrder; // 총 주문수 반환
+    } catch (error) {
+      console.error("Error fetching total TotalOrder:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 일일 수익 저장하는 함수
   const fetchDailyTotalPrice = async () => {
     try {
       const aDailyTotalPrice = await DailyTotalPrice();
-      console.log(aDailyTotalPrice);
       return aDailyTotalPrice; // 주문수 만환
     } catch (error) {
       console.error("Error fetching dailyTotalPrice:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 누적 수익 저장하는 함수
+  const fetchTotalPrice = async () => {
+    try {
+      const aTotalPrice = await TotalPrice();
+      return aTotalPrice; // 주문수 만환
+    } catch (error) {
+      console.error("Error fetching TotalPrice:", error);
       return 0; // 에러 발생 시 기본값으로 0 반환
     }
   };
@@ -73,6 +111,17 @@ export default function PermanentDrawerLeft() {
       return aDailyBoardCount; // 게시물 등록수 반환
     } catch (error) {
       console.error("Error fetching daily BoardCount:", error);
+      return 0; // 에러 발생 시 기본값으로 0 반환
+    }
+  };
+
+  // 누적 게시물 등록수  저장하는 함수
+  const fetchTotalBoardCount = async () => {
+    try {
+      const aTotalBoardCount = await TotalBoardCount();
+      return aTotalBoardCount; // 주문수 만환
+    } catch (error) {
+      console.error("Error fetching TotalBoardCount:", error);
       return 0; // 에러 발생 시 기본값으로 0 반환
     }
   };
@@ -89,8 +138,13 @@ export default function PermanentDrawerLeft() {
     };
 
     const getDailyOrders = async () => {
-      const count = await fetchDailyOrder();
+      const count = await fetchDailyOrder(); // 일일 주문 수 가져오기
       setDailyorders(count);
+    };
+
+    const getTotalOrder = async () => {
+      const count = await fetchTotalOrder(); // 총 방문자 수 가져오기
+      setTotalOrder(count); // 상태 업데이트
     };
 
     const getDailyTotalPrice = async () => {
@@ -99,21 +153,37 @@ export default function PermanentDrawerLeft() {
       setDailyTotalPrice(formattedPrice);
     };
 
+    const getTotalPrice = async () => {
+      const count = await fetchTotalPrice(); // 총 방문자 수 가져오기
+      setTotalPrice(count); // 상태 업데이트
+    };
+
     const getDailyBoardCount = async () => {
-      const count = await fetchDailyBoardCount();
+      const count = await fetchDailyBoardCount(); // 일일 게시글 등록수 가져오기
       setDailyBoardCount(count);
     };
 
+    const getTotalBoardCount = async () => {
+      const count = await fetchTotalBoardCount(); // 총  게시글 등록수 가져오기
+      setTotalBoardCount(count); // 상태 업데이트
+    };
+
     getDailyVisitors(); // 일일 방문자 수 함수 호출
-    getTotalVisitors(); // 총 방문자 수 함수 호출
+    getTotalVisitors(); // 누적 방문자 수 함수 호출
+
     getDailyOrders(); // 일일 주문 수
+    getTotalOrder(); // 누적 주문 수
+
     getDailyTotalPrice(); //일일 총 수입
+    getTotalPrice(); // 누적 수입
+
     getDailyBoardCount(); // 일일 게시글 등록수
+    getTotalBoardCount(); // 누적 게시글 수
   }, []);
 
   return (
     <>
-      <Box sx={{ display: "flex", marginLeft: '240px', minHeight: '850px' }}>
+      <Box sx={{ display: "flex", minHeight: "850px" }}>
         <AdminHeader />
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
           <Grid container spacing={3}>
@@ -184,35 +254,48 @@ export default function PermanentDrawerLeft() {
 
             {/* 최근 가입 사용자 */}
             <Grid item xs={12} md={8}>
-              <Paper elevation={3} sx={{ padding: 2 }}>
-                <Typography variant="h6" gutterBottom>
-                  <GrContactInfo size={30} />
-                  최근 가입 사용자
-                </Typography>
-                {/* You can replace this with the actual list of users */}
-                <Box>
-                  <Typography variant="body1">User 1</Typography>
-                  <Typography variant="body1">User 2</Typography>
-                  <Typography variant="body1">User 3</Typography>
-                  <Typography variant="body1">User 4</Typography>
-                </Box>
-              </Paper>
+              <Box>
+                <CurrentUser />
+              </Box>
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Paper elevation={3} sx={{ padding: 2 }}>
-                <Typography variant="h6" gutterBottom>
-                  <FaInfoCircle />
-                  누계 정보
-                </Typography>
-                {/* You can replace this with the actual list of users */}
-                <Box>
-                  <Typography variant="body1">누적 접속횟수 :: {totalVisitors}</Typography>
-                  <Typography variant="body1">누적 거래횟수</Typography>
-                  <Typography variant="body1">누적 수익</Typography>
-                  <Typography variant="body1">누적 게시물 수</Typography>
-                </Box>
-              </Paper>
+              <Box>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead sx={{ backgroundColor: "#EEC759" }}>
+                      <TableRow>
+                        <TableCell sx={{ display: "flex", alignItems: "center", height: "60px" }}>
+                          <FaInfoCircle style={{ marginRight: "1rem" }} size={25} />
+                          누적 데이터
+                        </TableCell>
+                        <TableCell align="center"></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 접속횟수</TableCell>
+                        <TableCell>{totalVisitors}</TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 거래횟수</TableCell>
+                        <TableCell>{totalOrder}</TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 수익</TableCell>
+                        <TableCell>{totalPrice}</TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell sx={{ height: "70px" }}>누적 게시물 수</TableCell>
+                        <TableCell>{totalBoardCount}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
             </Grid>
           </Grid>
         </Box>

@@ -26,6 +26,8 @@ import { LiaShoppingBagSolid } from "react-icons/lia";
 import { MdOutlineRateReview } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { VscGraph } from "react-icons/vsc";
+import { IoHomeOutline } from "react-icons/io5";
+import { RxReload } from "react-icons/rx";
 
 const drawerWidth = 240;
 
@@ -61,6 +63,10 @@ const AdminHeader = () => {
     alert("로그아웃 되었습니다.");
   };
 
+  const goMain = () => {
+    navigate("/"); // 클릭 시 navigate 호출
+  };
+
   const goDashBoard = () => {
     navigate("/admin/dashboard"); // 클릭 시 navigate 호출
   };
@@ -85,6 +91,10 @@ const AdminHeader = () => {
     navigate("/admin/productlist"); // 클릭 시 navigate 호출
   };
 
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
   return (
     <>
       <CssBaseline />
@@ -93,11 +103,11 @@ const AdminHeader = () => {
         sx={{
           width: `100%`,
           ml: `${drawerWidth}px`,
-          height: '70px'
+          height: "70px",
         }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div" sx={{fontSize: '1.5rem', fontWeight: 'bold'}}>
+          <Typography variant="h6" noWrap component="div" sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>
             ADMIN PAGE
           </Typography>
           <div style={{ flexGrow: 1 }} />
@@ -120,13 +130,35 @@ const AdminHeader = () => {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            marginTop: '70px',
+            marginTop: "70px",
           },
         }}
         variant="permanent"
         anchor="left"
       >
         <Toolbar />
+        <Divider />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleRefresh}>
+              <ListItemIcon>
+                <RxReload size={30} />
+              </ListItemIcon>
+              <ListItemText>새로고침</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={goMain}>
+              <ListItemIcon>
+                <IoHomeOutline size={30} />
+              </ListItemIcon>
+              <ListItemText>메인 페이지</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
         <Divider />
         <List>
           <ListItem disablePadding>
@@ -138,6 +170,7 @@ const AdminHeader = () => {
             </ListItemButton>
           </ListItem>
         </List>
+        <Divider />
         <List>
           <ListItem disablePadding>
             <ListItemButton onClick={goUserList}>
