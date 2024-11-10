@@ -4,6 +4,7 @@ import Slide from "../components/common/Slide";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { customerCount } from "../service/UserAPI";
+import BoardImageList from "../components/common/ImageList";
 
 const MainPage = () => {
 
@@ -74,38 +75,7 @@ const MainPage = () => {
       </Container>
       <Container>
         <Title>커뮤니티 인기글</Title>
-        <BoardList>
-          <BoardCard>
-            <BoardImg src="/src/assets/mainImage/dog.jpg" alt="이미지1" />
-            <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-              <div>강아지 산책 하루에 얼마나.. </div>
-              <BoardLike>
-                <FaRegHeart style={{ color: "red" }} />
-                <div style={{ color: "red" }}>220</div>
-              </BoardLike>
-            </BoardCardBottom>
-          </BoardCard>
-                  <BoardCard>
-            <BoardImg src="/src/assets/mainImage/hamster.jpg" alt="이미지3" />
-            <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-              <div>우리집 햄스터 자랑</div>
-              <BoardLike>
-                <FaRegHeart style={{ color: "red" }} />
-                <div style={{ color: "red" }}>175</div>
-              </BoardLike>
-            </BoardCardBottom>
-          </BoardCard>
-          <BoardCard>
-            <BoardImg src="/src/assets/mainImage/cat.jpg" alt="이미지2" />
-            <BoardCardBottom style={{ boxShadow: "0px 0px 5px #444" }}>
-              <div>아기 고양이 사료 추천</div>
-              <BoardLike>
-                <FaRegHeart style={{ color: "red" }} />
-                <div style={{ color: "red" }}>100</div>
-              </BoardLike>
-            </BoardCardBottom>
-          </BoardCard>
-        </BoardList>
+        <BoardImageList />
       </Container>
     </Box>
   );
