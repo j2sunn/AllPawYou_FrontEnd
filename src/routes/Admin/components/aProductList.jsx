@@ -93,7 +93,7 @@ const ProductList = () => {
                   </Link>
                 </TableCell>
                 <TableCell align="center" sx={{ width: "10rem" }}>
-                  {item.price}
+                  {item.price.toLocaleString()}
                 </TableCell>
                 <TableCell align="center" sx={{ width: "10rem" }}>
                   {item.releaseStatus}
