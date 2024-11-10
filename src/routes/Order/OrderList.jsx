@@ -70,6 +70,7 @@ const OrderList = () => {
   };
 
   useEffect(() => {
+    scrollTo(0,0);
     loadPayments();
   }, []);
 

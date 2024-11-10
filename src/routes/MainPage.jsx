@@ -1,16 +1,28 @@
 import styled from "styled-components";
-import { FaRegHeart } from "react-icons/fa";
 import Slide from "../components/common/Slide";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { customerCount } from "../service/UserAPI";
 import BoardImageList from "../components/common/ImageList";
+import { listProducts } from "../service/ProductService";
 
 const MainPage = () => {
 
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+
+  const loadProducts = async() => {
+    const response = await listProducts();
+    console.log(response.data);
+    if(response.data.length > 10){
+      setProducts(response.data.slice(0,10));
+    }else{
+      setProducts(response.data);
+    }
+  }
   useEffect(()=>{
     customerCount();
+    loadProducts();
   },[]);
 
   return (
@@ -21,56 +33,16 @@ const MainPage = () => {
       <Container>
         <Title>추천 아이템</Title>
         <Grid>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping1.png" alt="상품 이미지" />
-            <GridTitle>상품 1</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping2.png" alt="상품 이미지" />
-            <GridTitle>상품 2</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping3.png" alt="상품 이미지" />
-            <GridTitle>상품 3</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping4.jpg" alt="상품 이미지" />
-            <GridTitle>상품 4</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping5.jpg" alt="상품 이미지" />
-            <GridTitle>상품 5</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping6.jpg" alt="상품 이미지" />
-            <GridTitle>상품 6</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping1.png" alt="상품 이미지" />
-            <GridTitle>상품 1</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping2.png" alt="상품 이미지" />
-            <GridTitle>상품 2</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping3.png" alt="상품 이미지" />
-            <GridTitle>상품 3</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
-          <GridItem>
-            <GridImage src="/src/assets/mainImage/shopping4.jpg" alt="상품 이미지" />
-            <GridTitle>상품 4</GridTitle>
-            <GridText>10000원</GridText>
-          </GridItem>
+          {products?.map(product => {
+            return (
+              <GridItem key={product?.id} onClick={()=>navigate(`/shoppingDetail/${product?.id}`)}>
+                <GridImage src={`http://localhost:8081${product.productFileDTO?.find((file) => file.productFileTypeId === 1)?.imagePath}`} alt="상품 이미지" />
+                <GridTitle>{product?.name}</GridTitle>
+                <GridText>{product?.price.toLocaleString()}원</GridText>
+              </GridItem>
+            )
+          })}
+          
         </Grid>
       </Container>
       <Container>
@@ -89,7 +61,6 @@ const Box = styled.div`
 
 const Slider = styled.div`
   margin: 0;
-  height: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,8 +88,8 @@ const Grid = styled.div`
 `;
 
 const GridItem = styled.div`
+  cursor: pointer;
   min-width: 200px;
-  border
 `;
 
 const GridImage = styled.img`
@@ -135,34 +106,4 @@ const GridTitle = styled.div`
 
 const GridText = styled.div`
   padding: 0.2rem 1rem;
-`;
-
-const BoardList = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
-const BoardCard = styled.div`
-  width: 300px;
-  height: 300px;
-`;
-
-const BoardImg = styled.img`
-  width: 300px;
-  height: 250px;
-  box-shadow: 0px 0px 5px #444;
-`;
-
-const BoardCardBottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-`;
-
-const BoardLike = styled.div`
-  width: 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;

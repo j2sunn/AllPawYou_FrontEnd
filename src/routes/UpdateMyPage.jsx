@@ -206,6 +206,10 @@ const MyPage = () => {
   };
 
   const [showDetailAddress, setShowDetailAddress] = useState(false);
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
   return (
     <>

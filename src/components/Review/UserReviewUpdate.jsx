@@ -166,6 +166,10 @@ const UserReviewUpdate = () => {
       return <p>이미지가 없습니다.</p>;
     }
   };
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
   return (
     <>

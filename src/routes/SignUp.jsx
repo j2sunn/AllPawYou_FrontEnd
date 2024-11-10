@@ -1,5 +1,5 @@
 // import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 
 import styled from "styled-components";
@@ -180,6 +180,11 @@ const SignUp = () => {
 
     return valid;
   };
+
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
   return (
     <>
