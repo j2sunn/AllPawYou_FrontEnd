@@ -61,7 +61,6 @@ const Box = styled.div`
 
 const Slider = styled.div`
   margin: 0;
-  height: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
