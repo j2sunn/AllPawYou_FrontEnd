@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addCart, getProductByProductId, listCart } from "../service/ProductService";
 import Swal from "sweetalert2";
 import { AverageStar, getReviewByProductId } from "../service/Review";
-import { PiStarFill, PiStarLight } from "react-icons/pi";
+import { PiStarFill, PiStarHalfFill, PiStarLight } from "react-icons/pi";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -199,15 +199,14 @@ const ShoppingDetail = () => {
     getAverageStar(); // 별점 평균
   }, []);
 
-  console.log(averageStar.data);
-
   // 채워진 별 개수
+  const totalStars = 5;
   const fullStars = Math.floor(averageStar.data);
-  // 빈 별 개수
-  const emptyStars = 5 - fullStars;
 
   // 만약 소수점이 있다면 반쪽 별 추가
   const halfStar = averageStar.data % 1 >= 0.5 ? 1 : 0;
+  // 빈 별 개수
+  const emptyStars = totalStars - fullStars - halfStar;
 
   return (
     <>
@@ -235,12 +234,12 @@ const ShoppingDetail = () => {
                   <PiStarFill className="star-lg" key={`full-${i}`} />
                 ))}
                 {/* 반쪽 별 (있을 경우) */}
-                {halfStar > 0 && <PiStarFill className="star-lg half" />}
+                {halfStar > 0 && <PiStarHalfFill className="star-lg half" />}
                 {/* 빈 별 */}
                 {[...Array(emptyStars)].map((_, i) => (
                   <PiStarLight className="star-lg" key={`empty-${i}`} />
                 ))}
-                <Box sx={{ marginLeft: "8px", alignItems: "center", color: "black" }}>{averageStar.data}</Box>
+                <Box sx={{ marginLeft: "8px", alignItems: "center", color: "black" }}>{averageStar.data.toFixed(1)}</Box>
               </Box>
 
               <quantityIcon className="quantityIcon">
