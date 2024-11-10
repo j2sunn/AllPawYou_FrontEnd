@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getProductsByCategory, getProductsByCategoryAndStatus, getProductsBySearch, getProductsByStatus, listProducts } from "../service/ProductService";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, TextField } from "@mui/material";
+import Swal from "sweetalert2";
 
 
 const ShoppingMain = () => {
@@ -55,17 +56,30 @@ const ShoppingMain = () => {
     //상품 검색
     const getAllProductsBySearch = async () => {
 
-        console.log("searchItem:", searchItem);
-        const response = await getProductsBySearch(searchItem)
-        setProducts(response);
+        if(searchItem.trim().length > 0){
+            const response = await getProductsBySearch(searchItem)
+            setProducts(response);
+        }else{
+            Swal.fire({
+                title: "검색어를 입력해주세요.",
+                icon: 'warning',
+                
+                confirmButtonColor: '#527853',
+                confirmButtonText: '닫기',
+                
+             })
+        }
     }
 
 
     return (
         <>
             <GoodsSection>
+                <div style={{alignSelf: 'end', marginRight: '10rem'}}>
+                    <Input onChange={() => setSearchItem(event.target.value)} />
+                    <Button onClick={getAllProductsBySearch} sx={{height: '3rem'}}>검색</Button>
+                </div>
                 <IconTitle>쇼핑 카테고리</IconTitle>
-                <TextField onChange={() => setSearchItem(event.target.value)} /><Button onClick={getAllProductsBySearch}>검색</Button>
                 <IconContainer>
                     <IconCard onClick={() => setCategory("all")}>
                         <IconBack>
@@ -140,8 +154,12 @@ export default ShoppingMain;
 
 
 const GoodsSection = styled.div`
+    width: 100%;
     min-height: 700px;
     margin: 5rem 0;
+    display: flex;
+    flex-direction: column;
+
   #goods-section ul {
     display: flex;
     flex-wrap: wrap;
@@ -160,6 +178,13 @@ const GoodsSection = styled.div`
     height: 380px;
     // border : 1px solid red;
   }
+`;
+
+const Input = styled.input`
+    border-width: 0;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    outline: none;
+    height: 2rem;
 `;
 
 const IconTitle = styled.h4`

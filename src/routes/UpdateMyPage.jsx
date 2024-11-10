@@ -356,25 +356,25 @@ const MyPage = () => {
                 </Profile>
               </Content>
               <div>
-                <Title>자기소개</Title>
+                <Title style={{padding: '1rem'}}>자기소개</Title>
                 <TextField
                   variant="outlined"
                   size="small"
                   multiline
-                  maxRows={6}
+                  rows={6}
                   sx={{ alignSelf: "start", width: "60rem", marginBottom: "2rem" }}
                   value={profile.intro}
                   onChange={(event) => profileHandler(event, "intro")}
                 />
               </div>
-              <div>
+              <Buttons>
                 <Button variant="outlined" color="primary" onClick={goMypage}>
                   취소
                 </Button>
                 <Button variant="contained" color="primary" onClick={() => updateProfile()}>
                   저장
                 </Button>
-              </div>
+              </Buttons>
             </>
           ) : (
             <div>사용자 정보가 없습니다.</div>
@@ -422,70 +422,19 @@ const ProfileImg = styled.img`
   margin-bottom: 2rem;
 `;
 
-const NickName = styled.div`
-  text-align: center;
-`;
-
-const ProfileDetail = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const Title = styled.div`
   align-self: start;
   padding-left: 25rem;
   margin-bottom: 1rem;
 `;
 
-// const Introduce = styled.div`
-
-// `;
-
-//--------사이드바
-const SideBar = styled.div`
-  width: 25%;
-  height: 70vh;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const SideBarTitle = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
-`;
 const Box = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 const UpdateContainer = styled(Container)`
   margin: 5rem 0;
-`;
-
-const UploadButton = styled.label`
-    border-radius: 15px;
-    padding : 5px;
-    display: inline-block;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 14px;
-    text-align : center;
-`;
-
-// const UploadButton = styled.label`
-//     background-color: RGB(240, 240, 243);
-//     border-radius: 15px;
-//     padding : 5px;
-//     display: inline-block;
-//     cursor: pointer;
-//     margin-top: 10px;
-//     font-size: 14px;
-//     text-align : center;
-// `;
-
-const FileInput = styled.input`
-    display: none;
 `;
 
 const VisuallyHiddenInput = styled('input')({
@@ -499,6 +448,12 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
+
+const Buttons = styled.div`
+  width: 15%;
+  display: flex;
+  justify-content: space-between;
+`;
 
 const ModalBackground = styled.div`
   position: absolute;
