@@ -189,7 +189,7 @@ const Input = styled.input`
 
 const IconTitle = styled.h4`
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
 `;
 
@@ -230,12 +230,12 @@ const IconCardBottom = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
 `;
 
 const NoData = styled.ul`
-    font-size: 3rem;
+    font-size: 2rem;
 `;
 
 const Grid = styled.div`
@@ -247,7 +247,6 @@ const Grid = styled.div`
 
 const GridItem = styled.div`
   min-width: 200px;
-  border
 `;
 
 const GridImage = styled.img`
