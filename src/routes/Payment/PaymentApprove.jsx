@@ -124,7 +124,7 @@ const DetailTitle = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  border: 2px solid #EEC759;
+  border: 1px solid rgba(0,0,0,0.3)
   border-radius: 10px;
   width: 70vw;
   margin: 1rem 0 3rem;
@@ -140,7 +140,7 @@ const Th = styled.th`
   display: block;
   padding: 1rem;
   width: 150px;
-  border-right: 2px solid black;
+  border-right: 1px solid rgba(0,0,0,0.3)
   text-align: center;
 `;
 
