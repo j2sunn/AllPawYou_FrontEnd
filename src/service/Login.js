@@ -44,6 +44,13 @@ export const resetPassword = async (email, password) => {
   return response.data;
 };
 
+/** update password on Mypage */
+export const updateOnMypage = async (email, current, change) => {
+  //http://localhost:8081/api/v2/users/updateOnMypage?email=g@g.com&current=1234&change=qwer
+  const response = await AuthApi.put(`/api/v2/users/updateOnMypage?email=${email}&current=${current}&change=${change}`);
+  return response.data;
+};
+
 /** verifyCode API */
 // http://localhost:8081/api/email/verify?inputEmail=hyuk6589@naver.com&verify=74Hd8GDf
 export const verify = async (inputEmail, verify) => {
