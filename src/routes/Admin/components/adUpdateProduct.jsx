@@ -37,7 +37,7 @@ const UpdateProduct = () => {
       getProductByProductId(id)
         .then((response) => {
           setProductInfo(response);
-          console.log("상품정보 : ", response.data);
+          console.log("상품정보 : ", response);
         })
         .catch((error) => {
           console.log("에러발생 : ", error);
@@ -56,7 +56,7 @@ const UpdateProduct = () => {
         .filter((file) => file.productFileTypeId === 2)
         .map((file) => ({
           file: file.imageRename,
-          preview: `http://localhost:8081${productInfo.productFileDTO.find((file) => file.productFileTypeId === 2)?.imagePath}`,
+          preview: `http://localhost:8081${file.imagePath}`,
         }));
 
       setImages(detailImages);
@@ -83,18 +83,19 @@ const UpdateProduct = () => {
 
   // 상품 설명 이미지 업로드 핸들러 (최대 8장)
   const handleDetailImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length + images.length > 8) {
+    const file = e.target.files[0];
+    console.log(file);
+    if (file.length + images.length > 8) {
       alert("최대 8장까지 업로드할 수 있습니다.");
       return;
     }
-    const newImages = files.map((file) => ({
-      file: file, // 실제 파일 객체 저장
+    const newImage = {
+      file, // 실제 파일 객체 저장
       preview: URL.createObjectURL(file), // 미리보기 URL 저장
-    }));
+    };
 
-    setImages((prevImages) => [...prevImages, ...newImages]);
-    console.log("추가된 상세 이미지 파일들:", files);
+    console.log("추가된 상세 이미지 파일들:", newImage);
+    setImages((prevImages) => [...prevImages, newImage]);
   };
 
   const handleRemoveDetailImage = (index) => {
@@ -140,7 +141,7 @@ const UpdateProduct = () => {
       {productInfo ? (
         <>
           <One>
-            <h4>상품 수정</h4>
+            <h4 onClick={()=>console.log(images)}>상품 수정</h4>
             <h5>
               카테고리<span>*</span>
             </h5>
@@ -151,9 +152,10 @@ const UpdateProduct = () => {
               onChange={(event) => updateHandler(event, "category")}
               value={productInfo.category}
             >
-              <MenuItem value="10">사료</MenuItem>
-              <MenuItem value="20">간식</MenuItem>
-              <MenuItem value="30">의류</MenuItem>
+              <MenuItem value="food">사료</MenuItem>
+              <MenuItem value="goods">용품</MenuItem>
+              <MenuItem value="health">건강</MenuItem>
+              <MenuItem value="clothes">의류</MenuItem>
             </Select>
           </One>
           <Two>
@@ -185,7 +187,7 @@ const UpdateProduct = () => {
             <ImgContainer>
               {images.map((image, index) => (
                 <ProductDetail key={index}>
-                  <Image src={image.preview} alt={`Uploaded ${index + 1}`} />
+                  <Image src={image?.preview} alt={`Uploaded ${index + 1}`} />
                   <RemoveButton onClick={() => handleRemoveDetailImage(index)}>X</RemoveButton>
                 </ProductDetail>
               ))}
