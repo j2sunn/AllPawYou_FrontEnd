@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { listNotices } from "../service/NoticeService";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+
 
 
 const ListNoticeComponent = () => {

@@ -44,31 +44,24 @@ const MyPage = () => {
     navigator('/mypage');
   }
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        profile: file
-      }));
-      console.log("-- file-- : ", file);
-    }
-  }
-
   const updateProfile = async () => {
     try {
       const formData = new FormData();
+      const fullAddress = `${profile.address} ${detail2address}`;
+
       formData.append('username', profile.username);
       formData.append('email', profile.email);
       formData.append('nickname', profile.nickname);
       formData.append('intro', profile.intro);
       formData.append('phone', profile.phone);
-      formData.append('address', profile.address);
+      formData.append('address', fullAddress);
+      
       if (profile.profile) {
         formData.append('profile', profile.profile);
       }
 
-      console.log("-- formData.file -- : ", formData.profile);
+      console.log("전체주소 : " , fullAddress);
+      console.log("-- formData profile -- : ", formData.get('profile'));
 
       // const updatedUserInfo = await updateUser(formData);
       // alert("프로필이 업데이트되었습니다.");
@@ -99,23 +92,86 @@ const MyPage = () => {
   const profileHandler = (event, key) => {
     const { value } = event.target;
     setProfile((prev) => ({ ...prev, [key]: value }));
-
-
   };
+
+  const [thumbnail, setThumbnail] = useState({ file: null, preview: profile.profile }); 
+  
+  // useEffect(() => {
+  //   if(profile){
+  //     setThumbnail({
+  //       file : profile.profile,
+  //       preview: profile.profile &&  profile.profile !== 'default' ? `http://localhost:8081${profile.profile}` : defaultProfile,
+  //     });
+  //   } else {
+  //     setThumbnail({file : null, preview : defaultProfile});
+  //   }
+  // }, [profile]);
+  
+  useEffect(() => {
+    if (profile.profile) {
+      // profile.profile이 파일 객체일 경우 (새로 업로드된 경우)
+      if (typeof profile.profile === 'object') {
+        setThumbnail({
+          file: profile.profile,
+          preview: URL.createObjectURL(profile.profile),
+        });
+      } 
+      // profile.profile이 문자열 경로일 경우 (기존 서버 이미지인 경우)
+      else if (typeof profile.profile === 'string' && profile.profile !== 'default') {
+        setThumbnail({
+          file: profile.profile,
+          preview: `http://localhost:8081${profile.profile}`,
+        });
+      }
+    } else {
+      // profile.profile이 null이거나 없을 경우 기본 이미지 사용
+      setThumbnail({
+        file: null,
+        preview: defaultProfile,
+      });
+    }
+  }, [profile.profile]);
+
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if(thumbnail.preview){
+        URL.revokeObjectURL(thumbnail.preview);
+      }
+      const previewURL = URL.createObjectURL(file);
+      console.log("previewURL :" + previewURL);
+
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+          profile: file,
+      }));
+
+      setThumbnail({
+        file:file,
+        preview: previewURL,
+      });
+
+      console.log("-- file-- : ", file);
+    }
+  }
 
 
   const deleteProfileImg = () => {
-    // 기본 프로필 이미지로 변경
+
+    // setProfile((prevProfile) => ({
+    //   ...prevProfile,
+    //   profile: null, // 파일 초기화
+    // }));
+
+    if (thumbnail.preview) URL.revokeObjectURL(thumbnail.preview);
     setProfile((prevProfile) => ({
       ...prevProfile,
-      profile: defaultProfile, // public 폴더 내 이미지 경로
+      profile: null,
     }));
 
-    // VisuallyHiddenInput 초기화
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      profile: null, // 파일 초기화
-    }));
+    setThumbnail({ file: '', preview: defaultProfile });
   };
 
   //카카오 api
@@ -128,6 +184,7 @@ const MyPage = () => {
 
   const clickAddrButton = () => {
     setOpenPostcode(current => !current);
+    setShowDetailAddress(current => !current);
   }
 
   const selectAddress = (data) => {
@@ -138,11 +195,13 @@ const MyPage = () => {
     setDetailaddress(data.address);
 
     setProfile((prevProfile) => ({
-        ...prevProfile,
-        address: `${data.address}`,  
+      ...prevProfile,
+      address: `${data.address}`,
     }));
     setOpenPostcode(false);
   };
+
+  const [showDetailAddress, setShowDetailAddress] = useState(false);
 
   return (
     <>
@@ -154,7 +213,8 @@ const MyPage = () => {
               <Content>
                 <Profile>
                   <ProfileImg
-                    src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
+                    // src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
+                  src={thumbnail.preview}
                   />
                   <Button component="label" variant="contained">
                     이미지 변경
@@ -227,7 +287,7 @@ const MyPage = () => {
                           onChange={(event) => profileHandler(event, "address")}
                           required
                         />
-                        <Button sx={{ marginLeft: "10px" }} onClick={clickAddrButton}>
+                        <Button variant="outlined" sx={{ marginLeft: "10px" }} onClick={clickAddrButton}>
                           검색
                         </Button>
                         {openPostcode &&
@@ -236,6 +296,27 @@ const MyPage = () => {
                             onComplete={selectAddress} />}
                       </TableCell>
                     </TableRow>
+                    {showDetailAddress && (
+                      <TableRow>
+                        <TableCell>상세 주소 :</TableCell>
+                        <TableCell>
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            multiline
+                            maxRows={6}
+                            sx={{
+                              marginLeft: "1rem",
+                              // alignSelf: 'start',
+                              width: "25rem",
+                            }}
+                            value={detail2address}
+                            onChange={(event) => setDetail2address(event.target.value)}
+                            required
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )}
                     <TableRow>
                       <TableCell>닉네임 :</TableCell>
                       <TableCell>

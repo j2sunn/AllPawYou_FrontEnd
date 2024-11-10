@@ -1,13 +1,9 @@
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { useLocation, useNavigate } from "react-router-dom";
-import poodle from "../assets/poodle.png";
-import { Table, TableCell, TableRow } from "@mui/material";
-import DaumPostcode from "react-daum-postcode";
 import MypageSideBar from "../components/common/MypageSideBar";
+import defaultProfile from "../assets/defaultprofile.png";
 
 const MyPage = () => {
   const navigator = useNavigate();
@@ -56,7 +52,8 @@ const MyPage = () => {
               <Content>
                 <Profile>
                   <ProfileImg
-                    src={`http://localhost:8081${userInfo.profileImage}`}
+                    // src={`http://localhost:8081${userInfo.profileImage}`}
+                    src={userInfo.profileImage && userInfo.profileImage !== "default" || null ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile}
                   />
                   <NickName>{userInfo.nickname}</NickName>
                 </Profile>
@@ -115,7 +112,6 @@ const Profile = styled.div`
 const ProfileImg = styled.img`
   width: 150px;
   height: 150px;
-  border: 1px solid black;
   border-radius: 50%;
   margin-bottom: 2rem;
 `;
