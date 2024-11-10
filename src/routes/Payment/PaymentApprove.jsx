@@ -33,6 +33,7 @@ const PaymentApprove = () => {
   }
 
   useEffect(()=>{
+    scrollTo(0,0);
     approve();
   },[]);
 

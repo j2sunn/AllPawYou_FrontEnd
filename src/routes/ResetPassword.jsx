@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Container = styled.div`
   padding: 70px;
   margin: auto;
@@ -30,6 +30,12 @@ const ValidationText = styled.span`
 
 const ResetPassword = () => {
   const [auth, setAuth] = useState(false);
+
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
   return (
     <>
       <Container>

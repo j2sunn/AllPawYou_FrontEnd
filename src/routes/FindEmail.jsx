@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import { findMem,sendSMS, verifySMS,findEmail } from "../service/SmsService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -190,6 +190,11 @@ const final = () => {
             }            
         })
 }
+
+
+useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
     return (
         <>

@@ -74,6 +74,7 @@ export default function Login() {
   };
 
   useEffect(() => {
+    scrollTo(0,0);
     autoLogin();
   }, []);
 

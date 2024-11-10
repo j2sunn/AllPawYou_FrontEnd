@@ -69,6 +69,12 @@ const NoticeDetail = ()=>{
     //     console.log(img.boardImagePath+img.boardImageRename);
     // }
     // console.log("이미지 : "+boardData?.imgList);
+
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+  
     return (
         <>
         

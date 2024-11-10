@@ -51,6 +51,11 @@ const BoardList = ()=>{
         setCurrentPage(page);
     };
 
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
     //게시글 상세조회랑 리스트랑 주고받을 정보 : cp, 카테고리 선택 상태, 검색옵션,검색키워드
     return(
         <>

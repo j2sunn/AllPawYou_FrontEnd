@@ -175,6 +175,12 @@ const handleTitleChange = (e) => {
         
         return true;
     }
+
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+  
     return(
         <>
             {boardData ? (

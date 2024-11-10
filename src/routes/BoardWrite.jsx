@@ -121,7 +121,14 @@ const BoardWrite = ()=>{
         
         console.log("result : "+result);
     }
+    
+    
+    useEffect(()=>{
+        scrollTo(0,0);
+    },[])
+    
     if (isLoading) return null; // 로딩 중일 때 아무것도 렌더링하지 않음
+
     return ( //강아지(1) 고양이(2) 기타(3)
         <>
         {/* <img src={`http://localhost:8080/images/board/푸들.png`} alt="푸들" /> */}
