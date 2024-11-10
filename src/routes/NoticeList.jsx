@@ -72,6 +72,10 @@ const ListNoticeComponent = () => {
     //     console.error(error);
     //   });
   }
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
   return (
     <>

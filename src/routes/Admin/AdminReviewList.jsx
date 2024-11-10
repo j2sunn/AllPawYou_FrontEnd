@@ -2,8 +2,14 @@ import Box from "@mui/material/Box";
 import ReviewList from "./components/aReviewList";
 import AdminHeader from "./components/AdminHeader";
 import AdminFooter from "./components/AdminFooter";
+import { useEffect } from "react";
 
 export default function PermanentDrawerLeft() {
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
   return (
     <>
       <Box sx={{ display: "flex", marginLeft: '240px', minHeight: '850px' }}>

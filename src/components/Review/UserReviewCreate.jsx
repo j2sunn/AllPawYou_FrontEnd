@@ -97,6 +97,10 @@ const UserReviewCreate = () => {
     console.log("이미지 삭제 :: " + images);
   };
 
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
   return (
     <>
       <Container>

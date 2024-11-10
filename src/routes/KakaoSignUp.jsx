@@ -119,6 +119,10 @@ const KakaoLogin = () => {
 
     return valid;
   };
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
   return (
     <>
