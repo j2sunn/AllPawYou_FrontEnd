@@ -73,15 +73,15 @@ const SignUp = () => {
       Swal.fire({
         icon: "info",
         title: "인증번호를 전송했습니다.",
-        confirmButtonColor: '#527853',
-          confirmButtonText: '닫기'
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
       });
     } else {
       Swal.fire({
         icon: "warning",
         title: "이메일 형식에 맞게 입력해주세요.",
-        confirmButtonColor: '#527853',
-          confirmButtonText: '닫기'
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
       });
     }
   };
@@ -96,8 +96,8 @@ const SignUp = () => {
       Swal.fire({
         icon: "success",
         title: "인증번호가 확인되었습니다.",
-        confirmButtonColor: '#527853',
-          confirmButtonText: '닫기'
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
       });
     } catch (error) {
       // 인증 실패
@@ -106,15 +106,15 @@ const SignUp = () => {
         Swal.fire({
           icon: "warning",
           title: "인증번호 또는 이메일이 일치하지 않습니다.",
-          confirmButtonColor: '#527853',
-          confirmButtonText: '닫기'
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
         });
       } else {
         Swal.fire({
           icon: "error",
           title: "서버 오류가 발생했습니다.",
-          confirmButtonColor: '#527853',
-          confirmButtonText: '닫기'
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
         });
       }
     }
@@ -145,6 +145,9 @@ const SignUp = () => {
     // passwordConfirm
     if (values.password.trim() != values.passwordConfirm.trim()) {
       obj = { ...obj, passwordConfirm: "비밀번호와 일치하지 않습니다." };
+      valid = false;
+    } else {
+      obj = { ...obj, passwordConfirm: "" };
     }
 
     // nickname
