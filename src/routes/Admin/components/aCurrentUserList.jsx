@@ -20,7 +20,7 @@ const CurrentUser = () => {
         const sortedUsers = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         // 상위 5명의 사용자만 저장
-        setUsers(sortedUsers.slice(0, 5));
+        setUsers(sortedUsers.slice(0, 4));
       })
       .catch((error) => {
         console.error(error);
