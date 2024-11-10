@@ -53,7 +53,7 @@ const ShoppingDetail = () => {
   const [files, setFiles] = useState(null);
   const [cart, setCart] = useState([]);
   const [disabled, setDisabled] = useState(false);
-  const [averageStar, setAverageStar] = useState("0");
+  const [averageStar, setAverageStar] = useState({ data: 0 });
   const [data, setData] = useState({
     userNo: localStorage.getItem("no"),
     productId: id,
