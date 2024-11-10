@@ -8,13 +8,21 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addCart, getProductByProductId, listCart } from "../service/ProductService";
 import Swal from "sweetalert2";
-import { getReviewByProductId } from "../service/Review";
+import { AverageStar, getReviewByProductId } from "../service/Review";
+import { PiStarFill, PiStarHalfFill, PiStarLight } from "react-icons/pi";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} style={{display: 'flex', justifyContent: 'center', width: '100%'}} {...other}>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      style={{ display: "flex", justifyContent: "center", width: "100%" }}
+      {...other}
+    >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
@@ -45,6 +53,7 @@ const ShoppingDetail = () => {
   const [files, setFiles] = useState(null);
   const [cart, setCart] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [averageStar, setAverageStar] = useState({ data: 0 });
   const [data, setData] = useState({
     userNo: localStorage.getItem("no"),
     productId: id,
@@ -55,6 +64,16 @@ const ShoppingDetail = () => {
 
   const addCartItem = () => {
     let cartExist = false;
+    if (data.userNo == null) {
+      Swal.fire({
+        icon: "warning",
+        title: "로그인이 필요합니다.",
+
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기"
+      })
+      return;
+    }
     if (data.quantity <= 0) {
       Swal.fire({
         icon: "error",
@@ -76,7 +95,7 @@ const ShoppingDetail = () => {
       setDisabled(true);
       Swal.fire({
         icon: "info",
-        title: "장바구니로 이동하시겠습니까?.",
+        title: "장바구니로 이동하시겠습니까?",
 
         showCancelButton: true,
         confirmButtonColor: "#527853",
@@ -90,8 +109,17 @@ const ShoppingDetail = () => {
       });
     }
   };
-
   const navigatePayment = () => {
+    if (data.userNo == null) {
+      Swal.fire({
+        icon: "warning",
+        title: "로그인이 필요합니다.",
+
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기"
+      })
+      return;
+    }
     const checkedData = [
       {
         ...product,
@@ -169,11 +197,44 @@ const ShoppingDetail = () => {
     fetchReviews();
   }, [id]);
 
-  
-  useEffect(()=>{
-    scrollTo(0,0);
-  },[])
-  
+  // 별점 평균을 구하는 함수
+  const fetchAverageStar = async () => {
+    try {
+      const aAverageStar = await AverageStar(data.productId);
+      console.log(aAverageStar);
+      return aAverageStar; //별점 평균 반환
+    } catch (error) {
+      console.error("Error fetching AverageStar:", error);
+      return 0.0; // 에러 발생 시 기본값으로 0.0 반환
+    }
+  };
+
+  useEffect(() => {
+    const getAverageStar = async () => {
+      const count = await fetchAverageStar(); // 별점 평균 가져오기
+      setAverageStar(count); // 상태 업데이트
+    };
+
+    getAverageStar(); // 별점 평균
+  }, []);
+
+  // 채워진 별 개수
+  const totalStars = 5;
+  const fullStars = Math.floor(averageStar.data);
+
+  // 만약 소수점이 있다면 반쪽 별 추가
+  const halfStar = averageStar.data % 1 >= 0.5 ? 1 : 0;
+  // 빈 별 개수
+  const emptyStars = totalStars - fullStars - halfStar;
+
+  //상세 이미지 순서 출력
+  const getSortedDetailImages = (productFileDTO) => {
+    return productFileDTO
+      ?.filter((file) => file.productFileTypeId === 2)  // 상세 이미지만 필터링
+      .sort((a, b) => a.imageOrder - b.imageOrder);  // imageOrder 기준으로 정렬
+  };
+
+
   return (
     <>
       <Container>
@@ -194,7 +255,19 @@ const ShoppingDetail = () => {
               <div style={{ fontFamily: "NanumSquareRound", marginBottom: "20px" }}>
                 <h5 style={{ fontWeight: "bold" }}>{(product.price * data.quantity).toLocaleString()}원</h5>
               </div>
-              <div>후기</div>
+              <Box sx={{ display: "flex", alignItems: "center", color: "#eec759" }}>
+                {/* 채워진 별 */}
+                {[...Array(fullStars)].map((_, i) => (
+                  <PiStarFill className="star-lg" key={`full-${i}`} />
+                ))}
+                {/* 반쪽 별 (있을 경우) */}
+                {halfStar > 0 && <PiStarHalfFill className="star-lg half" />}
+                {/* 빈 별 */}
+                {[...Array(emptyStars)].map((_, i) => (
+                  <PiStarLight className="star-lg" key={`empty-${i}`} />
+                ))}
+                <Box sx={{ marginLeft: "8px", alignItems: "center", color: "black" }}>{averageStar.data.toFixed(1)}</Box>
+              </Box>
 
               <quantityIcon className="quantityIcon">
                 <Box display="flex" alignItems="center" sx={{ marginTop: "20px", marginBottom: "20px" }}>
@@ -238,29 +311,39 @@ const ShoppingDetail = () => {
               <Tab label="리뷰" {...a11yProps(1)} />
             </Tabs>
           </Box>
-          <CustomTabPanel value={value} index={0}>
-            상품 설명 상세내용
-          </CustomTabPanel>
+          {product ? (
+            <CustomTabPanel value={value} index={0}>
+              {/* 상품 설명 상세내용 */}
+              {getSortedDetailImages(product.productFileDTO).map((file, index) => (
+                <div key={index}>
+                <img 
+                  src={`http://localhost:8081${file.imagePath}`} />
+                  </div>
+              ))}
+            </CustomTabPanel>
+          ) : (
+            <p>상세 이미지가 없습니다.</p>
+          )}
           <CustomTabPanel value={value} index={1}>
             <div>
               {reviews.length > 0 ? (
                 reviews.map((review, index) => (
                   <Review key={index}>
-                      <div>
-                        {review.reviewImg.length > 0
-                          ? review.reviewImg.map((item, index) => (
-                              <ReviewImg
-                                key={index}
-                                src={
-                                  item?.reviewImgPath // 이미지 배열이 존재하고 길이가 0보다 큰 경우
-                                    ? `http://localhost:8081${item.reviewImgPath}${item.reviewImgRename}`
-                                    : null // 이미지가 없으면 null
-                                }
-                                alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."}
-                              />
-                            ))
-                          : null}
-                      </div>
+                    <div>
+                      {review.reviewImg.length > 0
+                        ? review.reviewImg.map((item, index) => (
+                          <ReviewImg
+                            key={index}
+                            src={
+                              item?.reviewImgPath // 이미지 배열이 존재하고 길이가 0보다 큰 경우
+                                ? `http://localhost:8081${item.reviewImgPath}${item.reviewImgRename}`
+                                : null // 이미지가 없으면 null
+                            }
+                            alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."}
+                          />
+                        ))
+                        : null}
+                    </div>
                     <p>별점: {review.reviewStar}</p>
                     <h4>유저 이름: {review.username}</h4>
                     <p>작성시간: {review.reviewDate}</p>
@@ -303,8 +386,7 @@ const ProductImage = styled.img`
   width: 400px;
 `;
 
-const DetailArea = styled.div`
-`;
+const DetailArea = styled.div``;
 
 const Input = styled.input`
   width: 3rem;
@@ -312,12 +394,12 @@ const Input = styled.input`
 `;
 
 const Review = styled.div`
-    border: 1px solid black;
-    padding: 2rem 5rem;
-    width: 1000px;
+  border: 1px solid black;
+  padding: 2rem 5rem;
+  width: 1000px;
 `;
 
 const ReviewImg = styled.img`
-    width: 200px;
-    height: 200px;
+  width: 200px;
+  height: 200px;
 `;

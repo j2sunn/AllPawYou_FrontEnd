@@ -29,3 +29,7 @@ export const DeleteReview = (reviewNo) => AuthApi.delete(`/api/review/${reviewNo
 export const DeleteImage = (reviewImgNo) => AuthApi.delete(`/api/review/deleteImage/${reviewImgNo}`);
 
 export const ToggleVisibility = (reviewNo) => AuthApi.patch(`/api/review/${reviewNo}/visibility`);
+
+// 별점 평균
+// http://localhost:8081/api/review/averageStar?productId=1
+export const AverageStar = (productId) => AuthApi.get(`/api/review/averageStar?productId=${productId}`);

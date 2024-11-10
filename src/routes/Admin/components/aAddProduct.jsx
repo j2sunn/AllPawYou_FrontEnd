@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { addProduct } from "../../../service/ProductService";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const aAddProduct = () => {
 
@@ -87,7 +88,7 @@ const aAddProduct = () => {
     const doSubmit = () => {
         const formData = new FormData();
         formData.append("category", selectedCategory);
-        formData.append("name", productName);
+        formData.append("name", productName.trim());
         formData.append("price", productPrice);
         formData.append("releaseStatus", isRelease);
 
@@ -100,17 +101,56 @@ const aAddProduct = () => {
         });
 
         try {
-            // 상품 추가 API 호출
-            addProduct(formData);
-            // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
-            navigator('/admin/productlist', { state: { refresh: true } }); 
-            alert("상품이 등록되었습니다.");
-            setTimeout(()=>{
-                console.log(1);
-            },3000);
+            if(productName.trim().length == 0){
+                Swal.fire({
+                    title: "상품 이름을 입력해주세요.",
+                    icon: 'warning',
+                    
+                    confirmButtonColor: '#527853',
+                    cancelButtonText: '확인'                    
+                 });
+            // }
+            // else if(productPrice <= 0 || typeof productPrice != 'number'){
+            //     Swal.fire({
+            //         title: "올바른 가격을 입력해주세요.",
+            //         icon: 'warning',
+                    
+            //         confirmButtonColor: '#527853',
+            //         cancelButtonText: '확인'                    
+            //      });
+            }else if(thumbnail.file == null){
+                Swal.fire({
+                    title: "썸네일 이미지를 등록해주세요.",
+                    icon: 'warning',
+                    
+                    confirmButtonColor: '#527853',
+                    cancelButtonText: '확인'                    
+                 });
+            }else{
+                //상품 추가 API 호출
+                addProduct(formData);
+                // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
+                setTimeout(()=>{
+                    console.log(1);
+                },5000);
+                navigator('/admin/productlist', { state: { refresh: true } }); 
+                Swal.fire({
+                    title: "상품이 등록되었습니다.",
+                    icon: 'success',
+                    
+                    confirmButtonColor: '#527853',
+                    cancelButtonText: '확인'                    
+                 });
+            }
         } catch (error) {
             console.error("상품 등록 실패:", error);
-            alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
+            Swal.fire({
+                title: "상품 등록에 실패했습니다. 다시 시도해주세요.",
+                icon: 'error',
+                
+                confirmButtonColor: '#527853',
+                cancelButtonText: '확인'                    
+             });
         }
     };
 
@@ -136,7 +176,7 @@ const aAddProduct = () => {
                     <h5>제목<span>*</span></h5>
                     <TitleInput id="productName" value={productName} onChange={handleNameChange} />
                     <h5>가격<span>*</span></h5>
-                    <TitleInput id="productPrice" value={productPrice} onChange={handlePriceChange} />
+                    <TitleInput id="productPrice" type="number" value={productPrice} onChange={handlePriceChange} />
                 </Two>
                 <Three>
                     <h5>썸네일 사진 업로드</h5>

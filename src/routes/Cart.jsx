@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { Button, Checkbox, TextField } from "@mui/material";
+import { Button, Checkbox } from "@mui/material";
 import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { deleteCart, getProductByProductId, listCart } from "../service/ProductService";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { IoCloseOutline } from "react-icons/io5";
 
 const Cart = () => {
 
@@ -15,6 +16,7 @@ const Cart = () => {
   const [load, setLoad] = useState(false);
   const [productList, setProductList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isAllChecked, setIsAllChecked] = useState(false);
 
   //장바구니 목록
   const loadCartList = async(no) => {
@@ -52,11 +54,47 @@ const Cart = () => {
    });
   }
 
+  const deleteCheckedItem = async() => {
+    Swal.fire({
+      title: "선택 항목을 삭제하시겠습니까?",
+      icon: 'warning',
+      
+      showCancelButton: true,
+      confirmButtonColor: '#527853',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+      reverseButtons: true
+      
+   }).then(result => {
+      if (result.isConfirmed) { 
+        
+        const deleteArr = productList.filter(i => i.checked);
+        const restArr = productList.filter(i => !i.checked);
+        if(deleteArr.length == 0){
+          Swal.fire({
+            icon: "warning",
+            title:'선택 항목이 없습니다.',
+            confirmButtonColor: '#527853'
+          });
+          return;
+        }
+        deleteArr.forEach(i => deleteCart(i.cartId));
+        setProductList([...restArr]);
+         Swal.fire({
+          icon: "success",
+          title:'삭제가 완료되었습니다.',
+          confirmButtonColor: '#527853'
+        });
+      }
+   });
+  }
+
   //상품 상세
   const loadProductList = async(productId, cartId, quantity) => {
     const arr = productList;
     const response = await getProductByProductId(productId);
-    arr.push({...response, quantity, cartId});
+    arr.push({...response, quantity, cartId, checked: false});
     arr.sort((a,b)=>a.cartId-b.cartId);
     setProductList([...arr]);
   }
@@ -69,12 +107,32 @@ const Cart = () => {
     }
   };
 
+  const checkAll = (event) => {
+    let arr = productList;
+    if(event.target.checked){
+      setIsAllChecked(true);
+      arr.forEach(i => i.checked = true);
+    } else {
+      setIsAllChecked(false);
+      arr.forEach(i => i.checked = false);
+    }
+    console.log(arr);
+    setProductList([...arr]);
+  }
+
   const handleCheckBox = (event) => {
     let arr = productList;
+    let all = false;
     if(event.target.checked){
       arr.forEach(i => i.id == event.target.id ? i.checked = true : null);
     } else {
       arr.forEach(i => i.id == event.target.id ? i.checked = false : null);
+    }
+    arr.forEach(i => i.checked == false ? all = true : null);
+    if(all){
+      setIsAllChecked(false);
+    }else{
+      setIsAllChecked(true);
     }
     setProductList(arr);
     handleTotalPrice();
@@ -111,9 +169,6 @@ const Cart = () => {
 
   // - 버튼 동작
   const minus = (event) => {
-    if(event.target.value <= 1){
-      return;
-    }
     const arr = [...productList];
     arr.forEach(i => i.id == event.target.id ? i.quantity <= 1 ? (
       Swal.fire({
@@ -177,19 +232,45 @@ const Cart = () => {
         <Title onClick={()=>console.log(productList)}>장바구니</Title>
         <Content>
           <ProductList>
+          <CartHeader>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <Checkbox checked={isAllChecked} sx={{fontSize: '1.5rem'}} onClick={checkAll}/>
+              전체
+            </div>
+            <div style={{cursor: 'pointer'}} onClick={deleteCheckedItem}>선택 삭제</div>
+          </CartHeader>
             {productList?.map((product)=>{
                 return (
                   <Product key={product.id}>
-                    <Checkbox sx={{fontSize: '1.5rem'}} id={product.id} onChange={()=>handleCheckBox(event)}/>
+                    {product?.checked ? (
+                      <Checkbox checked={true} sx={{fontSize: '1.5rem'}} id={product.id} onChange={()=>handleCheckBox(event)}/>
+                    ): (
+                      <Checkbox checked={false} sx={{fontSize: '1.5rem'}} id={product.id} onChange={()=>handleCheckBox(event)}/>
+                    )}
                     <ProductImg src={`http://localhost:8081${product.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지"/>
                     <ProductName>{product.name}</ProductName>
                     <Quantity>
-                      <BiMinusCircle style={{cursor:'pointer'}} id={product.id} onClick={minus} />
+                      <Button variant="outlined" id={product.id} sx={{ minWidth: "30px", padding: 0, height: "30px", borderRadius: 0 }} onClick={minus}>
+                        -
+                      </Button>
                       <Input type="number" id={product.id} onChange={handleQuantity} value={product.quantity}/>
-                      <BiPlusCircle style={{cursor:'pointer'}} id={product.id} onClick={plus} />
+                      <Button
+                        variant="outlined"
+                        id={product.id}
+                        sx={{
+                          minWidth: "30px",
+                          padding: 0,
+                          height: "30px",
+                          borderRadius: 0,
+                        }}
+                        onClick={plus}
+                      >
+                        +
+                    </Button>
                     </Quantity>
                     <ProductPrice>{(product.price * product.quantity).toLocaleString()}원</ProductPrice>
-                    <Button variant="outlined" color="error" sx={{height:'2.5rem'}} onClick={()=>deleteCartItem(product.cartId)}>삭제</Button>
+                    {/* <Button variant="outlined" color="error" sx={{height:'2.5rem'}} onClick={()=>deleteCartItem(product.cartId)}>삭제</Button> */}
+                    <IoCloseOutline size={32} style={{cursor: 'pointer'}} onClick={()=>deleteCartItem(product.cartId)}/>
                   </Product>
                 );
               })
@@ -221,14 +302,22 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 2rem;
+  font-size: 1.2rem;
   font-weight: bold;
-  margin: 1.5rem 0;
+  margin: 5rem 0 1.5rem;
 `;
 
 const Content = styled.div`
-  border-top: 2px solid black;
+  border-top: 2px solid rgba(0,0,0,0.3);
   display: flex;
+`;
+
+const CartHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.3);
 `;
 
 const ProductList = styled.div`
@@ -239,18 +328,18 @@ const ProductList = styled.div`
 `;
 
 const Product = styled.div`
-  border: 3px solid #EEC759;
-  border-radius: 15px;
-  margin: 2rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+  padding: 3rem 0;
   padding: 1rem;
   display: flex;
   align-items: center;
 `;
 
 const ProductImg = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   margin: 0 2rem;
+  border: 1px solid rgba(0,0,0,0.3);
 `;
 
 const ProductName = styled.div`
@@ -259,11 +348,10 @@ const ProductName = styled.div`
 `;
 
 const Quantity = styled.div`
-  width: 15%;
+  width: 12%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.5rem;
   margin: 0 1rem;
 `;
 
@@ -286,14 +374,13 @@ const TotalPrice = styled.div`
   height: 300px;
   margin-top: 3rem;
   padding: 1.5rem;
-  border: 3px solid #EEC759;
-  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
 `;
 
 const TotalPriceHeader = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 2rem;
 `;

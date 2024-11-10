@@ -64,9 +64,9 @@ const MyPage = () => {
                   <div>주소 : {userInfo.address || ""}</div>
                 </Profile>
               </Content>
-              <Title>자기소개</Title>
+              <Title style={{padding: '1rem'}}>자기소개</Title>
               <Content>{userInfo.intro || ""}</Content>
-              <Button variant="contained" color="primary" onClick={goUpdate}>
+              <Button variant="contained" color="primary" onClick={goUpdate} sx={{width: '8rem'}}>
                   수정
               </Button>
             </>
@@ -81,21 +81,24 @@ const MyPage = () => {
 
 export default MyPage;
 
+const Box = styled.div`
+  display: flex;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // margin: 5rem 0 10rem;
+  margin: 5rem 0 10rem;
 `;
 
 const Content = styled.div`
   width: 60rem;
-  min-height: 3rem;
+  min-height: 10rem;
   display: flex;
   padding: 1rem;
   margin-bottom: 3rem;
-  border: 1px solid black;
-  border-radius: 1rem;
+  border: 1px solid rgba(0,0,0,0.3);
 
   &:first-child {
     border: none;
@@ -120,39 +123,9 @@ const NickName = styled.div`
   text-align: center;
 `;
 
-const ProfileDetail = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const Title = styled.div`
   align-self: start;
   padding-left: 25rem;
   margin-bottom: 1rem;
 `;
 
-// const Introduce = styled.div`
-
-// `;
-
-//--------사이드바
-const SideBar = styled.div`
-  width: 25%;
-  height: 70vh;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const SideBarTitle = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
-`;
-const Box = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const UpdateContainer = styled(Container)`
-  margin: 5rem 0;
-`;
