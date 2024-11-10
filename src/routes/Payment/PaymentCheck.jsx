@@ -27,6 +27,7 @@ const PaymentCheck = () => {
   }
 
   useEffect(()=>{
+    scrollTo(0,0);
     if(state?.checkedData){
       setOrderList(state?.checkedData);
 

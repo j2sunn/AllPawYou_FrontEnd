@@ -230,6 +230,12 @@ const BoardDetail = ()=>{ //백업해놨다
             }
         })
     }
+
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
     return (
         <>
 

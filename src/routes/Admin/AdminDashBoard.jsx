@@ -127,6 +127,7 @@ export default function PermanentDrawerLeft() {
   };
 
   useEffect(() => {
+    scrollTo(0,0);
     const getDailyVisitors = async () => {
       const count = await fetchDailyVisitors(); // 일일 방문자 수 가져오기
       setDailyVisitors(count); // 상태 업데이트

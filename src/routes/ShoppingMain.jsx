@@ -62,6 +62,10 @@ const ShoppingMain = () => {
                 });
         }
     }, [category, status]);
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
     return (
         <>

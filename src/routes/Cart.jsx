@@ -140,7 +140,10 @@ const Cart = () => {
       })
     }
   }
-
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
   useEffect(()=>{
     //유저 번호

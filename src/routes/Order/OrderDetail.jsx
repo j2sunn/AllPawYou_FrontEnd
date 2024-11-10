@@ -18,6 +18,7 @@ const OrderDetail = () => {
     setUser(response);
   };
   useEffect(() => {
+    scrollTo(0,0);
     getUserByNo(state?.payment[0]?.userNo);
   }, []);
   return (
