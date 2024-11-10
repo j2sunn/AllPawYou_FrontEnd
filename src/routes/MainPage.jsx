@@ -21,6 +21,7 @@ const MainPage = () => {
     }
   }
   useEffect(()=>{
+    scrollTo(0,0);
     customerCount();
     loadProducts();
   },[]);

@@ -43,6 +43,7 @@ import AdminOrderList from "./routes/Admin/AdminOrderList";
 import AdminProductList from "./routes/Admin/AdminProductList";
 import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
 import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
+import Forbidden from "./routes/Forbidden";
 
 const Router = () => {
   return (
@@ -121,6 +122,7 @@ const Router = () => {
         {/* 공지사항 글 작성(관리자) */}
         <Route path="/admin/noticeWrite" element={<NoticeWrite />} />
 
+        <Route path="/forbidden" element={<Forbidden />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { VscGraph } from "react-icons/vsc";
 import { IoHomeOutline } from "react-icons/io5";
 import { RxReload } from "react-icons/rx";
+import Swal from "sweetalert2";
 
 const drawerWidth = 240;
 
@@ -44,8 +45,15 @@ const AdminHeader = () => {
   // Check for admin role on component mount
   useEffect(() => {
     if (role !== "ROLE_ADMIN") {
-      navigate("/404error");
-      alert("비정상적인 작동이 감지되었습니다.");
+      navigate("/forbidden");
+      Swal.fire({
+        title: "비정상적인 접근이 감지되었습니다.",
+        icon: 'warning',
+        
+        confirmButtonColor: '#527853',
+        confirmButtonText: '닫기',
+        
+     });
     }
   }, [role, navigate]);
 
