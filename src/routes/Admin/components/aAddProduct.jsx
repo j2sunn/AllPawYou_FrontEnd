@@ -109,14 +109,15 @@ const aAddProduct = () => {
                     confirmButtonColor: '#527853',
                     cancelButtonText: '확인'                    
                  });
-            }else if(productPrice <= 0 || typeof productPrice != 'number'){
-                Swal.fire({
-                    title: "올바른 가격을 입력해주세요.",
-                    icon: 'warning',
+            // }
+            // else if(productPrice <= 0 || typeof productPrice != 'number'){
+            //     Swal.fire({
+            //         title: "올바른 가격을 입력해주세요.",
+            //         icon: 'warning',
                     
-                    confirmButtonColor: '#527853',
-                    cancelButtonText: '확인'                    
-                 });
+            //         confirmButtonColor: '#527853',
+            //         cancelButtonText: '확인'                    
+            //      });
             }else if(thumbnail.file == null){
                 Swal.fire({
                     title: "썸네일 이미지를 등록해주세요.",

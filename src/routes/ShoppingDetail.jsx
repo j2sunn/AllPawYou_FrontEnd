@@ -64,7 +64,7 @@ const ShoppingDetail = () => {
 
   const addCartItem = () => {
     let cartExist = false;
-    if(data.userNo == null){
+    if (data.userNo == null) {
       Swal.fire({
         icon: "warning",
         title: "로그인이 필요합니다.",
@@ -110,7 +110,7 @@ const ShoppingDetail = () => {
     }
   };
   const navigatePayment = () => {
-    if(data.userNo == null){
+    if (data.userNo == null) {
       Swal.fire({
         icon: "warning",
         title: "로그인이 필요합니다.",
@@ -227,6 +227,14 @@ const ShoppingDetail = () => {
   // 빈 별 개수
   const emptyStars = totalStars - fullStars - halfStar;
 
+  //상세 이미지 순서 출력
+  const getSortedDetailImages = (productFileDTO) => {
+    return productFileDTO
+      ?.filter((file) => file.productFileTypeId === 2)  // 상세 이미지만 필터링
+      .sort((a, b) => a.imageOrder - b.imageOrder);  // imageOrder 기준으로 정렬
+  };
+
+
   return (
     <>
       <Container>
@@ -303,9 +311,19 @@ const ShoppingDetail = () => {
               <Tab label="리뷰" {...a11yProps(1)} />
             </Tabs>
           </Box>
-          <CustomTabPanel value={value} index={0}>
-            상품 설명 상세내용
-          </CustomTabPanel>
+          {product ? (
+            <CustomTabPanel value={value} index={0}>
+              {/* 상품 설명 상세내용 */}
+              {getSortedDetailImages(product.productFileDTO).map((file, index) => (
+                <div key={index}>
+                <img 
+                  src={`http://localhost:8081${file.imagePath}`} />
+                  </div>
+              ))}
+            </CustomTabPanel>
+          ) : (
+            <p>상세 이미지가 없습니다.</p>
+          )}
           <CustomTabPanel value={value} index={1}>
             <div>
               {reviews.length > 0 ? (
@@ -314,16 +332,16 @@ const ShoppingDetail = () => {
                     <div>
                       {review.reviewImg.length > 0
                         ? review.reviewImg.map((item, index) => (
-                            <ReviewImg
-                              key={index}
-                              src={
-                                item?.reviewImgPath // 이미지 배열이 존재하고 길이가 0보다 큰 경우
-                                  ? `http://localhost:8081${item.reviewImgPath}${item.reviewImgRename}`
-                                  : null // 이미지가 없으면 null
-                              }
-                              alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."}
-                            />
-                          ))
+                          <ReviewImg
+                            key={index}
+                            src={
+                              item?.reviewImgPath // 이미지 배열이 존재하고 길이가 0보다 큰 경우
+                                ? `http://localhost:8081${item.reviewImgPath}${item.reviewImgRename}`
+                                : null // 이미지가 없으면 null
+                            }
+                            alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."}
+                          />
+                        ))
                         : null}
                     </div>
                     <p>별점: {review.reviewStar}</p>
