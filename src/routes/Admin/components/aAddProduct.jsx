@@ -107,7 +107,7 @@ const aAddProduct = () => {
             alert("상품이 등록되었습니다.");
             setTimeout(()=>{
                 console.log(1);
-            },3000);
+            },5000);
         } catch (error) {
             console.error("상품 등록 실패:", error);
             alert("상품 등록에 실패했습니다. 다시 시도해주세요.");

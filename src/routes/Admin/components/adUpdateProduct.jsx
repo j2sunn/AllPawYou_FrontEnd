@@ -30,6 +30,8 @@ const UpdateProduct = () => {
   const [thumbnail, setThumbnail] = useState({ file: null, preview: null }); // 썸네일 이미지
   const [images, setImages] = useState([]); // 상품 설명 이미지들
 
+  console.log("id :" , id);
+
   useEffect(() => {
     if (id) {
       getProductByProductId(id)
@@ -64,12 +66,14 @@ const UpdateProduct = () => {
   // 썸네일 이미지 업로드 핸들러 (하나만 업로드 가능)
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
+    
+    console.log("새 썸네일 파일:", file);
     if (file) {
+
       setThumbnail({
         file: file, // 실제 파일 객체 저장
         preview: URL.createObjectURL(file), // 미리보기 URL 저장
       });
-      console.log("새 썸네일 파일:", file);
     }
   };
 
@@ -111,7 +115,7 @@ const UpdateProduct = () => {
 
     if (thumbnail.file) {
       formData.append("thumbImage", thumbnail.file);
-      console.log(thumbnail.file);
+      console.log("썸네일:: " , thumbnail.file);
     }
 
     images.forEach((imageObj) => {

@@ -252,7 +252,7 @@ const GridItem = styled.div`
 
 const GridImage = styled.img`
   width: 100%;
-  height: 250px;
+  height: 350px;
   margin-bottom: 1rem;
   cursor: pointer;
 `;

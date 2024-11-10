@@ -162,11 +162,6 @@ const MyPage = () => {
 
   const deleteProfileImg = () => {
 
-    // setProfile((prevProfile) => ({
-    //   ...prevProfile,
-    //   profile: null, // 파일 초기화
-    // }));
-
     if (thumbnail.preview) URL.revokeObjectURL(thumbnail.preview);
     setProfile((prevProfile) => ({
       ...prevProfile,
