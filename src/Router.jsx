@@ -124,7 +124,7 @@ const Router = () => {
           {/* 마이페이지 비밀번호 수정 */}
           <Route path="/mypage/passwordChange" element={<ChangePassword />} />
           {/* 메세지 */}
-          <Route path="/mypage/createMessage" element={<MessageSendPage />} />
+
           <Route path="/mypage/receiveMessage" element={<ReceiveMessages />} />
           <Route path="/mypage/sentMessage" element={<SentMessages />} />
           <Route path="/mypage/messageDetail/:messageId" element={<DetailMessages />} />
@@ -142,6 +142,9 @@ const Router = () => {
         <Route path="/admin/productlist" element={<AdminProductList />} />
         <Route path="/admin/addproduct" element={<AdmiinAddProduct />} />
         <Route path="/admin/updateproduct/:id" element={<AdminUpdateProduct />} />
+
+        {/* 쪽지 팝업 */}
+        <Route path="/mypage/createMessage" element={<MessageSendPage />} />
 
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="*" element={<NotFound />} />

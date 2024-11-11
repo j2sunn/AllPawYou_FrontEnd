@@ -42,11 +42,7 @@ const NoticeDetail = () => {
             </NoticeContent>
 
             <BtnContainer>
-              <Button
-                variant="contained"
-                sx={{ fontSize: "1rem", marginTop: "1rem" }}
-                onClick={() => navigate(-1)}
-              >
+              <Button variant="contained" sx={{ fontSize: "1rem", marginTop: "1rem" }} onClick={() => navigate(-1)}>
                 목록으로
               </Button>
             </BtnContainer>
@@ -54,9 +50,11 @@ const NoticeDetail = () => {
         </>
       ) : (
         <Container>
-                <NoData>존재하지 않는 공지사항입니다.</NoData>
-                <Button variant="contained" onClick={()=>navigate(-1)} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>이전 페이지로 돌아가기</Button>
-            </Container>
+          <NoData>존재하지 않는 공지사항입니다.</NoData>
+          <Button variant="contained" onClick={() => navigate(-1)} sx={{ fontSize: "1.5rem", marginTop: "2rem" }}>
+            이전 페이지로 돌아가기
+          </Button>
+        </Container>
       )}
     </>
   );
@@ -117,9 +115,9 @@ const ContentTextarea = styled.textarea`
 `;
 
 const NoData = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 2rem;
-    margin-top: 15rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  margin-top: 15rem;
 `;
