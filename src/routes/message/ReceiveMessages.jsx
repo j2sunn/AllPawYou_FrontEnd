@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Pagination } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { receiveMessage, deleteMessage } from "../../service/Message"; // Import deleteMessage
 import MypageSideBar from "../../components/common/MypageSideBar";
 
 const ReceiveMessages = () => {
   const [messages, setMessages] = useState([]);
-  const [selectedMessages, setSelectedMessages] = useState([]); // Track selected messages
+  const [selectedMessages, setSelectedMessages] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,28 +29,33 @@ const ReceiveMessages = () => {
   }
 
   const goCreateMessage = () => {
-    navigate(`/mypage/createMessage`);
-  };
+    const width = 600; // 팝업의 너비
+    const height = 800; // 팝업의 높이
+    const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
+    const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
 
-  useEffect(() => {
-    scrollTo(0, 0);
-  }, []);
+    window.open("/mypage/createMessage", "popup", `width=${width},height=${height},top=${top},left=${left}`);
+  };
 
   // Handle checkbox change
   const handleSelectMessage = (event, id) => {
     if (event.target.checked) {
-      setSelectedMessages((prevSelected) => [...prevSelected, id]); // Add selected message ID
+      setSelectedMessages((prevSelected) => [...prevSelected, id]);
     } else {
-      setSelectedMessages((prevSelected) => prevSelected.filter((messageId) => messageId !== id)); // Remove from selected
+      setSelectedMessages((prevSelected) => prevSelected.filter((messageId) => messageId !== id));
     }
   };
 
   // Handle "Select All" checkbox
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedMessages(messages.map((message) => message.id)); // Select all
+      // 현재 페이지의 메시지 ID만 선택
+      const currentMessagesIds = currentMessages.map((message) => message.id);
+      setSelectedMessages((prevSelected) => [...new Set([...prevSelected, ...currentMessagesIds])]);
     } else {
-      setSelectedMessages([]); // Deselect all
+      // 현재 페이지에 해당하는 메시지 ID만 해제
+      const currentMessagesIds = currentMessages.map((message) => message.id);
+      setSelectedMessages((prevSelected) => prevSelected.filter((id) => !currentMessagesIds.includes(id)));
     }
   };
 
@@ -58,18 +63,32 @@ const ReceiveMessages = () => {
   const handleDeleteSelected = async () => {
     try {
       for (let messageId of selectedMessages) {
-        await deleteMessage(messageId); // Delete each selected message
+        await deleteMessage(messageId);
       }
-      // Refresh messages after deletion
       getReceiveMessage();
-      setSelectedMessages([]); // Reset selected messages
+      setSelectedMessages([]);
     } catch (error) {
       console.error("Error deleting messages:", error);
     }
   };
 
-  // Determine the state of the "Select All" checkbox
-  const isSelectAllChecked = selectedMessages.length === messages.length; // All selected
+  //페이징
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const messagesPerPage = 10; // 페이지당 메시지 개수
+
+  // 현재 페이지에 대한 메시지 가져오기
+  const indexOfLastMessage = currentPage * messagesPerPage;
+  const indexOfFirstMessage = indexOfLastMessage - messagesPerPage;
+  const currentMessages = messages.slice(indexOfFirstMessage, indexOfLastMessage);
+
+  const totalPages = Math.ceil(messages.length / messagesPerPage); // 전체 페이지 수
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
+  // Determine the state of the "Select All" checkbox for the current page
+  const isSelectAllChecked = currentMessages.length > 0 && currentMessages.every((message) => selectedMessages.includes(message.id));
 
   return (
     <Container>
@@ -82,10 +101,7 @@ const ReceiveMessages = () => {
             <TableHead>
               <TableRow sx={{ borderTop: "2px solid rgba(0,0,0,0.8)", borderBottom: "2px solid rgba(0,0,0,0.8)" }}>
                 <TableCell align="center">
-                  <Checkbox
-                    checked={isSelectAllChecked} // Check if all are selected
-                    onChange={handleSelectAll} // Handle select all checkbox change
-                  />
+                  <Checkbox checked={isSelectAllChecked} onChange={handleSelectAll} />
                 </TableCell>
                 <TableCell align="center" sx={{ width: "15rem", fontWeight: "bold" }}>
                   보낸사람
@@ -99,13 +115,10 @@ const ReceiveMessages = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {messages.map((item) => (
+              {currentMessages.map((item) => (
                 <TableRow key={item.id} sx={{ borderTop: "2px solid rgba(0,0,0,0.3)", borderBottom: "2px solid rgba(0,0,0,0.3)" }}>
                   <TableCell align="center">
-                    <Checkbox
-                      checked={selectedMessages.includes(item.id)} // Check if the message is selected
-                      onChange={(event) => handleSelectMessage(event, item.id)} // Handle single checkbox change
-                    />
+                    <Checkbox checked={selectedMessages.includes(item.id)} onChange={(event) => handleSelectMessage(event, item.id)} />
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: "bold" }}>
                     <Link to={`/mypage/messageDetail/${item.id}`} style={{ textDecoration: "none", color: "inherit" }}>
@@ -124,8 +137,8 @@ const ReceiveMessages = () => {
           <Button
             variant="contained"
             sx={{ marginTop: "25px", marginRight: "1rem" }}
-            onClick={handleDeleteSelected} // Trigger delete for selected messages
-            disabled={selectedMessages.length === 0} // Disable if no messages are selected
+            onClick={handleDeleteSelected}
+            disabled={selectedMessages.length === 0}
             color="error"
           >
             삭제
@@ -134,7 +147,19 @@ const ReceiveMessages = () => {
             쪽지보내기
           </Button>
         </AddProductButton>
-        <Pages></Pages>
+
+        <Pages>
+          {totalPages > 1 && (
+            <Pagination
+              count={totalPages} // 총 페이지 수
+              page={currentPage} // 현재 페이지
+              onChange={handlePageChange} // 페이지 변경 핸들러
+              siblingCount={2} // 현재 페이지 주변에 보이는 페이지 수
+              boundaryCount={2} // 처음과 끝에 보이는 페이지 수
+              color="primary"
+            />
+          )}
+        </Pages>
       </Content>
     </Container>
   );
@@ -163,15 +188,15 @@ const Title = styled.div`
   width: 90%;
 `;
 
-const Pages = styled.div`
-  width: 80%;
-  margin-top: 3rem;
-  display: flex;
-  justify-content: center;
-`;
-
 const AddProductButton = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 90%;
+`;
+
+const Pages = styled.div`
+  width: 90%;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
 `;

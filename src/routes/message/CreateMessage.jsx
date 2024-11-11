@@ -70,8 +70,6 @@ const MessageSendPage = () => {
 
   return (
     <Container>
-      <MypageSideBar />
-
       <Content>
         <Message>
           <Title>쪽지 보내기</Title>
