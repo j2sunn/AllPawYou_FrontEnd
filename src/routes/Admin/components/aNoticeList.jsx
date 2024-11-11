@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ListNoticeComponent = () => {
   
@@ -44,16 +45,31 @@ const ListNoticeComponent = () => {
   };
 
   function removeNotice(noticeNo) {
-    console.log(noticeNo);
-
-    if (confirm("정말 삭제하시겠습니까?")) {
-      axios
+    Swal.fire({
+      title: "해당 공지사항을 삭제하시겠습니까?",
+      icon: 'warning',
+      
+      showCancelButton: true, // false가 default
+      confirmButtonColor: '#527853',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+      reverseButtons: true
+      
+   }).then(result => {
+      if (result.isConfirmed) { 
+        axios
         .delete("http://localhost:8081/api/notice/delete/" + noticeNo)
-        .then((resp) => {
-          console.log("결과느으으은" + resp.data);
+        .then(() => {
           getAllNotices();
         });
-    }
+         Swal.fire({
+          icon: "success",
+          title:'삭제되었습니다.',
+          confirmButtonColor: '#527853'
+        });
+      }
+   });
   }
 
   useEffect(() => {
@@ -88,7 +104,7 @@ const ListNoticeComponent = () => {
             {notices.map((item, index) => (
               <TableRow key={item.noticeTitle}>
                 <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center">{item.noticeTitle}</TableCell>
+                <TableCell align="center" onClick={()=>navigate(`/noticeDetail/${item.noticeNo}`,{state:item})}>{item.noticeTitle}</TableCell>
                 <TableCell align="center">{item.noticeDate}</TableCell>
                 <TableCell align="center" sx={{ width: "10rem" }}>
                   <Button
