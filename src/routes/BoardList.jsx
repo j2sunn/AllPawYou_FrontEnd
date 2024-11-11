@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { IoIosSearch } from "react-icons/io";
+import { IoIosSearch, IoMdHeartEmpty } from "react-icons/io";
 import { AiOutlineLike } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import {loadList} from "../service/BoardService";
@@ -166,7 +166,7 @@ const BoardList = ()=>{
                                     <img src={`http://localhost:8081/images/board/happy.png`}/>
                                     <p className="boardNick">{board.boardUsername}</p>
                                     <p className="boardComment">댓글 : {board.commentCount}</p>
-                                    <p className="boardLike"><AiOutlineLike />{board.likeCount}</p>
+                                    <p className="boardLike"><IoMdHeartEmpty />{board.likeCount}</p>
                                     
                                 </div>
                             </div>

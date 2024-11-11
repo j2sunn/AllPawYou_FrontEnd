@@ -136,6 +136,26 @@ const UpdateProduct = () => {
     setProductInfo((prev) => ({ ...prev, [key]: value }));
   };
 
+  const cancel = () => {
+    Swal.fire({
+        title: "상품 목록으로 돌아가시겠습니까?",
+        text: '진행상황이 저장되지 않습니다.',
+        icon: 'warning',
+        
+        showCancelButton: true, // false가 default
+        confirmButtonColor: '#527853',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '이동',
+        cancelButtonText: '취소',
+        reverseButtons: true
+        
+     }).then(result => {
+        if (result.isConfirmed) {
+            navigator(-1);
+        }
+    });
+}
+
   const doSubmit = () => {
     const formData = new FormData();
     formData.append("category", productInfo.category);
@@ -208,9 +228,7 @@ const UpdateProduct = () => {
       {productInfo ? (
         <>
           <One>
-            <h4 onClick={() => console.log(images)}>상품 수정</h4>
-           // <h4 onClick={()=>console.log(productInfo.name)}>상품 수정</h4>
-
+            <h4>상품 수정</h4>
             <h5>
               카테고리<span>*</span>
             </h5>
@@ -274,7 +292,7 @@ const UpdateProduct = () => {
             </RadioGroup>
           </Three>
           <div style={{ marginTop: "30px", marginBottom: "50px" }}>
-            <Button variant="outlined" sx={{ margin: "10px" }}>
+            <Button variant="outlined" sx={{ margin: "10px" }} onClick={cancel}>
               취소
             </Button>
             <Button variant="contained" onClick={() => doSubmit()}>
@@ -283,13 +301,23 @@ const UpdateProduct = () => {
           </div>
         </>
       ) : (
-        <div>해당하는 상품이 없습니다.</div>
+        <Container>
+            <NoData>존재하지 않는 상품입니다.</NoData>
+            <Button variant="contained" onClick={()=>navigator(-1)} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>이전 페이지로 돌아가기</Button>
+          </Container>
       )}
     </>
   );
 };
 
 export default UpdateProduct;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 750px;
+`;
 
 const One = styled.div`
   width: 50%;
@@ -400,4 +428,12 @@ const UploadButton = styled.label`
 
 const FileInput = styled.input`
   display: none;
+`;
+
+const NoData = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    margin-top: 15rem;
 `;

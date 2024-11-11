@@ -44,6 +44,7 @@ const handleTitleChange = (e) => {
     const cancel = () => {
         Swal.fire({
             title: "공지사항 목록으로 돌아가시겠습니까?",
+            text: '진행상황이 저장되지 않습니다.',
             icon: 'warning',
             
             showCancelButton: true, // false가 default
@@ -118,7 +119,7 @@ const handleTitleChange = (e) => {
                         <Error>{error.content}</Error>
                     </Content>
                     <Buttons>
-                        <Button variant="outlined" color="error" onClick={cancel} sx={{width: '5rem', marginRight: '2rem'}}>취소</Button>
+                        <Button variant="outlined" onClick={cancel} sx={{width: '5rem', marginRight: '2rem'}}>취소</Button>
                         <Button variant="contained" onClick={doSubmit} sx={{width: '5rem'}}>수정</Button>
                     </Buttons>
                 </>

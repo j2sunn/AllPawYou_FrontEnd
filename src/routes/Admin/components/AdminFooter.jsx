@@ -11,10 +11,10 @@ const AdminFooter = () => {
         textAlign: "center"
       }}
     >
-      <Typography variant="body2" color="textSecondary">
+      <Typography variant="body2" color="white">
         &copy; {new Date().getFullYear()} Your Company Name. All rights reserved.
       </Typography>
-      <Typography variant="body2" color="textSecondary">
+      <Typography variant="body2" color="white">
         <Link href="#" color="inherit" sx={{ mx: 1 }}>
           Terms of Service
         </Link>

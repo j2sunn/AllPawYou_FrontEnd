@@ -77,10 +77,10 @@ const ProductList = () => {
     <>
 
       <Title>상품 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
+      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none' }}>
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEC759" }}>
-            <TableRow>
+          <TableHead>
+            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
               <TableCell align="center" sx={{ width: "8rem" }}>
                 번호
               </TableCell>
@@ -162,10 +162,11 @@ const ProductList = () => {
 export default ProductList;
 
 const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
 
 const AddProductButton = styled.div`
