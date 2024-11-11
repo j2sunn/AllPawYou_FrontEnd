@@ -29,6 +29,7 @@ const UpdateProduct = () => {
   const [productInfo, setProductInfo] = useState(null);
   const [thumbnail, setThumbnail] = useState({ file: null, preview: null }); // 썸네일 이미지
   const [images, setImages] = useState([]); // 상품 설명 이미지들
+  const [newImages, setNewImages] = useState([]);
 
   console.log("id :" , id);
 
@@ -51,14 +52,13 @@ const UpdateProduct = () => {
         file: productInfo.productFileDTO.find((file) => file.productFileTypeId === 1)?.imageRename,
         preview: `http://localhost:8081${productInfo.productFileDTO.find((file) => file.productFileTypeId === 1)?.imagePath}`,
       });
-
+      
       const detailImages = productInfo.productFileDTO
         .filter((file) => file.productFileTypeId === 2)
         .map((file) => ({
-          file: file.imageRename,
+          file,
           preview: `http://localhost:8081${file.imagePath}`,
         }));
-
       setImages(detailImages);
     }
   }, [productInfo]);
@@ -95,25 +95,15 @@ const UpdateProduct = () => {
       preview: URL.createObjectURL(file), // 미리보기 URL
     }));
   
-    setImages((prevImages) => [...prevImages, ...newImages]);
-
-    // const file = e.target.files[0];
-    // console.log(file);
-    // if (file.length + images.length > 8) {
-    //   alert("최대 8장까지 업로드할 수 있습니다.");
-    //   return;
-    // }
-    // const newImage = {
-    //   file, // 실제 파일 객체 저장
-    //   preview: URL.createObjectURL(file), // 미리보기 URL 저장
-    // };
-
-    // console.log("추가된 상세 이미지 파일들:", newImage);
-    // setImages((prevImages) => [...prevImages, newImage]);
+    setNewImages((prevImages) => [...prevImages, ...newImages]);
   };
 
   const handleRemoveDetailImage = (index) => {
     setImages(images.filter((_, i) => i !== index));
+  };
+
+  const handleRemoveNewDetailImage = (index) => {
+    setNewImages(newImages.filter((_, i) => i !== index));
   };
 
   const updateHandler = (event, key) => {
@@ -133,10 +123,19 @@ const UpdateProduct = () => {
       console.log("썸네일:: " , thumbnail.file);
     }
 
-    images.forEach((imageObj) => {
-      formData.append("detailImage", imageObj.file);
-      console.log(imageObj.file);
-    });
+    if(images.length > 0){
+      images.forEach((imageObj) => {
+        formData.append("detailImage", imageObj.file);
+        console.log(imageObj.file);
+      });
+    }
+
+    if(newImages.length > 0){
+      newImages.forEach((imageObj) => {
+        formData.append("detailImage", imageObj.file);
+        console.log(imageObj.file);
+      });
+    }
 
     try {
       // 상품 수정 API 호출
@@ -155,7 +154,7 @@ const UpdateProduct = () => {
       {productInfo ? (
         <>
           <One>
-            <h4 onClick={()=>console.log(images)}>상품 수정</h4>
+            <h4 onClick={()=>console.log(images, newImages)}>상품 수정</h4>
             <h5>
               카테고리<span>*</span>
             </h5>
@@ -203,6 +202,12 @@ const UpdateProduct = () => {
                 <ProductDetail key={index}>
                   <Image src={image?.preview} alt={`Uploaded ${index + 1}`} />
                   <RemoveButton onClick={() => handleRemoveDetailImage(index)}>X</RemoveButton>
+                </ProductDetail>
+              ))}
+              {newImages.map((image, index) => (
+                <ProductDetail key={index}>
+                  <Image src={image?.preview} alt={`Uploaded ${index + 1}`} />
+                  <RemoveButton onClick={() => handleRemoveNewDetailImage(index)}>X</RemoveButton>
                 </ProductDetail>
               ))}
             </ImgContainer>
