@@ -185,9 +185,10 @@ const ContentTextarea = styled.textarea`
 `;
 
 const Buttons = styled.div`
+    width: 90%;
+    margin-left: 3rem;
     display: flex;
     justify-content: end;
-    margin-right: 10rem;
 `;
 
 const Error = styled.div`
