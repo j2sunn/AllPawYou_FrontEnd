@@ -2,133 +2,113 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Button} from "@mui/material";
+import { Button } from "@mui/material";
 
-const NoticeDetail = ()=>{
+const NoticeDetail = () => {
+  const { state } = useLocation();
 
-    const {state} = useLocation();
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        console.log(state);
-    }, []);  
-    
-  useEffect(()=>{
-    scrollTo(0,0);
-  },[])
-  
-    return (
+  useEffect(() => {
+    console.log(state);
+  }, []);
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
+  return (
+    <>
+      {state ? (
         <>
-        
-            <div>
-                
-                {state ? (
-                    <>
-                    <Container>
-                        <One>
-                            <p>{state.noticeTitle}</p>
-                            <div className="profile">
-                                <div className="noticeInfo">
-                                    <p>{state.noticeDate.substr(0,4)+"."+
-                                        state.noticeDate.substr(5,2)+"."+
-                                        state.noticeDate.substr(8,2)+"  "+
-                                        state.noticeDate.substr(11,2)+":"+
-                                        state.noticeDate.substr(14,2)
-                                        }
-                                    </p>
-                                </div>
-                            </div>
-                        </One>
-                        <Two>
-                            <ContentTextarea defaultValue={state.noticeContent} disabled/>
-                        </Two>
-                        
-                        <Three>
-                            <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
-                                        onClick={() => navigate(-1)}  
-                                >
-                                목록으로
-                            </Button>
-                        </Three>
-                    </Container>
-                    
-                    <hr />
-                    </>
-                ) : (
-                    <p>게시글을 로딩 중...</p>
-                )}
-            </div>
+          <Container>
+            <Title>공지시항</Title>
+            <NoticeHeader>
+              <NoticeTitle>{state.noticeTitle}</NoticeTitle>
+              <div>
+                {state.noticeDate.substr(0, 4) +
+                  "." +
+                  state.noticeDate.substr(5, 2) +
+                  "." +
+                  state.noticeDate.substr(8, 2) +
+                  "  " +
+                  state.noticeDate.substr(11, 2) +
+                  ":" +
+                  state.noticeDate.substr(14, 2)}
+              </div>
+            </NoticeHeader>
+            <NoticeContent>
+              <ContentTextarea defaultValue={state.noticeContent} disabled />
+            </NoticeContent>
+
+            <BtnContainer>
+              <Button
+                variant="contained"
+                sx={{ fontSize: "1rem", marginTop: "1rem" }}
+                onClick={() => navigate(-1)}
+              >
+                목록으로
+              </Button>
+            </BtnContainer>
+          </Container>
         </>
-    );
-}
+      ) : (
+        <Container>게시글을 로딩 중...</Container>
+      )}
+    </>
+  );
+};
 export default NoticeDetail;
+
 const Container = styled.div`
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 650px;
 `;
 
-const One = styled.div`
-    width : 50%;
-    display: flex;
-    flex-direction : column;
-    border-bottom: 3px solid gray;
-    padding-bottom : 13px;
-    .profile{
-        display: flex;
-        
-    }
-    .profile .btns {
-    margin-left: auto;
-    }
-    p{
-        font-size: 30px;
-    }
-    img{
-        width : 60px;
-        height : 60px;
-    }
-    .noticeInfo{
-        display: flex;
-        flex-direction: column;
-        p{
-            margin : 0px 10px;
-            font-size: 20px;
-        }
-    }
-    
+const Title = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  align-self: flex-start;
+  margin: 2rem 0;
+  margin-left: 27rem;
 `;
 
-const Two = styled.div`
-
-    width : 50%;
-    p{
-        font-size: 25px;
-    }
-
+const NoticeHeader = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 1rem;
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
 `;
 
-const Three = styled.div`
-
-    width : 50%;
-    p{
-        font-size: 30px;
-    }
+const NoticeTitle = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
 
+const NoticeContent = styled.div`
+  width: 50%;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 50%;
+`;
 
 const ContentTextarea = styled.textarea`
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: none;
-    height: 150px;
-    resize: vertical; /* 사용자가 세로 크기 조정 가능 */
-    outline: none;
-
-    &:focus {
-        outline: none;
-    }
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  border: none;
+  min-height: 250px;
+  resize: none;
+  outline: none;
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 `;
