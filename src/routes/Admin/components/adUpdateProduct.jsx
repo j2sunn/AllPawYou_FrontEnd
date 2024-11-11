@@ -83,19 +83,33 @@ const UpdateProduct = () => {
 
   // 상품 설명 이미지 업로드 핸들러 (최대 8장)
   const handleDetailImageChange = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    if (file.length + images.length > 8) {
+    const selectedFiles = Array.from(e.target.files);
+    
+    if (selectedFiles.length + images.length > 8) {
       alert("최대 8장까지 업로드할 수 있습니다.");
       return;
     }
-    const newImage = {
-      file, // 실제 파일 객체 저장
-      preview: URL.createObjectURL(file), // 미리보기 URL 저장
-    };
+  
+    const newImages = selectedFiles.map((file) => ({
+      file, // 실제 파일 객체
+      preview: URL.createObjectURL(file), // 미리보기 URL
+    }));
+  
+    setImages((prevImages) => [...prevImages, ...newImages]);
 
-    console.log("추가된 상세 이미지 파일들:", newImage);
-    setImages((prevImages) => [...prevImages, newImage]);
+    // const file = e.target.files[0];
+    // console.log(file);
+    // if (file.length + images.length > 8) {
+    //   alert("최대 8장까지 업로드할 수 있습니다.");
+    //   return;
+    // }
+    // const newImage = {
+    //   file, // 실제 파일 객체 저장
+    //   preview: URL.createObjectURL(file), // 미리보기 URL 저장
+    // };
+
+    // console.log("추가된 상세 이미지 파일들:", newImage);
+    // setImages((prevImages) => [...prevImages, newImage]);
   };
 
   const handleRemoveDetailImage = (index) => {
