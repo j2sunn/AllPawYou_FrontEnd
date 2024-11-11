@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { listNotices } from "../service/NoticeService";
+import { listNotices } from "../../service/NoticeService";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -28,6 +28,8 @@ const ListNoticeComponent = () => {
     // },
   ]);
 
+  const [noticeData, setNoticeData] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,6 +51,12 @@ const ListNoticeComponent = () => {
   const goAddNotice = () => {
     navigate(`/admin/noticeWrite`);
   }
+
+  const goNoticeUpdate = (data) => {
+    navigate(`/admin/noticeUpdate/${data.noticeNo}`,{state: data});
+
+  }
+
 
   function removeNotice(noticeNo) {
     console.log(noticeNo);
@@ -102,7 +110,8 @@ const ListNoticeComponent = () => {
                     <TableCell align="center">{item.noticeDate}</TableCell>
                         <TableCell align="center" sx={{ width: "10rem" }} >
                             <Button variant="contained"
-                                sx={{ marginRight: '10px' }}>수정</Button>
+                                sx={{ marginRight: '10px' }} 
+                                onClick={()=>goNoticeUpdate(item)} >수정</Button>
                             <Button variant="outlined" onClick={() => removeNotice(item.noticeNo)}>삭제</Button>
                         </TableCell>
                   </TableRow>
@@ -115,7 +124,7 @@ const ListNoticeComponent = () => {
                 <Button variant="contained" sx={{ marginTop : '25px'}}
                 onClick={() => goAddNotice()}>공지사항 등록</Button>
           </AddProductButton>
-          <Pages>1 2 3 4 5 6</Pages>
+          <Pages></Pages>
         </Content>
       </Container>
     </>

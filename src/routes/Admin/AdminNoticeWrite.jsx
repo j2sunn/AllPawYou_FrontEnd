@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {createNotice} from "../service/NoticeService";
+import {createNotice} from "../../service/NoticeService";
 const NoticeWrite = ()=>{
     
     const navigator = useNavigate();
