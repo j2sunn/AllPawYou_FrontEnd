@@ -18,8 +18,6 @@ import PaymentCheck from "./routes/Payment/PaymentCheck";
 import BoardWrite from "./routes/BoardWrite";
 import ShoppingMain from "./routes/ShoppingMain";
 import Layout from "./components/common/Layout";
-import NoticeList from "./routes/NoticeList";
-import NoticeWrite from "./routes/NoticeWrite";
 import NoticeDetail from "./routes/NoticeDetail";
 import Temp from "./routes/Temp";
 import BoardDetail from "./routes/BoardDetail";
@@ -42,6 +40,10 @@ import AdminOrderList from "./routes/Admin/AdminOrderList";
 import AdminProductList from "./routes/Admin/AdminProductList";
 import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
 import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
+import AdminNoticeList from "./routes/Admin/AdminNoticeList";
+import AdminNoticeWrite from "./routes/Admin/AdminNoticeWrite";
+import AdminNoticeUpdate from "./routes/Admin/AdminNoticeUpdate";
+import NoticeListUser from "./routes/NoticeListUser";
 
 const Router = () => {
   return (
@@ -101,6 +103,13 @@ const Router = () => {
           <Route path="/review/createReview/:orderName" element={<UserReviewCreate />} />
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
+
+          
+        {/* 공지사항 메인(유저) */}
+        <Route path="/noticeListUser" element={<NoticeListUser />} />
+        
+        {/* 공지사항 상세페이지(유저) */}
+        <Route path="/noticeDetail/:noticeNo" element={<NoticeDetail />} />
         </Route>
 
         {/* 관리자 페이지 */}
@@ -114,10 +123,15 @@ const Router = () => {
         <Route path="/admin/updateproduct/:id" element={<AdminUpdateProduct />} />
 
         {/* 공지사항 메인(관리자) */}
-        <Route path="/admin/noticeList" element={<NoticeList />} />
+        <Route path="/admin/noticeList" element={<AdminNoticeList />} />
 
         {/* 공지사항 글 작성(관리자) */}
-        <Route path="/admin/noticeWrite" element={<NoticeWrite />} />
+        <Route path="/admin/noticeWrite" element={<AdminNoticeWrite />} />
+
+        {/* 공지사항 글 수정(관리자) */}
+        <Route path="/admin/noticeUpdate/:noticeNo" element={<AdminNoticeUpdate />} />
+
+
 
         <Route path="*" element={<NotFound />} />
       </Routes>

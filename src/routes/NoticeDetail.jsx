@@ -1,8 +1,9 @@
 //import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {getNotice} from "../service/NoticeService";
 import styled from "styled-components";
+import { Button} from "@mui/material";
 //import { AiOutlineLike } from "react-icons/ai";
 const NoticeDetail = ()=>{
     /*
@@ -26,25 +27,18 @@ const NoticeDetail = ()=>{
 
     //     </>
     // );
-    const params = useParams();
-    const [noticeNo, setNoticeNo] = useState(0);
-    const nNo = useRef(params?.noticeNo);  // 초기값을 params.boardNo로 설정
-    const [noticeData, setNoticeData] = useState(null);
+    const {state} = useLocation();
+
+    
+    const navigate = useNavigate();
+    const cp = state?.cp;
     // const [commentData,setCommentData] = useState(null); //댓글
     // const loginEmail = localStorage.getItem('email');  // 로컬 스토리지에서 토큰을 가져옵니다.
     // const [error, setError] = useState({});
     // const [comment,setComment] = useState("");
     useEffect(() => {
-        nNo.current = params?.noticeNo;  // params가 변경될 때마다 bNo 업데이트
-        setNoticeNo(nNo.current);  // boardNo 상태 업데이트
-        // console.log("boardNo : " + boardNo);
-        console.log("nNo : "+nNo.current); 
-        // selectOne(boardNo,setBoardData);
-
-        getNotice(nNo.current,setNoticeData);
-        console.log("data : "+noticeData);    
-        
-    }, [params?.noticeNo]);  // params.boardNo가 변경될 때마다 실행
+        console.log(state);
+    }, []);  // params.boardNo가 변경될 때마다 실행
     // const imgList = boardData.imgList;
     // for(let i=0;i<imgList.length;i++){
     //     console.log(imgList[i].boardImagePath+imgList[i].boardImageRename);
@@ -74,34 +68,38 @@ const NoticeDetail = ()=>{
         
             <div>
                 
-                {noticeData ? (
+                {state ? (
                     <>
                     <Container>
                         <One>
-                            <p>{noticeData.noticeTitle}</p>
+                            <p>{state.noticeTitle}</p>
                             <div className="profile">
                                 <div className="noticeInfo">
-                                    <p>{noticeData.noticeDate.substr(0,4)+"."+
-                                        noticeData.noticeDate.substr(5,2)+"."+
-                                        noticeData.noticeDate.substr(8,2)+"  "+
-                                        noticeData.noticeDate.substr(11,2)+"."+
-                                        noticeData.noticeDate.substr(14,2)
+                                    <p>{state.noticeDate.substr(0,4)+"."+
+                                        state.noticeDate.substr(5,2)+"."+
+                                        state.noticeDate.substr(8,2)+"  "+
+                                        state.noticeDate.substr(11,2)+":"+
+                                        state.noticeDate.substr(14,2)
                                         }
                                     </p>
-                                </div>
-                                <div className="btns">
-                                    <button>수정</button>
-                                    <button>삭제</button>
-                                </div>
-                                
+                                </div>    
                             </div>
                         </One>
-                        
                         <Two>
-                            {/* <p>{boardData.boardContent.replace(/<s>/g," ").replace(/<e>/g,"\n")}</p> */}
-                            <p dangerouslySetInnerHTML={{ __html: noticeData.noticeContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
-
+                            <p>
+                                {state.noticeContent}
+                            </p>
                         </Two>
+                        
+                        <Three>
+                            {/* <p>{boardData.boardContent.replace(/<s>/g," ").replace(/<e>/g,"\n")}</p> */}
+                            {/* <p dangerouslySetInnerHTML={{ __html: noticeData.noticeContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
+                            <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
+                                        onClick={() => navigate(`/noticeListUser`,{state:{ cp : cp}})}  
+                                        >
+                                            목록으로
+                                        </Button>
+                        </Three>
                     </Container>
                     
                     <hr />
@@ -151,7 +149,7 @@ const One = styled.div`
         width : 60px;
         height : 60px;
     }
-    .boardInfo{
+    .noticeInfo{
         display: flex;
         flex-direction: column;
         p{
@@ -161,7 +159,17 @@ const One = styled.div`
     }
     
 `;
+
 const Two = styled.div`
+
+    width : 50%;
+    p{
+        font-size: 25px;
+    }
+
+`;
+
+const Three = styled.div`
 
     width : 50%;
     p{
