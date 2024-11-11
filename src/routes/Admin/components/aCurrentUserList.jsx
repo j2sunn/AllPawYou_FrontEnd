@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { listUsers, deleteUser } from "../../../service/UserService";
-import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaRegTrashAlt } from "react-icons/fa";
+import defaultProfile from "src/assets/defaultprofile.png";
 
 const CurrentUser = () => {
-  
   const [user, setUsers] = useState([]);
 
   useEffect(() => {
@@ -43,16 +42,21 @@ const CurrentUser = () => {
 
   return (
     <>
-      <TableContainer component={Paper} sx={{
-                    boxShadow: "none",
-                  }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          boxShadow: "none",
+        }}
+      >
         <Table>
           <TableHead>
-            <TableRow sx={{
-                          borderTop: "2px solid rgba(0,0,0,0.8)",
-                          borderBottom: "2px solid rgba(0,0,0,0.8)",
-                        }}>
-              <TableCell align="center" sx={{ height: "60px"}}>
+            <TableRow
+              sx={{
+                borderTop: "2px solid rgba(0,0,0,0.8)",
+                borderBottom: "2px solid rgba(0,0,0,0.8)",
+              }}
+            >
+              <TableCell align="center" sx={{ height: "60px" }}>
                 번호
               </TableCell>
               <TableCell align="center">이름</TableCell>
@@ -63,15 +67,27 @@ const CurrentUser = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {user.map((item, index) => (
-              <TableRow key={item.no} sx={{
-                borderTop: "2px solid rgba(0,0,0,0.3)",
-                borderBottom: "2px solid rgba(0,0,0,0.3)",
-              }}>
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center">{item.username}</TableCell>
-                <TableCell align="center">{item.email}</TableCell>
-                <TableCell align="center" sx={{ width: "15rem" }} onClick={() => removeUser(item.no)}>
+            {user.map((item) => (
+              <TableRow
+                key={item.no}
+                sx={{
+                  borderTop: "2px solid rgba(0,0,0,0.3)",
+                  borderBottom: "2px solid rgba(0,0,0,0.3)",
+                }}
+              >
+                <TableCell align="center" sx={{ height: "85px" }}>
+                  <img
+                    src={item?.profileImage && item?.profileImage !== "default" ? `http://localhost:8081${item.profileImage}` : defaultProfile}
+                    style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                  />
+                </TableCell>
+                <TableCell align="center" sx={{ height: "85px" }}>
+                  {item.username}
+                </TableCell>
+                <TableCell align="center" sx={{ height: "85px" }}>
+                  {item.email}
+                </TableCell>
+                <TableCell align="center" sx={{ width: "15rem", height: "85px" }} onClick={() => removeUser(item.no)}>
                   <Button variant="contained" color="error">
                     <FaRegTrashAlt size="25" />
                   </Button>

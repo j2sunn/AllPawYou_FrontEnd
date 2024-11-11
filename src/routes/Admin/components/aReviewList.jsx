@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { AllReview, DeleteReview, ToggleVisibility } from "../../../service/Review";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { PiEyeBold, PiEyeSlashBold } from "react-icons/pi";
+import { PiEyeBold, PiEyeSlashBold, PiStarFill, PiStarHalfFill, PiStarLight } from "react-icons/pi";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]); // reviews로 변경
@@ -57,15 +57,31 @@ const ReviewList = () => {
     return singleLineContent.length > 25 ? `${singleLineContent.slice(0, 25)}...` : singleLineContent;
   };
 
+  //페이징
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const PerPage = 10; // 페이지당 메시지 개수
+
+  // 현재 페이지에 대한 메시지 가져오기
+  const indexOfLast = currentPage * PerPage;
+  const indexOfFirst = indexOfLast - PerPage;
+  const currentReviews = reviews.slice(indexOfFirst, indexOfLast);
+
+  const totalPages = Math.ceil(reviews.length / PerPage); // 전체 페이지 수
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <>
       <Title>후기 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none'  }}>
+      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: "3rem", boxShadow: "none" }}>
         <Table>
           <TableHead>
-            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
-              <TableCell align="center" sx={{width: '5rem'}}>번호</TableCell>
-              <TableCell align="center" sx={{width: '5rem'}}>별점</TableCell>
+            <TableRow sx={{ borderTop: "2px solid rgba(0,0,0,0.8)", borderBottom: "2px solid rgba(0,0,0,0.8)" }}>
+              <TableCell align="center" sx={{ width: "10rem" }}>
+                별점
+              </TableCell>
               <TableCell align="center" sx={{ width: "10rem" }}>
                 상품
               </TableCell>
@@ -80,36 +96,63 @@ const ReviewList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {reviews.map((item) => (
-              <TableRow key={item.reviewNo} sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
-                <TableCell align="center">{item.reviewNo}</TableCell>
-                <TableCell align="center">{item.reviewStar}</TableCell>
-                <TableCell align="center">
-                  {item.productName}
-                </TableCell>
-                <TableCell align="center">{item.username}</TableCell>
-                <TableCell align="center">{formatContent(item.reviewContent)}</TableCell>
-                <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
-                <TableCell align="center">
-                  {item.reviewVisible === "Y" ? (
-                    <Button variant="contained" color="secondary" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
-                      <PiEyeSlashBold size="25" />
+            {currentReviews.map((item) => {
+              // 별 개수 계산
+              const totalStars = 5;
+              const fullStars = Math.floor(item.reviewStar); // 리뷰의 별점 가져오기
+              const halfStar = item.reviewStar % 1 >= 0.5 ? 1 : 0; // 반쪽 별
+              const emptyStars = totalStars - fullStars - halfStar; // 빈 별 개수
+
+              return (
+                <TableRow key={item.reviewNo} sx={{ borderTop: "2px solid rgba(0,0,0,0.3)", borderBottom: "2px solid rgba(0,0,0,0.3)" }}>
+                  <TableCell align="center" sx={{ color: "#EEC759" }}>
+                    {/* 채워진 별 */}
+                    {[...Array(fullStars)].map((_, i) => (
+                      <PiStarFill className="star-lg" key={`full-${i}`} />
+                    ))}
+                    {/* 반쪽 별 (있을 경우) */}
+                    {halfStar > 0 && <PiStarHalfFill className="star-lg half" />}
+                    {/* 빈 별 */}
+                    {[...Array(emptyStars)].map((_, i) => (
+                      <PiStarLight className="star-lg" key={`empty-${i}`} />
+                    ))}
+                  </TableCell>
+                  <TableCell align="center">{item.productName}</TableCell>
+                  <TableCell align="center">{item.username}</TableCell>
+                  <TableCell align="center">{formatContent(item.reviewContent)}</TableCell>
+                  <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
+                  <TableCell align="center">
+                    {item.reviewVisible === "Y" ? (
+                      <Button variant="contained" color="secondary" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
+                        <PiEyeSlashBold size="25" />
+                      </Button>
+                    ) : (
+                      <Button variant="contained" color="primary" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
+                        <PiEyeBold size="25" />
+                      </Button>
+                    )}
+                    <Button variant="contained" color="error" onClick={() => removeReview(item.reviewNo)}>
+                      <FaRegTrashAlt size="25" />
                     </Button>
-                  ) : (
-                    <Button variant="contained" color="primary" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
-                      <PiEyeBold size="25" />
-                    </Button>
-                  )}
-                  <Button variant="contained" color="error" onClick={() => removeReview(item.reviewNo)}>
-                    <FaRegTrashAlt size="25" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <Pages>1 2 3 4 5 6</Pages> */}
+      <Pages>
+        {totalPages > 1 && (
+          <Pagination
+            count={totalPages} // 총 페이지 수
+            page={currentPage} // 현재 페이지
+            onChange={handlePageChange} // 페이지 변경 핸들러
+            siblingCount={2} // 현재 페이지 주변에 보이는 페이지 수
+            boundaryCount={2} // 처음과 끝에 보이는 페이지 수
+            color="primary"
+          />
+        )}
+      </Pages>
     </>
   );
 };
@@ -124,3 +167,9 @@ const Title = styled.div`
   width: 90%;
 `;
 
+const Pages = styled.div`
+  width: 100%;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+`;

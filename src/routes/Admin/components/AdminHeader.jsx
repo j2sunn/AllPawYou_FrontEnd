@@ -12,10 +12,8 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
-  Avatar,
   Button,
 } from "@mui/material";
-import { deepPurple } from "@mui/material/colors";
 import { MdExpandLess, MdExpandMore, MdPersonOutline, MdEditNote } from "react-icons/md";
 import { TbSpeakerphone } from "react-icons/tb";
 import { FaRegQuestionCircle } from "react-icons/fa";
@@ -49,11 +47,11 @@ const AdminHeader = () => {
       navigate("/forbidden");
       Swal.fire({
         title: "비정상적인 접근이 감지되었습니다.",
-        icon: 'warning',
-        
-        confirmButtonColor: '#527853',
-        confirmButtonText: '닫기',
-     });
+        icon: "warning",
+
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
     }
   }, [role, navigate]);
 
@@ -70,11 +68,11 @@ const AdminHeader = () => {
     navigate("/login");
     Swal.fire({
       title: "로그아웃 되었습니다.",
-      icon: 'success',
-      
-      confirmButtonColor: '#527853',
-      confirmButtonText: '닫기',
-   });
+      icon: "success",
+
+      confirmButtonColor: "#527853",
+      confirmButtonText: "닫기",
+    });
   };
 
   const goMain = () => {
@@ -114,7 +112,7 @@ const AdminHeader = () => {
   };
 
   const [userInfo, setUserInfo] = useState(null);
- 
+
   useEffect(() => {
     const username = localStorage.getItem("username");
     const email = localStorage.getItem("email");
@@ -125,20 +123,18 @@ const AdminHeader = () => {
     const profileImage = localStorage.getItem("profile");
 
     // 가져온 데이터를 상태에 설정
-      const userData = {
-        username,
-        email,
-        nickname,
-        intro,
-        phone,
-        address,
-        profileImage,
-      };
-      
-      setUserInfo(userData);
-    
-  }, []);
+    const userData = {
+      username,
+      email,
+      nickname,
+      intro,
+      phone,
+      address,
+      profileImage,
+    };
 
+    setUserInfo(userData);
+  }, []);
 
   return (
     <>
@@ -158,10 +154,12 @@ const AdminHeader = () => {
           <div style={{ flexGrow: 1 }} />
           {ACCESS_TOKEN ? (
             <>
-              {/* <Avatar sx={{ bgcolor: deepPurple[500] }}>{username}</Avatar> */}
-              <img src={userInfo?.profileImage && userInfo?.profileImage !== "default" 
-                        ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile} 
-                        style={{width:'50px', height:'50px' , borderRadius:'50%'}} />
+              <img
+                src={
+                  userInfo?.profileImage && userInfo?.profileImage !== "default" ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile
+                }
+                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+              />
               <Button color="inherit" style={{ marginLeft: "16px" }} onClick={handleLogout}>
                 로그아웃
               </Button>

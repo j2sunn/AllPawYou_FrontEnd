@@ -24,9 +24,9 @@ const MypageSideBar = () => {
     navigate(`/order`);
   };
 
-  const goCreateMessage = () => {
-    navigate(`/mypage/createMessage`);
-  };
+  // const goCreateMessage = () => {
+  //   navigate(`/mypage/createMessage`);
+  // };
 
   const goReceiveMessage = () => {
     navigate(`/mypage/receiveMessage`);
@@ -49,7 +49,7 @@ const MypageSideBar = () => {
         />
         <TreeItem itemId="order" label="주문 목록" onClick={goOrder} sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
         <TreeItem itemId="message" label="쪽지" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
-          <TreeItem itemId="createMessage" label="쪽지 보내기" onClick={goCreateMessage} />
+          {/* <TreeItem itemId="createMessage" label="쪽지 보내기" onClick={goCreateMessage} /> */}
           <TreeItem itemId="receive" label="받은 쪽지함" onClick={goReceiveMessage} />
           <TreeItem itemId="sent" label="보낸 쪽지함" onClick={geoSentMessage} />
         </TreeItem>

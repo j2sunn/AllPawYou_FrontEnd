@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { ResponsiveBar } from "@nivo/bar";
+import { ResponsiveLine } from "@nivo/line";
+import { Select, MenuItem, FormControl, InputLabel, Grid, Paper, Box } from "@mui/material";
 import { graphDailyOrder, graphDailyBoardCount, graphDailyTotalPrice } from "../../service/DashBoard";
-import { Select, MenuItem, FormControl, InputLabel, Paper, Grid, Box } from "@mui/material";
 
-const Barchart = () => {
+const LineChart = () => {
   const [data, setData] = useState([]);
   const [boardData, setBoardData] = useState([]);
   const [totalPriceData, setTotalPriceData] = useState([]);
   const [timeFrame, setTimeFrame] = useState("daily");
-  const [dataType, setDataType] = useState("orders"); // 기본값은 'orders'로 설정
+  const [dataType, setDataType] = useState("orders");
   const revenueDates = getDatesForRevenue();
 
   const fetchDailyOrders = async (dates) => {
@@ -42,7 +42,6 @@ const Barchart = () => {
   };
 
   useEffect(() => {
-    // 선택된 날짜 범주에 따라 데이터 가져오기
     const fetchData = async () => {
       if (timeFrame === "daily") {
         await fetchDailyOrders(revenueDates.dailyDates);
@@ -64,7 +63,23 @@ const Barchart = () => {
     };
 
     fetchData();
-  }, [timeFrame]); // timeFrame이 변경될 때마다 실행
+  }, [timeFrame]);
+
+  // 라인 차트 데이터 변환
+  const lineChartData = [
+    {
+      id: "주문 수",
+      data: data.map((item) => ({ x: item.date, y: item.count })),
+    },
+    {
+      id: "게시글 등록 수",
+      data: boardData.map((item) => ({ x: item.date, y: item.count })),
+    },
+    {
+      id: "총 수익",
+      data: totalPriceData.map((item) => ({ x: item.date, y: item.totalPrice })),
+    },
+  ];
 
   return (
     <Grid item xs={12} md={6}>
@@ -99,78 +114,67 @@ const Barchart = () => {
         </Box>
 
         <div style={{ width: "100%", height: "400px", marginTop: "20px" }}>
-          <ResponsiveBar
-            data={dataType === "orders" ? data : dataType === "boardCount" ? boardData : totalPriceData}
-            keys={dataType === "totalPrice" ? ["totalPrice"] : ["count"]}
-            indexBy="date"
-            margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-            padding={0.3}
-            colors={["#EEC759"]}
-            colorBy="id"
-            theme={{
-              labels: {
-                text: {
-                  fontSize: 14,
-                  fill: "#000000",
-                },
-              },
-              legends: {
-                text: {
-                  fontSize: 12,
-                  fill: "#000000",
-                },
-              },
-              axis: {
-                legend: {
-                  text: {
-                    fontSize: 15,
-                    fill: "#000000",
-                  },
-                },
-                ticks: {
-                  text: {
-                    fontSize: 16,
-                    fill: "#000000",
-                  },
-                },
-              },
+          {/* 라인 차트 추가 */}
+          <ResponsiveLine
+            data={lineChartData}
+            margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+            xScale={{ type: "point" }}
+            yScale={{
+              type: "linear",
+              min: "auto",
+              max: "auto",
+              stacked: true,
+              reverse: false,
             }}
+            yFormat=" >-.2f"
+            axisTop={null}
+            axisRight={null}
             axisBottom={{
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
               legend: "날짜",
+              legendOffset: 36,
               legendPosition: "middle",
-              legendOffset: 40,
+              truncateTickAt: 0,
             }}
             axisLeft={{
               tickSize: 5,
               tickPadding: 5,
               tickRotation: 0,
-              legend: dataType === "totalPrice" ? "총 수익" : "등록 수",
+              legend: "수치",
+              legendOffset: -40,
               legendPosition: "middle",
-              legendOffset: -50,
+              truncateTickAt: 0,
             }}
-            labelSkipWidth={36}
-            labelSkipHeight={12}
+            pointSize={10}
+            pointColor={{ theme: "background" }}
+            pointBorderWidth={2}
+            pointBorderColor={{ from: "serieColor" }}
+            pointLabel="data.yFormatted"
+            pointLabelYOffset={-12}
+            enableTouchCrosshair={true}
+            useMesh={true}
             legends={[
               {
-                dataFrom: "keys",
                 anchor: "bottom-right",
                 direction: "column",
                 justify: false,
-                translateX: 120,
+                translateX: 100,
                 translateY: 0,
-                itemsSpacing: 2,
-                itemWidth: 100,
-                itemHeight: 20,
+                itemsSpacing: 0,
                 itemDirection: "left-to-right",
-                itemOpacity: 0.85,
-                symbolSize: 20,
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: "circle",
+                symbolBorderColor: "rgba(0, 0, 0, .5)",
                 effects: [
                   {
                     on: "hover",
                     style: {
+                      itemBackground: "rgba(0, 0, 0, .03)",
                       itemOpacity: 1,
                     },
                   },
@@ -230,4 +234,4 @@ const getCurrentDate = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-export default Barchart;
+export default LineChart;

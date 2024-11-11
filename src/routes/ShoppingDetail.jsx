@@ -218,10 +218,10 @@ const ShoppingDetail = () => {
     getAverageStar(); // 별점 평균
   }, []);
 
+  //별 그리기
   // 채워진 별 개수
   const totalStars = 5;
   const fullStars = Math.floor(averageStar.data);
-
   // 만약 소수점이 있다면 반쪽 별 추가
   const halfStar = averageStar.data % 1 >= 0.5 ? 1 : 0;
   // 빈 별 개수

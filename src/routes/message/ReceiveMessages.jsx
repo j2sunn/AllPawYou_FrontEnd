@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Pagination } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { receiveMessage, deleteMessage } from "../../service/Message"; // Import deleteMessage
 import MypageSideBar from "../../components/common/MypageSideBar";
+import Swal from "sweetalert2";
 
 const ReceiveMessages = () => {
   const [messages, setMessages] = useState([]);
   const [selectedMessages, setSelectedMessages] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getReceiveMessage();
@@ -20,7 +20,6 @@ const ReceiveMessages = () => {
   function getReceiveMessage() {
     receiveMessage(receiver)
       .then((response) => {
-        console.log(response);
         setMessages(response);
       })
       .catch((error) => {
@@ -29,12 +28,12 @@ const ReceiveMessages = () => {
   }
 
   const goCreateMessage = () => {
-    const width = 600; // 팝업의 너비
-    const height = 800; // 팝업의 높이
+    const width = 650; // 팝업의 너비
+    const height = 500; // 팝업의 높이
     const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
     const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
 
-    window.open("/mypage/createMessage", "popup", `width=${width},height=${height},top=${top},left=${left}`);
+    window.open("/mypage/createMessage", "popup", `width=${width},height=${height},top=${top},left=${left},scrollbars=no`);
   };
 
   // Handle checkbox change
@@ -65,10 +64,25 @@ const ReceiveMessages = () => {
       for (let messageId of selectedMessages) {
         await deleteMessage(messageId);
       }
+      // 성공 시 알림
+      await Swal.fire({
+        icon: "success",
+        title: "메시지가 삭제되었습니다.", // 메시지 텍스트 수정
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
       getReceiveMessage();
       setSelectedMessages([]);
+      window.location.reload(); // 성공 후 새로고침
     } catch (error) {
       console.error("Error deleting messages:", error);
+      // 에러 발생 시 알림
+      await Swal.fire({
+        icon: "warning",
+        title: "메시지 삭제에 실패했습니다.", // 에러 메시지 텍스트
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
     }
   };
 
@@ -89,6 +103,10 @@ const ReceiveMessages = () => {
 
   // Determine the state of the "Select All" checkbox for the current page
   const isSelectAllChecked = currentMessages.length > 0 && currentMessages.every((message) => selectedMessages.includes(message.id));
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
 
   return (
     <Container>
