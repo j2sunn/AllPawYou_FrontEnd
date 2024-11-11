@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { loadList } from "../../../service/BoardService";
 import { AuthApi } from "../../../service/AuthApi";
+import Swal from "sweetalert2";
 const AdminBoardList = () => {
-
   const [boardList, setBoardList] = useState([]);
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [hideYN, setHideYN] = useState(false);
@@ -43,13 +43,33 @@ const AdminBoardList = () => {
   };
   const deleteBoard = (boardNo) => {
     // console.log("boardNo이다"+boardNo);
-    if (confirm("정말 삭제하시겠습니까?")) {
-      AuthApi.delete("http://localhost:8081/board/admindelete/" + boardNo).then(
-        (resp) => {
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 시 돌이킬 수 없습니다.",
+      icon: "warning",
+
+      showCancelButton: true, // false가 default
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        AuthApi.delete(
+          "http://localhost:8081/board/admindelete/" + boardNo
+        ).then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "삭제 되었습니다.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          });
+
           loadList();
-        }
-      );
-    }
+        });
+      }
+    });
   };
 
   const formatContent = (content) => {
@@ -79,7 +99,6 @@ const AdminBoardList = () => {
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
-
 
   return (
     <>

@@ -73,31 +73,66 @@ const MyPageBoardList = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentMessages.length > 0 ? (
-                  currentMessages.map((board) => (
-                    <TableRow key={board.boardNo} sx={{ borderTop: "2px solid rgba(0,0,0,0.3)", borderBottom: "2px solid rgba(0,0,0,0.3)" }}>
-                      <TableCell align="center">
-                        <img
-                          key={board.boardNo}
-                          src={
-                            board.imgList && board.imgList.length > 0 // 이미지 배열이 존재하고 길이가 0보다 큰 경우
-                              ? `http://localhost:8081/images/board/${board.imgList[0].boardImageRename}`
-                              : null // 이미지가 없으면 null
-                          }
-                          alt={board.imgList && board.imgList.length > 0 ? board.imgList[0].boardImageRename : "이미지가 없습니다."} // 이미지가 없을 때 대체 텍스트
-                          style={{ width: "5rem", height: "5rem" }}
-                        />
-                      </TableCell>
-                      <TableCell align="center">{board.boardTitle}</TableCell>
-                      <TableCell align="center">{board.boardContent.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0]}</TableCell>
-                      <TableCell align="center">{board.commentCount}</TableCell>
-                      <TableCell align="center">{board.likeCount}</TableCell>
-                      <TableCell align="center">{board.boardDate}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <>게시글 로딩중입니다.</>
-                )}
+
+              {currentBoardList.length>0 ? currentBoardList.map((board,index)=>(
+                        <TableRow key={board.boardNo} onClick={() => navigate(`/board/${board.boardNo}`)}>
+                        <TableCell align="center">
+                          {board.imgList && board.imgList.length > 0 ? (
+                            <img
+                            key={board.boardNo}
+                            src={
+                               `http://localhost:8081/images/board/${board.imgList[0].boardImageRename}`
+                                
+                            }
+                            alt={ board.imgList[0].boardImageRename } 
+                            style={{ width: "5rem", height: "5rem" }}
+                          />
+                          ) : (
+                                <>
+                                </>
+                          )}
+                          
+                        </TableCell>
+                        <TableCell align="center">{board.boardTitle}</TableCell>
+                        <TableCell align="center">{board.boardContent.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0]}</TableCell>
+                        <TableCell align="center">{board.commentCount}</TableCell>
+                        <TableCell align="center">{board.likeCount}</TableCell>
+                        <TableCell align="center">{board.boardDate}</TableCell>
+                      </TableRow>
+                    )) : (
+                        <>
+                            게시글 로딩중입니다.
+                        </>
+                    )
+                }
+                
+
+//                 {currentMessages.length > 0 ? (
+//                   currentMessages.map((board) => (
+//                     <TableRow key={board.boardNo} sx={{ borderTop: "2px solid rgba(0,0,0,0.3)", borderBottom: "2px solid rgba(0,0,0,0.3)" }}>
+//                       <TableCell align="center">
+//                         <img
+//                           key={board.boardNo}
+//                           src={
+//                             board.imgList && board.imgList.length > 0 // 이미지 배열이 존재하고 길이가 0보다 큰 경우
+//                               ? `http://localhost:8081/images/board/${board.imgList[0].boardImageRename}`
+//                               : null // 이미지가 없으면 null
+//                           }
+//                           alt={board.imgList && board.imgList.length > 0 ? board.imgList[0].boardImageRename : "이미지가 없습니다."} // 이미지가 없을 때 대체 텍스트
+//                           style={{ width: "5rem", height: "5rem" }}
+//                         />
+//                       </TableCell>
+//                       <TableCell align="center">{board.boardTitle}</TableCell>
+//                       <TableCell align="center">{board.boardContent.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0]}</TableCell>
+//                       <TableCell align="center">{board.commentCount}</TableCell>
+//                       <TableCell align="center">{board.likeCount}</TableCell>
+//                       <TableCell align="center">{board.boardDate}</TableCell>
+//                     </TableRow>
+//                   ))
+//                 ) : (
+//                   <>게시글 로딩중입니다.</>
+//                 )}
+
               </TableBody>
             </Table>
           </TableContainer>
