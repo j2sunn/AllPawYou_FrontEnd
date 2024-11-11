@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import { listUsers, deleteUser } from "../../../service/UserService";
 import styled from "styled-components";
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Button,
+  Pagination,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const UserList = () => {
-  const [user, setUsers] = useState([]);
+  const [users, setUsers] = useState([[]]);
 
   useEffect(() => {
     getAllUsers();
@@ -35,28 +45,65 @@ const UserList = () => {
       });
   }
 
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const PerPage = 10; // 페이지당 메시지 개수
+
+  // 현재 페이지에 대한 메시지 가져오기
+  const indexOfLast = currentPage * PerPage;
+  const indexOfFirst = indexOfLast - PerPage;
+  const currentUsers = users.slice(indexOfFirst, indexOfLast);
+  console.log(currentUsers);
+
+  const totalPages = Math.ceil(users.length / PerPage); // 전체 페이지 수
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <>
-      <Title>유저 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
+      <Title>회원 관리</Title>
+      <TableContainer
+        component={Paper}
+        sx={{
+          width: "90%",
+          marginTop: "3rem",
+          marginLeft: "3rem",
+          boxShadow: "none",
+        }}
+      >
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEC759" }}>
-            <TableRow>
-              <TableCell align="center">번호</TableCell>
-              <TableCell align="center">이름</TableCell>
+          <TableHead>
+            <TableRow
+              sx={{
+                borderTop: "2px solid rgba(0,0,0,0.8)",
+                borderBottom: "2px solid rgba(0,0,0,0.8)",
+              }}
+            >
+              <TableCell align="center" sx={{width: '5rem'}}>번호</TableCell>
+              <TableCell align="center" sx={{width: '15rem'}}>이름</TableCell>
               <TableCell align="center">이메일</TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
-                삭제
+                회원 삭제
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {user.map((item, index) => (
-              <TableRow key={item.no}>
-                <TableCell align="center">{index + 1}</TableCell>
+            {currentUsers.map((item) => (
+              <TableRow
+                key={item.no}
+                sx={{
+                  borderTop: "2px solid rgba(0,0,0,0.3)",
+                  borderBottom: "2px solid rgba(0,0,0,0.3)",
+                }}
+              >
+                <TableCell align="center">{item.no}</TableCell>
                 <TableCell align="center">{item.username}</TableCell>
                 <TableCell align="center">{item.email}</TableCell>
-                <TableCell align="center" sx={{ width: "15rem" }} onClick={() => removeUser(item.no)}>
+                <TableCell
+                  align="center"
+                  onClick={() => removeUser(item.no)}
+                >
                   <Button variant="contained" color="error">
                     <FaRegTrashAlt size="25" />
                   </Button>
@@ -66,7 +113,18 @@ const UserList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <Pages>1 2 3 4 5 6</Pages> */}
+      <Pages>
+        {totalPages > 1 && (
+          <Pagination
+            count={totalPages} // 총 페이지 수
+            page={currentPage} // 현재 페이지
+            onChange={handlePageChange} // 페이지 변경 핸들러
+            siblingCount={2} // 현재 페이지 주변에 보이는 페이지 수
+            boundaryCount={2} // 처음과 끝에 보이는 페이지 수
+            color="primary"
+          />
+        )}
+      </Pages>
     </>
   );
 };
@@ -74,8 +132,16 @@ const UserList = () => {
 export default UserList;
 
 const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
+`;
+
+const Pages = styled.div`
+  width: 90%;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
 `;
