@@ -12,7 +12,7 @@ import { Button, Pagination, TextField } from "@mui/material";
 import Swal from "sweetalert2";
 
 const ShoppingMain = () => {
-  const [product, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("OPEN");
@@ -81,9 +81,9 @@ const ShoppingMain = () => {
   // 현재 페이지에 대한 메시지 가져오기
   const indexOfLast = currentPage * PerPage;
   const indexOfFirst = indexOfLast - PerPage;
-  const currentProduct = product.slice(indexOfFirst, indexOfLast);
+  const currentProduct = products.slice(indexOfFirst, indexOfLast);
 
-  const totalPages = Math.ceil(product.length / PerPage); // 전체 페이지 수
+  const totalPages = Math.ceil(products.length / PerPage); // 전체 페이지 수
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -146,7 +146,7 @@ const ShoppingMain = () => {
           </IconCard>
         </IconContainer>
         <div id="goods-section">
-          {product?.length > 0 ? (
+          {products?.length > 0 ? (
             <Grid>
               {currentProduct?.map((item, index) => (
                 <GridItem key={index} onClick={() => goDetail(item.id)}>

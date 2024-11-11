@@ -165,14 +165,12 @@ const Content = styled.div`
   padding-bottom: 20px;
 `;
 
-const SideBarTitle = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
-`;
-
-const Title = styled(SideBarTitle)`
+const Title = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
 
 const ButtonContainer = styled.div`

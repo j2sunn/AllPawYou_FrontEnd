@@ -43,11 +43,16 @@ const CurrentUser = () => {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{
+                    boxShadow: "none",
+                  }}>
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEC759" }}>
-            <TableRow>
-              <TableCell align="center" sx={{ height: "60px", fontSize: "" }}>
+          <TableHead>
+            <TableRow sx={{
+                          borderTop: "2px solid rgba(0,0,0,0.8)",
+                          borderBottom: "2px solid rgba(0,0,0,0.8)",
+                        }}>
+              <TableCell align="center" sx={{ height: "60px"}}>
                 번호
               </TableCell>
               <TableCell align="center">이름</TableCell>
@@ -59,7 +64,10 @@ const CurrentUser = () => {
           </TableHead>
           <TableBody>
             {user.map((item, index) => (
-              <TableRow key={item.no}>
+              <TableRow key={item.no} sx={{
+                borderTop: "2px solid rgba(0,0,0,0.3)",
+                borderBottom: "2px solid rgba(0,0,0,0.3)",
+              }}>
                 <TableCell align="center">{index + 1}</TableCell>
                 <TableCell align="center">{item.username}</TableCell>
                 <TableCell align="center">{item.email}</TableCell>
