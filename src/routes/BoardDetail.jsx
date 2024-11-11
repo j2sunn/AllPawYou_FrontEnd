@@ -14,14 +14,12 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     
 
     const { state } = useLocation();
+    
     const cp = state?.cp.currentPage;
     const selectedCategory = state?.selectedCategory.selectedCategory;
     const searchOpt = state?.searchOpt.searchOpt;
     const keyword = state?.keyword.keyword;
-    console.log("cp : "+JSON.stringify(cp));
-    console.log("selectedCategory : "+JSON.stringify(selectedCategory));
-    console.log("searchOpt : "+JSON.stringify(searchOpt));
-    console.log("keyword : "+JSON.stringify(keyword));
+    
     //************************************************************************************** */
     //************************************************************************************** */
     const [onUpdateCommentNo, setOnUpdateCommentNo] = useState(0); //수정중인 댓글 번호 저장
@@ -41,9 +39,9 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     const [isLiked, setIsLiked] = useState(0); //좋아요 여부
     //==============================================================================
     const navigate = useNavigate();
-    
+    let no = 0; //로그인한 회원 번호
     useEffect(() => {
-        console.log("보드넘버  : "+boardNo);
+        
         bNo.current = params?.boardNo;  // params가 변경될 때마다 bNo 업데이트
         setBoardNo(bNo.current);  // boardNo 상태 업데이트
         
@@ -58,19 +56,22 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
         then(resp=>{
             setBoardData(resp);
             setCommentData(resp.commentList); //댓글리스트
-            const updatedCommentData = resp.commentList.map(comment => ({
-                ...comment,
-                canEdit: comment.no === boardData.no
-            }));
-            setCommentData(updatedCommentData);
+            // const updatedCommentData = resp.commentList.map(comment => ({
+            //     ...comment,
+            //     canEdit: comment.no === boardData.no
+            // }));
+            // setCommentData(updatedCommentData);
+            console.log("포"+resp.likeOrNot);
             setIsLiked(resp.likeOrNot);
         });
     }
 
     //글 정보 새로 불러오기
     const loadData = async (boardNo) => {
+        no = Number(localStorage.getItem('no'));
         
-        const response = await axios.get('http://localhost:8081/board/' + boardNo);
+        
+        const response = await axios.get('http://localhost:8081/board/' + boardNo+"/"+no);
         return response.data;
     };
     const handleContentChange = (e)=>{
@@ -117,11 +118,11 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
         });
     }
     const boardDelete = (boardNo)=>{
-        console.log("boardNo : "+boardNo);
+        
         if(confirm("정말 삭제하시겠습니까?")){
             axios.delete("http://localhost:8081/board/delete/"+boardNo)
             .then(resp=>{
-                console.log("결과느으으은"+resp.data);
+                
                 alert("삭제되었습니다.");
                 navigate("/boardList");
             })
@@ -263,7 +264,7 @@ useEffect(()=>{
                         )}
                         <div className="like" onClick={()=>toggleLike(boardNo, localStorage.getItem('email'))}>
                             
-                                {boardData.likeOrNot ==1 ? (
+                                {isLiked ==1 ? (
                                         <IoHeart className="heart"/>
                                     ) : (
                                         <IoMdHeartEmpty className="heart"/>
