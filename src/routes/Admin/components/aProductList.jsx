@@ -3,6 +3,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import styled from "styled-components";
 import { listProducts, DeleteProduct } from "../../../service/ProductService";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ProductList = () => {
   const [product, setProducts] = useState([]);
@@ -45,6 +46,13 @@ const ProductList = () => {
         await DeleteProduct(id);
         await getAllProducts();
         alert("상품이 삭제되었습니다.");
+        Swal.fire({
+          title: "상품이 삭제되었습니다.",
+          icon: 'success',
+          
+          confirmButtonColor: '#527853',
+          confirmButtonText: '닫기',
+       });
       }
     } catch (error) {
       console.log(error);

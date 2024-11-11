@@ -52,7 +52,6 @@ const AdminHeader = () => {
         
         confirmButtonColor: '#527853',
         confirmButtonText: '닫기',
-        
      });
     }
   }, [role, navigate]);
@@ -68,7 +67,13 @@ const AdminHeader = () => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
-    alert("로그아웃 되었습니다.");
+    Swal.fire({
+      title: "로그아웃 되었습니다.",
+      icon: 'success',
+      
+      confirmButtonColor: '#527853',
+      confirmButtonText: '닫기',
+   });
   };
 
   const goMain = () => {
@@ -81,6 +86,10 @@ const AdminHeader = () => {
 
   const goUserList = () => {
     navigate("/admin/userlist"); // 클릭 시 navigate 호출
+  };
+
+  const goNoticeList = () => {
+    navigate("/admin/noticeList"); // 클릭 시 navigate 호출
   };
 
   const goBoardList = () => {
@@ -202,7 +211,7 @@ const AdminHeader = () => {
           <Collapse in={openBoard} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItem disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton sx={{ pl: 4 }} onClick={goNoticeList}>
                   <ListItemIcon>
                     <TbSpeakerphone />
                   </ListItemIcon>

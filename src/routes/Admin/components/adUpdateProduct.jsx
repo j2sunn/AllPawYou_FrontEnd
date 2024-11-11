@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateProduct, getProductByProductId, DeleteProductFile } from "../../../service/ProductService";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UpdateProduct = () => {
   const navigator = useNavigate();
@@ -82,10 +83,23 @@ const UpdateProduct = () => {
 
   // 상품 설명 이미지 업로드 핸들러 (최대 8장)
   const handleDetailImageChange = (e) => {
+
     const files = Array.from(e.target.files);
     console.log("상세이미지 : ", files);
     if (files.length + images.length > 8) {
       alert("최대 8장까지 업로드할 수 있습니다.");
+
+//     const selectedFiles = Array.from(e.target.files);
+    
+//     if (selectedFiles.length + images.length > 8) {
+//       Swal.fire({
+//         title: "최대 8장까지 업로드할 수 있습니다.",
+//         icon: 'warning',
+        
+//         confirmButtonColor: '#527853',
+//         confirmButtonText: '닫기',
+//      });
+
       return;
     }
 
@@ -140,14 +154,52 @@ const UpdateProduct = () => {
     });
 
     try {
-      // 상품 수정 API 호출
-      updateProduct(id, formData);
-      // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
-      navigator("/admin/productlist"); // 이동할 페이지 URL을 설정
-      alert("상품이 수정되었습니다.");
-    } catch (error) {
-      console.error("상품 등록 실패:", error);
-      alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
+      if(productInfo.name.trim().length == 0){
+        Swal.fire({
+            title: "상품 이름을 입력해주세요.",
+            icon: 'warning',
+            
+            confirmButtonColor: '#527853',
+            cancelButtonText: '확인'                    
+         });
+      }else if(+productInfo.price <= 0){
+          Swal.fire({
+              title: "올바른 가격을 입력해주세요.",
+              icon: 'warning',
+              
+              confirmButtonColor: '#527853',
+              cancelButtonText: '확인'                    
+          });
+      }else if(thumbnail.file == null){
+          Swal.fire({
+              title: "썸네일 이미지를 등록해주세요.",
+              icon: 'warning',
+              
+              confirmButtonColor: '#527853',
+              cancelButtonText: '확인'                    
+          });
+      }else{
+        // 상품 수정 API 호출
+        updateProduct(id, formData);
+        // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
+        navigator("/admin/productlist"); // 이동할 페이지 URL을 설정
+        Swal.fire({
+          title: "상품이 수정되었습니다.",
+          icon: 'success',
+          
+          confirmButtonColor: '#527853',
+          cancelButtonText: '확인'                    
+       });
+      }
+      } catch (error) {
+        console.error("상품 등록 실패:", error);
+        Swal.fire({
+          title: "상품 수정에 실패했습니다. 다시 시도해주세요.",
+          icon: 'error',
+          
+          confirmButtonColor: '#527853',
+          cancelButtonText: '확인'                    
+       });
     }
   };
 
@@ -157,6 +209,8 @@ const UpdateProduct = () => {
         <>
           <One>
             <h4 onClick={() => console.log(images)}>상품 수정</h4>
+           // <h4 onClick={()=>console.log(productInfo.name)}>상품 수정</h4>
+
             <h5>
               카테고리<span>*</span>
             </h5>
@@ -224,7 +278,7 @@ const UpdateProduct = () => {
               취소
             </Button>
             <Button variant="contained" onClick={() => doSubmit()}>
-              등록
+              수정
             </Button>
           </div>
         </>

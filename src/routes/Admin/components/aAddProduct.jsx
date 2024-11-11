@@ -3,29 +3,12 @@ import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
 import { addProduct } from "../../../service/ProductService";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 
-const aAddProduct = () => {
+const AdminAddProduct = () => {
 
     const navigator = useNavigate();
-    const [ACCESS_TOKEN, setAccessToken] = useState("");
-    const [loginEmail, setLoginEmail] = useState("");
-
-    useEffect(() => {
-        const token = localStorage.getItem("accessToken");
-        if (token) {
-            const payload = JSON.parse(atob(token.split(".")[1]));
-            setAccessToken(token);
-            setLoginEmail(payload['user-email']);
-            console.log("토큰 : " + token);
-            console.log("email : " + payload['user-email']);
-        } else {
-            alert("로그인 후 이용해주세요.");
-            location.href = '/login';
-        }
-    }, []);
-
     const [selectedCategory, setSelectedCategory] = useState("food");   //카테고리 선택
     const [thumbnail, setThumbnail] = useState({ file: null, preview: null }); // 썸네일 이미지
     const [images, setImages] = useState([]); // 상품 설명 이미지들
@@ -69,8 +52,14 @@ const aAddProduct = () => {
     // 상품 설명 이미지 업로드 핸들러 (최대 8장)
     const handleDetailImageChange = (e) => {
         const files = Array.from(e.target.files);
-        if (files.length + images.length > 8) {
-            alert("최대 8장까지 업로드할 수 있습니다.");
+        if (files.length + images.length + newImages.length > 8) {
+            Swal.fire({
+              title: "최대 8장까지 업로드할 수 있습니다.",
+              icon: 'warning',
+              
+              confirmButtonColor: '#527853',
+              confirmButtonText: '닫기',
+           });
             return;
         }
         const newImages = files.map((file) => ({
@@ -231,7 +220,7 @@ const aAddProduct = () => {
     );
 };
 
-export default aAddProduct;
+export default AdminAddProduct;
 
 const Div = styled.div`
     background-color: ${({ selected }) => (selected ? '#EEC759' : 'RGB(240, 240, 243)')};
