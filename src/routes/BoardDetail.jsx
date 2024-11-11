@@ -8,8 +8,19 @@ import { AiOutlineLike } from "react-icons/ai";
 import { Button} from "@mui/material";
 import { IoMdHeartEmpty } from "react-icons/io"; //빈 하트
 import { IoHeart } from "react-icons/io5"; //채워진 하트
+import Swal from "sweetalert2";
 const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
+    /*
+    Swal.fire({
+      icon: "success",
+      title: "로그아웃 되었습니다.",
+      confirmButtonColor: "#527853",
+      confirmButtonText: "닫기",
+    });
     
+    
+    
+    */
     const params = useParams();
     
 
@@ -86,9 +97,29 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     }
     const addComment = ()=>{
         if(localStorage.getItem('email') == null){
-            alert("로그인 후 댓글 작성이 가능합니다.");
-            navigate('/login');
-            return;
+            
+            Swal.fire({
+                        title: "로그인 하시겠습니까?",
+                        text: '로그인 후에 댓글 작성이 가능합니다.',
+                        icon: 'warning',
+                        
+                        showCancelButton: true, // false가 default
+                        confirmButtonColor: '#527853',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '이동',
+                        cancelButtonText: '취소',
+                        reverseButtons: true
+                        
+                     }).then(result => {
+                        if (result.isConfirmed) {
+                                navigate('/login');
+                    return;
+                        }else{
+                    setError({...error, comment: ""});
+                }
+                    });
+                
+            
         }
         if(comment.trim().length==0){
             setError({comment:"댓글을 입력해 주세요."});
@@ -106,12 +137,28 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     }
 
     const toggleLike=(boardNo, loginEmail)=>{
-        
         if(localStorage.getItem('email') == null){
-            alert("로그인 후 이용해 주세요.");
-            navigate('/login');
-            return;
+            Swal.fire({
+                title: "로그인 하시겠습니까?",
+                        text: '로그인 후 좋아요 표시가 가능합니다.',
+                        icon: 'warning',
+                        
+                        showCancelButton: true, // false가 default
+                        confirmButtonColor: '#527853',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '이동',
+                        cancelButtonText: '취소',
+                        reverseButtons: true
+                        
+                     }).then(result => {
+                        if (result.isConfirmed) {
+                                navigate('/login');
+                    return;
+                        }
+                    });
+                
         }
+        
         axios.post('http://localhost:8081/board/like/insert', {boardNo, 
             email : loginEmail})
         .then(response => {
@@ -122,31 +169,89 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     }
     const boardDelete = (boardNo)=>{
         
-        if(confirm("정말 삭제하시겠습니까?")){
-            axios.delete("http://localhost:8081/board/delete/"+boardNo)
-            .then(resp=>{
-                
-                alert("삭제되었습니다.");
-                navigate("/boardList");
-            })
-        }
+       
+        Swal.fire({
+            title: "정말 삭제하시겠습니까?",
+                    text: '삭제 시 돌이킬 수 없습니다.',
+                    icon: 'warning',
+        
+                    showCancelButton: true, // false가 default
+                    confirmButtonColor: '#527853',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '삭제',
+                    cancelButtonText: '취소',
+                    reverseButtons: true
+                    
+                 }).then(result => {
+                    if (result.isConfirmed) {
+                            axios.delete("http://localhost:8081/board/delete/"+boardNo)
+                .then(resp=>{
+                    
+                    Swal.fire({
+                              icon: "success",
+                              title: "게시글이 삭제되었습니다.",
+                              confirmButtonColor: "#527853",
+                              confirmButtonText: "닫기",
+                            });
+                        
+                    navigate("/boardList");
+                })
+                    }
+                });
+            
     }
     const deleteComment = (commentNo)=>{
-        if(confirm("정말 삭제하시겠습니까?")){
-            axios.delete("http://localhost:8081/board/comment/delete/"+commentNo)
-            .then(resp =>{
-                
-                if(resp.data>0){
-                    alert("삭제되었습니다.");
-                    // loadData(boardNo,setBoardData);
-                    setTimeout(()=>{
-                        renew();
-                    },500);
-                }else{
-                    alert("삭제에 실패하였습니다.");
-                }
-            })
-        }
+        Swal.fire({
+                    title: "정말 삭제하시겠습니까?",
+                    text: '삭제 시 돌이킬 수 없습니다.',
+                    icon: 'warning',
+                    
+                    showCancelButton: true, // false가 default
+                    confirmButtonColor: '#527853',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '삭제',
+                    cancelButtonText: '취소',
+                    reverseButtons: true
+                    
+                 }).then(result => {
+                    if (result.isConfirmed) {
+                            axios.delete("http://localhost:8081/board/comment/delete/"+commentNo)
+                .then(resp =>{
+                    
+                    if(resp.data>0){
+                        Swal.fire({
+                                  icon: "success",
+                                  title: "댓글이 삭제되었습니다.",
+                                  confirmButtonColor: "#527853",
+                                  confirmButtonText: "닫기",
+                                });
+                        setTimeout(()=>{
+                            renew();
+                        },500);
+                    }else{
+                        Swal.fire({
+                                    title: "삭제에 실패했습니다.",
+                                    text: '다시 시도해 주세요.',
+                                    icon: 'warning',
+                                    
+                                    confirmButtonColor: '#527853',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: '확인',
+                                    
+                                    reverseButtons: true
+                                    
+                                 }).then(result => {
+                                    if (result.isConfirmed) {
+                                        
+                                    }
+                                });
+                            
+                    }
+                })
+                    }
+                });
+            
+        
         
     }
 
@@ -158,7 +263,13 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
         .then(resp=>{
             
             if(resp.data>0){
-                alert("댓글이 수정되었습니다.");
+                Swal.fire({
+                          icon: "success",
+                          title: "댓글이 수정되었습니다.",
+                          confirmButtonColor: "#527853",
+                          confirmButtonText: "닫기",
+                        });
+                    
                 // loadData(boardNo,setBoardData);
                 setTimeout(()=>{
                     setOnUpdateCommentNo(0);
@@ -166,7 +277,22 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
 
                 },500);
             }else{
-                alert("수정에 실패하였습니다.");
+                Swal.fire({
+                            title: "수정에 실패했습니다.",
+                            text: '다시 시도해 주세요.',
+                            icon: 'warning',
+                            
+                            confirmButtonColor: '#527853',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: '확인',
+                            
+                            reverseButtons: true
+                            
+                         }).then(result => {
+                            if (result.isConfirmed) {
+                                
+                            }
+                        });
             }
         })
     }
@@ -327,10 +453,10 @@ useEffect(()=>{
                                             <>
                                                 {/* 수정중이지 않은 경우 */}
                                                 {/* 댓글 작성자 프로필이미지 */}
-                                                <div className="row">
-                                                    <img src="http://localhost:8081/images/board/happy.png"/>
-                                                    <p>{comment.commentUsername}</p>
-                                                </div>
+                                                
+                                                <img src="http://localhost:8081/images/board/happy.png"/>
+                                                <p>{comment.commentUsername}</p>
+                                                
                                                 {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
                                                 <p dangerouslySetInnerHTML={{ __html: comment.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
                                                 {/* <p>{comment.commentContent}</p> */}
@@ -531,10 +657,7 @@ const Four = styled.div`
     .commentBoxes{
         display : flex;
     }
-    .row{
-        display: flex;
-        
-    }
+    
 `;
 //댓글
 const ContentTextarea = styled.textarea`
