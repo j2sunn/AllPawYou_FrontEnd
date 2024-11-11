@@ -4,6 +4,7 @@ import { listNotices } from "../../../service/NoticeService";
 import styled from "styled-components";
 import {
   Button,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -16,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const ListNoticeComponent = () => {
-  
   const [notices, setNotices] = useState([]);
 
   const navigate = useNavigate();
@@ -47,30 +47,44 @@ const ListNoticeComponent = () => {
   function removeNotice(noticeNo) {
     Swal.fire({
       title: "해당 공지사항을 삭제하시겠습니까?",
-      icon: 'warning',
-      
+      icon: "warning",
+
       showCancelButton: true, // false가 default
-      confirmButtonColor: '#527853',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '삭제',
-      cancelButtonText: '취소',
-      reverseButtons: true
-      
-   }).then(result => {
-      if (result.isConfirmed) { 
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
         axios
-        .delete("http://localhost:8081/api/notice/delete/" + noticeNo)
-        .then(() => {
-          getAllNotices();
-        });
-         Swal.fire({
+          .delete("http://localhost:8081/api/notice/delete/" + noticeNo)
+          .then(() => {
+            getAllNotices();
+          });
+        Swal.fire({
           icon: "success",
-          title:'삭제되었습니다.',
-          confirmButtonColor: '#527853'
+          title: "삭제되었습니다.",
+          confirmButtonColor: "#527853",
         });
       }
-   });
+    });
   }
+
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const PerPage = 10; // 페이지당 메시지 개수
+
+  // 현재 페이지에 대한 메시지 가져오기
+  const indexOfLast = currentPage * PerPage;
+  const indexOfFirst = indexOfLast - PerPage;
+  const currentNotices = notices.slice(indexOfFirst, indexOfLast);
+  console.log(currentNotices);
+
+  const totalPages = Math.ceil(notices.length / PerPage); // 전체 페이지 수
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -81,15 +95,28 @@ const ListNoticeComponent = () => {
       <Title>공지사항 관리</Title>
       <TableContainer
         component={Paper}
-        sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none' }}
+        sx={{
+          width: "90%",
+          marginTop: "3rem",
+          marginLeft: "3rem",
+          boxShadow: "none",
+        }}
       >
         <Table>
           <TableHead>
-            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
+            <TableRow
+              sx={{
+                borderTop: "2px solid rgba(0,0,0,0.8)",
+                borderBottom: "2px solid rgba(0,0,0,0.8)",
+              }}
+            >
               <TableCell align="center" sx={{ width: "5rem" }}>
                 번호
               </TableCell>
-              <TableCell align="center" sx={{ width: "30rem", fontWeight: 'bold' }}>
+              <TableCell
+                align="center"
+                sx={{ width: "30rem", fontWeight: "bold" }}
+              >
                 제목
               </TableCell>
               <TableCell align="center" sx={{ width: "10rem" }}>
@@ -101,10 +128,24 @@ const ListNoticeComponent = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {notices.map((item, index) => (
-              <TableRow key={item.noticeTitle} sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center" onClick={()=>navigate(`/noticeDetail/${item.noticeNo}`,{state:item})} sx={{fontWeight: 'bold', cursor: 'pointer'}}>{item.noticeTitle}</TableCell>
+            {currentNotices.map((item) => (
+              <TableRow
+                key={item.noticeNo}
+                sx={{
+                  borderTop: "2px solid rgba(0,0,0,0.3)",
+                  borderBottom: "2px solid rgba(0,0,0,0.3)",
+                }}
+              >
+                <TableCell align="center">{item.noticeNo}</TableCell>
+                <TableCell
+                  align="center"
+                  onClick={() =>
+                    navigate(`/noticeDetail/${item.noticeNo}`, { state: item })
+                  }
+                  sx={{ fontWeight: "bold", cursor: "pointer" }}
+                >
+                  {item.noticeTitle}
+                </TableCell>
                 <TableCell align="center">{item.noticeDate}</TableCell>
                 <TableCell align="center">
                   <Button
@@ -114,10 +155,7 @@ const ListNoticeComponent = () => {
                   >
                     수정
                   </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={() => removeNotice(item.noticeNo)}
-                  >
+                  <Button variant="outlined" onClick={() => console.log(item)}>
                     삭제
                   </Button>
                 </TableCell>
@@ -126,7 +164,6 @@ const ListNoticeComponent = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
       <AddProductButton>
         <Button
           variant="contained"
@@ -136,7 +173,18 @@ const ListNoticeComponent = () => {
           공지사항 등록
         </Button>
       </AddProductButton>
-      <Pages></Pages>
+      <Pages>
+        {totalPages > 1 && (
+          <Pagination
+            count={totalPages} // 총 페이지 수
+            page={currentPage} // 현재 페이지
+            onChange={handlePageChange} // 페이지 변경 핸들러
+            siblingCount={2} // 현재 페이지 주변에 보이는 페이지 수
+            boundaryCount={2} // 처음과 끝에 보이는 페이지 수
+            color="primary"
+          />
+        )}
+      </Pages>
     </>
   );
 };
@@ -152,7 +200,7 @@ const Title = styled.div`
 `;
 
 const Pages = styled.div`
-  width: 80%;
+  width: 90%;
   margin-top: 3rem;
   display: flex;
   justify-content: center;
