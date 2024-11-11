@@ -49,6 +49,14 @@ const ReviewList = () => {
       });
   }
 
+  const formatContent = (content) => {
+    // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
+    const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
+
+    // 첫 10자만 자르고, 내용이 더 길면 "..." 추가
+    return singleLineContent.length > 25 ? `${singleLineContent.slice(0, 25)}...` : singleLineContent;
+  };
+
   return (
     <>
       <Title>후기 관리</Title>
@@ -80,7 +88,7 @@ const ReviewList = () => {
                   {item.productName}
                 </TableCell>
                 <TableCell align="center">{item.username}</TableCell>
-                <TableCell align="center">{item.reviewContent}</TableCell>
+                <TableCell align="center">{formatContent(item.reviewContent)}</TableCell>
                 <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
                 <TableCell align="center">
                   {item.reviewVisible === "Y" ? (
