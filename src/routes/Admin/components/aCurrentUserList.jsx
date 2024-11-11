@@ -5,6 +5,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const CurrentUser = () => {
+  
   const [user, setUsers] = useState([]);
 
   useEffect(() => {

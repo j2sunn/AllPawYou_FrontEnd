@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { loadList } from "../../../service/BoardService";
 import { AuthApi } from "../../../service/AuthApi";
 const AdminBoardList = () => {
+
   const [boardList, setBoardList] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지쪽수 초기값
   const navigate = useNavigate(); // useNavigate 훅 사용
-  // const [hideYN, setHideYN] = useState(false);
+  const [hideYN, setHideYN] = useState(false);
   const ITEMS_PER_PAGE = 8; // 한 페이지에 표시할 게시글 수
     
 

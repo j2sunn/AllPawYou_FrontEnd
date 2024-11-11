@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {getNotice,updateNotice} from "../../../service/NoticeService";
+import { updateNotice } from "../../../service/NoticeService";
 import styled from "styled-components";
-const NoticeUpdate = ()=>{
+const NoticeUpdate = () => {
+    
     const  {state}  = useLocation();
+    
     const [noticeNo, setNoticeNo] = useState(state.noticeNo);
     const [noticeData, setNoticeData] = useState(null);
     const [noticeTitle, setNoticeTitle] = useState("");
     const [noticeContent, setNoticeContent] = useState(""); //이거는 한 자라도 작성했는지 체크용
 
-
     const [error, setError] = useState({});
     const [result,setResult] = useState("");
 
-    
     const navigator = useNavigate();
 
     // let ACCESS_TOKEN = "";
@@ -25,23 +25,6 @@ const NoticeUpdate = ()=>{
             
     },[]);
 
-    // useEffect(()=>{
-    //     ACCESS_TOKEN = localStorage.getItem("accessToken");
-    //     console.log("토큰 : "+ACCESS_TOKEN);
-
-    //     if(ACCESS_TOKEN){
-    //         console.log("토큰 : "+ACCESS_TOKEN);
-    //     const payload = JSON.parse(atob(ACCESS_TOKEN.split(".")[1]));
-    //     setLoginEmail(payload['user-email']);
-        
-    //     }else{
-    //         alert("로그인 후 이용해주세요.");
-    //         // navigator('/login');
-    //         location.href='/login';
-    //         return;
-    //     }
-    // },[]);
-
     // 제목 수정 핸들러
 const handleTitleChange = (e) => {
     setNoticeTitle(e.target.value);
@@ -51,33 +34,21 @@ const handleTitleChange = (e) => {
 
     const handleContentChange = (e)=>{
         console.log("댓글내용 : "+e.target.value);
-        let text=e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); //script가 있을 경우 제거
+        let text = e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); //script가 있을 경우 제거
         
         setNoticeContent(text);
-        console.log("result : "+result);
     }
    
     const doSubmit = ()=>{
         if(validation()){
-            //필수사항 다 작성한 경우
-            //selectedCategory, boardTitle, boardContent, images를 제출
-            // const board = {
-            //     email : loginEmail,
-            //     category : selectedCategory,
-            //     boardTitle,
-            //     boardContent,
-            //     imgFile : images
-            // };
-            // uploadBoard(board);
             const formData = new FormData();
 
         // 필드 추가
-        formData.append("noticeTitle", noticeTitle);
-        formData.append("noticeContent", result);
-        // formData.append("noticeContent", noticeContent);
+            formData.append("noticeTitle", noticeTitle);
+            formData.append("noticeContent", noticeContent);
 
-        updateNotice(noticeNo,{noticeTitle,noticeContent,noticeData});
-        navigator("/admin/noticeList");
+            updateNotice(noticeNo,{noticeTitle,noticeContent,noticeData});
+            navigator("/admin/noticeList");
             setTimeout(()=>{
                 console.log(1);
             },3000);
@@ -100,6 +71,7 @@ const handleTitleChange = (e) => {
         
         return true;
     }
+
     return(
         <>
             {state ? (

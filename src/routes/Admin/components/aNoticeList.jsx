@@ -12,29 +12,11 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ListNoticeComponent = () => {
-  const [notices, setNotices] = useState([
-    // {
-    //   noticeTitle: "a",
-    //   noticeDate: "2024-11-02",
-    // },
-    // {
-    //   noticeTitle: "b",
-    //   noticeDate: "2024-11-02",
-    // },
-    // {
-    //   noticeTitle: "c",
-    //   noticeDate: "2024-11-02",
-    // },
-    // {
-    //   noticeTitle: "d",
-    //   noticeDate: "2024-11-02",
-    // },
-  ]);
-
-  const [noticeData, setNoticeData] = useState(null);
+  
+  const [notices, setNotices] = useState([]);
 
   const navigate = useNavigate();
 
@@ -72,15 +54,6 @@ const ListNoticeComponent = () => {
           getAllNotices();
         });
     }
-
-    // deleteNotice(noticeNo)
-    //   .then((response) => {
-    //     console.log(response);
-    //     getAllNotices();
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
   }
 
   useEffect(() => {
@@ -153,21 +126,6 @@ const ListNoticeComponent = () => {
 };
 
 export default ListNoticeComponent;
-
-const Container = styled.div`
-  width: 100%;
-  min-height: 600px;
-  margin: 2rem 4rem;
-  display: flex;
-`;
-
-const Content = styled.div`
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  padding-left: 5rem;
-  margin: 0 2rem;
-`;
 
 const Title = styled.div`
   font-size: 2rem;
