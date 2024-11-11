@@ -65,7 +65,7 @@ export const getProductsBySearch = async (name) => {
   }
 }
 
-
+export const DeleteProductFile = (id) => AuthApi.delete(`${REST_API_BASE_URL}/deleteFile/${id}`);
 
 export const updateProduct = (id, formData) => AuthUploadApi.put(`${REST_API_BASE_URL}/update/${id}`, formData);
 
@@ -89,3 +89,5 @@ export const findByName = async (orderName) => {
   const response = await AuthApi.get(REST_API_BASE_URL + `/name/${orderName}`);
   return response;
 };
+
+
