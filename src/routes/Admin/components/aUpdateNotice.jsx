@@ -3,11 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { updateNotice } from "../../../service/NoticeService";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { Button } from "@mui/material";
 const NoticeUpdate = () => {
     
     const  {state}  = useLocation();
     
-    const [noticeNo, setNoticeNo] = useState(state.noticeNo);
+    const [noticeNo, setNoticeNo] = useState(state?.noticeNo);
     const [noticeData, setNoticeData] = useState(null);
     const [noticeTitle, setNoticeTitle] = useState("");
     const [noticeContent, setNoticeContent] = useState(""); //이거는 한 자라도 작성했는지 체크용
@@ -21,9 +22,9 @@ const NoticeUpdate = () => {
     console.log("수정할 noticeNo : " + noticeNo);
     useEffect(()=>{
         console.log(state);
-        setNoticeTitle(state.noticeTitle);
-        setNoticeContent(state.noticeContent);
-            
+        setNoticeTitle(state?.noticeTitle);
+        setNoticeContent(state?.noticeContent);
+        setResult(state?.noticeContent.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
     },[]);
 
     // 제목 수정 핸들러
@@ -35,9 +36,9 @@ const handleTitleChange = (e) => {
 
     const handleContentChange = (e)=>{
         console.log("댓글내용 : "+e.target.value);
+        setNoticeContent(e.target.value);
         let text = e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); //script가 있을 경우 제거
-        
-        setNoticeContent(text);
+        setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
     }
 
     const cancel = () => {
@@ -61,6 +62,13 @@ const handleTitleChange = (e) => {
    
     const doSubmit = () => {
         if(validation()){
+            Swal.fire({
+                title: "공지사항을 수정했습니다.",
+                icon: 'success',
+                
+                confirmButtonColor: '#527853',
+                confirmButtonText: '닫기'
+             });
             const formData = new FormData();
 
         // 필드 추가
@@ -97,7 +105,7 @@ const handleTitleChange = (e) => {
             {state ? (
                     <>
                     <Title>공지사항 수정</Title>
-                    <One>
+                    <Content>
                         <h5>제목<span>*</span></h5>
                         <TitleInput onChange={handleTitleChange} 
                                 value={noticeTitle}/>
@@ -108,13 +116,17 @@ const handleTitleChange = (e) => {
                                 value={noticeContent}/>
                         
                         <Error>{error.content}</Error>
-                    </One>
-                    <Btn onClick={cancel}>취소</Btn>
-                    <EndBtn onClick={doSubmit}>수정</EndBtn>
+                    </Content>
+                    <Buttons>
+                        <Button variant="outlined" color="error" onClick={cancel} sx={{width: '5rem', marginRight: '2rem'}}>취소</Button>
+                        <Button variant="contained" onClick={doSubmit} sx={{width: '5rem'}}>수정</Button>
+                    </Buttons>
                 </>
             ) : (
-                <>
-                </>
+                <NoData>
+                    존재하지 않는 공지사항입니다.
+                    <Button variant="contained" onClick={()=>navigator("/admin/noticeList")} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>공지사항 목록으로</Button>
+                </NoData>
             )}
             
         </>
@@ -123,18 +135,20 @@ const handleTitleChange = (e) => {
 export default NoticeUpdate;
 
 const Title = styled.div`
-
-font-size: 2rem;
-padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
 
-const One = styled.div`
-    width: 80%;
+const Content = styled.div`
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-left: 3rem;
+    margin-bottom: 3rem;
     h5{
         margin-top: 30px;
         
@@ -177,35 +191,23 @@ const ContentTextarea = styled.textarea`
     }
 `;
 
-const Btn = styled.button`
-    background-color: white;
-    border : 3px solid #EEC759;
-    margin : 30px 0;
-    border-radius: 15px;
-    padding : 5px;
-    width : 100px;
-    font-weight: bold;
-    border-radius: 20px;
-    text-align: center;
-    padding : 7px;
-`;
-
-const EndBtn = styled(Btn)`
-    background-color: #EEC759;
-    border : 3px solid #EEC759;
-    margin : 30px 0;
-    border-radius: 15px;
-    padding : 5px;
-    width : 100px;
-    font-weight: bold;
-    border-radius: 20px;
-    text-align: center;
-    padding : 7px;
-    &:hover{
-        background-color: white;
-    }
+const Buttons = styled.div`
+    width: 90%;
+    margin-left: 3rem;
+    display: flex;
+    justify-content: end;
 `;
 
 const Error = styled.div`
     color: red;
+`;
+
+const NoData = styled.div`
+    font-size: 2rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
