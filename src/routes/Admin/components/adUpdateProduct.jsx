@@ -228,9 +228,7 @@ const UpdateProduct = () => {
       {productInfo ? (
         <>
           <One>
-            <h4 onClick={() => console.log(images)}>상품 수정</h4>
-           // <h4 onClick={()=>console.log(productInfo.name)}>상품 수정</h4>
-
+            <h4>상품 수정</h4>
             <h5>
               카테고리<span>*</span>
             </h5>
@@ -303,13 +301,23 @@ const UpdateProduct = () => {
           </div>
         </>
       ) : (
-        <div>해당하는 상품이 없습니다.</div>
+        <Container>
+            <NoData>존재하지 않는 상품입니다.</NoData>
+            <Button variant="contained" onClick={()=>navigator(-1)} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>이전 페이지로 돌아가기</Button>
+          </Container>
       )}
     </>
   );
 };
 
 export default UpdateProduct;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 750px;
+`;
 
 const One = styled.div`
   width: 50%;
@@ -420,4 +428,12 @@ const UploadButton = styled.label`
 
 const FileInput = styled.input`
   display: none;
+`;
+
+const NoData = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    margin-top: 15rem;
 `;

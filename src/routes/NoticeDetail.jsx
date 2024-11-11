@@ -53,7 +53,10 @@ const NoticeDetail = () => {
           </Container>
         </>
       ) : (
-        <Container>게시글을 로딩 중...</Container>
+        <Container>
+                <NoData>존재하지 않는 공지사항입니다.</NoData>
+                <Button variant="contained" onClick={()=>navigate(-1)} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>이전 페이지로 돌아가기</Button>
+            </Container>
       )}
     </>
   );
@@ -111,4 +114,12 @@ const ContentTextarea = styled.textarea`
   outline: none;
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+`;
+
+const NoData = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    margin-top: 15rem;
 `;
