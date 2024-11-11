@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Pagination } from "@mui/material"; // Import Pagination component
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { sentMessage } from "../../service/Message";
 import MypageSideBar from "../../components/common/MypageSideBar";
 
@@ -9,7 +9,6 @@ const SentMessages = () => {
   const [messages, setMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // State for current page
   const messagesPerPage = 10; // Messages per page
-  const navigate = useNavigate();
 
   useEffect(() => {
     getSentMessage();
@@ -29,7 +28,12 @@ const SentMessages = () => {
   }
 
   const goCreateMessage = () => {
-    navigate(`/mypage/createMessage`);
+    const width = 650; // 팝업의 너비
+    const height = 500; // 팝업의 높이
+    const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
+    const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
+
+    window.open("/mypage/createMessage", "popup", `width=${width},height=${height},top=${top},left=${left},scrollbars=no`);
   };
 
   useEffect(() => {

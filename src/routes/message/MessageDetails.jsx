@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import MypageSideBar from "../../components/common/MypageSideBar";
 import { useEffect, useState } from "react";
-import { messageDetail } from "../../service/Message";
+import { deleteMessage, messageDetail } from "../../service/Message";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Button } from "@mui/material";
+import Swal from "sweetalert2";
 
 const DetailMessages = () => {
   const { messageId } = useParams();
@@ -18,6 +19,33 @@ const DetailMessages = () => {
       .catch((error) => {
         console.error("Error fetching message detail:", error);
       });
+  };
+
+  // Handle delete
+  const handleDelete = async () => {
+    try {
+      await deleteMessage(messageId); // 메시지 삭제 요청
+
+      // 성공 시 알림 및 페이지 이동
+      await Swal.fire({
+        icon: "success",
+        title: "메시지가 삭제되었습니다.", // 메시지 텍스트 수정
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+
+      navigate(`/mypage/receiveMessage`); // 성공 후 페이지 이동
+    } catch (error) {
+      console.error("Error deleting messages:", error);
+
+      // 에러 발생 시 알림
+      await Swal.fire({
+        icon: "warning",
+        title: "메시지 삭제에 실패했습니다.", // 에러 메시지 텍스트
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+    }
   };
 
   useEffect(() => {
@@ -45,6 +73,9 @@ const DetailMessages = () => {
         </Message>
 
         <AddProductButton>
+          <Button variant="contained" sx={{ marginTop: "25px", marginRight: "1rem" }} onClick={handleDelete} color="error">
+            삭제
+          </Button>
           <Button variant="contained" sx={{ marginTop: "25px" }} onClick={goReceiveMessage}>
             목록
           </Button>

@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
 import { listUsers, deleteUser } from "../../../service/UserService";
 import styled from "styled-components";
-import {
-  Button,
-  Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaRegTrashAlt } from "react-icons/fa";
+import defaultProfile from "src/assets/defaultprofile.png";
 
 const UserList = () => {
   const [users, setUsers] = useState([[]]);
@@ -46,7 +37,7 @@ const UserList = () => {
   }
 
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const PerPage = 10; // 페이지당 메시지 개수
+  const PerPage = 5; // 페이지당 메시지 개수
 
   // 현재 페이지에 대한 메시지 가져오기
   const indexOfLast = currentPage * PerPage;
@@ -80,10 +71,19 @@ const UserList = () => {
                 borderBottom: "2px solid rgba(0,0,0,0.8)",
               }}
             >
-              <TableCell align="center" sx={{width: '5rem'}}>번호</TableCell>
-              <TableCell align="center" sx={{width: '15rem'}}>이름</TableCell>
-              <TableCell align="center">이메일</TableCell>
+              <TableCell align="center" sx={{ width: "5rem" }}>
+                사진
+              </TableCell>
+              <TableCell align="center" sx={{ width: "10rem" }}>
+                이름
+              </TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
+                이메일
+              </TableCell>
+              <TableCell align="center" sx={{ width: "15rem" }}>
+                권한
+              </TableCell>
+              <TableCell align="center" sx={{ width: "10rem" }}>
                 회원 삭제
               </TableCell>
             </TableRow>
@@ -97,13 +97,16 @@ const UserList = () => {
                   borderBottom: "2px solid rgba(0,0,0,0.3)",
                 }}
               >
-                <TableCell align="center">{item.no}</TableCell>
+                <TableCell align="center">
+                  <img
+                    src={item?.profileImage && item?.profileImage !== "default" ? `http://localhost:8081${item.profileImage}` : defaultProfile}
+                    style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                  />
+                </TableCell>
                 <TableCell align="center">{item.username}</TableCell>
                 <TableCell align="center">{item.email}</TableCell>
-                <TableCell
-                  align="center"
-                  onClick={() => removeUser(item.no)}
-                >
+                <TableCell align="center">{item.role}</TableCell>
+                <TableCell align="center" onClick={() => removeUser(item.no)}>
                   <Button variant="contained" color="error">
                     <FaRegTrashAlt size="25" />
                   </Button>

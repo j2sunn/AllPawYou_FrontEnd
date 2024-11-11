@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Button, TextField } from "@mui/material";
-import MypageSideBar from "../../components/common/MypageSideBar";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { creaetMessage } from "../../service/Message";
@@ -31,24 +30,24 @@ const MessageSendPage = () => {
     };
 
     if (validation()) {
-      creaetMessage(nickname, data)
-        .then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "쪽지를 보냈습니다.",
-            confirmButtonColor: "#527853",
-            confirmButtonText: "닫기",
-          });
-          window.location.reload();
-        })
-        .catch(() => {
-          Swal.fire({
-            icon: "warning",
-            title: "쪽지를 보내지 못했습니다.",
-            confirmButtonColor: "#527853",
-            confirmButtonText: "닫기",
-          });
+      try {
+        await creaetMessage(nickname, data); // await를 사용하여 비동기적으로 메시지 전송
+        await Swal.fire({
+          icon: "success",
+          title: "쪽지를 보냈습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
         });
+        window.close(); // 확인 버튼 클릭 시 창 닫기
+      } catch (error) {
+        // 에러가 발생하면 catch 블록이 실행됨
+        await Swal.fire({
+          icon: "warning",
+          title: "쪽지를 보내지 못했습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+      }
     }
   };
 
@@ -91,8 +90,7 @@ export default MessageSendPage;
 
 const Container = styled.div`
   width: 100%;
-  min-height: 600px;
-  padding-left: 4rem;
+  min-height: 500px;
   display: flex;
 `;
 
@@ -110,7 +108,7 @@ const Message = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 8rem;
+  margin-top: 3rem;
 `;
 
 const Title = styled.h1`

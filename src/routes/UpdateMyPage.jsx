@@ -8,6 +8,7 @@ import MypageSideBar from "../components/common/MypageSideBar";
 import { updateUser } from "../service/UserAPI";
 import defaultProfile from "../assets/defaultprofile.png";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import Swal from "sweetalert2";
 
 const MyPage = () => {
   const navigator = useNavigate();
@@ -39,38 +40,42 @@ const MyPage = () => {
     };
     setUserInfo(userData);
     setProfile(userData);
-
   }, []);
 
   const goMypage = () => {
-    navigator('/mypage');
+    navigator("/mypage");
     window.location.reload();
-  }
+  };
 
   const updateProfile = async () => {
     try {
       const formData = new FormData();
       const fullAddress = `${profile.address} ${detail2address}`;
 
-      formData.append('username', profile.username);
-      formData.append('email', profile.email);
-      formData.append('nickname', profile.nickname);
-      formData.append('intro', profile.intro);
-      formData.append('phone', profile.phone);
-      formData.append('address', fullAddress);
-      
+      formData.append("username", profile.username);
+      formData.append("email", profile.email);
+      formData.append("nickname", profile.nickname);
+      formData.append("intro", profile.intro);
+      formData.append("phone", profile.phone);
+      formData.append("address", fullAddress);
+
       if (profile.profile) {
-        formData.append('profile', profile.profile);
+        formData.append("profile", profile.profile);
       }
 
-      console.log("전체주소 : " , fullAddress);
-      console.log("-- formData profile -- : ", formData.get('profile'));
+      console.log("전체주소 : ", fullAddress);
+      console.log("-- formData profile -- : ", formData.get("profile"));
 
       // const updatedUserInfo = await updateUser(formData);
       // alert("프로필이 업데이트되었습니다.");
       updateUser(formData)
         .then((updatedUserInfo) => {
-          alert("프로필이 업데이트되었습니다.");
+          Swal.fire({
+            icon: "success",
+            title: "프로필이 업데이트되었습니다.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          });
 
           localStorage.setItem("username", updatedUserInfo.username);
           localStorage.setItem("email", updatedUserInfo.email);
@@ -85,10 +90,22 @@ const MyPage = () => {
           goMypage();
         })
         .catch((error) => {
-          console.error("프로필 업데이트 중 오류 발생:", error);
+          // console.error("프로필 업데이트 중 오류 발생:", error);
+          Swal.fire({
+            icon: "warning",
+            title: "프로필 업데이트 중 오류 발생.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          });
         });
     } catch (error) {
-      console.error("프로필 업데이트 중 오류 발생:", error);
+      // console.error("프로필 업데이트 중 오류 발생:", error);
+      Swal.fire({
+        icon: "error",
+        title: "프로필 업데이트 중 오류 발생.",
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
     }
   };
 
@@ -97,8 +114,8 @@ const MyPage = () => {
     setProfile((prev) => ({ ...prev, [key]: value }));
   };
 
-  const [thumbnail, setThumbnail] = useState({ file: null, preview: profile.profile }); 
-  
+  const [thumbnail, setThumbnail] = useState({ file: null, preview: profile.profile });
+
   // useEffect(() => {
   //   if(profile){
   //     setThumbnail({
@@ -109,18 +126,18 @@ const MyPage = () => {
   //     setThumbnail({file : null, preview : defaultProfile});
   //   }
   // }, [profile]);
-  
+
   useEffect(() => {
     if (profile.profile) {
       // profile.profile이 파일 객체일 경우 (새로 업로드된 경우)
-      if (typeof profile.profile === 'object') {
+      if (typeof profile.profile === "object") {
         setThumbnail({
           file: profile.profile,
           preview: URL.createObjectURL(profile.profile),
         });
-      } 
+      }
       // profile.profile이 문자열 경로일 경우 (기존 서버 이미지인 경우)
-      else if (typeof profile.profile === 'string' && profile.profile !== 'default') {
+      else if (typeof profile.profile === "string" && profile.profile !== "default") {
         setThumbnail({
           file: profile.profile,
           preview: `http://localhost:8081${profile.profile}`,
@@ -135,12 +152,10 @@ const MyPage = () => {
     }
   }, [profile.profile]);
 
-
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if(thumbnail.preview){
+      if (thumbnail.preview) {
         URL.revokeObjectURL(thumbnail.preview);
       }
       const previewURL = URL.createObjectURL(file);
@@ -148,28 +163,26 @@ const MyPage = () => {
 
       setProfile((prevProfile) => ({
         ...prevProfile,
-          profile: file,
+        profile: file,
       }));
 
       setThumbnail({
-        file:file,
+        file: file,
         preview: previewURL,
       });
 
       console.log("-- file-- : ", file);
     }
-  }
-
+  };
 
   const deleteProfileImg = () => {
-
     if (thumbnail.preview) URL.revokeObjectURL(thumbnail.preview);
     setProfile((prevProfile) => ({
       ...prevProfile,
       profile: null,
     }));
 
-    setThumbnail({ file: '', preview: defaultProfile });
+    setThumbnail({ file: "", preview: defaultProfile });
   };
 
   //카카오 api
@@ -182,14 +195,12 @@ const MyPage = () => {
 
   const clickAddrButton = () => {
     setModalOpen(true);
-    setOpenPostcode(current => !current);
-    setShowDetailAddress(current => !current);
-  }
+    setOpenPostcode((current) => !current);
+    setShowDetailAddress((current) => !current);
+  };
 
   const selectAddress = (data) => {
-    console.log(
-      `주소: ${data.address} , 우편번호 : ${data.zonecode} `
-    )
+    console.log(`주소: ${data.address} , 우편번호 : ${data.zonecode} `);
     setapiAddress(data.zonecode);
     setDetailaddress(data.address);
 
@@ -202,10 +213,10 @@ const MyPage = () => {
   };
 
   const [showDetailAddress, setShowDetailAddress] = useState(false);
-  
-  useEffect(()=>{
-    scrollTo(0,0);
-  },[])
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -213,22 +224,23 @@ const MyPage = () => {
         <MypageSideBar />
         {modalOpen ? (
           <>
-            <ModalBackground onClick={()=>setModalOpen(false)}/>
+            <ModalBackground onClick={() => setModalOpen(false)} />
             <Modal>
-              <div style={{display: 'flex'}}>
-                <div style={{fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem'}}>주소 검색</div>
-                <IoIosCloseCircleOutline size={32} style={{position: 'absolute', right: '2rem', cursor: 'pointer'}} onClick={()=>setModalOpen(false)}/>
+              <div style={{ display: "flex" }}>
+                <div style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "1rem" }}>주소 검색</div>
+                <IoIosCloseCircleOutline
+                  size={32}
+                  style={{ position: "absolute", right: "2rem", cursor: "pointer" }}
+                  onClick={() => setModalOpen(false)}
+                />
               </div>
               <DaumPostcode
-              autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
-              onComplete={selectAddress} />
+                autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                onComplete={selectAddress}
+              />
             </Modal>
           </>
-        ) : (
-          null
-        )
-                          
-                        }
+        ) : null}
         <UpdateContainer>
           {profile ? (
             <>
@@ -236,17 +248,15 @@ const MyPage = () => {
                 <Profile>
                   <ProfileImg
                     // src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
-                  src={thumbnail.preview}
+                    src={thumbnail.preview}
                   />
                   <Button component="label" variant="contained">
                     이미지 변경
-                    <VisuallyHiddenInput
-                      type="file" accept="image/*"
-                      onChange={handleFileChange}
-                    />
+                    <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileChange} />
                   </Button>
-                  <Button
-                    variant='outlined' onClick={deleteProfileImg}>삭제</Button>
+                  <Button variant="outlined" onClick={deleteProfileImg}>
+                    삭제
+                  </Button>
                 </Profile>
                 <Profile>
                   <Table>
@@ -352,7 +362,7 @@ const MyPage = () => {
                 </Profile>
               </Content>
               <div>
-                <Title style={{padding: '1rem'}}>자기소개</Title>
+                <Title style={{ padding: "1rem" }}>자기소개</Title>
                 <TextField
                   variant="outlined"
                   size="small"
@@ -433,15 +443,15 @@ const UpdateContainer = styled(Container)`
   margin: 5rem 0;
 `;
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
   height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
+  overflow: "hidden",
+  position: "absolute",
   bottom: 0,
   left: 0,
-  whiteSpace: 'nowrap',
+  whiteSpace: "nowrap",
   width: 1,
 });
 
@@ -455,7 +465,7 @@ const ModalBackground = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(255,255,255,0.6);
+  background-color: rgba(255, 255, 255, 0.6);
   z-index: 3;
 `;
 
@@ -467,7 +477,7 @@ const Modal = styled.div`
   top: 30%;
   left: 35%;
   width: 600px;
-  border: 3px solid #EEC759;
+  border: 3px solid #eec759;
   border-radius: 20px;
   z-index: 5;
   padding: 2rem 0;
