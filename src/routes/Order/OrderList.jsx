@@ -157,12 +157,11 @@ const Content = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin: 2rem 3rem;
-  padding-bottom: 2rem;
-  width: 80%;
-  border-bottom: 2px solid rgba(0,0,0,0.3);
+  padding-top: 3rem;
+  margin-left: 3rem;
+  width: 90%;
 `;
 
 const Payments = styled.div`
@@ -170,14 +169,14 @@ const Payments = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 2rem;
+  margin: 2rem;
 `;
 
 const Payment = styled.div`
   width: 100%;
-  border-bottom: 2px solid rgba(0,0,0,0.3);
+  border-top: 2px solid rgba(0,0,0,0.3);
   margin-bottom: 2rem;
-  padding-bottom: 2rem;
+  padding: 2rem 0;
   display: flex;
   flex-direction: column;
 `;

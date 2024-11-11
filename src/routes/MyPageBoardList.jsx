@@ -126,15 +126,14 @@ const Container = styled.div`
   display: flex;
 `;
 
-const SideBarTitle = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+const Title = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
+  width: 90%;
 `;
 
-const Title = styled(SideBarTitle)`
-  width: 90%;
-  border-bottom: 3px solid #c4e1f6;
-`;
 
 const Content = styled.div`
   width: 100%;

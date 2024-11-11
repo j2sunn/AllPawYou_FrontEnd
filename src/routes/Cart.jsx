@@ -339,7 +339,6 @@ const ProductImg = styled.img`
   width: 150px;
   height: 150px;
   margin: 0 2rem;
-  border: 1px solid rgba(0,0,0,0.3);
 `;
 
 const ProductName = styled.div`
