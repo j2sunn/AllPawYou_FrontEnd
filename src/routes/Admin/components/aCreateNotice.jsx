@@ -9,9 +9,8 @@ const NoticeWrite = () => {
   const navigator = useNavigate();
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
+  const [result, setResult] = useState();
   const [error, setError] = useState({});
-  // console.log("images : "+images);
-  console.log("제목길이" + noticeTitle.trim().length);
 
   const cancel = () => {
     Swal.fire({
@@ -34,12 +33,6 @@ const NoticeWrite = () => {
 
   const doSubmit = () => {
     if (validation()) {
-   
-      const formData = new FormData();
-
-      // 필드 추가
-      formData.append("noticeTitle", noticeTitle);
-      formData.append("noticeContent", noticeContent);
       let data = { noticeTitle, noticeContent };
       createNotice(data, navigator);
       navigator("/admin/noticeList");
@@ -48,6 +41,12 @@ const NoticeWrite = () => {
       }, 3000);
     }
   };
+
+  const handleNoticeContent = (e) => {
+    setNoticeContent(e.target.value);
+    let text = e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); 
+    setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
+  }
 
   const validation = () => {
     //필수값 다 작성했는지 검사
@@ -84,7 +83,7 @@ const NoticeWrite = () => {
         <h5>
           내용<span>*</span>
         </h5>
-        <ContentTextarea onChange={(e) => setNoticeContent(e.target.value)} />
+        <ContentTextarea onChange={handleNoticeContent} />
 
         <Error>{error.content}</Error>
       </One>

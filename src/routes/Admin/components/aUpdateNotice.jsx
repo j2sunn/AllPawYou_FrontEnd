@@ -23,7 +23,7 @@ const NoticeUpdate = () => {
         console.log(state);
         setNoticeTitle(state.noticeTitle);
         setNoticeContent(state.noticeContent);
-            
+        setResult(state.noticeContent.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
     },[]);
 
     // 제목 수정 핸들러
@@ -35,9 +35,9 @@ const handleTitleChange = (e) => {
 
     const handleContentChange = (e)=>{
         console.log("댓글내용 : "+e.target.value);
+        setNoticeContent(e.target.value);
         let text = e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); //script가 있을 경우 제거
-        
-        setNoticeContent(text);
+        setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
     }
 
     const cancel = () => {
@@ -192,15 +192,6 @@ const Btn = styled.button`
 
 const EndBtn = styled(Btn)`
     background-color: #EEC759;
-    border : 3px solid #EEC759;
-    margin : 30px 0;
-    border-radius: 15px;
-    padding : 5px;
-    width : 100px;
-    font-weight: bold;
-    border-radius: 20px;
-    text-align: center;
-    padding : 7px;
     &:hover{
         background-color: white;
     }
