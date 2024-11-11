@@ -62,6 +62,13 @@ const handleTitleChange = (e) => {
    
     const doSubmit = () => {
         if(validation()){
+            Swal.fire({
+                title: "공지사항을 수정했습니다.",
+                icon: 'success',
+                
+                confirmButtonColor: '#527853',
+                confirmButtonText: '닫기'
+             });
             const formData = new FormData();
 
         // 필드 추가
