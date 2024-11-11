@@ -59,31 +59,25 @@ const AdminBoardList = () => {
     const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
 
     // 첫 10자만 자르고, 내용이 더 길면 "..." 추가
-    return singleLineContent.length > 10 ? `${singleLineContent.slice(0, 10)}...` : singleLineContent;
+    return singleLineContent.length > 25 ? `${singleLineContent.slice(0, 25)}...` : singleLineContent;
   };
   return (
     <>
       <Title>자유게시판 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
+      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none' }}>
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEC759" }}>
-            <TableRow>
-              <TableCell align="center" sx={{ width: "8rem" }}>
+          <TableHead>
+            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
+              <TableCell align="center" sx={{ width: "5rem" }}>
                 글 번호
               </TableCell>
-              <TableCell align="center" sx={{ width: "10rem" }}>
+              <TableCell align="center" sx={{ width: "40rem" }}>
                 제목
               </TableCell>
-              <TableCell align="center" sx={{ width: "30rem" }}>
-                내용
-              </TableCell>
-              <TableCell align="center" sx={{ width: "10rem" }}>
-                작성자 번호
-              </TableCell>
-              <TableCell align="center" sx={{ width: "10rem" }}>
+              <TableCell align="center" sx={{ width: '8rem' }}>
                 작성자 닉네임
               </TableCell>
-              <TableCell align="center" sx={{ width: "15rem" }}>
+              <TableCell align="center" sx={{ width: "8rem" }}>
                 숨김 Y / N
               </TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
@@ -93,29 +87,23 @@ const AdminBoardList = () => {
           </TableHead>
           <TableBody>
           {currentBoardList?.length>0 ? currentBoardList.map((board,index)=>(
-                        <TableRow key={board.boardNo} >
-                        <TableCell align="center" sx={{ width: "8rem" }}>
+                        <TableRow key={board.boardNo}  sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
+                        <TableCell align="center">
                           {board.boardNo}
                         </TableCell>
-                        <TableCell align="center" sx={{ width: "10rem","&:hover": {
+                        <TableCell align="center" sx={{ "&:hover": {
                                                       cursor: "pointer"                        } }} 
         onClick={()=>navigate(`/board/${board.boardNo}`)}
                           >
                         {formatContent(board.boardTitle)}
                         </TableCell>
-                        <TableCell align="center" sx={{ width: "30rem" }}>
-                        {formatContent(board.boardContent)}
-                        </TableCell>
-                        <TableCell align="center" sx={{ width: "10rem" }}>
-                          {board.no}
-                        </TableCell>
-                        <TableCell align="center" sx={{ width: "10rem" }}>
+                        <TableCell align="center">
                           {board.boardUsername}
                         </TableCell>
-                        <TableCell align="center" sx={{ width: "10rem" }}>
+                        <TableCell align="center">
                           {board.boardVisible==0  ? "Y" : "N"}
                         </TableCell>
-                        <TableCell align="center" sx={{ width: "10rem" }}>
+                        <TableCell align="center">
                           {board.boardVisible==0  ? 
                           <>
                             <Button variant="contained" onClick={()=>hideBoard(board.boardNo)} sx={{ marginRight: "10px" }}>
@@ -158,12 +146,12 @@ const AdminBoardList = () => {
 export default AdminBoardList;
 
 const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
-
 
 const Pagination = styled.div`
     display: flex;

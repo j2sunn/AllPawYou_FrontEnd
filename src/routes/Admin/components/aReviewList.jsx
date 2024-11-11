@@ -52,17 +52,17 @@ const ReviewList = () => {
   return (
     <>
       <Title>후기 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
+      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none'  }}>
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEC759" }}>
-            <TableRow>
-              <TableCell align="center">번호</TableCell>
-              <TableCell align="center">별점</TableCell>
+          <TableHead>
+            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
+              <TableCell align="center" sx={{width: '5rem'}}>번호</TableCell>
+              <TableCell align="center" sx={{width: '5rem'}}>별점</TableCell>
               <TableCell align="center" sx={{ width: "10rem" }}>
                 상품
               </TableCell>
               <TableCell align="center">작성자</TableCell>
-              <TableCell align="center" sx={{ width: "15rem" }}>
+              <TableCell align="center" sx={{ width: "20rem" }}>
                 내용
               </TableCell>
               <TableCell align="center">작성일</TableCell>
@@ -73,10 +73,10 @@ const ReviewList = () => {
           </TableHead>
           <TableBody>
             {reviews.map((item) => (
-              <TableRow key={item.reviewNo}>
+              <TableRow key={item.reviewNo} sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
                 <TableCell align="center">{item.reviewNo}</TableCell>
                 <TableCell align="center">{item.reviewStar}</TableCell>
-                <TableCell align="center" sx={{ width: "10rem" }}>
+                <TableCell align="center">
                   {item.productName}
                 </TableCell>
                 <TableCell align="center">{item.username}</TableCell>
@@ -109,8 +109,10 @@ const ReviewList = () => {
 export default ReviewList;
 
 const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
+

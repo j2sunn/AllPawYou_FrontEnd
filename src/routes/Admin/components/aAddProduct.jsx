@@ -74,6 +74,26 @@ const AdminAddProduct = () => {
         setImages(images.filter((_, i) => i !== index));
     };
 
+    const cancel = () => {
+        Swal.fire({
+            title: "상품 목록으로 돌아가시겠습니까?",
+            text: '진행상황이 저장되지 않습니다.',
+            icon: 'warning',
+            
+            showCancelButton: true, // false가 default
+            confirmButtonColor: '#527853',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '이동',
+            cancelButtonText: '취소',
+            reverseButtons: true
+            
+         }).then(result => {
+            if (result.isConfirmed) {
+                navigator(-1);
+            }
+        });
+    }
+
     const doSubmit = () => {
         const formData = new FormData();
         formData.append("category", selectedCategory);
@@ -213,7 +233,7 @@ const AdminAddProduct = () => {
                     </RadioGroup>
                 </Three>
                 <div style={{ marginTop: "30px", marginBottom: "50px" }}>
-                    <Button variant="outlined" sx={{ margin: '10px' }} onClick={() => navigator('/admin/productlist')}>취소</Button>
+                    <Button variant="outlined" sx={{ margin: '10px' }} onClick={cancel}>취소</Button>
                     <Button variant="contained" onClick={doSubmit}>등록</Button>
                 </div>
         </>

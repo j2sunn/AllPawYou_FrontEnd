@@ -11,7 +11,7 @@ function App() {
       },
     },
     typography: {
-      fontFamily: "'GowunDodum-Regular', 'NanumSquareRound'",
+      fontFamily: "Pretendard-Regular",
       fontSize: "1.5rem",
     },
   });
