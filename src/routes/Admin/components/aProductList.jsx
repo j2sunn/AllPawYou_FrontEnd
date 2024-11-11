@@ -95,10 +95,8 @@ const ProductList = () => {
                 <TableCell align="center" sx={{ width: "10rem" }}>
                   {item.category}
                 </TableCell>
-                <TableCell align="center" sx={{ width: "30rem" }}>
-                  <Link to={`/shoppingDetail/${item.id}`} style={{ textDecoration: "none", textDecorationColor: "inherit", color: "inherit" }}>
-                    {item.name}
-                  </Link>
+                <TableCell align="center" sx={{ width: "30rem", cursor: 'pointer' }} onClick={()=>navigate(`/shoppingDetail/${item.id}`)}>
+                  {item.name}
                 </TableCell>
                 <TableCell align="center" sx={{ width: "10rem" }}>
                   {item.price.toLocaleString()}

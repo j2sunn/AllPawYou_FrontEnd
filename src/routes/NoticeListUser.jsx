@@ -48,7 +48,7 @@ const NoticeListUser = ()=>{
                 {notices.map((item, index) => (
                   <TableRow key={item.noticeTitle} sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
                     <TableCell align="center">{notices.length - index}</TableCell>
-                    <TableCell align="center" onClick={()=>goNoticeDetail(item)} sx={{fontWeight: 'bold'}}>{item.noticeTitle}</TableCell>
+                    <TableCell align="center" onClick={()=>goNoticeDetail(item)} sx={{fontWeight: 'bold', cursor: 'pointer'}}>{item.noticeTitle}</TableCell>
                     <TableCell align="center">{item.noticeDate}</TableCell>
                   </TableRow>
                 ))}
