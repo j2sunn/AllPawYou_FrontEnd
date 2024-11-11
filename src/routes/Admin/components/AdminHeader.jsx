@@ -29,6 +29,7 @@ import { VscGraph } from "react-icons/vsc";
 import { IoHomeOutline } from "react-icons/io5";
 import { RxReload } from "react-icons/rx";
 import Swal from "sweetalert2";
+import defaultProfile from "src/assets/defaultprofile.png";
 
 const drawerWidth = 240;
 
@@ -112,6 +113,33 @@ const AdminHeader = () => {
     window.location.reload();
   };
 
+  const [userInfo, setUserInfo] = useState(null);
+ 
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+    const nickname = localStorage.getItem("nickname");
+    const intro = localStorage.getItem("intro");
+    const phone = localStorage.getItem("phone");
+    const address = localStorage.getItem("address");
+    const profileImage = localStorage.getItem("profile");
+
+    // 가져온 데이터를 상태에 설정
+      const userData = {
+        username,
+        email,
+        nickname,
+        intro,
+        phone,
+        address,
+        profileImage,
+      };
+      
+      setUserInfo(userData);
+    
+  }, []);
+
+
   return (
     <>
       <CssBaseline />
@@ -130,7 +158,10 @@ const AdminHeader = () => {
           <div style={{ flexGrow: 1 }} />
           {ACCESS_TOKEN ? (
             <>
-              <Avatar sx={{ bgcolor: deepPurple[500] }}>{username}</Avatar>
+              {/* <Avatar sx={{ bgcolor: deepPurple[500] }}>{username}</Avatar> */}
+              <img src={userInfo?.profileImage && userInfo?.profileImage !== "default" 
+                        ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile} 
+                        style={{width:'50px', height:'50px' , borderRadius:'50%'}} />
               <Button color="inherit" style={{ marginLeft: "16px" }} onClick={handleLogout}>
                 로그아웃
               </Button>
