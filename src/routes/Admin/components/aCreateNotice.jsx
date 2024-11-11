@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNotice } from "../../../service/NoticeService";
+import Swal from "sweetalert2";
 
 const NoticeWrite = () => {
 
@@ -11,6 +12,25 @@ const NoticeWrite = () => {
   const [error, setError] = useState({});
   // console.log("images : "+images);
   console.log("제목길이" + noticeTitle.trim().length);
+
+  const cancel = () => {
+    Swal.fire({
+        title: "공지사항 목록으로 돌아가시겠습니까?",
+        icon: 'warning',
+        
+        showCancelButton: true, // false가 default
+        confirmButtonColor: '#527853',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '이동',
+        cancelButtonText: '취소',
+        reverseButtons: true
+        
+     }).then(result => {
+        if (result.isConfirmed) {
+            navigator(-1);
+        }
+    });
+}
 
   const doSubmit = () => {
     if (validation()) {
@@ -68,6 +88,7 @@ const NoticeWrite = () => {
 
         <Error>{error.content}</Error>
       </One>
+      <Btn onClick={cancel}>취소</Btn>
       <EndBtn onClick={doSubmit}>등록</EndBtn>
     </>
   );
@@ -120,21 +141,35 @@ const ContentTextarea = styled.textarea`
   }
 `;
 
-const EndBtn = styled.button`
-  background-color: #eec759;
-  border: 3px solid #eec759;
-  margin: 30px 0;
-  border-radius: 15px;
-  padding: 5px;
-  width: 100px;
-  font-weight: bold;
-  border-radius: 20px;
-  text-align: center;
-  padding: 7px;
-  &:hover {
+const Btn = styled.button`
     background-color: white;
-  }
+    border : 3px solid #EEC759;
+    margin : 30px 0;
+    border-radius: 15px;
+    padding : 5px;
+    width : 100px;
+    font-weight: bold;
+    border-radius: 20px;
+    text-align: center;
+    padding : 7px;
 `;
+
+const EndBtn = styled(Btn)`
+    background-color: #EEC759;
+    border : 3px solid #EEC759;
+    margin : 30px 0;
+    border-radius: 15px;
+    padding : 5px;
+    width : 100px;
+    font-weight: bold;
+    border-radius: 20px;
+    text-align: center;
+    padding : 7px;
+    &:hover{
+        background-color: white;
+    }
+`;
+
 const Error = styled.div`
   color: red;
 `;

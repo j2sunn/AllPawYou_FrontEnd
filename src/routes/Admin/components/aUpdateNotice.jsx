@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { updateNotice } from "../../../service/NoticeService";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 const NoticeUpdate = () => {
     
     const  {state}  = useLocation();
@@ -38,8 +39,27 @@ const handleTitleChange = (e) => {
         
         setNoticeContent(text);
     }
+
+    const cancel = () => {
+        Swal.fire({
+            title: "공지사항 목록으로 돌아가시겠습니까?",
+            icon: 'warning',
+            
+            showCancelButton: true, // false가 default
+            confirmButtonColor: '#527853',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '이동',
+            cancelButtonText: '취소',
+            reverseButtons: true
+            
+         }).then(result => {
+            if (result.isConfirmed) {
+                navigator(-1);
+            }
+        });
+    }
    
-    const doSubmit = ()=>{
+    const doSubmit = () => {
         if(validation()){
             const formData = new FormData();
 
@@ -89,6 +109,7 @@ const handleTitleChange = (e) => {
                         
                         <Error>{error.content}</Error>
                     </One>
+                    <Btn onClick={cancel}>취소</Btn>
                     <EndBtn onClick={doSubmit}>수정</EndBtn>
                 </>
             ) : (
@@ -156,7 +177,20 @@ const ContentTextarea = styled.textarea`
     }
 `;
 
-const EndBtn = styled.button`
+const Btn = styled.button`
+    background-color: white;
+    border : 3px solid #EEC759;
+    margin : 30px 0;
+    border-radius: 15px;
+    padding : 5px;
+    width : 100px;
+    font-weight: bold;
+    border-radius: 20px;
+    text-align: center;
+    padding : 7px;
+`;
+
+const EndBtn = styled(Btn)`
     background-color: #EEC759;
     border : 3px solid #EEC759;
     margin : 30px 0;
@@ -168,10 +202,10 @@ const EndBtn = styled.button`
     text-align: center;
     padding : 7px;
     &:hover{
-        
         background-color: white;
     }
 `;
+
 const Error = styled.div`
     color: red;
 `;
