@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNotice } from "../../../service/NoticeService";
 import Swal from "sweetalert2";
+import { Button } from "@mui/material";
 
 const NoticeWrite = () => {
 
@@ -34,6 +35,13 @@ const NoticeWrite = () => {
   const doSubmit = () => {
     if (validation()) {
       let data = { noticeTitle, noticeContent };
+      Swal.fire({
+        title: "공지사항을 등록했습니다.",
+        icon: 'success',
+        
+        confirmButtonColor: '#527853',
+        confirmButtonText: '닫기'
+     })
       createNotice(data, navigator);
       navigator("/admin/noticeList");
       setTimeout(() => {
@@ -73,7 +81,7 @@ const NoticeWrite = () => {
   return (
     <>
       <Title>공지사항 등록</Title>
-      <One>
+      <Content>
         <h5>
           제목<span>*</span>
         </h5>
@@ -86,23 +94,31 @@ const NoticeWrite = () => {
         <ContentTextarea onChange={handleNoticeContent} />
 
         <Error>{error.content}</Error>
-      </One>
-      <Btn onClick={cancel}>취소</Btn>
-      <EndBtn onClick={doSubmit}>등록</EndBtn>
+      </Content>
+      <Buttons>
+        <Button variant="outlined" color="error" onClick={cancel} sx={{width: '5rem', marginRight: '2rem'}}>취소</Button>
+        <Button variant="contained" onClick={doSubmit} sx={{width: '5rem'}}>등록</Button>
+      </Buttons>
     </>
   );
 };
 export default NoticeWrite;
 
 const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
 
-const One = styled.div`
-  width: 90%;
+const Content = styled.div`
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 3rem;
+    margin-bottom: 3rem;
   h5 {
     margin-top: 30px;
   }
@@ -139,34 +155,11 @@ const ContentTextarea = styled.textarea`
     border-color: #6c63ff;
   }
 `;
-
-const Btn = styled.button`
-    background-color: white;
-    border : 3px solid #EEC759;
-    margin : 30px 0;
-    border-radius: 15px;
-    padding : 5px;
-    width : 100px;
-    font-weight: bold;
-    border-radius: 20px;
-    text-align: center;
-    padding : 7px;
-`;
-
-const EndBtn = styled(Btn)`
-    background-color: #EEC759;
-    border : 3px solid #EEC759;
-    margin : 30px 0;
-    border-radius: 15px;
-    padding : 5px;
-    width : 100px;
-    font-weight: bold;
-    border-radius: 20px;
-    text-align: center;
-    padding : 7px;
-    &:hover{
-        background-color: white;
-    }
+const Buttons = styled.div`
+    width: 90%;
+    margin-left: 3rem;
+    display: flex;
+    justify-content: end;
 `;
 
 const Error = styled.div`
