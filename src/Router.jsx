@@ -26,10 +26,11 @@ import UserReviewList from "./components/Review/UserReviewList";
 import UserReviewCreate from "./components/Review/UserReviewCreate";
 import UserReviewUpdate from "./components/Review/UserReviewUpdate";
 import ShoppingDetail from "./routes/ShoppingDetail";
-
 import BoardList from "./routes/BoardList";
-
 import UpdateMyPage from "./routes/UpdateMyPage";
+import BoardUpdate from "./routes/BoardUpdate";
+
+import PetMap from "./routes/kakaoMap/PetMap";
 
 // Admin
 import AdminBoardList from "./routes/Admin/AdminBoardList";
@@ -45,13 +46,22 @@ import AdminNoticeWrite from "./routes/Admin/AdminNoticeWrite";
 import AdminNoticeUpdate from "./routes/Admin/AdminNoticeUpdate";
 import NoticeListUser from "./routes/NoticeListUser";
 
+
+import MyPageBoardList from "./routes/MyPageBoardList";
+
+
+import TheaterLocation from "./routes/kakaoMap/KakaoMapComponent";
+import ChangePassword from "./routes/Mypage/ChangePassword";
+
+import Forbidden from "./routes/Forbidden";
+
+
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<MainPage />} />
-
           {/* 회원가입 */}
           <Route path="/signup" element={<SignUp />} />
           {/* 로그인 */}
@@ -60,43 +70,35 @@ const Router = () => {
           <Route path="/login/kakao/update" element={<KakaoLogin />} />
           {/* 모든 회원 리스트 */}
           {/* // http://localhost:3000/user/userlist */}
-
           {/* 회원가입 중복 에러 */}
           <Route path="/login/error" element={<LoginError />} />
-
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/update" element={<UpdateMyPage />} />
           <Route path="/findEmail" element={<FindEmail />} />
           <Route path="/findEmailResult" element={<FindEmailResult />} />
           <Route path="/resetPwd" element={<ResetPassword />} />
-
           {/* 장바구니 */}
           <Route path="/cart" element={<Cart />} />
           {/* 주문 목록 */}
           <Route path="/order" element={<OrderList />} />
           {/* 관리자 주문 목록 */}
-
           {/* 주문 상세 */}
           <Route path="/order/:orderId" element={<OrderDetail />} />
           {/* 주문결제 */}
           <Route path="/payment" element={<PaymentCheck />} />
           {/* 결제 완료 */}
           <Route path="/payment/approve" element={<PaymentApprove />} />
-
           {/* 쇼핑몰 */}
           <Route path="/shopping" element={<ShoppingMain />} />
           <Route path="/shoppingDetail/:id" element={<ShoppingDetail />} />
-
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
           <Route path="/board/:boardNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
           <Route path="/boardList" element={<BoardList />} />
-          {/* <Route path="/boardUpdate" element={<BoardUpdate />} /> */}
-
+          <Route path="/boardUpdate" element={<BoardUpdate />} />
           {/* 공지사항 글 상세 */}
           <Route path="/notice/:noticeNo" element={<NoticeDetail />} />
-
           {/* 사용자 후기 리스트 */}
           <Route path="/review/myReview" element={<UserReviewList />} />
           {/* 사용자 후기 작성 */}
@@ -104,12 +106,22 @@ const Router = () => {
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
 
-          
         {/* 공지사항 메인(유저) */}
         <Route path="/noticeListUser" element={<NoticeListUser />} />
         
         {/* 공지사항 상세페이지(유저) */}
         <Route path="/noticeDetail/:noticeNo" element={<NoticeDetail />} />
+
+          {/* 마이페이지 글 목록 */}
+          <Route path="/board/myBoard" element={<MyPageBoardList />} />
+
+          {/* 지도 실험 */}
+          <Route path="/kakaoMap" element={<PetMap />} />
+          <Route path="/map2" element={<TheaterLocation />} />
+
+          {/* 마이페이지 비밀번호 수정 */}
+          <Route path="/mypage/passwordChange" element={<ChangePassword />} />
+
         </Route>
 
         {/* 관리자 페이지 */}
@@ -133,6 +145,7 @@ const Router = () => {
 
 
 
+        <Route path="/forbidden" element={<Forbidden />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

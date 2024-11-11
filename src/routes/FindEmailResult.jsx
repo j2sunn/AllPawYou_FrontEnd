@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const FindEmail = () => {
     const { state } = useLocation();
@@ -9,6 +10,12 @@ const FindEmail = () => {
     const findPw = ()=>{
         navigator('/resetPwd');
     }
+
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
     return (
         <>
             {email == undefined ? (

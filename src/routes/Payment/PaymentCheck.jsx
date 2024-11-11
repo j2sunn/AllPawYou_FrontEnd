@@ -27,6 +27,7 @@ const PaymentCheck = () => {
   }
 
   useEffect(()=>{
+    scrollTo(0,0);
     if(state?.checkedData){
       setOrderList(state?.checkedData);
 
@@ -90,7 +91,7 @@ const PaymentCheck = () => {
               <Table>
                 <Tr>
                   <Th>결제금액</Th>
-                  <Td>{state.totalPrice}원</Td>
+                  <Td>{state.totalPrice.toLocaleString()}원</Td>
                 </Tr>
 
                 <Tr>
@@ -135,8 +136,7 @@ const DetailTitle = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  border: 2px solid #EEC759;
-  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.3);
   width: 70vw;
   margin: 1rem 0 3rem;
   padding: 1rem;
@@ -151,7 +151,7 @@ const Th = styled.th`
   display: block;
   padding: 1rem;
   width: 150px;
-  border-right: 2px solid black;
+  border-right: 1px solid rgba(0,0,0,0.3);
   text-align: center;
 `;
 

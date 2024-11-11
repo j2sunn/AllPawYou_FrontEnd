@@ -113,6 +113,11 @@ const AddProduct = () => {
         }
     };
 
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
     return (
         <>
             <Container>

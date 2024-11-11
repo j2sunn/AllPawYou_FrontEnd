@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {createNotice} from "../../service/NoticeService";
 const NoticeWrite = ()=>{
@@ -105,6 +105,11 @@ const NoticeWrite = ()=>{
         
         return true;
     }
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+
     return (
         <>
             <Container>

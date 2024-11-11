@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {loadData,updateBoard} from "../service/BoardService";
 import styled from "styled-components";
-const BoardUpdate = ()=>{
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+const BoardUpdate = ()=>{ //백업해둔 것!
     const  {state}  = useLocation();
     const [loginEmail, setLoginEmail] = useState("");
     const [boardNo,setBoardNo] = useState(state.boardNo);
@@ -11,11 +12,15 @@ const BoardUpdate = ()=>{
     const [boardTitle, setBoardTitle] = useState("");
     const [boardContent, setBoardContent] = useState(""); //이거는 한 자라도 작성했는지 체크용
 
-    const [images, setImages] = useState([]); //기존에 선택돼있던 DB에 저장돼있던 이미지들
-    const [newImages, setNewImages] = useState([]); //새로 선택한 이미지들
-
+    const [images, setImages] = useState([]); 
+    
+    const navigator = useNavigate();
     const [error, setError] = useState({});
     const [result,setResult] = useState("");
+
+    //이미지 변경할 여부(1=미선택,2=안바꿔,3=바꿀래)
+    const [changeImg, setChangeImg] = useState(1); //안바꿀거야가 기본값
+    
     let ACCESS_TOKEN = "";
     console.log("수정할 boardNo : "+boardNo);
     useEffect(()=>{
@@ -26,16 +31,16 @@ const BoardUpdate = ()=>{
             console.log("카테고리 : "+data.category);
             setSelectedCategory(data.category);
             
-            setBoardTitle(boardData.boardTitle);
-            setBoardContent(boardData.boardContent);
-            let imgList = data.imgList;
-            for(let i=0;i<imgList.length;i++){
-                let img = imgList[i];
-                let obj = {type : "saved",
-                            url : img.boardImagePath+img.boardImageRename
-                };
-                setImages(prevImages => [...prevImages, obj]);
-            }
+            setBoardTitle(data?.boardTitle);
+            let tempContent =data?.boardContent; 
+            console.log("tempContent : "+tempContent);
+
+            //result -> boardContent
+            // let temp = tempContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />");
+            let temp = tempContent.replace(/<e>/g, '\n').replace(/<s>/g, ' ')
+            console.log("temp : "+temp);
+            setBoardContent(temp);
+            
             
         })
     },[boardNo]);
@@ -61,23 +66,20 @@ const handleTitleChange = (e) => {
     };
     
   // 내용 수정 핸들러
-
-    const handleContentChange = (e)=>{
-        console.log("댓글내용 : "+e.target.value);
-        let text=e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); //script가 있을 경우 제거
-        // setBoardContent(text);
-        setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
-        setBoardContent(result);
-        console.log("result : "+result);
-    }
-    const handleRemoveImage = (index,type) => {
+//.replace(/<script.*?>.*?<\/script>/gi, '').replace(/\n/g, '<e>').replace(/ /g, '<s>')
+    // const handleContentChange = (e)=>{
+    //     //boardContent -> result
+    //     console.log("댓글내용 : "+e.target.value);
+    //     let text=e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); //script가 있을 경우 제거
+    //     setBoardContent(e.target.value);
+    //     setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
+    //     setBoardContent(result);
+    //     console.log("result : "+result);
+    // }
+    const handleRemoveImage = (index) => {
         // setImages(images.filter((_, i) => i !== index));
         // console.log("요기닷"+images);
-        if (type === "saved") {
-            setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-        } else {
-            setNewImages((prevNewImages) => prevNewImages.filter((_, i) => i !== index));
-        }
+        setImages(images.filter((_, i) => i !== index));
         // blob:http://localhost:3000/93d8fcf8-92c3-417c-9dc5-66fa2ad5338a,blob:http://localhost:3000/8740daa0-5050-44ad-adc5-7fc2546510cf
         /*
         const arr = ['a', 'b', 'c', 'd', 'e'];
@@ -91,19 +93,15 @@ const handleTitleChange = (e) => {
     };
     const handleImageChange = (e) => {
 
-        const files = Array.from(e.target.files).map((file)=>({
-            type: "new",
-            file,
-            url: URL.createObjectURL(file)
-        }));
-        setNewImages((prevNewImages) => [...prevNewImages, ...files]);
+        const files = Array.from(e.target.files);
+        console.log("여기보기!!!e.target.files : "+e.target.files);
         if (files.length + images.length > 8) {
             alert("최대 8장까지 업로드할 수 있습니다.");
             return;
         }
         
         // const newImages = files.map((file) => URL.createObjectURL(file));
-        // setImages((prevImages) => [...prevImages, ...files]);
+        setImages((prevImages) => [...prevImages, ...files]);
         // console.log("여기여기"+e.target.files);
         
     };
@@ -125,20 +123,24 @@ const handleTitleChange = (e) => {
         formData.append("email", loginEmail);
         formData.append("category", selectedCategory);
         formData.append("boardTitle", boardTitle);
-        formData.append("boardContent", result);
+        formData.append("boardContent", 
+            boardContent
+            .replace(/<script.*?>.*?<\/script>/gi, '')
+            .replace(/\n/g, '<e>').replace(/ /g, '<s>')
+        );
         console.log("프론트 email : "+loginEmail);
         // 파일 추가
-        // 서버에 남길 기존 이미지 URL들만 추가
-        const remainingSavedImages = images.map((image) => image.url);
-        formData.append("existingImages", JSON.stringify(remainingSavedImages));
+        images.forEach((image //,i
 
-        // 새 이미지 파일들 추가
-        newImages.forEach((image) => {
-            formData.append("newFiles", image.file);
+        ) => {
+            formData.append("imgFile", image);  // 'imgFile' 이름으로 여러 파일 추가 가능
         });
+        
+        
+        
 
         // console.log("프론트 email : "+loginEmail);
-        updateBoard(formData,navigator);
+        updateBoard(formData,navigator,boardNo);
         
         
     
@@ -157,9 +159,28 @@ const handleTitleChange = (e) => {
             setError(obj);
             return false;
         }
+
+        if(changeImg ==1){
+            obj={...obj, img:"이미지 변경 여부를 선택해 주세요."}
+            setError(obj);
+            return false;
+        }
+
+        //선택한다고 해놓고 선택 안한경우
+        if(changeImg==3 && images.length==0){
+            obj={...obj, imgSel:"이미지를 선택해 주세요."}
+            setError(obj);
+            return false;
+        }
         
         return true;
     }
+
+    
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
+  
     return(
         <>
             {boardData ? (
@@ -186,43 +207,43 @@ const handleTitleChange = (e) => {
                             <h5>제목<span>*</span></h5>
                             <TitleInput 
                                 onChange={handleTitleChange} 
-                                value={boardData.boardTitle} />
+                                value={boardTitle} />
 
                             <Error>{error.title}</Error>
         
                             <h5>내용<span>*</span></h5>
                             {/* <ContentTextarea onChange={(e) => setBoardContent(e.target.value)}/> */}
                             <ContentTextarea 
-                                onChange={handleContentChange} 
-                                value={boardData.boardTitle} 
+                                onChange={(e)=>setBoardContent(e.target.value)} 
+                                value={boardContent} 
                                 
                             />
                             <Error>{error.content}</Error>
                             
                         </Two>
-                        <Three>
+                        <div className="formCon">
+                            <FormControl >
+                                <h5><FormLabel style={{color:"black"}}>이미지 변경 여부 <span style={{color:"red"}}>*</span></FormLabel></h5>
+                                <Error>{error.img}</Error>
+                                <RadioGroup name="radio-buttons-group"
+                                onChange={(e) => setChangeImg(e.target.value)}>
+                                    <FormControlLabel value="2" control={<Radio variant="outlined" />} label="No" />
+                                    <FormControlLabel value="3" control={<Radio variant="soft" />} label="Yes" />
+                                    
+                                </RadioGroup>
+                            </FormControl>
+                        </div>
+                        {changeImg ==3? (
+                            <Three>
                             <h5>사진 업로드</h5>
+                            <Error>{error.imgSel}</Error>
                             <ImgContainer>
-                                {/* {images.map((image, index) => (
+                                {images.map((image, index) => (
                                     <Thumbnail key={index}>
                                         <Image src={URL.createObjectURL(image)} alt={`Uploaded ${index + 1}`} />
                                         <RemoveButton onClick={() => handleRemoveImage(index)}>X</RemoveButton>
                                     </Thumbnail>
-                                ))} */}
-                                {images.map((image, index) => (
-                    <Thumbnail key={index}>
-                        <Image src={image.url} alt={`saved-${index}`} width={100} />
-                        <RemoveButton onClick={() => handleRemoveImage(index, "saved")}>X</RemoveButton>
-                    </Thumbnail>
-                ))}
-
-                {newImages.map((image, index) => (
-                    <Thumbnail key={index}>
-                    <Image src={image.url} alt={`saved-${index}`} width={100} />
-                    <RemoveButton onClick={() => handleRemoveImage(index, "new")}>X</RemoveButton>
-                </Thumbnail>
-                ))}
-
+                                ))}
                             </ImgContainer>
                             <UploadButton>
                                 <FileInput
@@ -235,6 +256,11 @@ const handleTitleChange = (e) => {
                             </UploadButton>
                             <p>최대 8장까지 업로드 가능합니다.</p>
                         </Three>
+                        ) : (
+                            <>
+                            </>
+                        )}
+                    
                         <EndBtn onClick={doSubmit}>등록</EndBtn>
                 </Container>
             ) : (
@@ -251,7 +277,11 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    .formCon{
+        width : 50%;
+        display: flex;
+        justify-content: flex-start;
+        }
 `;
 const Div = styled.div`
     background-color: ${({ selected }) => (selected ? '#EEC759' : 'RGB(240, 240, 243)')};

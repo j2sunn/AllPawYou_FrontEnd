@@ -33,9 +33,27 @@ export const signUp = async ({ email, username, password, nickname, phone, addre
 /** sendMail API */
 export const sendMail = (email) => axios.post("http://localhost:8081/api/email?email=" + email);
 
+/** sendResetMail API */
+//http://localhost:8081/api/email/resetPassword?email=hyuk6589@naver.com
+export const sendResetMail = (email) => axios.post(`http://localhost:8081/api/email/resetPassword?email=${email}`);
+
+/** resetPassword API */
+export const resetPassword = async (email, password) => {
+  //http://localhost:8081/api/v2/users/resetPwdByEmail?email=g@g.com&password=1234
+  const response = await AuthApi.put(`/api/v2/users/resetPwdByEmail?email=${email}&password=${password}`);
+  return response.data;
+};
+
+/** update password on Mypage */
+export const updateOnMypage = async (email, current, change) => {
+  //http://localhost:8081/api/v2/users/updateOnMypage?email=g@g.com&current=1234&change=qwer
+  const response = await AuthApi.put(`/api/v2/users/updateOnMypage?email=${email}&current=${current}&change=${change}`);
+  return response.data;
+};
+
 /** verifyCode API */
+// http://localhost:8081/api/email/verify?inputEmail=hyuk6589@naver.com&verify=74Hd8GDf
 export const verify = async (inputEmail, verify) => {
-  // http://localhost:8081/api/email/verify?inputEmail=hyuk6589@naver.com&verify=MGIhm654
   const response = await AuthApi.post(`/api/email/verify?inputEmail=${inputEmail}&verify=${verify}`); // 인증번호 전송
   return response.data;
 };
@@ -53,8 +71,8 @@ export const fetchKakaoOAuth = async () => {
     Swal.fire({
       icon: "error",
       title: "카카오 로그인에 실패했습니다. 다시 시도해주세요.",
-      confirmButtonColor: '#527853',
-      confirmButtonText: '닫기'
+      confirmButtonColor: "#527853",
+      confirmButtonText: "닫기",
     });
   }
 };
@@ -81,7 +99,7 @@ export const autoLogin = async () => {
         localStorage.setItem("phone", response.data.phone);
         localStorage.setItem("address", response.data.address);
         localStorage.setItem("profile", response.data.profile);
-        
+
         localStorage.setItem("tokenType", response.data.tokenType);
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
@@ -95,8 +113,8 @@ export const autoLogin = async () => {
         Swal.fire({
           icon: "error",
           title: "로그인 실패",
-          confirmButtonColor: '#527853',
-          confirmButtonText: '닫기'
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
         });
         console.log(error);
       }

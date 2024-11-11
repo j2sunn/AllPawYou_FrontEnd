@@ -7,6 +7,7 @@ import DaumPostcode from "react-daum-postcode";
 import MypageSideBar from "../components/common/MypageSideBar";
 import { updateUser } from "../service/UserAPI";
 import defaultProfile from "../assets/defaultprofile.png";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const MyPage = () => {
   const navigator = useNavigate();
@@ -15,6 +16,7 @@ const MyPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [profile, setProfile] = useState({});
   const [update, setUpdate] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -44,31 +46,24 @@ const MyPage = () => {
     navigator('/mypage');
   }
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        profile: file
-      }));
-      console.log("-- file-- : ", file);
-    }
-  }
-
   const updateProfile = async () => {
     try {
       const formData = new FormData();
+      const fullAddress = `${profile.address} ${detail2address}`;
+
       formData.append('username', profile.username);
       formData.append('email', profile.email);
       formData.append('nickname', profile.nickname);
       formData.append('intro', profile.intro);
       formData.append('phone', profile.phone);
-      formData.append('address', profile.address);
+      formData.append('address', fullAddress);
+      
       if (profile.profile) {
         formData.append('profile', profile.profile);
       }
 
-      console.log("-- formData.file -- : ", formData.profile);
+      console.log("전체주소 : " , fullAddress);
+      console.log("-- formData profile -- : ", formData.get('profile'));
 
       // const updatedUserInfo = await updateUser(formData);
       // alert("프로필이 업데이트되었습니다.");
@@ -99,23 +94,81 @@ const MyPage = () => {
   const profileHandler = (event, key) => {
     const { value } = event.target;
     setProfile((prev) => ({ ...prev, [key]: value }));
-
-
   };
+
+  const [thumbnail, setThumbnail] = useState({ file: null, preview: profile.profile }); 
+  
+  // useEffect(() => {
+  //   if(profile){
+  //     setThumbnail({
+  //       file : profile.profile,
+  //       preview: profile.profile &&  profile.profile !== 'default' ? `http://localhost:8081${profile.profile}` : defaultProfile,
+  //     });
+  //   } else {
+  //     setThumbnail({file : null, preview : defaultProfile});
+  //   }
+  // }, [profile]);
+  
+  useEffect(() => {
+    if (profile.profile) {
+      // profile.profile이 파일 객체일 경우 (새로 업로드된 경우)
+      if (typeof profile.profile === 'object') {
+        setThumbnail({
+          file: profile.profile,
+          preview: URL.createObjectURL(profile.profile),
+        });
+      } 
+      // profile.profile이 문자열 경로일 경우 (기존 서버 이미지인 경우)
+      else if (typeof profile.profile === 'string' && profile.profile !== 'default') {
+        setThumbnail({
+          file: profile.profile,
+          preview: `http://localhost:8081${profile.profile}`,
+        });
+      }
+    } else {
+      // profile.profile이 null이거나 없을 경우 기본 이미지 사용
+      setThumbnail({
+        file: null,
+        preview: defaultProfile,
+      });
+    }
+  }, [profile.profile]);
+
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if(thumbnail.preview){
+        URL.revokeObjectURL(thumbnail.preview);
+      }
+      const previewURL = URL.createObjectURL(file);
+      console.log("previewURL :" + previewURL);
+
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+          profile: file,
+      }));
+
+      setThumbnail({
+        file:file,
+        preview: previewURL,
+      });
+
+      console.log("-- file-- : ", file);
+    }
+  }
 
 
   const deleteProfileImg = () => {
-    // 기본 프로필 이미지로 변경
+
+    if (thumbnail.preview) URL.revokeObjectURL(thumbnail.preview);
     setProfile((prevProfile) => ({
       ...prevProfile,
-      profile: defaultProfile, // public 폴더 내 이미지 경로
+      profile: null,
     }));
 
-    // VisuallyHiddenInput 초기화
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      profile: null, // 파일 초기화
-    }));
+    setThumbnail({ file: '', preview: defaultProfile });
   };
 
   //카카오 api
@@ -127,7 +180,9 @@ const MyPage = () => {
   const [openPostcode, setOpenPostcode] = useState(false); //카카오api
 
   const clickAddrButton = () => {
+    setModalOpen(true);
     setOpenPostcode(current => !current);
+    setShowDetailAddress(current => !current);
   }
 
   const selectAddress = (data) => {
@@ -138,23 +193,49 @@ const MyPage = () => {
     setDetailaddress(data.address);
 
     setProfile((prevProfile) => ({
-        ...prevProfile,
-        address: `${data.address}`,  
+      ...prevProfile,
+      address: `${data.address}`,
     }));
     setOpenPostcode(false);
+    setModalOpen(false);
   };
+
+  const [showDetailAddress, setShowDetailAddress] = useState(false);
+  
+  useEffect(()=>{
+    scrollTo(0,0);
+  },[])
 
   return (
     <>
       <Box>
         <MypageSideBar />
+        {modalOpen ? (
+          <>
+            <ModalBackground onClick={()=>setModalOpen(false)}/>
+            <Modal>
+              <div style={{display: 'flex'}}>
+                <div style={{fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem'}}>주소 검색</div>
+                <IoIosCloseCircleOutline size={32} style={{position: 'absolute', right: '2rem', cursor: 'pointer'}} onClick={()=>setModalOpen(false)}/>
+              </div>
+              <DaumPostcode
+              autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+              onComplete={selectAddress} />
+            </Modal>
+          </>
+        ) : (
+          null
+        )
+                          
+                        }
         <UpdateContainer>
           {profile ? (
             <>
               <Content>
                 <Profile>
                   <ProfileImg
-                    src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
+                    // src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
+                  src={thumbnail.preview}
                   />
                   <Button component="label" variant="contained">
                     이미지 변경
@@ -227,15 +308,32 @@ const MyPage = () => {
                           onChange={(event) => profileHandler(event, "address")}
                           required
                         />
-                        <Button sx={{ marginLeft: "10px" }} onClick={clickAddrButton}>
+                        <Button variant="outlined" sx={{ marginLeft: "10px" }} onClick={clickAddrButton}>
                           검색
                         </Button>
-                        {openPostcode &&
-                          <DaumPostcode
-                            autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
-                            onComplete={selectAddress} />}
                       </TableCell>
                     </TableRow>
+                    {showDetailAddress && (
+                      <TableRow>
+                        <TableCell>상세 주소 :</TableCell>
+                        <TableCell>
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            multiline
+                            maxRows={6}
+                            sx={{
+                              marginLeft: "1rem",
+                              // alignSelf: 'start',
+                              width: "25rem",
+                            }}
+                            value={detail2address}
+                            onChange={(event) => setDetail2address(event.target.value)}
+                            required
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )}
                     <TableRow>
                       <TableCell>닉네임 :</TableCell>
                       <TableCell>
@@ -253,25 +351,25 @@ const MyPage = () => {
                 </Profile>
               </Content>
               <div>
-                <Title>자기소개</Title>
+                <Title style={{padding: '1rem'}}>자기소개</Title>
                 <TextField
                   variant="outlined"
                   size="small"
                   multiline
-                  maxRows={6}
+                  rows={6}
                   sx={{ alignSelf: "start", width: "60rem", marginBottom: "2rem" }}
                   value={profile.intro}
                   onChange={(event) => profileHandler(event, "intro")}
                 />
               </div>
-              <div>
+              <Buttons>
                 <Button variant="outlined" color="primary" onClick={goMypage}>
                   취소
                 </Button>
                 <Button variant="contained" color="primary" onClick={() => updateProfile()}>
                   저장
                 </Button>
-              </div>
+              </Buttons>
             </>
           ) : (
             <div>사용자 정보가 없습니다.</div>
@@ -319,70 +417,19 @@ const ProfileImg = styled.img`
   margin-bottom: 2rem;
 `;
 
-const NickName = styled.div`
-  text-align: center;
-`;
-
-const ProfileDetail = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const Title = styled.div`
   align-self: start;
   padding-left: 25rem;
   margin-bottom: 1rem;
 `;
 
-// const Introduce = styled.div`
-
-// `;
-
-//--------사이드바
-const SideBar = styled.div`
-  width: 25%;
-  height: 70vh;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const SideBarTitle = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
-`;
 const Box = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 const UpdateContainer = styled(Container)`
   margin: 5rem 0;
-`;
-
-const UploadButton = styled.label`
-    border-radius: 15px;
-    padding : 5px;
-    display: inline-block;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 14px;
-    text-align : center;
-`;
-
-// const UploadButton = styled.label`
-//     background-color: RGB(240, 240, 243);
-//     border-radius: 15px;
-//     padding : 5px;
-//     display: inline-block;
-//     cursor: pointer;
-//     margin-top: 10px;
-//     font-size: 14px;
-//     text-align : center;
-// `;
-
-const FileInput = styled.input`
-    display: none;
 `;
 
 const VisuallyHiddenInput = styled('input')({
@@ -396,3 +443,32 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
+
+const Buttons = styled.div`
+  width: 15%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ModalBackground = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.6);
+  z-index: 3;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 30%;
+  left: 35%;
+  width: 600px;
+  border: 3px solid #EEC759;
+  border-radius: 20px;
+  z-index: 5;
+  padding: 2rem 0;
+  background-color: white;
+`;

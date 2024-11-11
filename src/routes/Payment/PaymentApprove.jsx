@@ -33,6 +33,7 @@ const PaymentApprove = () => {
   }
 
   useEffect(()=>{
+    scrollTo(0,0);
     approve();
   },[]);
 
@@ -41,7 +42,10 @@ const PaymentApprove = () => {
       <Container>
         <Title>주문 완료</Title>
         <Content>
-          <ContentHeader>주문해주셔서 감사합니다.</ContentHeader>
+          <ContentHeader>
+            주문해주셔서 감사합니다.
+            <div style={{fontSize: '1.2rem', fontWeight: 100, marginTop: '2rem'}}>주문 번호 : {requestData.tid}</div>
+          </ContentHeader>
           <div>
             <DetailTitle>상품 및 배송정보</DetailTitle>
             <DetailContainer>
@@ -71,7 +75,7 @@ const PaymentApprove = () => {
                 </Tr>
                 <Tr>
                   <Th>결제금액</Th>
-                  <Td>{responseData?.amount?.total}원</Td>
+                  <Td>{responseData?.amount?.total.toLocaleString()}원</Td>
                 </Tr>
                 <Tr>
                   <Th>결제수단</Th>
@@ -123,7 +127,7 @@ const DetailTitle = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  border: 2px solid #EEC759;
+  border: 1px solid rgba(0,0,0,0.3);
   border-radius: 10px;
   width: 70vw;
   margin: 1rem 0 3rem;
@@ -139,7 +143,7 @@ const Th = styled.th`
   display: block;
   padding: 1rem;
   width: 150px;
-  border-right: 2px solid black;
+  border-right: 1px solid rgba(0,0,0,0.3);
   text-align: center;
 `;
 

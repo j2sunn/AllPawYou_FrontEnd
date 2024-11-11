@@ -1,17 +1,36 @@
-
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import {addCommentService,updateCommentList} from "../service/BoardService";
+import {loadData,addCommentService,updateCommentList} from "../service/BoardService";
 import styled from "styled-components";
 import { AiOutlineLike } from "react-icons/ai";
 import { Button} from "@mui/material";
 import { IoMdHeartEmpty } from "react-icons/io"; //빈 하트
 import { IoHeart } from "react-icons/io5"; //채워진 하트
 const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
+    /*
+    const { state } = useLocation();
+    const email = state?.email;
+    */
     
+    // const params = useParams();
+    // // const bNo = params?.boardNo;
+    // const [boardNo,setBoardNo] = useState(0);
+    // const bNo = useRef(params?.boardNo);
+    // useEffect(()=>{
+    //         bNo.current=params?.boardNo;
+    //         setBoardNo(bNo);
+    //         console.log("boardNo : "+boardNo);
+    // },[bNo]);
+    // return(
+        
+    //     <>
+    //         {boardNo}
+
+    //     </>
+    // );
     const params = useParams();
-    
+    const [boardNo, setBoardNo] = useState(0);
 
     const { state } = useLocation();
     const cp = state?.cp.currentPage;
@@ -29,56 +48,102 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     //************************************************************************************** */
     //************************************************************************************** */
     const bNo = useRef(params?.boardNo);  // 초기값을 params.boardNo로 설정
-    const [boardNo, setBoardNo] = useState(params?.boardNo);
     const [boardData, setBoardData] = useState(null);
     const [commentData,setCommentData] = useState(null); //댓글
     // const [profile, setProfile] = useState({}); //로그인한 회원 정보
     const [error, setError] = useState({});
     const [comment,setComment] = useState(""); //댓글 작성 시 댓글 길이 체크용
     const [result,setResult] = useState("");
-    //==============================================================================
-    const [isBoardAuthor, setIsBoardAuthor] = useState(false);//게시글 작성자 여부
-    const [isLiked, setIsLiked] = useState(0); //좋아요 여부
-    //==============================================================================
+    const [likeStatus, setLikeStatus] = useState(0); //로그인 회원이 좋아요 누른지 여부
+    // const [loginUserEmail, setLoginUserEmail] = useState(""); //로그인한 회원의 이메일
+    // const [writeUserEmail, setWriteUserEmail] = useState(""); //글을 작성한 회원의 이메일
+    // 기본값을 0으로 설정
+    let loginEmail=useRef("");
     const navigate = useNavigate();
+    const updateCommentCnt = ()=>{
+        setBoardData(prev => ({...prev, commentCount: prev.commentCount - 1}))
+    }
+    const loadBoardData = async() => {
+        console.log("")
+        console.log("kokoko : "+bNo.current);
+        const response = await loadData(bNo.current);
+
+        if (response) {
+            if (response.likeOrNot == 1) {
+                // document.querySelector("#like").classList.add("liked");  // 좋아요 상태가 1이면 빨간색으로 설정
+                setLikeStatus(1);
+            } else {
+                // document.querySelector("#like").classList.remove("liked");  // 좋아요 상태가 0이면 기본 상태로 설정
+                setLikeStatus(0);
+            }
+        }
+        console.log("받은데이터 : "+response.email); //이게 글 작성자 이메일
+        setBoardData(response);
+        setCommentData(response.commentList);
+        
+    }
+    // useEffect(() => {
+    //     const username = localStorage.getItem("username");
+    //     const email = localStorage.getItem("email");
+    //     const nickname = localStorage.getItem("nickname");
+    //     const intro = localStorage.getItem("intro");
+    //     const phone = localStorage.getItem("phone");
+    //     const address = localStorage.getItem("address");
+    //     const profileImage = localStorage.getItem("profile");
+    
+    //     // 가져온 데이터를 상태에 설정
+    //     if (username && email && nickname && intro && phone && address && profileImage) {
+    //         const userData = {
+    //         username,
+    //         email,
+    //         nickname,
+    //         intro,
+    //         phone,
+    //         address,
+    //         profileImage,
+    //                 };
+        
+    //         setProfile(userData);
+    //     } else {
+    //             console.error("사용자 정보가 localStorage에 없습니다.");
+    //                 }
+    //             }, []);
     
     useEffect(() => {
-        console.log("보드넘버  : "+boardNo);
+        loginEmail.current = localStorage.getItem('email');  // 로컬 스토리지에서 토큰을 가져옵니다.
+        // console.log("토큰토큰 : "+loginEmail);
         bNo.current = params?.boardNo;  // params가 변경될 때마다 bNo 업데이트
         setBoardNo(bNo.current);  // boardNo 상태 업데이트
-        
-        
-        renew();
-        
-    
-    }, [params?.boardNo]); 
-    const renew = ()=>{
-        //게시글 전체 정보 새로 불러오기
-        loadData(boardNo).
-        then(resp=>{
-            setBoardData(resp);
-            setCommentData(resp.commentList); //댓글리스트
-            const updatedCommentData = resp.commentList.map(comment => ({
-                ...comment,
-                canEdit: comment.no === boardData.no
-            }));
-            setCommentData(updatedCommentData);
-            setIsLiked(resp.likeOrNot);
-        });
-    }
+        // console.log("boardNo : " + boardNo);
+        console.log("bNo : "+bNo.current); 
+        // selectOne(boardNo,setBoardData);
 
-    //글 정보 새로 불러오기
-    const loadData = async (boardNo) => {
+        loadBoardData();
         
-        const response = await axios.get('http://localhost:8081/board/' + boardNo);
-        return response.data;
-    };
+        console.log("보드데이터"+boardData);    
+        console.log("로그인 이메일:", loginEmail.current); //이게 제대로 나온다!
+        if(boardData){
+            console.log("작성자이메일 : "+boardData.email);
+        }
+        
+        // console.log("comment.email:", comment.email);
+        
+            // setLikeStatus(boardData.likeOrNot);
+            
+        
+    }, [params?.boardNo]);  // params.boardNo가 변경될 때마다 실행
+    // const imgList = boardData.imgList;
+    // for(let i=0;i<imgList.length;i++){
+    //     console.log(imgList[i].boardImagePath+imgList[i].boardImageRename);
+    // }
+    // console.log("최종 넘어온 boardData : "+boardData.imgList);
     const handleContentChange = (e)=>{
         setComment(e.target.value);
         
+        console.log("comment : "+e.target.value);
         let text=e.target.value.replace(/<script.*?>.*?<\/script>/gi, '');
         setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
-        
+        console.log("댓글result : "+result);
     }
     const addComment = ()=>{
         if(localStorage.getItem('email') == null){
@@ -90,19 +155,21 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
             setError({comment:"댓글을 입력해 주세요."});
             return;
         }
-        addCommentService(boardNo,result,localStorage.getItem('email'),setCommentData);
+        
+        addCommentService(boardNo,result,loginEmail.current,setCommentData);
         document.querySelector("#comment").value="";
         setBoardData(prevBoardData => ({
             ...prevBoardData,
             commentCount: prevBoardData.commentCount + 1
         }));
-        setResult("");
-        setComment("");
-        setError({...error, comment: ""});
     }
-
+    // for( let img of (boardData.imgList)){
+    //     console.log(img.boardImagePath+img.boardImageRename);
+    // }
+    // console.log("이미지 : "+boardData?.imgList);
     const toggleLike=(boardNo, loginEmail)=>{
-        
+        console.log("boardNo : "+boardNo);
+        console.log("loginEmail : "+loginEmail);
         if(localStorage.getItem('email') == null){
             alert("로그인 후 이용해 주세요.");
             navigate('/login');
@@ -111,9 +178,17 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
         axios.post('http://localhost:8081/board/like/insert', {boardNo, 
             email : loginEmail})
         .then(response => {
-            // loadData(boardNo,setBoardData);
-            // setIsLiked(prev => prev==0 ? 1 : 0);
-            renew();
+            //좋아요 추가/삭제하고 최종 좋아요 개수 반환받아오기
+            console.log("업데이트된 좋아요 수 "+response.data);
+            setBoardData(prevBoardData => ({
+                ...prevBoardData,
+                likeCount: response.data
+            }));
+            // document.querySelector("#like").classList.toggle("liked");
+            setLikeStatus(prevLikeStatus => {
+                if (prevLikeStatus == 1) setLikeStatus(0); 
+                    else setLikeStatus(1);
+            })
         });
     }
     const boardDelete = (boardNo)=>{
@@ -131,13 +206,12 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
         if(confirm("정말 삭제하시겠습니까?")){
             axios.delete("http://localhost:8081/board/comment/delete/"+commentNo)
             .then(resp =>{
-                
+                console.log("삭제 resp.data : "+resp.data);
                 if(resp.data>0){
                     alert("삭제되었습니다.");
-                    // loadData(boardNo,setBoardData);
-                    setTimeout(()=>{
-                        renew();
-                    },500);
+                    // window.location.reload();
+                    updateCommentCnt();
+                    updateCommentList(boardNo,setCommentData);
                 }else{
                     alert("삭제에 실패하였습니다.");
                 }
@@ -152,15 +226,12 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
             commentContent :onUpdateComment,
             commentNo : onUpdateCommentNo})
         .then(resp=>{
-            
+            console.log("수정 resp.data : "+resp.data);
             if(resp.data>0){
                 alert("댓글이 수정되었습니다.");
-                // loadData(boardNo,setBoardData);
-                setTimeout(()=>{
-                    setOnUpdateCommentNo(0);
-                    renew();
-
-                },500);
+                // window.location.reload();
+                setTimeout(()=>navigate("/board/"+boardNo),1000);
+                // updateCommentList(boardNo,setCommentData);
             }else{
                 alert("수정에 실패하였습니다.");
             }
@@ -168,9 +239,9 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     }
 
     
-useEffect(()=>{
+  useEffect(()=>{
     scrollTo(0,0);
-    },[])
+  },[])
 
     return (
         <>
@@ -205,10 +276,10 @@ useEffect(()=>{
                                     </p>
                                 </div>
                                 <div className="btns">
-                                {boardData.no == localStorage.getItem('no') ? (
+                                {boardData.email == loginEmail.current ? (
                                     <>
                                         <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
-                                            onClick={() => navigate(`/boardUpdate`,{state:{ boardNo : boardNo}})}        >
+                                            onClick={() => navigate(`/boardUpdate`,{state:{ boardNo : boardData.boardNo}})}        >
                                             수정
                                         </Button>
                                         <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem'}} 
@@ -261,9 +332,9 @@ useEffect(()=>{
                         ) : (
                             <p>이미지가 없습니다.</p>
                         )}
-                        <div className="like" onClick={()=>toggleLike(boardNo, localStorage.getItem('email'))}>
+                        <div className="like" onClick={()=>toggleLike(boardNo, loginEmail.current)}>
                             
-                                {boardData.likeOrNot ==1 ? (
+                                {likeStatus ==1 ? (
                                         <IoHeart className="heart"/>
                                     ) : (
                                         <IoMdHeartEmpty className="heart"/>
@@ -336,7 +407,7 @@ useEffect(()=>{
                                                 }
                                         </p>
                                         <div className="commentBtns">
-                                        {localStorage.getItem('email') === comment.email && onUpdateCommentNo !== comment.commentNo ? (
+                                        {loginEmail.current === comment.email && onUpdateCommentNo !== comment.commentNo ? (
                                                 <>   
                                                     {/* 로그인한 회원이 작성자인데 수정 중이 아닐 경우 */}
                                                     <Button variant="contained" sx={{ fontSize: '1rem', marginTop: '1rem' }}
@@ -352,7 +423,7 @@ useEffect(()=>{
                                                         삭제
                                                     </Button>
                                                 </>
-                                            ) : localStorage.getItem('email') === comment.email && onUpdateCommentNo === comment.commentNo ? (
+                                            ) : loginEmail.current === comment.email && onUpdateCommentNo === comment.commentNo ? (
                                                 <>
                                                     {/* 로그인한 회원이 작성자인데 수정 중인 경우 */}
                                                     {/* 수정 중일 때 보여줄 JSX 컴포넌트를 여기에 추가 */}
@@ -538,5 +609,4 @@ const ContentTextarea = styled.textarea`
 const Error = styled.div`
     color: red;
 `;
-
 
