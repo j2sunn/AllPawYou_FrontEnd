@@ -44,7 +44,7 @@ import AdminProductList from "./routes/Admin/AdminProductList";
 import AdmiinAddProduct from "./routes/Admin/AdminAddProduct";
 import AdminUpdateProduct from "./routes/Admin/AdminUpdateProduct";
 
-import BoardUpdate from "./routes/BoardUpdate";
+
 import MyPageBoardList from "./routes/MyPageBoardList";
 
 
