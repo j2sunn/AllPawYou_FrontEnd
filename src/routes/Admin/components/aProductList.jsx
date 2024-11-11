@@ -62,10 +62,10 @@ const ProductList = () => {
   return (
     <>
       <Title>상품 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem" }}>
+      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none' }}>
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEC759" }}>
-            <TableRow>
+          <TableHead>
+            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
               <TableCell align="center" sx={{ width: "8rem" }}>
                 번호
               </TableCell>
@@ -88,17 +88,15 @@ const ProductList = () => {
           </TableHead>
           <TableBody>
             {product.map((item, index) => (
-              <TableRow key={item.no}>
+              <TableRow key={item.no} sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
                 <TableCell align="center" sx={{ width: "8rem" }}>
                   {index + 1}
                 </TableCell>
                 <TableCell align="center" sx={{ width: "10rem" }}>
                   {item.category}
                 </TableCell>
-                <TableCell align="center" sx={{ width: "30rem" }}>
-                  <Link to={`/shoppingDetail/${item.id}`} style={{ textDecoration: "none", textDecorationColor: "inherit", color: "inherit" }}>
-                    {item.name}
-                  </Link>
+                <TableCell align="center" sx={{ width: "30rem", cursor: 'pointer' }} onClick={()=>navigate(`/shoppingDetail/${item.id}`)}>
+                  {item.name}
                 </TableCell>
                 <TableCell align="center" sx={{ width: "10rem" }}>
                   {item.price.toLocaleString()}
@@ -131,10 +129,11 @@ const ProductList = () => {
 export default ProductList;
 
 const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
 
 const AddProductButton = styled.div`

@@ -1,11 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { IoIosSearch, IoMdHeartEmpty } from "react-icons/io";
+import { IoIosSearch } from "react-icons/io";
 import { AiOutlineLike } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import {loadList} from "../service/BoardService";
 import { Button,FormControl,InputLabel,MenuItem,Select,TextField} from "@mui/material";
-const BoardList = ()=>{
+const BoardList = ()=>{ // 11 11 페이지네이션 수정 전에  
     const navigator = useNavigate();
     const [boardList, setBoardList] = useState([]);
 
@@ -163,17 +163,17 @@ const BoardList = ()=>{
                                     // dangerouslySetInnerHTML={{ __html: board.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }}
                                     > {formatContent(board.boardContent)}</p>
                                 <div className="boardInfo">
-                                    <img src={`http://localhost:8081/images/board/happy.png`}/>
+                                    <img src={`http://localhost:8080/images/board/happy.png`}/>
                                     <p className="boardNick">{board.boardUsername}</p>
                                     <p className="boardComment">댓글 : {board.commentCount}</p>
-                                    <p className="boardLike"><IoMdHeartEmpty />{board.likeCount}</p>
+                                    <p className="boardLike"><AiOutlineLike />{board.likeCount}</p>
                                     
                                 </div>
                             </div>
                             {
                                 board.imgRename ? (
                                     <div className="second">
-                                        <img src={`http://localhost:8081/images/board/${board.imgRename}`}/>
+                                        <img src={`http://localhost:8080/images/board/${board.imgRename}`}/>
                                     </div>        
                                 ) : (
                                     <>

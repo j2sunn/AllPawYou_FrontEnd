@@ -104,7 +104,7 @@ const ListNoticeComponent = () => {
             {notices.map((item, index) => (
               <TableRow key={item.noticeTitle} sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
                 <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center" onClick={()=>navigate(`/noticeDetail/${item.noticeNo}`,{state:item})} sx={{fontWeight: 'bold'}}>{item.noticeTitle}</TableCell>
+                <TableCell align="center" onClick={()=>navigate(`/noticeDetail/${item.noticeNo}`,{state:item})} sx={{fontWeight: 'bold', cursor: 'pointer'}}>{item.noticeTitle}</TableCell>
                 <TableCell align="center">{item.noticeDate}</TableCell>
                 <TableCell align="center">
                   <Button

@@ -32,11 +32,9 @@ const HeaderComponent = () => {
             </Logo>
             <Nav>
               <NavItem onClick={() => navigator("/")}>홈</NavItem>
-              <NavItem onClick={() => navigator("/noticeListUser")}>사용가이드</NavItem>
-
-              <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
-
               <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
+              <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
+              <NavItem onClick={() => navigator("/noticeListUser")}>사용 가이드</NavItem>
 
               {ACCESS_TOKEN ? (
                 <>

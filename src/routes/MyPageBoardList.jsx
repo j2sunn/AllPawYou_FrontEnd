@@ -35,7 +35,7 @@ const MyPageBoardList = () => {
   }, []);
   
   const loadMine = ()=>{
-    axios.get("http://localhost:8080/board/myBoard/"+localStorage.getItem("no"))
+    axios.get("http://localhost:8081/board/myBoard/"+localStorage.getItem("no"))
     .then(resp=>{
       setBoardList(resp.data);
     });
@@ -77,7 +77,7 @@ const MyPageBoardList = () => {
                             key={board.boardNo}
                             src={
                               board.imgList && board.imgList.length > 0 // 이미지 배열이 존재하고 길이가 0보다 큰 경우
-                                ? `http://localhost:8080/images/board/${board.imgList[0].boardImageRename}`
+                                ? `http://localhost:8081/images/board/${board.imgList[0].boardImageRename}`
                                 : null // 이미지가 없으면 null
                             }
                             alt={board.imgList && board.imgList.length > 0 ? board.imgList[0].boardImageRename : "이미지가 없습니다."} // 이미지가 없을 때 대체 텍스트
