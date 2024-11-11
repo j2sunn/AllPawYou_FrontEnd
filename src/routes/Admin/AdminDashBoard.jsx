@@ -2,7 +2,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Piechart from "../../components/chart/PieChart"; // Assuming these exist
 import AdminHeader from "./components/AdminHeader";
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import AdminFooter from "./components/AdminFooter";
 import { CgProfile } from "react-icons/cg";
 import { FaHandHoldingDollar } from "react-icons/fa6";
@@ -189,10 +198,26 @@ export default function AdminDashBoard() {
           <Grid container spacing={3}>
             {/* 일일 정보 카드 */}
             {[
-              { title: "일일 접속자", value: dailyVisitors, icon: <CgProfile size={40} /> },
-              { title: "일일 거래수", value: dailtyOrders, icon: <FaHandHoldingDollar size={40} /> },
-              { title: "일일 수익", value: `${dailtyTotalPrice}원`, icon: <FaMoneyBillTrendUp size={40} /> },
-              { title: "일일 게시물 등록 수", value: dailyBoardCount, icon: <FaUpload size={40} /> },
+              {
+                title: "일일 접속자",
+                value: dailyVisitors,
+                icon: <CgProfile size={40} />,
+              },
+              {
+                title: "일일 거래수",
+                value: dailtyOrders,
+                icon: <FaHandHoldingDollar size={40} />,
+              },
+              {
+                title: "일일 수익",
+                value: `${dailtyTotalPrice}원`,
+                icon: <FaMoneyBillTrendUp size={40} />,
+              },
+              {
+                title: "일일 게시물 등록 수",
+                value: dailyBoardCount,
+                icon: <FaUpload size={40} />,
+              },
             ].map((data, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Paper
@@ -261,35 +286,80 @@ export default function AdminDashBoard() {
 
             <Grid item xs={12} md={4}>
               <Box>
-                <TableContainer component={Paper}>
+                <TableContainer
+                  component={Paper}
+                  sx={{
+                    boxShadow: "none",
+                  }}
+                >
                   <Table>
-                    <TableHead sx={{ backgroundColor: "#EEC759" }}>
-                      <TableRow>
-                        <TableCell sx={{ display: "flex", alignItems: "center", height: "60px" }}>
-                          <FaInfoCircle style={{ marginRight: "1rem" }} size={25} />
+                    <TableHead>
+                      <TableRow
+                        sx={{
+                          borderTop: "2px solid rgba(0,0,0,0.8)",
+                          borderBottom: "2px solid rgba(0,0,0,0.8)",
+                        }}
+                      >
+                        <TableCell
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            height: "60px",
+                          }}
+                        >
+                          <FaInfoCircle
+                            style={{ marginRight: "1rem" }}
+                            size={25}
+                          />
                           누적 데이터
                         </TableCell>
                         <TableCell align="center"></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      <TableRow>
-                        <TableCell sx={{ height: "70px" }}>누적 접속횟수</TableCell>
+                      <TableRow
+                        sx={{
+                          borderTop: "2px solid rgba(0,0,0,0.3)",
+                          borderBottom: "2px solid rgba(0,0,0,0.3)",
+                        }}
+                      >
+                        <TableCell sx={{ height: "70px" }}>
+                          누적 접속횟수
+                        </TableCell>
                         <TableCell>{totalVisitors}</TableCell>
                       </TableRow>
 
-                      <TableRow>
-                        <TableCell sx={{ height: "70px" }}>누적 거래횟수</TableCell>
+                      <TableRow
+                        sx={{
+                          borderTop: "2px solid rgba(0,0,0,0.3)",
+                          borderBottom: "2px solid rgba(0,0,0,0.3)",
+                        }}
+                      >
+                        <TableCell sx={{ height: "70px" }}>
+                          누적 거래횟수
+                        </TableCell>
                         <TableCell>{totalOrder}</TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow
+                        sx={{
+                          borderTop: "2px solid rgba(0,0,0,0.3)",
+                          borderBottom: "2px solid rgba(0,0,0,0.3)",
+                        }}
+                      >
                         <TableCell sx={{ height: "70px" }}>누적 수익</TableCell>
                         <TableCell>{totalPrice}</TableCell>
                       </TableRow>
 
-                      <TableRow>
-                        <TableCell sx={{ height: "70px" }}>누적 게시물 수</TableCell>
+                      <TableRow
+                        sx={{
+                          borderTop: "2px solid rgba(0,0,0,0.3)",
+                          borderBottom: "2px solid rgba(0,0,0,0.3)",
+                        }}
+                      >
+                        <TableCell sx={{ height: "70px" }}>
+                          누적 게시물 수
+                        </TableCell>
                         <TableCell>{totalBoardCount}</TableCell>
                       </TableRow>
                     </TableBody>
