@@ -300,7 +300,10 @@ const ShoppingDetail = () => {
             </ContentArea>
           </div>
         ) : (
-          <p>오류입니다.</p>
+          <>
+            <NoData>존재하지 않는 상품입니다.</NoData>
+            <Button variant="contained" onClick={()=>navigator(-1)} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>이전 페이지로 돌아가기</Button>
+          </>
         )}
       </Container>
       <DetailArea style={{ marginTop: "50px" }}>
@@ -322,7 +325,7 @@ const ShoppingDetail = () => {
               ))}
             </CustomTabPanel>
           ) : (
-            <p>상세 이미지가 없습니다.</p>
+            <p></p>
           )}
           <CustomTabPanel value={value} index={1}>
             <div>
@@ -364,6 +367,7 @@ const ShoppingDetail = () => {
 export default ShoppingDetail;
 
 const Container = styled.div`
+  min-height: 450px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -402,4 +406,11 @@ const Review = styled.div`
 const ReviewImg = styled.img`
   width: 200px;
   height: 200px;
+`;
+
+const NoData = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
 `;

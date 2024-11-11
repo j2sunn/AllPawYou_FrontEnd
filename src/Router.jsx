@@ -31,6 +31,11 @@ import UpdateMyPage from "./routes/UpdateMyPage";
 import BoardUpdate from "./routes/BoardUpdate";
 
 import PetMap from "./routes/kakaoMap/PetMap";
+//message
+import MessageSendPage from "./routes/message/CreateMessage";
+import SentMessages from "./routes/message/SentMessages";
+import ReceiveMessages from "./routes/message/ReceiveMessages";
+import DetailMessages from "./routes/message/MessageDetails";
 
 // Admin
 import AdminBoardList from "./routes/Admin/AdminBoardList";
@@ -48,12 +53,10 @@ import NoticeListUser from "./routes/NoticeListUser";
 
 import MyPageBoardList from "./routes/MyPageBoardList";
 
-
 import TheaterLocation from "./routes/kakaoMap/KakaoMapComponent";
 import ChangePassword from "./routes/Mypage/ChangePassword";
 
 import Forbidden from "./routes/Forbidden";
-
 
 const Router = () => {
   return (
@@ -105,11 +108,11 @@ const Router = () => {
           {/* 사용자 후기 수정 */}
           <Route path="/review/updateReview/:reviewNo" element={<UserReviewUpdate />} />
 
-        {/* 공지사항 메인(유저) */}
-        <Route path="/noticeListUser" element={<NoticeListUser />} />
-        
-        {/* 공지사항 상세페이지(유저) */}
-        <Route path="/noticeDetail/:noticeNo" element={<NoticeDetail />} />
+          {/* 공지사항 메인(유저) */}
+          <Route path="/noticeListUser" element={<NoticeListUser />} />
+
+          {/* 공지사항 상세페이지(유저) */}
+          <Route path="/noticeDetail/:noticeNo" element={<NoticeDetail />} />
 
           {/* 마이페이지 글 목록 */}
           <Route path="/board/myBoard" element={<MyPageBoardList />} />
@@ -120,7 +123,11 @@ const Router = () => {
 
           {/* 마이페이지 비밀번호 수정 */}
           <Route path="/mypage/passwordChange" element={<ChangePassword />} />
+          {/* 메세지 */}
 
+          <Route path="/mypage/receiveMessage" element={<ReceiveMessages />} />
+          <Route path="/mypage/sentMessage" element={<SentMessages />} />
+          <Route path="/mypage/messageDetail/:messageId" element={<DetailMessages />} />
         </Route>
 
         {/* 관리자 페이지 */}
@@ -135,6 +142,9 @@ const Router = () => {
         <Route path="/admin/productlist" element={<AdminProductList />} />
         <Route path="/admin/addproduct" element={<AdmiinAddProduct />} />
         <Route path="/admin/updateproduct/:id" element={<AdminUpdateProduct />} />
+
+        {/* 쪽지 팝업 */}
+        <Route path="/mypage/createMessage" element={<MessageSendPage />} />
 
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="*" element={<NotFound />} />

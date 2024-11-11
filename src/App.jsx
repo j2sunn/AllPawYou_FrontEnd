@@ -9,6 +9,9 @@ function App() {
       primary: {
         main: "#527853",
       },
+      pageButton: {
+        main: "#FFF7D4",
+      },
     },
     typography: {
       fontFamily: "Pretendard-Regular",

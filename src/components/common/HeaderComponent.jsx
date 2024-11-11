@@ -2,8 +2,12 @@ import styled from "styled-components";
 import logo from "../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import { IoPersonCircleSharp } from "react-icons/io5";
+// import { IoPersonCircleSharp } from "react-icons/io5";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
+
+import defaultProfile from "src/assets/defaultprofile.png";
+
 
 const HeaderComponent = () => {
   const navigator = useNavigate();
@@ -21,9 +25,38 @@ const HeaderComponent = () => {
     navigator("/");
   };
 
+   //---- 회원정보 가져오기
+   const [userInfo, setUserInfo] = useState(null);
+ 
+   useEffect(() => {
+     const username = localStorage.getItem("username");
+     const email = localStorage.getItem("email");
+     const nickname = localStorage.getItem("nickname");
+     const intro = localStorage.getItem("intro");
+     const phone = localStorage.getItem("phone");
+     const address = localStorage.getItem("address");
+     const profileImage = localStorage.getItem("profile");
+ 
+     // 가져온 데이터를 상태에 설정
+       const userData = {
+         username,
+         email,
+         nickname,
+         intro,
+         phone,
+         address,
+         profileImage,
+       };
+       
+       setUserInfo(userData);
+     
+   }, []);
+ 
+
   return (
     <>
       <Container>
+      {userInfo ? (
         <HeaderContainer>
           <Header>
             <Logo onClick={() => navigator("/")} style={{ justifyContent: "space-evenly" }}>
@@ -52,8 +85,11 @@ const HeaderComponent = () => {
                     >
                       <AccordionSummary sx={{ marginBottom: "-1rem" }}>
                         {/* 이미지 넣기 */}
-                        {/* <Img /> */}
-                        <IoPersonCircleSharp size={60} style={{ color: "gray" }} />
+                        <img src={userInfo?.profileImage && userInfo?.profileImage !== "default" 
+                        ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile} 
+                        style={{width:'60px', height:'60px' , borderRadius:'50%'}} />
+                        {/* <IoPersonCircleSharp size={60} style={{ color: "gray" }} /> */}
+                    
                       </AccordionSummary>
                       <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
                         {localStorage.getItem("role") == "ROLE_ADMIN" ? (
@@ -72,6 +108,9 @@ const HeaderComponent = () => {
             </Nav>
           </Header>
         </HeaderContainer>
+      ) :(
+        <>사용자 정보가 없습니다.</>
+      )}
       </Container>
     </>
   );

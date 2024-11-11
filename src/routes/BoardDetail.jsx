@@ -169,7 +169,6 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
     }
     const boardDelete = (boardNo)=>{
         
-       
         Swal.fire({
             title: "정말 삭제하시겠습니까?",
                     text: '삭제 시 돌이킬 수 없습니다.',
