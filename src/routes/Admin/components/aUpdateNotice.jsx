@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {getNotice,updateNotice} from "../../service/NoticeService";
+import {getNotice,updateNotice} from "../../../service/NoticeService";
 import styled from "styled-components";
 const NoticeUpdate = ()=>{
     const  {state}  = useLocation();
@@ -57,7 +57,6 @@ const handleTitleChange = (e) => {
         console.log("result : "+result);
     }
    
-    
     const doSubmit = ()=>{
         if(validation()){
             //필수사항 다 작성한 경우
@@ -104,7 +103,7 @@ const handleTitleChange = (e) => {
     return(
         <>
             {state ? (
-                    <Container>
+                    <>
                     <Title>공지사항 수정</Title>
                     <One>
                         <h5>제목<span>*</span></h5>
@@ -118,8 +117,8 @@ const handleTitleChange = (e) => {
                         
                         <Error>{error.content}</Error>
                     </One>
-                    <EndBtn onClick={doSubmit}>등록</EndBtn>
-                </Container>
+                    <EndBtn onClick={doSubmit}>수정</EndBtn>
+                </>
             ) : (
                 <>
                 </>
@@ -129,14 +128,6 @@ const handleTitleChange = (e) => {
     );
 }
 export default NoticeUpdate;
-const Container = styled.div`
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-`;
-
 
 const Title = styled.div`
 
@@ -146,20 +137,8 @@ padding-bottom: 3rem;
   border-bottom: 3px solid #c4e1f6;
 `;
 
-// const Div = styled.div`
-//     background-color: ${({ selected }) => (selected ? '#EEC759' : 'RGB(240, 240, 243)')};
-//         margin-right : 10px;
-//         width : 100px;
-//         font-weight: bold;
-//         border-radius: 20px;
-//         text-align: center;
-//         padding : 7px;
-//         &:hover{
-//         cursor: pointer;
-//         }
-// `;
 const One = styled.div`
-    width: 50%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -175,21 +154,6 @@ const One = styled.div`
     }
     
 `;
-// const Two = styled.div`
-//     width: 50%;
-//     h5{
-//         margin-top: 30px;
-//     }
-//     h5 span{
-//         color: red;
-//     }
-// `;
-// const Three = styled.div`
-//     width: 50%;
-//     h5{
-//         margin-top: 30px;
-//     }
-// `;
 
 const TitleInput = styled.input`
     width: 100%;
@@ -219,62 +183,6 @@ const ContentTextarea = styled.textarea`
         border-color: #6c63ff;
     }
 `;
-// const ImgContainer = styled.div`
-//     width: 100%;
-//     height: 100px;
-//     padding: 10px;
-//     background-color: #fff3c4; /* 배경 색상 */
-//     border: 1px solid #ddd;
-//     border-radius: 10px;
-//     overflow-x: auto;
-//     white-space: nowrap; /* 썸네일들이 한 줄로 나오도록 설정 */
-// `;
-
-
-// const Thumbnail = styled.div`
-//     display: inline-block;
-//     position: relative;
-//     width: 80px;
-//     height: 80px;
-//     margin-right: 10px;
-//     border-radius: 10px;
-//     overflow: hidden;
-//     background-color: #eee;
-// `;
-
-// const Image = styled.img`
-//     width: 100%;
-//     height: 100%;
-//     object-fit: cover;
-// `;
-
-// const RemoveButton = styled.button`
-//     position: absolute;
-//     top: 5px;
-//     right: 5px;
-//     background: black;
-//     color: white;
-//     border: none;
-//     border-radius: 50%;
-//     width: 20px;
-//     height: 20px;
-//     cursor: pointer;
-    
-// `;
-
-// const UploadButton = styled.label`
-//     background-color: RGB(240, 240, 243);
-//     border-radius: 15px;
-//     padding : 5px;
-//     display: inline-block;
-//     cursor: pointer;
-//     margin-top: 10px;
-//     font-size: 14px;
-// `;
-
-// const FileInput = styled.input`
-//     display: none;
-// `;
 
 const EndBtn = styled.button`
     background-color: #EEC759;
