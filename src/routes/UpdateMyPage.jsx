@@ -44,6 +44,7 @@ const MyPage = () => {
 
   const goMypage = () => {
     navigator('/mypage');
+    window.location.reload();
   }
 
   const updateProfile = async () => {

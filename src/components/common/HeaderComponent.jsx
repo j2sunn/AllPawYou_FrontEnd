@@ -87,7 +87,7 @@ const HeaderComponent = () => {
                         {/* 이미지 넣기 */}
                         <img src={userInfo?.profileImage && userInfo?.profileImage !== "default" 
                         ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile} 
-                        style={{width:'60px', borderRadius:'50%'}} />
+                        style={{width:'60px', height:'60px' , borderRadius:'50%'}} />
                         {/* <IoPersonCircleSharp size={60} style={{ color: "gray" }} /> */}
                     
                       </AccordionSummary>
