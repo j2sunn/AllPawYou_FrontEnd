@@ -81,15 +81,15 @@ const ListNoticeComponent = () => {
       <Title>공지사항 관리</Title>
       <TableContainer
         component={Paper}
-        sx={{ width: "90%", marginTop: "3rem" }}
+        sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none' }}
       >
         <Table>
-          <TableHead sx={{ backgroundColor: "#EEC759" }}>
-            <TableRow>
-              <TableCell align="center" sx={{ width: "8rem" }}>
+          <TableHead>
+            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
+              <TableCell align="center" sx={{ width: "5rem" }}>
                 번호
               </TableCell>
-              <TableCell align="center" sx={{ width: "20rem" }}>
+              <TableCell align="center" sx={{ width: "30rem", fontWeight: 'bold' }}>
                 제목
               </TableCell>
               <TableCell align="center" sx={{ width: "10rem" }}>
@@ -102,11 +102,11 @@ const ListNoticeComponent = () => {
           </TableHead>
           <TableBody>
             {notices.map((item, index) => (
-              <TableRow key={item.noticeTitle}>
+              <TableRow key={item.noticeTitle} sx={{borderTop: '2px solid rgba(0,0,0,0.3)', borderBottom: '2px solid rgba(0,0,0,0.3)'}}>
                 <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center" onClick={()=>navigate(`/noticeDetail/${item.noticeNo}`,{state:item})}>{item.noticeTitle}</TableCell>
+                <TableCell align="center" onClick={()=>navigate(`/noticeDetail/${item.noticeNo}`,{state:item})} sx={{fontWeight: 'bold'}}>{item.noticeTitle}</TableCell>
                 <TableCell align="center">{item.noticeDate}</TableCell>
-                <TableCell align="center" sx={{ width: "10rem" }}>
+                <TableCell align="center">
                   <Button
                     variant="contained"
                     sx={{ marginRight: "10px" }}
@@ -144,10 +144,11 @@ const ListNoticeComponent = () => {
 export default ListNoticeComponent;
 
 const Title = styled.div`
-  font-size: 2rem;
-  padding-bottom: 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 3rem;
+  margin-left: 3rem;
   width: 90%;
-  border-bottom: 3px solid #c4e1f6;
 `;
 
 const Pages = styled.div`
