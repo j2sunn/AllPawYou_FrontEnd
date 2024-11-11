@@ -4,7 +4,7 @@ import AdminHeader from "./components/AdminHeader";
 import AdminFooter from "./components/AdminFooter";
 import { useEffect } from "react";
 
-export default function PermanentDrawerLeft() {
+export default function AdminBoardList() {
 
   useEffect(()=>{
     scrollTo(0,0);

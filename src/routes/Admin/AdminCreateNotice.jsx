@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
-import UpdateProduct from "./components/adUpdateProduct";
+import CreateNotice from "./components/aCreateNotice";
 import AdminHeader from "./components/AdminHeader";
 import AdminFooter from "./components/AdminFooter";
 import { useEffect } from "react";
 
-export default function AdminUpdateProduct() {
+export default function AdminCreateNotice() {
   
   useEffect(()=>{
     scrollTo(0,0);
@@ -12,11 +12,11 @@ export default function AdminUpdateProduct() {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", minHeight: '850px' }}>
         <AdminHeader />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
-          <UpdateProduct />
+          <CreateNotice />
         </Box>
       </Box>
       <AdminFooter />

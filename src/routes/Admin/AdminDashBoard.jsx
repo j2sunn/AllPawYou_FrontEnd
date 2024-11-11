@@ -24,7 +24,7 @@ import {
 } from "../../service/DashBoard";
 import { useEffect, useState } from "react";
 
-export default function PermanentDrawerLeft() {
+export default function AdminDashBoard() {
   const [dailyVisitors, setDailyVisitors] = useState(0);
   const [totalVisitors, setTotalVisitors] = useState(0);
 

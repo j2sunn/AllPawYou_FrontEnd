@@ -83,6 +83,10 @@ const AdminHeader = () => {
     navigate("/admin/userlist"); // 클릭 시 navigate 호출
   };
 
+  const goNoticeList = () => {
+    navigate("/admin/noticeList"); // 클릭 시 navigate 호출
+  };
+
   const goBoardList = () => {
     navigate("/admin/boardList"); // 클릭 시 navigate 호출
   };
@@ -202,7 +206,7 @@ const AdminHeader = () => {
           <Collapse in={openBoard} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItem disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton sx={{ pl: 4 }} onClick={goNoticeList}>
                   <ListItemIcon>
                     <TbSpeakerphone />
                   </ListItemIcon>
