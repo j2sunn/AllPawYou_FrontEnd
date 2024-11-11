@@ -45,10 +45,12 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
         bNo.current = params?.boardNo;  // params가 변경될 때마다 bNo 업데이트
         setBoardNo(bNo.current);  // boardNo 상태 업데이트
         
-        
+        if(localStorage.getItem('no')!=null){
+            no=Number(localStorage.getItem('no'));
+        }
         renew();
         
-    
+        console.log("이펙트:"+no);
     }, [params?.boardNo]); 
     const renew = ()=>{
         //게시글 전체 정보 새로 불러오기
@@ -68,6 +70,7 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
 
     //글 정보 새로 불러오기
     const loadData = async (boardNo) => {
+        
         no = Number(localStorage.getItem('no'));
         
         
@@ -191,7 +194,7 @@ useEffect(()=>{
                                             ? "고양이" 
                                             : "기타"}
                             </Div>
-                            <p>{boardData.boardTitle}</p>
+                            <p style={{fontSize: '32px'}}>{boardData.boardTitle}</p>
                             <div className="profile">
                                 {/* 글 작성자 프로필이미지 */}
                                 <img src="http://localhost:8081/images/board/happy.png"/>
@@ -206,6 +209,7 @@ useEffect(()=>{
                                     </p>
                                 </div>
                                 <div className="btns">
+                                
                                 {boardData.no == localStorage.getItem('no') ? (
                                     <>
                                         <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} 
@@ -221,7 +225,11 @@ useEffect(()=>{
                                     <>
                                     </>
                                 )}
-                                            
+                                    <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem'}} 
+                                    onClick={() => navigate(`/boardList`,{state:{ cp : cp, selectedCategory : selectedCategory, searchOpt : searchOpt, keyword : keyword}})}  
+                                    >
+                                        목록으로
+                                    </Button>     
                                 
                                 
                                 
@@ -319,8 +327,10 @@ useEffect(()=>{
                                             <>
                                                 {/* 수정중이지 않은 경우 */}
                                                 {/* 댓글 작성자 프로필이미지 */}
-                                                <img src="http://localhost:8081/images/board/happy.png"/>
-                                                <p>{comment.commentUsername}</p>
+                                                <div className="row">
+                                                    <img src="http://localhost:8081/images/board/happy.png"/>
+                                                    <p>{comment.commentUsername}</p>
+                                                </div>
                                                 {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
                                                 <p dangerouslySetInnerHTML={{ __html: comment.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
                                                 {/* <p>{comment.commentContent}</p> */}
@@ -337,6 +347,7 @@ useEffect(()=>{
                                                 }
                                         </p>
                                         <div className="commentBtns">
+                                        {console.log(localStorage.getItem('email') +"여기"+comment.email)}
                                         {localStorage.getItem('email') === comment.email && onUpdateCommentNo !== comment.commentNo ? (
                                                 <>   
                                                     {/* 로그인한 회원이 작성자인데 수정 중이 아닐 경우 */}
@@ -355,6 +366,7 @@ useEffect(()=>{
                                                 </>
                                             ) : localStorage.getItem('email') === comment.email && onUpdateCommentNo === comment.commentNo ? (
                                                 <>
+                                                    
                                                     {/* 로그인한 회원이 작성자인데 수정 중인 경우 */}
                                                     {/* 수정 중일 때 보여줄 JSX 컴포넌트를 여기에 추가 */}
                                                     
@@ -518,6 +530,10 @@ const Four = styled.div`
     }
     .commentBoxes{
         display : flex;
+    }
+    .row{
+        display: flex;
+        
     }
 `;
 //댓글
