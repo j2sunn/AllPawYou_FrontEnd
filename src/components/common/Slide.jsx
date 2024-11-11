@@ -74,11 +74,11 @@ const ProductCard = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 500px;
+  height: 600px;
 `;
 
 const ProductImg = styled.img`
   width: 100%;
-  height: 500px;
+  height: 600px;
   box-shadow: 0px 0px 5px #444;
 `;
