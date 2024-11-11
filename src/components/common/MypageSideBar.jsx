@@ -24,6 +24,18 @@ const MypageSideBar = () => {
     navigate(`/order`);
   };
 
+  const goCreateMessage = () => {
+    navigate(`/mypage/createMessage`);
+  };
+
+  const goReceiveMessage = () => {
+    navigate(`/mypage/receiveMessage`);
+  };
+
+  const geoSentMessage = () => {
+    navigate(`/mypage/sentMessage`);
+  };
+
   return (
     <SideBar>
       <SideBarTitle>마이 페이지</SideBarTitle>
@@ -36,6 +48,11 @@ const MypageSideBar = () => {
           sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}
         />
         <TreeItem itemId="order" label="주문 목록" onClick={goOrder} sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }} />
+        <TreeItem itemId="message" label="쪽지" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
+          <TreeItem itemId="createMessage" label="쪽지 보내기" onClick={goCreateMessage} />
+          <TreeItem itemId="receive" label="받은 쪽지함" onClick={goReceiveMessage} />
+          <TreeItem itemId="sent" label="보낸 쪽지함" onClick={geoSentMessage} />
+        </TreeItem>
         <TreeItem itemId="myData" label="내 활동" sx={{ marginBottom: "2rem", "& .MuiTreeItem-label": { fontSize: "1.2rem" } }}>
           <TreeItem itemId="myBoard" label="내 글 관리" onClick={goMyBoard} />
           <TreeItem itemId="myReview" label="내 후기 관리" onClick={goMyReview} />
