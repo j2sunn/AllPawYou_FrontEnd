@@ -70,8 +70,8 @@ const ShoppingDetail = () => {
         title: "로그인이 필요합니다.",
 
         confirmButtonColor: "#527853",
-        confirmButtonText: "닫기"
-      })
+        confirmButtonText: "닫기",
+      });
       return;
     }
     if (data.quantity <= 0) {
@@ -116,8 +116,8 @@ const ShoppingDetail = () => {
         title: "로그인이 필요합니다.",
 
         confirmButtonColor: "#527853",
-        confirmButtonText: "닫기"
-      })
+        confirmButtonText: "닫기",
+      });
       return;
     }
     const checkedData = [
@@ -230,10 +230,9 @@ const ShoppingDetail = () => {
   //상세 이미지 순서 출력
   const getSortedDetailImages = (productFileDTO) => {
     return productFileDTO
-      ?.filter((file) => file.productFileTypeId === 2)  // 상세 이미지만 필터링
-      .sort((a, b) => a.imageOrder - b.imageOrder);  // imageOrder 기준으로 정렬
+      ?.filter((file) => file.productFileTypeId === 2) // 상세 이미지만 필터링
+      .sort((a, b) => a.imageOrder - b.imageOrder); // imageOrder 기준으로 정렬
   };
-
 
   return (
     <>
@@ -302,7 +301,9 @@ const ShoppingDetail = () => {
         ) : (
           <>
             <NoData>존재하지 않는 상품입니다.</NoData>
-            <Button variant="contained" onClick={()=>navigator(-1)} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>이전 페이지로 돌아가기</Button>
+            <Button variant="contained" onClick={() => navigator(-1)} sx={{ fontSize: "1.5rem", marginTop: "2rem" }}>
+              이전 페이지로 돌아가기
+            </Button>
           </>
         )}
       </Container>
@@ -319,9 +320,8 @@ const ShoppingDetail = () => {
               {/* 상품 설명 상세내용 */}
               {getSortedDetailImages(product.productFileDTO).map((file, index) => (
                 <div key={index}>
-                <img 
-                  src={`http://localhost:8081${file.imagePath}`} />
-                  </div>
+                  <img src={`http://localhost:8081${file.imagePath}`} />
+                </div>
               ))}
             </CustomTabPanel>
           ) : (
@@ -330,29 +330,28 @@ const ShoppingDetail = () => {
           <CustomTabPanel value={value} index={1}>
             <div>
               {reviews.length > 0 ? (
-                reviews.map((review, index) => (
-                  <Review key={index}>
-                    <div>
-                      {review.reviewImg.length > 0
-                        ? review.reviewImg.map((item, index) => (
-                          <ReviewImg
-                            key={index}
-                            src={
-                              item?.reviewImgPath // 이미지 배열이 존재하고 길이가 0보다 큰 경우
-                                ? `http://localhost:8081${item.reviewImgPath}${item.reviewImgRename}`
-                                : null // 이미지가 없으면 null
-                            }
-                            alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."}
-                          />
-                        ))
-                        : null}
-                    </div>
-                    <p>별점: {review.reviewStar}</p>
-                    <h4>유저 이름: {review.username}</h4>
-                    <p>작성시간: {review.reviewDate}</p>
-                    <p>내용: {review.reviewContent}</p>
-                  </Review>
-                ))
+                reviews.map(
+                  (review, index) =>
+                    review.reviewVisible === "Y" ? ( // && 대신 ? 사용
+                      <Review key={index}>
+                        <div>
+                          {review.reviewImg.length > 0
+                            ? review.reviewImg.map((item, index) => (
+                                <ReviewImg
+                                  key={index}
+                                  src={item?.reviewImgPath ? `http://localhost:8081${item.reviewImgPath}${item.reviewImgRename}` : null}
+                                  alt={item.reviewImgOriginName || "이미지가 없습니다."}
+                                />
+                              ))
+                            : null}
+                        </div>
+                        <p>별점: {review.reviewStar}</p>
+                        <h4>유저 이름: {review.username}</h4>
+                        <p>작성시간: {review.reviewDate}</p>
+                        <p>내용: {review.reviewContent}</p>
+                      </Review>
+                    ) : null // reviewVisible이 "Y"가 아닌 경우 null 반환
+                )
               ) : (
                 <p>리뷰가 없습니다.</p>
               )}
@@ -409,8 +408,8 @@ const ReviewImg = styled.img`
 `;
 
 const NoData = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
 `;
