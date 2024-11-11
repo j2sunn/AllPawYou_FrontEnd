@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import {addCommentService,updateCommentList} from "../service/BoardService";
+import {addCommentService} from "../service/BoardService";
 import styled from "styled-components";
 import { AiOutlineLike } from "react-icons/ai";
 import { Button} from "@mui/material";
@@ -125,12 +125,13 @@ const BoardDetail = ()=>{ //1110작업 전에 백업해놨다
             setError({comment:"댓글을 입력해 주세요."});
             return;
         }
-        addCommentService(boardNo,result,localStorage.getItem('email'),setCommentData);
+        addCommentService(boardNo,result,localStorage.getItem('email'),setCommentData,renew);
         document.querySelector("#comment").value="";
         setBoardData(prevBoardData => ({
             ...prevBoardData,
             commentCount: prevBoardData.commentCount + 1
         }));
+        renew();
         setResult("");
         setComment("");
         setError({...error, comment: ""});
@@ -322,16 +323,30 @@ useEffect(()=>{
                             <p style={{fontSize: '32px'}}>{boardData.boardTitle}</p>
                             <div className="profile">
                                 {/* 글 작성자 프로필이미지 */}
-                                <img src="http://localhost:8081/images/board/happy.png"/>
+                                <img src={boardData.boardProfile !=null ? `http://localhost:8081${boardData.boardProfile}` : 
+                                    `http://localhost:8081/file/images/profile/defaultprofile.png`}/>
                                 <div className="boardInfo">
-                                    <p>{boardData.boardUsername}</p>
-                                    <p>{boardData.boardDate.substr(0,4)+"."+
-                                        boardData.boardDate.substr(5,2)+"."+
-                                        boardData.boardDate.substr(8,2)+"  "+
-                                        boardData.boardDate.substr(11,2)+"."+
-                                        boardData.boardDate.substr(14,2)
-                                        }
-                                    </p>
+                                    <div className="letterOne">
+                                        <p>{boardData.boardUsername}</p>
+                                        <p>{boardData.boardDate.substr(0,4)+"."+
+                                            boardData.boardDate.substr(5,2)+"."+
+                                            boardData.boardDate.substr(8,2)+"  "+
+                                            boardData.boardDate.substr(11,2)+"."+
+                                            boardData.boardDate.substr(14,2)
+                                            }
+                                        </p>
+                                    </div>
+                                    <div className="letterTwo">
+                                        {localStorage.getItem('no')!=boardData.no ? (
+                                            <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem'}} >쪽지</Button>
+                                        
+                                            
+                                        ) : (
+                                            <>
+                                            </>
+                                        )}
+                                    </div>
+                                    
                                 </div>
                                 <div className="btns">
                                 
@@ -427,13 +442,13 @@ useEffect(()=>{
                         
                         {/* <button onClick={()=>addComment()}>작성하기</button> */}
                         {commentData && commentData.length > 0 ? (
-                            commentData.map((comment,ind)=>
+                            commentData.map((comments,ind)=>
                                 
                                 <div className="commentProfile" key={ind}>
                                     {/* 여기까지만 */}
                                     
                                     <div className="commentInfo">
-                                        {onUpdateCommentNo == comment.commentNo ? (
+                                        {onUpdateCommentNo == comments.commentNo ? (
                                             <>
                                                 {/* 수정중인 경우 */}
                                                 {/* <textarea placeholder="수정할 내용을 작성해주세요" 
@@ -441,7 +456,7 @@ useEffect(()=>{
                                                 onChange={(e) => setOnUpdateComment(e.target.value)}
                                                 /> */}
                                                 <ContentTextarea 
-                                                placeholder={comment.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />")} 
+                                                placeholder={comments.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />")} 
                                                 value={onUpdateComment}
                                                 onChange={(e) => setOnUpdateComment(e.target.value)}
                                                 style={{ width: "600px" }}
@@ -452,36 +467,47 @@ useEffect(()=>{
                                             <>
                                                 {/* 수정중이지 않은 경우 */}
                                                 {/* 댓글 작성자 프로필이미지 */}
+                                                <div className="commentLetter">
+                                                        <img src={comments.commentProfile !=null ? `http://localhost:8081${comments.commentProfile}` : 
+                                            `http://localhost:8081/file/images/profile/defaultprofile.png`}/>
+                                                    {console.log("여기쪽지"+comments.no)}
+                                                    {localStorage.getItem("no") !=comments.no ? (
+                                                        <Button variant="contained" sx={{ fontSize: '1rem', marginTop: '1rem',marginLeft: '1rem' }}>쪽지</Button>
+                                                    ):(
+                                                        <>
+                                                        </>
+                                                    )}
+                                                        
                                                 
-                                                <img src="http://localhost:8081/images/board/happy.png"/>
-                                                <p>{comment.commentUsername}</p>
+                                                </div>
+                                                <p>{comments.commentUsername}</p>
                                                 
                                                 {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
-                                                <p dangerouslySetInnerHTML={{ __html: comment.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
+                                                <p dangerouslySetInnerHTML={{ __html: comments.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
                                                 {/* <p>{comment.commentContent}</p> */}
                                             </>
                                         )}    
                                         
                                     </div>
                                     <div>
-                                        <p>{comment.commentDate.substr(0,4)+"."+
-                                                comment.commentDate.substr(5,2)+"."+
-                                                comment.commentDate.substr(8,2)+"  "+
-                                                comment.commentDate.substr(11,2)+"."+
-                                                comment.commentDate.substr(14,2)
+                                        <p>{comments.commentDate.substr(0,4)+"."+
+                                                comments.commentDate.substr(5,2)+"."+
+                                                comments.commentDate.substr(8,2)+"  "+
+                                                comments.commentDate.substr(11,2)+"."+
+                                                comments.commentDate.substr(14,2)
                                                 }
                                         </p>
                                         <div className="commentBtns">
-                                        {console.log(localStorage.getItem('email') +"여기"+comment.email)}
-                                        {localStorage.getItem('email') === comment.email && onUpdateCommentNo !== comment.commentNo ? (
+                                        
+                                        {localStorage.getItem('email') === comments.email && onUpdateCommentNo !== comments.commentNo ? (
                                                 <>   
                                                     {/* 로그인한 회원이 작성자인데 수정 중이 아닐 경우 */}
                                                     <Button variant="contained" sx={{ fontSize: '1rem', marginTop: '1rem' }}
-                                                    onClick={()=>setOnUpdateCommentNo(comment.commentNo)}>
+                                                    onClick={()=>setOnUpdateCommentNo(comments.commentNo)}>
                                                         수정
                                                     </Button>
                                                     <Button
-                                                        onClick={() => deleteComment(comment.commentNo)}
+                                                        onClick={() => deleteComment(comments.commentNo)}
                                                         variant="contained"
                                                         sx={{ fontSize: '1rem', marginTop: '1rem', marginLeft: '1rem' }}
                                                         
@@ -489,7 +515,7 @@ useEffect(()=>{
                                                         삭제
                                                     </Button>
                                                 </>
-                                            ) : localStorage.getItem('email') === comment.email && onUpdateCommentNo === comment.commentNo ? (
+                                            ) : localStorage.getItem('email') === comments.email && onUpdateCommentNo === comments.commentNo ? (
                                                 <>
                                                     
                                                     {/* 로그인한 회원이 작성자인데 수정 중인 경우 */}
@@ -523,6 +549,7 @@ useEffect(()=>{
                                 </div>
                         
                             )
+                            //====요기까짓!
                         ) : (
                             <>
                                 댓글이 없습니다.
@@ -586,7 +613,7 @@ const One = styled.div`
     }
     .boardInfo{
         display: flex;
-        flex-direction: column;
+        align-items: center;
         p{
             margin : 0px 10px;
             font-size: 20px;
@@ -656,7 +683,10 @@ const Four = styled.div`
     .commentBoxes{
         display : flex;
     }
-    
+    .commentLetter{
+        display : flex;
+        align-items: center;
+    }
 `;
 //댓글
 const ContentTextarea = styled.textarea`

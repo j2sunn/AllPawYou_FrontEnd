@@ -192,56 +192,7 @@ const BoardList = () => {
                             게시글 로딩중입니다.
                         </>
                     )
-
-//           {/* 최신순 인기순 할 땐 List<MyEntity> findAllByOrderByAAscBDesc(); 이용하기 */}
-//         </Two>
-//         <Three>
-//           {currentBoardList.length > 0 ? (
-//             currentBoardList.map((board, index) => (
-//               <Con
-//                 key={index}
-//                 onClick={() =>
-//                   navigator(`/board/${board.boardNo}`, {
-//                     state: { cp: { currentPage }, selectedCategory: { selectedCategory }, searchOpt: { searchOpt }, keyword: { keyword } },
-//                   })
-
-                }
-                style={{ border: "1px solid gray", borderRadius: "10px", padding: "10px", marginBottom: "10px" }}
-              >
-                {/*  Con을 반복하기 */}
-                <div className="first">
-                  <Div> {board.category === 1 ? "강아지" : board.category === 2 ? "고양이" : "기타"}</Div>
-                  <p className="boardTitle">{board.boardTitle}</p>
-                  {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
-                  <p
-                    className="boardContent"
-                    // dangerouslySetInnerHTML={{ __html: board.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }}
-                  >
-                    {" "}
-                    {formatContent(board.boardContent)}
-                  </p>
-                  <div className="boardInfo">
-                    <img src={`http://localhost:8081/images/board/happy.png`} />
-                    <p className="boardNick">{board.boardUsername}</p>
-                    <p className="boardComment">댓글 : {board.commentCount}</p>
-                    <p className="boardLike">
-                      <IoMdHeartEmpty />
-                      {board.likeCount}
-                    </p>
-                  </div>
-                </div>
-                {board.imgRename ? (
-                  <div className="second">
-                    <img src={`http://localhost:8081/images/board/${board.imgRename}`} />
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </Con>
-            ))
-          ) : (
-            <>게시글 로딩중입니다.</>
-          )}
+}
         </Three>
 
         <Pages>

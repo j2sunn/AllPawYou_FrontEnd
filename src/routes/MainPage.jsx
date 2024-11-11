@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { customerCount } from "../service/UserAPI";
 import BoardImageList from "../components/common/ImageList";
 import { listProducts } from "../service/ProductService";
-
+import ImageListCopy from "../components/common/ImageListCopy";
 const MainPage = () => {
 
   const navigate = useNavigate();
@@ -49,6 +49,7 @@ const MainPage = () => {
       <Container>
         <Title>커뮤니티 인기글</Title>
         <BoardImageList />
+        {/* <ImageListCopy/> :작업 전 원본*/}
       </Container>
     </Box>
   );
