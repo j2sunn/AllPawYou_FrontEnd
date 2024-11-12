@@ -94,16 +94,39 @@ const BoardDetail = () => {
   };
 
   const goCreateMessage = () => {
-    const width = 650; // 팝업의 너비
-    const height = 500; // 팝업의 높이
-    const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
-    const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
+    if (localStorage.getItem("email") == null) {
+        Swal.fire({
+          title: "로그인 하시겠습니까?",
+          text: "로그인 후에 쪽지 기능 이용이 가능합니다.",
+          icon: "warning",
+  
+          showCancelButton: true, // false가 default
+          confirmButtonColor: "#527853",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "이동",
+          cancelButtonText: "취소",
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/login");
+            return;
+          } else {
+            setError({ ...error, comment: "" });
+          }
+        });
+      }else{
 
-    window.open(
-      "/mypage/createMessage",
-      "popup",
-      `width=${width},height=${height},top=${top},left=${left},scrollbars=no`
-    );
+          const width = 650; // 팝업의 너비
+          const height = 500; // 팝업의 높이
+          const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
+          const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
+          
+          window.open(
+              "/mypage/createMessage",
+              "popup",
+              `width=${width},height=${height},top=${top},left=${left},scrollbars=no`
+            );
+        }
   };
 
   const addComment = () => {
