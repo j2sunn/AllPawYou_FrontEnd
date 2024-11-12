@@ -6,7 +6,7 @@ import { Table, TableCell, TableRow } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
 import MypageSideBar from "../components/common/MypageSideBar";
 import { updateUser } from "../service/UserAPI";
-import defaultProfile from "src/assets/defaultprofile.png";
+import defaultProfile from "../assets/defaultprofile.png";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Swal from "sweetalert2";
 import { checkNickname } from "../service/UserService";
@@ -94,7 +94,7 @@ const MyPage = () => {
           // console.error("프로필 업데이트 중 오류 발생:", error);
           Swal.fire({
             icon: "warning",
-            title: "프로필을 업데이트 하지 못했습니다.",
+            title: "프로필 업데이트 중 오류 발생.",
             confirmButtonColor: "#527853",
             confirmButtonText: "닫기",
           });
@@ -103,7 +103,7 @@ const MyPage = () => {
       // console.error("프로필 업데이트 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "프로필을 업데이트 하지 못했습니다.",
+        title: "프로필 업데이트 중 오류 발생.",
         confirmButtonColor: "#527853",
         confirmButtonText: "닫기",
       });
@@ -115,7 +115,7 @@ const MyPage = () => {
     setProfile((prev) => ({ ...prev, [key]: value }));
   };
 
-  const [thumbnail, setThumbnail] = useState({ file: null, preview: profile.profile });
+  const [thumbnail, setThumbnail] = useState({ file: null, preview: "/file/images/profile/defaultprofile.png" });
 
   // useEffect(() => {
   //   if(profile){
@@ -138,7 +138,7 @@ const MyPage = () => {
         });
       }
       // profile.profile이 문자열 경로일 경우 (기존 서버 이미지인 경우)
-      else if (profile.profile !== null) {
+      else if (typeof profile.profile === "string" && profile.profile !== "default") {
         setThumbnail({
           file: profile.profile,
           preview: `http://localhost:8081${profile.profile}`,
@@ -214,6 +214,7 @@ const MyPage = () => {
   };
 
   const [showDetailAddress, setShowDetailAddress] = useState(false);
+
   const [isChecking, setIsChecking] = useState(false); // 중복 확인 상태
 
   const dupliNickname = async () => {
@@ -275,8 +276,8 @@ const MyPage = () => {
               <Content>
                 <Profile>
                   <ProfileImg
-                    // src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
-                    src={thumbnail.preview}
+                    src={profile.profile && profile.profile !== "null" ? thumbnail.preview : defaultProfile}
+                    //src={thumbnail.preview}
                   />
                   <Button component="label" variant="contained">
                     이미지 변경

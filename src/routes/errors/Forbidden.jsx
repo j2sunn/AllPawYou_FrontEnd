@@ -1,25 +1,27 @@
 import styled from "styled-components";
-import logo from "../assets/logo1.png"
+import logo from "src/assets/logo1.png";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const NotFound = () => {
+const Forbidden = () => {
   const navigator = useNavigate();
   return (
     <Container>
       <LogoImg src={logo} alt="로고" />
-      <Message>존재하지 않는 페이지입니다.</Message>
-      <Button onClick={()=>navigator('/')}
-        variant="contained" 
+      <Message>접근 권한이 없는 페이지입니다.</Message>
+      <Button
+        onClick={() => navigator("/")}
+        variant="contained"
         color="primary"
-        sx={{width:'18rem', height:'3rem', fontSize:'1.5rem', borderRadius:'10px'}}>
+        sx={{ width: "18rem", height: "3rem", fontSize: "1.5rem", borderRadius: "10px" }}
+      >
         메인 페이지로 이동
       </Button>
     </Container>
-  )
+  );
 };
 
-export default NotFound;
+export default Forbidden;
 
 const Container = styled.div`
   display: flex;

@@ -252,25 +252,9 @@ export default function AdminDashBoard() {
               </Paper>
             </Grid> */}
 
-            <Barchart />
+            {/* <Barchart /> */}
             <LineChart />
-
-            <Grid item xs={12} md={6}>
-              <Paper
-                elevation={3}
-                sx={{
-                  padding: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Typography variant="h6" gutterBottom>
-                  카테고리별 거래 수 (파이차트)
-                </Typography>
-                <Piechart /> {/* PieChart 컴포넌트 */}
-              </Paper>
-            </Grid>
+            <Piechart />
 
             {/* 최근 가입 사용자 */}
             <Grid item xs={12} md={8}>

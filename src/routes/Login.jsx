@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { login, fetchKakaoOAuth, autoLogin } from "../service/Login";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const LoginContainer = styled.div`
   text-align: center;
@@ -68,6 +69,17 @@ export default function Login() {
   useEffect(() => {
     scrollTo(0, 0);
     autoLogin();
+  }, []);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const ACCESS_TOKEN = localStorage.getItem("accessToken");
+    console.log(ACCESS_TOKEN);
+    if (ACCESS_TOKEN) {
+      // accessToken이 존재하면 메인 페이지로 리디렉션
+      navigate("/"); // 메인 페이지로 이동
+    }
   }, []);
 
   return (

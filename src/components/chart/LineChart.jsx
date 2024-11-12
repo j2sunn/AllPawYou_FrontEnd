@@ -102,15 +102,6 @@ const LineChart = () => {
               <MenuItem value="monthly">월별</MenuItem>
             </Select>
           </FormControl>
-
-          <FormControl variant="outlined" sx={{ marginBottom: 2, width: "10rem" }}>
-            <InputLabel id="data-type-label">데이터 유형 선택</InputLabel>
-            <Select labelId="data-type-label" value={dataType} onChange={(e) => setDataType(e.target.value)} label="데이터 유형 선택">
-              <MenuItem value="orders">주문 수</MenuItem>
-              <MenuItem value="boardCount">게시글 등록 수</MenuItem>
-              <MenuItem value="totalPrice">총 수익</MenuItem>
-            </Select>
-          </FormControl>
         </Box>
 
         <div style={{ width: "100%", height: "400px", marginTop: "20px" }}>
