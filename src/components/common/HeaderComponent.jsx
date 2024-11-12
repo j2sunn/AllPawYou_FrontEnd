@@ -97,10 +97,14 @@ const HeaderComponent = () => {
                         <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
                           {localStorage.getItem("role") == "ROLE_ADMIN" ? (
                             <AccordianItem onClick={() => navigator("/admin/dashboard")}>관리자 페이지</AccordianItem>
-                          ) : (
+                          ) : localStorage.getItem("role") == "ROLE_SALER" ? (
                             <>
                               <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
                               <AccordianItem onClick={() => navigator("/admin/dashboard")}>판매자 페이지</AccordianItem>
+                            </>
+                          ) : (
+                            <>
+                              <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
                             </>
                           )}
                           <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>

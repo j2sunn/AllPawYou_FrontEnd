@@ -92,6 +92,7 @@ const BoardWrite = () => {
           confirmButtonColor: "#527853",
           confirmButtonText: "닫기",
         });
+        // navigator("/boardList");
       } catch (error) {
         console.error("게시글 수정 실패:", error);
         // 수정 실패 시 알림 표시
@@ -212,7 +213,9 @@ const BoardWrite = () => {
               </UploadButton>
               <p>최대 8장까지 업로드 가능합니다.</p>
             </Three>
-            <Button variant="contained" onClick={doSubmit} sx={{marginBottom: '2rem', width: '5rem'}}>등록</Button>
+            <Button variant="contained" onClick={doSubmit} sx={{ marginBottom: "2rem", width: "5rem" }}>
+              등록
+            </Button>
           </Container>
         </>
       ) : (
