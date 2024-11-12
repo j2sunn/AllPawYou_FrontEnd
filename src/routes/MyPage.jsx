@@ -63,7 +63,7 @@ const MyPage = () => {
                 </Profile>
               </Content>
               <Title style={{ padding: "1rem" }}>자기소개</Title>
-              <Content>{userInfo.intro || ""}</Content>
+              <Content>{userInfo.intro == null ? "" : userInfo.intro }</Content>
               <Button variant="contained" color="primary" onClick={goUpdate} sx={{ width: "8rem" }}>
                 수정
               </Button>

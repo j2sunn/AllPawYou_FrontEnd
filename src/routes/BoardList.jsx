@@ -249,7 +249,8 @@ const BoardList = () => {
               </Card>
             ))
           ) : (
-            <NoData>게시글이 존재하지 않습니다.</NoData>
+            // <NoData>게시글이 존재하지 않습니다.</NoData>
+            <></>
           )}
         </List>
 

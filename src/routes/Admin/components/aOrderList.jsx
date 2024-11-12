@@ -55,7 +55,7 @@ const AdminOrderList = () => {
     <>
       {role == "ROLE_ADMIN" ? (
         <>
-          <Title>주문 목록</Title>
+          <Title>주문 관리</Title>
           <Payments>
             {paymentList?.map((payment) => {
               return (

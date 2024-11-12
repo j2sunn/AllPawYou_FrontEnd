@@ -128,7 +128,7 @@ const AdminBoardList = () => {
                 공개
               </TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
-                곧개 / 삭제
+                공개 / 삭제
               </TableCell>
             </TableRow>
           </TableHead>
