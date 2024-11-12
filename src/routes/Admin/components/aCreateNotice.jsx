@@ -35,18 +35,18 @@ const NoticeWrite = () => {
   const doSubmit = () => {
     if (validation()) {
       let data = { noticeTitle, noticeContent };
-      Swal.fire({
-        title: "등록 성공",
-        text: "공지사항이 성공적으로 등록되었습니다.",
-        icon: "success",
+      createNotice(data, navigator).then(()=>{
 
-        confirmButtonColor: "#527853",
-        confirmButtonText: "닫기",
-      });
-      createNotice(data, navigator);
-      navigator("/admin/noticeList");
-      setTimeout(() => {
-        console.log(1);
+        Swal.fire({
+          title: "등록 성공",
+          text: "공지사항이 성공적으로 등록되었습니다.",
+          icon: "success",
+          
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+        navigator("/admin/noticeList");
+      }).catch(()=>{
         Swal.fire({
           icon: "error",
           title: "등록 실패",
@@ -54,7 +54,7 @@ const NoticeWrite = () => {
           confirmButtonColor: "#d33",
           confirmButtonText: "닫기",
         });
-      }, 3000);
+      })
     }
   };
 
