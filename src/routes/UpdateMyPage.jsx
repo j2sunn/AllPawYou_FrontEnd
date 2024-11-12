@@ -276,8 +276,8 @@ const MyPage = () => {
               <Content>
                 <Profile>
                   <ProfileImg
-                    // src={profile.profile && profile.profile !== "null" ? `http://localhost:8081/${profile.profile}` : defaultProfile}
-                    src={thumbnail.preview}
+                    src={profile.profile && profile.profile !== "null" ? thumbnail.preview : defaultProfile}
+                    //src={thumbnail.preview}
                   />
                   <Button component="label" variant="contained">
                     이미지 변경
