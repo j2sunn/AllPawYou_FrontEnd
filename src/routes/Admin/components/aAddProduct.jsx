@@ -52,6 +52,12 @@ const AdminAddProduct = () => {
     // 상품 설명 이미지 업로드 핸들러 (최대 8장)
     const handleDetailImageChange = (e) => {
         const files = Array.from(e.target.files);
+        
+        const newImages = files.map((file) => ({
+            file: file, // 실제 파일 객체 저장
+            preview: URL.createObjectURL(file), // 미리보기 URL 저장
+        }));
+
         if (files.length + images.length + newImages.length > 8) {
             Swal.fire({
               title: "최대 8장까지 업로드할 수 있습니다.",
@@ -62,10 +68,7 @@ const AdminAddProduct = () => {
            });
             return;
         }
-        const newImages = files.map((file) => ({
-            file: file, // 실제 파일 객체 저장
-            preview: URL.createObjectURL(file), // 미리보기 URL 저장
-        }));
+       
 
         setImages((prevImages) => [...prevImages, ...newImages]);
     };
