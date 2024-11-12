@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadBoard } from "../service/BoardService";
 import Swal from "sweetalert2";
+import { Button } from "@mui/material";
 const BoardWrite = () => {
   const navigator = useNavigate();
   let ACCESS_TOKEN = "";
@@ -211,7 +212,7 @@ const BoardWrite = () => {
               </UploadButton>
               <p>최대 8장까지 업로드 가능합니다.</p>
             </Three>
-            <EndBtn onClick={doSubmit}>등록</EndBtn>
+            <Button variant="contained" onClick={doSubmit} sx={{marginBottom: '2rem', width: '5rem'}}>등록</Button>
           </Container>
         </>
       ) : (
