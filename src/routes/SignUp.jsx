@@ -5,6 +5,7 @@ import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
 import { signUp, sendMail, verify } from "../service/Login";
 import Swal from "sweetalert2";
+import { checkNickname } from "../service/UserService";
 
 const Container = styled.div`
   padding: 60px;
@@ -31,6 +32,7 @@ const Error = styled.div`
 const SignUp = () => {
   const [auth, setAuth] = useState(false);
   const [authValid, setAuthValid] = useState(false);
+  const [isChecking, setIsChecking] = useState(false); // 중복 확인 상태
   const [values, setValues] = useState({
     email: "",
     username: "",
@@ -55,13 +57,28 @@ const SignUp = () => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
 
     if (validation()) {
-      signUp(values)
-        .then((response) => {
+      try {
+        await signUp(values); // 회원가입 API 호출
+
+        // 회원가입 성공 시 알림창 표시
+        Swal.fire({
+          icon: "success",
+          title: "회원가입에 성공했습니다.", // 성공 메시지 텍스트
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        }).then(() => {
           window.location.href = `/login`; // 리디렉션
-        })
-        .catch((error) => {
-          console.log(error);
         });
+      } catch (error) {
+        console.log(error);
+        // 회원가입 실패 시 경고창 표시
+        Swal.fire({
+          icon: "warning",
+          title: "회원가입에 실패했습니다.", // 에러 메시지 텍스트
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+      }
     }
   };
 
@@ -86,10 +103,36 @@ const SignUp = () => {
     }
   };
 
+  const dupliNickname = async () => {
+    setIsChecking(true); // 버튼 비활성화
+    const nickname = values.nickname;
+    try {
+      const response = await checkNickname(nickname);
+      const message = response.data;
+
+      Swal.fire({
+        icon: "info",
+        title: message,
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "중복 체크에 실패했습니다.",
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+    } finally {
+      setIsChecking(false); // 버튼 활성화
+    }
+  };
+
   const handleVerify = async () => {
     try {
       // API 호출
-      const response = await verify(values.email, values.verify);
+      await verify(values.email, values.verify);
       // 인증 성공
       setAuthValid(true);
       setError({ ...error, auth: "" });
@@ -181,10 +224,9 @@ const SignUp = () => {
     return valid;
   };
 
-  
-  useEffect(()=>{
-    scrollTo(0,0);
-  },[])
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -213,7 +255,7 @@ const SignUp = () => {
                 <div>
                   <label htmlFor="verify">인증번호</label>
                   <br />
-                  <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                  <div className="mb-3" style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
                     <TextField id="verify" onChange={handleChange} className={`form-control`} required sx={{ width: "75%" }} disabled={authValid} />
                     <ButtonOverlay variant="contained" onClick={handleVerify} disabled={authValid}>
                       인증번호 확인
@@ -235,16 +277,17 @@ const SignUp = () => {
                 <Error>{error.passwordConfirm}</Error>
               </div>
 
-              <div className="row">
-                <div className="col-md-6 mb-3">
-                  <label htmlFor="username">이름</label>
-                  <TextField id="username" className={`form-control`} onChange={handleChange} required />
-                </div>
-                <div className="col-md-6 mb-3">
-                  <label htmlFor="nickname">닉네임</label>
-                  <TextField id="nickname" className={`form-control`} onChange={handleChange} required />
-                  <Error>{error.nickname}</Error>
-                </div>
+              <div className="mb-3">
+                <label htmlFor="username">이름</label>
+                <TextField id="username" className={`form-control`} onChange={handleChange} required />
+              </div>
+
+              <label htmlFor="nickname">닉네임</label>
+              <div className="mb-3" style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                <TextField id="nickname" className={`form-control`} onChange={handleChange} sx={{ width: "75%" }} required />
+                <ButtonOverlay variant="contained" onClick={dupliNickname} disabled={isChecking}>
+                  중복확인
+                </ButtonOverlay>
               </div>
 
               <div className="mb-3">
