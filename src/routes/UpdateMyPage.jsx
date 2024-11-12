@@ -6,9 +6,10 @@ import { Table, TableCell, TableRow } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
 import MypageSideBar from "../components/common/MypageSideBar";
 import { updateUser } from "../service/UserAPI";
-import defaultProfile from "../assets/defaultprofile.png";
+import defaultProfile from "src/assets/defaultprofile.png";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Swal from "sweetalert2";
+import { checkNickname } from "../service/UserService";
 
 const MyPage = () => {
   const navigator = useNavigate();
@@ -93,7 +94,7 @@ const MyPage = () => {
           // console.error("프로필 업데이트 중 오류 발생:", error);
           Swal.fire({
             icon: "warning",
-            title: "프로필 업데이트 중 오류 발생.",
+            title: "프로필을 업데이트 하지 못했습니다.",
             confirmButtonColor: "#527853",
             confirmButtonText: "닫기",
           });
@@ -102,7 +103,7 @@ const MyPage = () => {
       // console.error("프로필 업데이트 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "프로필 업데이트 중 오류 발생.",
+        title: "프로필을 업데이트 하지 못했습니다.",
         confirmButtonColor: "#527853",
         confirmButtonText: "닫기",
       });
@@ -137,7 +138,7 @@ const MyPage = () => {
         });
       }
       // profile.profile이 문자열 경로일 경우 (기존 서버 이미지인 경우)
-      else if (typeof profile.profile === "string" && profile.profile !== "default") {
+      else if (profile.profile !== null) {
         setThumbnail({
           file: profile.profile,
           preview: `http://localhost:8081${profile.profile}`,
@@ -213,6 +214,33 @@ const MyPage = () => {
   };
 
   const [showDetailAddress, setShowDetailAddress] = useState(false);
+  const [isChecking, setIsChecking] = useState(false); // 중복 확인 상태
+
+  const dupliNickname = async () => {
+    setIsChecking(true); // 버튼 비활성화
+    const nickname = profile.nickname;
+    try {
+      const response = await checkNickname(nickname);
+      const message = response.data;
+
+      Swal.fire({
+        icon: "info",
+        title: message,
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "중복 체크에 실패했습니다.",
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+    } finally {
+      setIsChecking(false); // 버튼 활성화
+    }
+  };
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -320,7 +348,7 @@ const MyPage = () => {
                           required
                         />
                         <Button variant="outlined" sx={{ marginLeft: "10px" }} onClick={clickAddrButton}>
-                          검색
+                          주소검색
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -356,6 +384,9 @@ const MyPage = () => {
                           onChange={(event) => profileHandler(event, "nickname")}
                           required
                         />
+                        <Button variant="outlined" sx={{ marginLeft: "10px" }} onClick={dupliNickname} disabled={isChecking}>
+                          중복확인
+                        </Button>
                       </TableCell>
                     </TableRow>
                   </Table>
