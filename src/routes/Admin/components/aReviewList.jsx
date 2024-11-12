@@ -112,7 +112,7 @@ const ReviewList = () => {
               </TableCell>
               <TableCell align="center">작성일</TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
-                출력 / 삭제
+                공개 / 삭제
               </TableCell>
             </TableRow>
           </TableHead>

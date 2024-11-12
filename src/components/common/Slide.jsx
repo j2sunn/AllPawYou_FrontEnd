@@ -10,13 +10,13 @@ export default function SimpleSlider() {
   const slideRef = useRef(null);
 
   function SamplePrevArrow() {
-    return <IoIosArrowBack size={64} onClick={() => slideRef.current.slickPrev()} style={{display: 'block', color: 'white', position: 'sticky', left: '10px', zIndex: 5}} />;
+    return <IoIosArrowBack size={64} onClick={() => slideRef.current.slickPrev()} style={{ display: 'block', color: 'white', position: 'sticky', left: '10px', zIndex: 5 }} />;
   }
 
   function SampleNextArrow() {
-    return <IoIosArrowForward size={64} onClick={() => slideRef.current.slickNext()} style={{display: 'block', color: 'white', position: 'sticky', right: '10px',  zIndex: 5}} />;
+    return <IoIosArrowForward size={64} onClick={() => slideRef.current.slickNext()} style={{ display: 'block', color: 'white', position: 'sticky', right: '10px', zIndex: 5 }} />;
   }
-  
+
   const settings = {
     dots: false,
     infinite: true,
@@ -32,23 +32,35 @@ export default function SimpleSlider() {
     <SliderWrapper>
       <SamplePrevArrow />
       <StyledSlider {...settings} ref={slideRef}>
+      <div>
+          <ProductCard>
+            <ProductImg src="/src/assets/mainImage/main7.png" />
+          </ProductCard>
+        </div>
         <div>
           <ProductCard>
-            <ProductImg src="/src/assets/mainImage/main1.jpg"/>
+            <ProductImg src="/src/assets/mainImage/main2.jpg" />
+          </ProductCard>
+        </div>
+        <div>
+          <ProductCard>
+            <ProductImg src="/src/assets/mainImage/main1.jpg" />
+          </ProductCard>
+        </div>
+        <div>
+          <ProductCard>
+            <ProductImg src="/src/assets/mainImage/main5.png" />
+          </ProductCard>
+        </div>
+        <div>
+          <ProductCard>
+            <ProductImg src="/src/assets/mainImage/main4.jpg" />
           </ProductCard>
         </div>
 
-        <div>
-          <ProductCard>
-            <ProductImg src="/src/assets/mainImage/main2.jpg"/>
-          </ProductCard>
-        </div>
+ 
 
-        <div>
-          <ProductCard>
-            <ProductImg src="/src/assets/mainImage/main3.jpg"/>
-          </ProductCard>
-        </div>
+
       </StyledSlider>
       <SampleNextArrow />
     </SliderWrapper>
