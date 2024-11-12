@@ -101,9 +101,11 @@ const AdminOrderList = () => {
 export default AdminOrderList;
 
 const Title = styled.div`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin: 1.5rem 3rem;
+  padding-top: 3rem;
+  margin-left: 3rem;
+  width: 90%;
 `;
 
 const Payments = styled.div`
@@ -111,66 +113,55 @@ const Payments = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 2rem;
+  margin: 2rem;
 `;
 
 const Payment = styled.div`
   width: 100%;
-  border: 3px solid #eec759;
-  border-radius: 10px;
+  border-top: 2px solid rgba(0,0,0,0.3);
   margin-bottom: 2rem;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 const PaymentHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 2rem 2rem 0;
+  align-items: center;
+  padding: 0 2rem;
+  margin-bottom: 2rem;
 `;
 
 const PaymentTitle = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
 `;
 
 const Product = styled.div`
+  align-self: center;
   display: flex;
-  border: 1px solid #eec759;
-  border-radius: 10px;
-  width: 90%;
-  margin: 2rem;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.3);
+  width: 80%;
+  margin: 1rem 0;
   padding: 1rem;
 `;
 
 const OrderInfo = styled.div`
   display: flex;
   padding: 1rem;
-  width: 75%;
-  border-right: 1px solid black;
+  width: 100%;
 `;
 
 const ProductImg = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   margin-right: 30px;
 `;
 
 const Detail = styled.div`
   padding: 1rem;
-  height: 120px;
+  height: 100px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: 1.2rem;
-`;
-
-const Buttons = styled.div`
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  button {
-    margin: 0.5rem;
-  }
 `;
