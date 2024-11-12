@@ -39,8 +39,9 @@ const MessageSendPage = () => {
           confirmButtonText: "닫기",
         });
         window.close(); // 확인 버튼 클릭 시 창 닫기
-      } catch (error) {
+      } catch (err) {
         // 에러가 발생하면 catch 블록이 실행됨
+        console.log(err);
         await Swal.fire({
           icon: "warning",
           title: "쪽지를 보내지 못했습니다.",

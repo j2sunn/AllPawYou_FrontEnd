@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 // import { AllReview, DeleteReview } from "../../service/Review";
 // import {loadMine} from "../service/BoardService";
 import { useNavigate } from "react-router-dom";
@@ -74,7 +74,7 @@ const MyPageBoardList = () => {
               </TableHead>
               <TableBody>
                 {boardList.length > 0 ? (
-                  currentBoardList.map((board, index) => (
+                  currentBoardList.map((board) => (
                     <TableRow key={board.boardNo} onClick={() => navigate(`/board/${board.boardNo}`)}>
                       <TableCell align="center">
                         {board.imgList && board.imgList.length > 0 ? (
