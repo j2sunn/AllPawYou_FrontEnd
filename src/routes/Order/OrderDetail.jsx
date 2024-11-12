@@ -12,13 +12,14 @@ const OrderDetail = () => {
   const paymentState = state?.payment[0]?.paymentState || false;
 
   console.log(state?.payment);
+  console.log(state?.payment.name);
 
   const getUserByNo = async (userNo) => {
     const response = await fetchUserByNo(userNo);
     setUser(response);
   };
   useEffect(() => {
-    scrollTo(0,0);
+    scrollTo(0, 0);
     getUserByNo(state?.payment[0]?.userNo);
   }, []);
   return (
@@ -26,9 +27,20 @@ const OrderDetail = () => {
       <Container>
         <MypageSideBar />
         <Content>
-          <div style={{display:"flex", justifyContent: 'space-between', alignItems:' center', width: '80%', borderBottom: '2px solid rgba(0,0,0,0.3)', marginBottom: '2rem'}}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: " center",
+              width: "80%",
+              borderBottom: "2px solid rgba(0,0,0,0.3)",
+              marginBottom: "2rem",
+            }}
+          >
             <Title>주문 상세</Title>
-            <Button variant="outlined" sx={{width: '8rem', height: '2.5em'}} onClick={()=>navigate(-1)}>뒤로가기</Button>
+            <Button variant="outlined" sx={{ width: "8rem", height: "2.5em" }} onClick={() => navigate(-1)}>
+              뒤로가기
+            </Button>
           </div>
           <Order>
             <InfoTitle>상품 정보</InfoTitle>
@@ -36,21 +48,24 @@ const OrderDetail = () => {
               {state?.payment?.map((order) => {
                 return (
                   <Product key={order?.orderNo}>
-                        <OrderInfo>
-                          <ProductImg src={`http://localhost:8081${order.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지" />
-                          <div>
-                            <Detail>
-                              <div style={{fontSize: '1.1rem', marginRight: '2rem'}}>
-                                {order?.name} ({order?.quantity}개)
-                              </div>
-                              <div>총 가격 : {(order?.price * order?.quantity).toLocaleString()}원</div>
-                            </Detail>
-                            <Button variant="outlined" onClick={() => navigator(`/review/createreview/${order?.name}`)} disabled={!paymentState}>
-                              후기 작성하기
-                            </Button>
+                    <OrderInfo>
+                      <ProductImg
+                        src={`http://localhost:8081${order.productFileDTO?.find((file) => file.productFileTypeId === 1)?.imagePath}`}
+                        alt="이미지"
+                      />
+                      <div>
+                        <Detail>
+                          <div style={{ fontSize: "1.1rem", marginRight: "2rem" }}>
+                            {order?.name} ({order?.quantity}개)
                           </div>
-                        </OrderInfo>
-                      </Product>
+                          <div>총 가격 : {(order?.price * order?.quantity).toLocaleString()}원</div>
+                        </Detail>
+                        <Button variant="outlined" onClick={() => navigate(`/review/createreview/${order?.name}`)} disabled={!paymentState}>
+                          후기 작성하기
+                        </Button>
+                      </div>
+                    </OrderInfo>
+                  </Product>
                 );
               })}
             </InfoContainer>
@@ -127,7 +142,7 @@ const InfoTitle = styled.div`
 
 const InfoContainer = styled.div`
   width: 90%;
-  border-bottom: 2px solid rgba(0,0,0,0.3);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
   margin-bottom: 2rem;
   margin: 1rem 2rem 2rem;
   padding: 1rem;
@@ -135,12 +150,11 @@ const InfoContainer = styled.div`
   flex-direction: column;
 `;
 
-
 const Product = styled.div`
   align-self: center;
   display: flex;
   justify-content: center;
-  border: 1px solid rgba(0,0,0,0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   width: 80%;
   margin: 1rem 0;
   padding: 1rem;
@@ -173,7 +187,7 @@ const Th = styled.th`
   display: block;
   padding: 1rem;
   width: 150px;
-  border-right: 1px solid rgba(0,0,0,0.3);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
   text-align: center;
 `;
 

@@ -73,7 +73,8 @@ const UserReviewUpdate = () => {
         // 리뷰 수정 성공 시 알림 표시
         Swal.fire({
           icon: "success",
-          title: "리뷰가 수정되었습니다.",
+          title: "수정 성공",
+          text: "후기가 성공적으로 수정됬습니다.",
           confirmButtonColor: "#527853",
           confirmButtonText: "닫기",
         }).then(() => {
@@ -81,12 +82,12 @@ const UserReviewUpdate = () => {
         });
       })
       .catch((error) => {
-        console.error("리뷰 수정 실패:", error);
+        console.error("후기 수정 실패:", error);
         // 리뷰 수정 실패 시 알림 표시
         Swal.fire({
           icon: "error",
           title: "수정 실패",
-          text: "리뷰 수정에 실패했습니다.",
+          text: "수정 중 오류가 발생했습니다. 다시 시도해 주세요.",
           confirmButtonColor: "#d33",
           confirmButtonText: "닫기",
         });

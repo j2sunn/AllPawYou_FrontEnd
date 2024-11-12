@@ -88,8 +88,8 @@ const CurrentUser = () => {
                   {item.email}
                 </TableCell>
                 <TableCell align="center" sx={{ width: "15rem", height: "85px" }} onClick={() => removeUser(item.no)}>
-                  <Button variant="contained" color="error">
-                    <FaRegTrashAlt size="25" />
+                  <Button variant="contained" color="primary">
+                    삭제
                   </Button>
                 </TableCell>
               </TableRow>
