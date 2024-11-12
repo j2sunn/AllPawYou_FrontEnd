@@ -165,7 +165,7 @@ const AdminHeader = () => {
               </Button>
             </>
           ) : (
-            navigate("/404error")
+            navigate("/forbidden")
           )}
         </Toolbar>
       </AppBar>
@@ -255,19 +255,11 @@ const AdminHeader = () => {
                   <ListItemText>자유게시판</ListItemText>
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemIcon>
-                    <FaRegQuestionCircle />
-                  </ListItemIcon>
-                  <ListItemText>FAQ</ListItemText>
-                </ListItemButton>
-              </ListItem>
             </List>
           </Collapse>
           <Divider />
           {/* 쇼핑몰 관리 */}
-          <ListItemButton onClick={handleClickShop}>
+          <ListItemButton onClick={handleClickShop} sx={{marginTop: '1rem'}}>
             <ListItemIcon>
               <RiShoppingCart2Line size={30} />
             </ListItemIcon>

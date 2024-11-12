@@ -4,6 +4,7 @@ import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer,
 import { AllReview, DeleteReview, ToggleVisibility } from "../../../service/Review";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { PiEyeBold, PiEyeSlashBold, PiStarFill, PiStarHalfFill, PiStarLight } from "react-icons/pi";
+import Swal from "sweetalert2";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]); // reviews로 변경
@@ -25,15 +26,33 @@ const ReviewList = () => {
 
   function removeReview(reviewNo) {
     console.log(reviewNo);
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 시 돌이킬 수 없습니다.",
+      icon: "warning",
 
-    DeleteReview(reviewNo)
-      .then((response) => {
-        console.log(response);
-        getAllReviews();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      showCancelButton: true, // false가 default
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteReview(reviewNo).then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "삭제 되었습니다.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          }).then(()=>{
+            location.reload(true);
+          });
+        }).catch((error) => {
+          console.error(error);
+        });
+      }
+    });
   }
 
   function changeVisibility(reviewNo) {

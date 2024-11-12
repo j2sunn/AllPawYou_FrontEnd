@@ -28,6 +28,7 @@ const NoticeWrite = () => {
         
      }).then(result => {
         if (result.isConfirmed) {
+            setTimeout(()=>{},2000);
             navigator(-1);
         }
     });
