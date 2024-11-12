@@ -156,7 +156,11 @@ const ShoppingDetail = () => {
   const minus = () => {
     const obj = data;
     if (obj.quantity <= 1) {
-      alert("최소 수량입니다.");
+      Swal.fire({
+        icon: "warning",
+        title: "최소 수량입니다.",
+        confirmButtonColor: "#527853",
+      })
     } else {
       obj.quantity--;
       setData({ ...obj });
@@ -166,7 +170,11 @@ const ShoppingDetail = () => {
   const plus = () => {
     const obj = data;
     if (obj.quantity >= 99) {
-      alert("최대 수량입니다.");
+      Swal.fire({
+        icon: "warning",
+        title: "최대 수량입니다.",
+        confirmButtonColor: "#527853",
+      })
     } else {
       obj.quantity++;
       setData({ ...obj });
