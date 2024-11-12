@@ -23,7 +23,7 @@ const PaymentCheck = () => {
 
   const payment = (data) => {
     paymentReady(data);
-    state?.checkedData?.forEach(i => deleteCart(i.id));
+    state?.checkedData?.forEach(i => deleteCart(i.cartId));
   }
 
   useEffect(()=>{
