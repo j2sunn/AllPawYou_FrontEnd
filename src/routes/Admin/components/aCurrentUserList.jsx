@@ -40,6 +40,20 @@ const CurrentUser = () => {
       });
   }
 
+  // 역할을 변환하는 함수
+  const getRoleName = (role) => {
+    switch (role) {
+      case "ROLE_ADMIN":
+        return "관리자";
+      case "ROLE_USER":
+        return "사용자";
+      case "ROLE_SALER":
+        return "판매자";
+      default:
+        return "알 수 없음"; // 역할이 정의되지 않은 경우
+    }
+  };
+
   return (
     <>
       <TableContainer
@@ -56,13 +70,17 @@ const CurrentUser = () => {
                 borderBottom: "2px solid rgba(0,0,0,0.8)",
               }}
             >
-              <TableCell align="center" sx={{ height: "60px" }}>
-                번호
+              <TableCell align="center" sx={{ width: "10rem", height: "60px" }}>
+                사진
               </TableCell>
-              <TableCell align="center">이름</TableCell>
-              <TableCell align="center">이메일</TableCell>
+              <TableCell align="center" sx={{ width: "10rem" }}>
+                이름
+              </TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
-                삭제
+                이메일
+              </TableCell>
+              <TableCell align="center" sx={{ width: "10rem" }}>
+                권한
               </TableCell>
             </TableRow>
           </TableHead>
@@ -87,10 +105,8 @@ const CurrentUser = () => {
                 <TableCell align="center" sx={{ height: "85px" }}>
                   {item.email}
                 </TableCell>
-                <TableCell align="center" sx={{ width: "15rem", height: "85px" }} onClick={() => removeUser(item.no)}>
-                  <Button variant="contained" color="primary">
-                    삭제
-                  </Button>
+                <TableCell align="center" sx={{ width: "15rem", height: "85px" }}>
+                  {getRoleName(item.role)} {/* 역할 변환 함수 호출 */}
                 </TableCell>
               </TableRow>
             ))}
