@@ -80,9 +80,7 @@ const BoardDetail = () => {
   const loadData = async (boardNo) => {
     no = Number(localStorage.getItem("no"));
 
-    const response = await axios.get(
-      "http://localhost:8081/board/" + boardNo + "/" + no
-    );
+    const response = await axios.get("http://localhost:8081/board/" + boardNo + "/" + no);
     return response.data;
   };
 
@@ -155,13 +153,7 @@ const BoardDetail = () => {
       setError({ comment: "댓글을 입력해 주세요." });
       return;
     }
-    addCommentService(
-      boardNo,
-      result,
-      localStorage.getItem("email"),
-      setCommentData,
-      renew
-    );
+    addCommentService(boardNo, result, localStorage.getItem("email"), setCommentData, renew);
     document.querySelector("#comment").value = "";
     setBoardData((prevBoardData) => ({
       ...prevBoardData,
@@ -219,18 +211,16 @@ const BoardDetail = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete("http://localhost:8081/board/delete/" + boardNo)
-          .then((resp) => {
-            Swal.fire({
-              icon: "success",
-              title: "게시글이 삭제되었습니다.",
-              confirmButtonColor: "#527853",
-              confirmButtonText: "닫기",
-            });
-
-            navigate("/boardList");
+        axios.delete("http://localhost:8081/board/delete/" + boardNo).then((resp) => {
+          Swal.fire({
+            icon: "success",
+            title: "게시글이 삭제되었습니다.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
           });
+
+          navigate("/boardList");
+        });
       }
     });
   };
@@ -248,32 +238,30 @@ const BoardDetail = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete("http://localhost:8081/board/comment/delete/" + commentNo)
-          .then((resp) => {
-            if (resp.data > 0) {
-              Swal.fire({
-                icon: "success",
-                title: "댓글이 삭제되었습니다.",
-                confirmButtonColor: "#527853",
-                confirmButtonText: "닫기",
-              });
-              setTimeout(() => {
-                renew();
-              }, 500);
-            } else {
-              Swal.fire({
-                title: "삭제에 실패했습니다.",
-                text: "다시 시도해 주세요.",
-                icon: "warning",
+        axios.delete("http://localhost:8081/board/comment/delete/" + commentNo).then((resp) => {
+          if (resp.data > 0) {
+            Swal.fire({
+              icon: "success",
+              title: "댓글이 삭제되었습니다.",
+              confirmButtonColor: "#527853",
+              confirmButtonText: "닫기",
+            });
+            setTimeout(() => {
+              renew();
+            }, 500);
+          } else {
+            Swal.fire({
+              title: "삭제에 실패했습니다.",
+              text: "다시 시도해 주세요.",
+              icon: "warning",
 
-                confirmButtonColor: "#527853",
-                confirmButtonText: "확인",
+              confirmButtonColor: "#527853",
+              confirmButtonText: "확인",
 
-                reverseButtons: true,
-              });
-            }
-          });
+              reverseButtons: true,
+            });
+          }
+        });
       }
     });
   };
@@ -448,9 +436,7 @@ const BoardDetail = () => {
                 {/* <p>{boardData.boardContent.replace(/<s>/g," ").replace(/<e>/g,"\n")}</p> */}
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: boardData.boardContent
-                      .replace(/<s>/g, " ")
-                      .replace(/<e>/g, "<br />"),
+                    __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />"),
                   }}
                 />
               </BoardText>
@@ -462,10 +448,7 @@ const BoardDetail = () => {
                         {/* <hr/>
                                             <hr/>
                                             <hr/> */}
-                        <img
-                          src={`http://localhost:8081${img.boardImagePath}${img.boardImageRename}`}
-                          alt={`Image ${index}`}
-                        />
+                        <img src={`http://localhost:8081${img.boardImagePath}${img.boardImageRename}`} alt={`Image ${index}`} />
 
                         {/* <img src={"http://localhost:8080/images/board/happy.png"}/> */}
                         {/* <img
@@ -479,17 +462,8 @@ const BoardDetail = () => {
                 ) : (
                   <p>이미지가 없습니다.</p>
                 )}
-                <div
-                  className="like"
-                  onClick={() =>
-                    toggleLike(boardNo, localStorage.getItem("email"))
-                  }
-                >
-                  {isLiked == 1 ? (
-                    <IoHeart className="heart" />
-                  ) : (
-                    <IoMdHeartEmpty className="heart" />
-                  )}
+                <div className="like" onClick={() => toggleLike(boardNo, localStorage.getItem("email"))}>
+                  {isLiked == 1 ? <IoHeart className="heart" /> : <IoMdHeartEmpty className="heart" />}
                   <p className="likeNum">{boardData.likeCount}</p>
                 </div>
                 <Button
@@ -527,10 +501,7 @@ const BoardDetail = () => {
                   </Button>
                 </CommentHeader>
 
-                <ContentTextarea
-                  id="comment"
-                  onChange={(e) => handleContentChange(e)}
-                />
+                <ContentTextarea id="comment" onChange={(e) => handleContentChange(e)} />
                 <Error>{error.comment}</Error>
 
                 {/* <button onClick={()=>addComment()}>작성하기</button> */}
@@ -546,13 +517,9 @@ const BoardDetail = () => {
                                                 onChange={(e) => setOnUpdateComment(e.target.value)}
                                                 /> */}
                             <ContentTextarea
-                              placeholder={comments.commentContent
-                                .replace(/<s>/g, " ")
-                                .replace(/<e>/g, "<br />")}
+                              placeholder={comments.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />")}
                               value={onUpdateComment}
-                              onChange={(e) =>
-                                setOnUpdateComment(e.target.value)
-                              }
+                              onChange={(e) => setOnUpdateComment(e.target.value)}
                               style={{ width: "600px" }}
                             />
                           </>
@@ -594,9 +561,7 @@ const BoardDetail = () => {
                             <div
                               style={{ width: "100%" }}
                               dangerouslySetInnerHTML={{
-                                __html: comments.commentContent
-                                  .replace(/<s>/g, " ")
-                                  .replace(/<e>/g, "<br />"),
+                                __html: comments.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />"),
                               }}
                             />
                             {/* <p>{comment.commentContent}</p> */}
@@ -631,9 +596,7 @@ const BoardDetail = () => {
                                 수정
                               </Button>
                               <Button
-                                onClick={() =>
-                                  deleteComment(comments.commentNo)
-                                }
+                                onClick={() => deleteComment(comments.commentNo)}
                                 variant="contained"
                                 sx={{
                                   fontSize: "1rem",
@@ -644,9 +607,7 @@ const BoardDetail = () => {
                                 삭제
                               </Button>
                             </>
-                          ) : localStorage.getItem("email") ===
-                              comments.email &&
-                            onUpdateCommentNo === comments.commentNo ? (
+                          ) : localStorage.getItem("email") === comments.email && onUpdateCommentNo === comments.commentNo ? (
                             <>
                               {/* 로그인한 회원이 작성자인데 수정 중인 경우 */}
                               {/* 수정 중일 때 보여줄 JSX 컴포넌트를 여기에 추가 */}
@@ -654,12 +615,7 @@ const BoardDetail = () => {
                               <Button
                                 variant="contained"
                                 sx={{ fontSize: "1rem", marginTop: "1rem" }}
-                                onClick={() =>
-                                  updateComment(
-                                    onUpdateComment,
-                                    onUpdateCommentNo
-                                  )
-                                }
+                                onClick={() => updateComment(onUpdateComment, onUpdateCommentNo)}
                               >
                                 저장
                               </Button>

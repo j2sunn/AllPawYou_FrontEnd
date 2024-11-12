@@ -23,24 +23,23 @@ const MyPage = () => {
     const profileImage = localStorage.getItem("profile");
 
     // 가져온 데이터를 상태에 설정
-      const userData = {
-        username,
-        email,
-        nickname,
-        intro,
-        phone,
-        address,
-        profileImage,
-      };
-      
-      setUserInfo(userData);
-      setProfile(userData);
-    
+    const userData = {
+      username,
+      email,
+      nickname,
+      intro,
+      phone,
+      address,
+      profileImage,
+    };
+
+    setUserInfo(userData);
+    setProfile(userData);
   }, []);
 
   const goUpdate = () => {
-    navigator('/mypage/update');
-  }
+    navigator("/mypage/update");
+  };
 
   return (
     <>
@@ -52,8 +51,7 @@ const MyPage = () => {
               <Content>
                 <Profile>
                   <ProfileImg
-                    // src={`http://localhost:8081${userInfo.profileImage}`}
-                    src={userInfo.profileImage && userInfo.profileImage !== "default" || null ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile}
+                    src={userInfo.profileImage && userInfo.profileImage !== "null" ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile}
                   />
                   <NickName>{userInfo.nickname}</NickName>
                 </Profile>
@@ -64,10 +62,10 @@ const MyPage = () => {
                   <div>주소 : {userInfo.address || ""}</div>
                 </Profile>
               </Content>
-              <Title style={{padding: '1rem'}}>자기소개</Title>
+              <Title style={{ padding: "1rem" }}>자기소개</Title>
               <Content>{userInfo.intro || ""}</Content>
-              <Button variant="contained" color="primary" onClick={goUpdate} sx={{width: '8rem'}}>
-                  수정
+              <Button variant="contained" color="primary" onClick={goUpdate} sx={{ width: "8rem" }}>
+                수정
               </Button>
             </>
           ) : (
@@ -98,7 +96,7 @@ const Content = styled.div`
   display: flex;
   padding: 1rem;
   margin-bottom: 3rem;
-  border: 1px solid rgba(0,0,0,0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 
   &:first-child {
     border: none;
@@ -128,4 +126,3 @@ const Title = styled.div`
   padding-left: 25rem;
   margin-bottom: 1rem;
 `;
-

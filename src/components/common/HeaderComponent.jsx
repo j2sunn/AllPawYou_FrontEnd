@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 
 import defaultProfile from "src/assets/defaultprofile.png";
 
-
 const HeaderComponent = () => {
   const navigator = useNavigate();
   const ACCESS_TOKEN = localStorage.getItem("accessToken");
@@ -25,95 +24,96 @@ const HeaderComponent = () => {
     navigator("/");
   };
 
-   //---- 회원정보 가져오기
-   const [userInfo, setUserInfo] = useState(null);
- 
-   useEffect(() => {
-     const username = localStorage.getItem("username");
-     const email = localStorage.getItem("email");
-     const nickname = localStorage.getItem("nickname");
-     const intro = localStorage.getItem("intro");
-     const phone = localStorage.getItem("phone");
-     const address = localStorage.getItem("address");
-     const profileImage = localStorage.getItem("profile");
- 
-     // 가져온 데이터를 상태에 설정
-       const userData = {
-         username,
-         email,
-         nickname,
-         intro,
-         phone,
-         address,
-         profileImage,
-       };
-       
-       setUserInfo(userData);
-       console.log("profileImage : " , profileImage);
-     
-   }, []);
- 
+  //---- 회원정보 가져오기
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+    const nickname = localStorage.getItem("nickname");
+    const intro = localStorage.getItem("intro");
+    const phone = localStorage.getItem("phone");
+    const address = localStorage.getItem("address");
+    const profileImage = localStorage.getItem("profile");
+
+    // 가져온 데이터를 상태에 설정
+    const userData = {
+      username,
+      email,
+      nickname,
+      intro,
+      phone,
+      address,
+      profileImage,
+    };
+
+    setUserInfo(userData);
+    console.log("profileImage : ", profileImage);
+  }, []);
 
   return (
     <>
       <Container>
-      {userInfo ? (
-        <HeaderContainer>
-          <Header>
-            <Logo onClick={() => navigator("/")} style={{ justifyContent: "space-evenly" }}>
-              <LogoImg src={logo} alt="로고" />
-              <LogoText>All Paw You</LogoText>
-            </Logo>
-            <Nav>
-              <NavItem onClick={() => navigator("/")}>홈</NavItem>
-              <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
-              <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
-              <NavItem onClick={() => navigator("/noticeListUser")}>사용 가이드</NavItem>
+        {userInfo ? (
+          <HeaderContainer>
+            <Header>
+              <Logo onClick={() => navigator("/")} style={{ justifyContent: "space-evenly" }}>
+                <LogoImg src={logo} alt="로고" />
+                <LogoText>All Paw You</LogoText>
+              </Logo>
+              <Nav>
+                <NavItem onClick={() => navigator("/")}>홈</NavItem>
+                <NavItem onClick={() => navigator("/shopping")}>쇼핑</NavItem>
+                <NavItem onClick={() => navigator("/boardList")}>커뮤니티</NavItem>
+                <NavItem onClick={() => navigator("/noticeListUser")}>사용 가이드</NavItem>
 
-              {ACCESS_TOKEN ? (
-                <>
-                  <NavItem onClick={() => navigator("/cart")}>장바구니</NavItem>
-                  <NavItem>
-                    <Accordion
-                      sx={{
-                        height: "5rem",
-                        backgroundColor: "rgba(0,0,0,0)",
-                        boxShadow: "none",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
-                    >
-                      <AccordionSummary sx={{ marginBottom: "-1rem" }}>
-                        {/* 이미지 넣기 */}
-                        <img 
-                        src={userInfo?.profileImage && userInfo?.profileImage !== "default" 
-                          && userInfo?.profileImage !== null
-                        ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile } 
-                        style={{width:'60px', height:'60px' , borderRadius:'50%'}} />
-                        {/* <IoPersonCircleSharp size={60} style={{ color: "gray" }} /> */}
-                    
-                      </AccordionSummary>
-                      <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
-                        {localStorage.getItem("role") == "ROLE_ADMIN" ? (
-                          <AccordianItem onClick={() => navigator("/admin/dashboard")}>관리자 페이지</AccordianItem>
-                        ) : (
-                          <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
-                        )}
-                        <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>
-                      </AccordionDetails>
-                    </Accordion>
-                  </NavItem>
-                </>
-              ) : (
-                <NavItem onClick={() => navigator("/login")}>로그인</NavItem>
-              )}
-            </Nav>
-          </Header>
-        </HeaderContainer>
-      ) :(
-        <>사용자 정보가 없습니다.</>
-      )}
+                {ACCESS_TOKEN ? (
+                  <>
+                    <NavItem onClick={() => navigator("/cart")}>장바구니</NavItem>
+                    <NavItem>
+                      <Accordion
+                        sx={{
+                          height: "5rem",
+                          backgroundColor: "rgba(0,0,0,0)",
+                          boxShadow: "none",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <AccordionSummary sx={{ marginBottom: "-1rem" }}>
+                          {/* 이미지 넣기 */}
+                          <img
+                            src={
+                              userInfo?.profileImage && userInfo.profileImage !== "null"
+                                ? `http://localhost:8081${userInfo.profileImage}` // 이미지가 있을 때
+                                : defaultProfile // 이미지가 없을 때
+                            }
+                            style={{ width: "60px", height: "60px", borderRadius: "50%" }}
+                          />
+
+                          {/* <IoPersonCircleSharp size={60} style={{ color: "gray" }} /> */}
+                        </AccordionSummary>
+                        <AccordionDetails sx={{ backgroundColor: "#EEC759" }}>
+                          {localStorage.getItem("role") == "ROLE_ADMIN" ? (
+                            <AccordianItem onClick={() => navigator("/admin/dashboard")}>관리자 페이지</AccordianItem>
+                          ) : (
+                            <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
+                          )}
+                          <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>
+                        </AccordionDetails>
+                      </Accordion>
+                    </NavItem>
+                  </>
+                ) : (
+                  <NavItem onClick={() => navigator("/login")}>로그인</NavItem>
+                )}
+              </Nav>
+            </Header>
+          </HeaderContainer>
+        ) : (
+          <>사용자 정보가 없습니다.</>
+        )}
       </Container>
     </>
   );

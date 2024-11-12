@@ -1,15 +1,5 @@
 import styled from "styled-components";
-import {
-  Button,
-  Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { loadList } from "../../../service/BoardService";
@@ -34,12 +24,10 @@ const AdminBoardList = () => {
   const hideBoard = (boardNo) => {
     // console.log("boardNo이다"+boardNo);
     // console.log("hideYN : "+hideYN);
-    AuthApi.put("http://localhost:8081/board/adminhide/" + boardNo).then(
-      (resp) => {
-        // console.log("resp :"+resp.data);
-        loadList();
-      }
-    );
+    AuthApi.put("http://localhost:8081/board/adminhide/" + boardNo).then((resp) => {
+      // console.log("resp :"+resp.data);
+      loadList();
+    });
   };
   const deleteBoard = (boardNo) => {
     // console.log("boardNo이다"+boardNo);
@@ -56,9 +44,7 @@ const AdminBoardList = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        AuthApi.delete(
-          "http://localhost:8081/board/admindelete/" + boardNo
-        ).then(() => {
+        AuthApi.delete("http://localhost:8081/board/admindelete/" + boardNo).then(() => {
           Swal.fire({
             icon: "success",
             title: "삭제 되었습니다.",
@@ -74,15 +60,10 @@ const AdminBoardList = () => {
 
   const formatContent = (content) => {
     // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
-    const singleLineContent = content
-      .replace(/<e>/g, " ")
-      .replace(/<s>/g, " ")
-      .split("\n")[0];
+    const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
 
     // 첫 10자만 자르고, 내용이 더 길면 "..." 추가
-    return singleLineContent.length > 25
-      ? `${singleLineContent.slice(0, 25)}...`
-      : singleLineContent;
+    return singleLineContent.length > 25 ? `${singleLineContent.slice(0, 25)}...` : singleLineContent;
   };
 
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -130,10 +111,10 @@ const AdminBoardList = () => {
                 작성자 닉네임
               </TableCell>
               <TableCell align="center" sx={{ width: "8rem" }}>
-                숨김 Y / N
+                공개
               </TableCell>
               <TableCell align="center" sx={{ width: "15rem" }}>
-                숨김/삭제
+                곧개 / 삭제
               </TableCell>
             </TableRow>
           </TableHead>
@@ -160,36 +141,23 @@ const AdminBoardList = () => {
                     {formatContent(board.boardTitle)}
                   </TableCell>
                   <TableCell align="center">{board.boardUsername}</TableCell>
-                  <TableCell align="center">
-                    {board.boardVisible == 0 ? "Y" : "N"}
-                  </TableCell>
+                  <TableCell align="center">{board.boardVisible == 0 ? "비공개 " : "공개됨"}</TableCell>
                   <TableCell align="center">
                     {board.boardVisible == 0 ? (
                       <>
-                        <Button
-                          variant="contained"
-                          onClick={() => hideBoard(board.boardNo)}
-                          sx={{ marginRight: "10px" }}
-                        >
-                          숨김해제
+                        <Button variant="contained" color="error" onClick={() => hideBoard(board.boardNo)} sx={{ marginRight: "10px" }}>
+                          해제
                         </Button>
                       </>
                     ) : (
                       <>
-                        <Button
-                          variant="contained"
-                          onClick={() => hideBoard(board.boardNo)}
-                          sx={{ marginRight: "10px" }}
-                        >
+                        <Button variant="contained" onClick={() => hideBoard(board.boardNo)} sx={{ marginRight: "10px" }}>
                           숨김
                         </Button>
                       </>
                     )}
 
-                    <Button
-                      variant="outlined"
-                      onClick={() => deleteBoard(board.boardNo)}
-                    >
+                    <Button variant="outlined" onClick={() => deleteBoard(board.boardNo)}>
                       삭제
                     </Button>
                   </TableCell>

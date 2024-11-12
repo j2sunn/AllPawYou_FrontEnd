@@ -39,18 +39,20 @@ const ReviewList = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        DeleteReview(reviewNo).then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "삭제 되었습니다.",
-            confirmButtonColor: "#527853",
-            confirmButtonText: "닫기",
-          }).then(()=>{
-            location.reload(true);
+        DeleteReview(reviewNo)
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "삭제 되었습니다.",
+              confirmButtonColor: "#527853",
+              confirmButtonText: "닫기",
+            }).then(() => {
+              location.reload(true);
+            });
+          })
+          .catch((error) => {
+            console.error(error);
           });
-        }).catch((error) => {
-          console.error(error);
-        });
       }
     });
   }
@@ -142,16 +144,16 @@ const ReviewList = () => {
                   <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
                   <TableCell align="center">
                     {item.reviewVisible === "Y" ? (
-                      <Button variant="contained" color="secondary" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
-                        <PiEyeSlashBold size="25" />
+                      <Button variant="contained" color="primary" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
+                        숨김
                       </Button>
                     ) : (
-                      <Button variant="contained" color="primary" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
-                        <PiEyeBold size="25" />
+                      <Button variant="contained" color="error" onClick={() => changeVisibility(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
+                        해제
                       </Button>
                     )}
-                    <Button variant="contained" color="error" onClick={() => removeReview(item.reviewNo)}>
-                      <FaRegTrashAlt size="25" />
+                    <Button variant="outlined" color="primary" onClick={() => removeReview(item.reviewNo)}>
+                      삭제
                     </Button>
                   </TableCell>
                 </TableRow>
