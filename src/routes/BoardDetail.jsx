@@ -92,12 +92,39 @@ const BoardDetail = () => {
   };
 
   const goCreateMessage = () => {
-    const width = 650; // 팝업의 너비
-    const height = 500; // 팝업의 높이
-    const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
-    const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
+    if (localStorage.getItem("email") == null) {
+        Swal.fire({
+          title: "로그인 하시겠습니까?",
+          text: "로그인 후에 쪽지 기능 이용이 가능합니다.",
+          icon: "warning",
+  
+          showCancelButton: true, // false가 default
+          confirmButtonColor: "#527853",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "이동",
+          cancelButtonText: "취소",
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/login");
+            return;
+          } else {
+            setError({ ...error, comment: "" });
+          }
+        });
+      }else{
 
-    window.open("/mypage/createMessage", "popup", `width=${width},height=${height},top=${top},left=${left},scrollbars=no`);
+          const width = 650; // 팝업의 너비
+          const height = 500; // 팝업의 높이
+          const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
+          const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
+          
+          window.open(
+              "/mypage/createMessage",
+              "popup",
+              `width=${width},height=${height},top=${top},left=${left},scrollbars=no`
+            );
+        }
   };
 
   const addComment = () => {
@@ -241,6 +268,16 @@ const BoardDetail = () => {
 
   //댓글 수정 API 요청
   const updateComment = (onUpdateComment, onUpdateCommentNo) => {
+    if (onUpdateComment.trim().length == 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "내용이 없습니다.",
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+      return;
+    }
+
     axios
       .put("http://localhost:8081/board/comment/update", {
         commentContent: onUpdateComment,
@@ -271,9 +308,6 @@ const BoardDetail = () => {
             confirmButtonText: "확인",
 
             reverseButtons: true,
-          }).then((result) => {
-            if (result.isConfirmed) {
-            }
           });
         }
       });
@@ -290,21 +324,49 @@ const BoardDetail = () => {
           <>
             <Container>
               <DetailHeader style={{ marginTop: "3rem" }}>
-                <Div> {boardData.category === 1 ? "강아지" : boardData.category === 2 ? "고양이" : "기타"}</Div>
-                <p style={{ fontSize: "32px" }}>{boardData.boardTitle}</p>
-                <div className="profile">
-                  {/* 글 작성자 프로필이미지 */}
-                  <img
-                    src={
-                      boardData.boardProfile != null
-                        ? `http://localhost:8081${boardData.boardProfile}`
-                        : `http://localhost:8081/file/images/profile/defaultprofile.png`
-                    }
-                  />
-                  <div className="boardInfo">
-                    <div className="letterOne">
-                      <p>{boardData.boardUsername}</p>
-                      <p>
+                <Div>
+                  {" "}
+                  {boardData.category === 1
+                    ? "강아지"
+                    : boardData.category === 2
+                    ? "고양이"
+                    : "기타"}
+                </Div>
+                <div style={{ fontSize: "2rem" }}>{boardData.boardTitle}</div>
+                <Profile>
+                  <BoardWriter>
+                    <img
+                      src={
+                        boardData.boardProfile != null
+                          ? `http://localhost:8081${boardData.boardProfile}`
+                          : `http://localhost:8081/file/images/profile/defaultprofile.png`
+                      }
+                    />
+                    <div style={{ marginLeft: "1.5rem" }}>
+                      <WriterInfo>
+                        <div
+                          style={{ marginRight: "1rem", fontSize: "1.5rem" }}
+                        >
+                          {boardData.boardUsername}
+                        </div>
+                        {localStorage.getItem("no") != boardData.no ? (
+                          <Button
+                            variant="contained"
+                            sx={{ height: "2rem" }}
+                            onClick={goCreateMessage}
+                          >
+                            쪽지
+                          </Button>
+                        ) : (
+                          <></>
+                        )}
+                      </WriterInfo>
+                      <div
+                        style={{
+                          marginTop: "0.5rem",
+                          color: "rgba(0,0,0,0.6)",
+                        }}
+                      >
                         {boardData.boardDate.substr(0, 4) +
                           "." +
                           boardData.boardDate.substr(5, 2) +
@@ -314,18 +376,9 @@ const BoardDetail = () => {
                           boardData.boardDate.substr(11, 2) +
                           ":" +
                           boardData.boardDate.substr(14, 2)}
-                      </p>
+                      </div>
                     </div>
-                    <div className="letterTwo">
-                      {localStorage.getItem("no") != boardData.no ? (
-                        <Button variant="contained" sx={{ fontSize: "1rem", marginTop: "1rem" }} onClick={goCreateMessage}>
-                          쪽지
-                        </Button>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </div>
+                  </BoardWriter>
                   <div className="btns">
                     {boardData.no == localStorage.getItem("no") ? (
                       <>
@@ -376,7 +429,7 @@ const BoardDetail = () => {
                       목록으로
                     </Button>
                   </div>
-                </div>
+                </Profile>
               </DetailHeader>
 
               <BoardText>
@@ -432,7 +485,9 @@ const BoardDetail = () => {
               </BoardImages>
               <Comments>
                 <CommentHeader>
-                  <div className="commentCount">댓글({boardData.commentCount})</div>
+                  <div className="commentCount">
+                    댓글({boardData.commentCount})
+                  </div>
                   <Button
                     variant="contained"
                     sx={{
@@ -452,10 +507,8 @@ const BoardDetail = () => {
                 {/* <button onClick={()=>addComment()}>작성하기</button> */}
                 {commentData && commentData.length > 0 ? (
                   commentData.map((comments, ind) => (
-                    <div className="commentProfile" key={ind}>
-                      {/* 여기까지만 */}
-
-                      <div className="commentInfo">
+                    <Comment key={ind}>
+                      <div style={{ width: "80%" }}>
                         {onUpdateCommentNo == comments.commentNo ? (
                           <>
                             {/* 수정중인 경우 */}
@@ -471,43 +524,48 @@ const BoardDetail = () => {
                             />
                           </>
                         ) : (
-                          <>
+                          <div style={{ display: "flex", flexDirection: 'column' }}>
                             {/* 수정중이지 않은 경우 */}
                             {/* 댓글 작성자 프로필이미지 */}
-                            <div className="commentLetter">
+                            <CommentWriter>
                               <img
+                                style={{ marginBlock: "1rem" }}
                                 src={
                                   comments.commentProfile != null
                                     ? `http://localhost:8081${comments.commentProfile}`
                                     : `http://localhost:8081/file/images/profile/defaultprofile.png`
                                 }
                               />
-                              {console.log("여기쪽지" + comments.no)}
-                              {localStorage.getItem("no") != comments.no ? (
-                                <Button
-                                  variant="contained"
-                                  sx={{
-                                    fontSize: "1rem",
-                                    marginTop: "1rem",
-                                    marginLeft: "1rem",
-                                  }}
-                                >
-                                  쪽지
-                                </Button>
-                              ) : (
-                                <></>
-                              )}
-                            </div>
-                            <p>{comments.commentUsername}</p>
+                              <div style={{display: 'flex', alignItems: 'center' }}>
+                                <div style={{fontSize: '1.2rem'}}>{comments.commentUsername}</div>
+                                {localStorage.getItem("no") != comments.no ? (
+                                  <Button
+                                    variant="contained"
+                                    onClick={goCreateMessage}
+                                    sx={{
+                                      fontSize: "1rem",
+                                      width: '3rem',
+                                      height: "2rem",
+                                      marginLeft: '1rem'
+                                    }}
+                                  >
+                                    쪽지
+                                  </Button>
+                                ) : (
+                                  <></>
+                                )}
+                              </div>
+                            </CommentWriter>
 
                             {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
-                            <p
+                            <div
+                              style={{ width: "100%" }}
                               dangerouslySetInnerHTML={{
                                 __html: comments.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />"),
                               }}
                             />
                             {/* <p>{comment.commentContent}</p> */}
-                          </>
+                          </div>
                         )}
                       </div>
                       <div>
@@ -522,14 +580,18 @@ const BoardDetail = () => {
                             ":" +
                             comments.commentDate.substr(14, 2)}
                         </p>
-                        <div className="commentBtns">
-                          {localStorage.getItem("email") === comments.email && onUpdateCommentNo !== comments.commentNo ? (
+                        <Buttons>
+                          {localStorage.getItem("email") === comments.email &&
+                          onUpdateCommentNo !== comments.commentNo ? (
                             <>
                               {/* 로그인한 회원이 작성자인데 수정 중이 아닐 경우 */}
                               <Button
                                 variant="contained"
                                 sx={{ fontSize: "1rem", marginTop: "1rem" }}
-                                onClick={() => setOnUpdateCommentNo(comments.commentNo)}
+                                onClick={() => {
+                                  setOnUpdateComment(comments.commentContent),
+                                    setOnUpdateCommentNo(comments.commentNo);
+                                }}
                               >
                                 수정
                               </Button>
@@ -575,12 +637,12 @@ const BoardDetail = () => {
                               {/* 다른 사용자에게 보여줄 JSX 컴포넌트를 여기에 추가 */}
                             </>
                           )}
-                        </div>
+                        </Buttons>
                       </div>
-                    </div>
+                    </Comment>
                   ))
                 ) : (
-                  <>댓글이 없습니다.</>
+                  <NoData>댓글이 없습니다.</NoData>
                 )}
               </Comments>
             </Container>
@@ -620,9 +682,6 @@ const DetailHeader = styled.div`
   border-bottom: 3px solid gray;
   padding: 1rem 0;
   margin: 2rem 0;
-  .profile {
-    display: flex;
-  }
   .profile .btns {
     margin-left: auto;
   }
@@ -630,8 +689,8 @@ const DetailHeader = styled.div`
     font-size: 30px;
   }
   img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
   }
   .boardInfo {
     display: flex;
@@ -643,11 +702,25 @@ const DetailHeader = styled.div`
   }
 `;
 
+const Profile = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 1rem;
+`;
+
+const BoardWriter = styled.div`
+  display: flex;
+`;
+
+const WriterInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const BoardText = styled.div`
   width: 50%;
-  p {
-    font-size: 1.2rem;
-  }
+  font-size: 1.2rem;
 `;
 
 const BoardImages = styled.div`
@@ -695,21 +768,10 @@ const Comments = styled.div`
   img {
     width: 60px;
     height: 60px;
-  }
-  .commentProfile {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-  }
-  .commentProfile:not(:last-child) {
-    border-bottom: 1px solid gray;
+    margin-right: 1rem;
   }
   .commentBoxes {
     display: flex;
-  }
-  .commentLetter {
-    display: flex;
-    align-items: center;
   }
 `;
 
@@ -724,12 +786,9 @@ const CommentHeader = styled.div`
 //댓글
 const ContentTextarea = styled.textarea`
   width: 100%;
-  col: 2;
-  padding: 10px;
+  min-height: 150px;
   font-size: 1rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  height: 100px;
   resize: vertical; /* 사용자가 세로 크기 조정 가능 */
 
   &:focus {
@@ -738,6 +797,30 @@ const ContentTextarea = styled.textarea`
   }
 `;
 
+const Comment = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 1rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+`;
+
+const CommentWriter = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Buttons = styled.div`
+  width: 100%;
+`;
+
 const Error = styled.div`
   color: red;
+`;
+
+const NoData = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin: 3rem 0;
 `;
