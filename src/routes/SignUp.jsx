@@ -54,6 +54,7 @@ const SignUp = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("asdfasd");
     e.preventDefault(); // 기본 폼 제출 동작 방지
 
     if (validation()) {
@@ -288,6 +289,7 @@ const SignUp = () => {
                 <ButtonOverlay variant="contained" onClick={dupliNickname} disabled={isChecking}>
                   중복확인
                 </ButtonOverlay>
+                <Error>{error.nickname}</Error>
               </div>
 
               <div className="mb-3">

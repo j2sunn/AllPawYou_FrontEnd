@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { DeleteImage, getReviewByreviewNo, UpdateReview } from "../../service/Review";
 import MypageSideBar from "../common/MypageSideBar";
 import { FaPhotoFilm } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 const UserReviewUpdate = () => {
   const { reviewNo } = useParams();
@@ -69,12 +70,26 @@ const UserReviewUpdate = () => {
 
     UpdateReview(reviewNo, formData)
       .then((response) => {
-        alert("리뷰가 수정되었습니다.");
-        navigate("/review/myReview"); // 원하는 경로로 이동 (예: 내 후기 관리 페이지)
+        // 리뷰 수정 성공 시 알림 표시
+        Swal.fire({
+          icon: "success",
+          title: "리뷰가 수정되었습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        }).then(() => {
+          navigate("/review/myReview"); // 원하는 경로로 이동 (예: 내 후기 관리 페이지)
+        });
       })
       .catch((error) => {
         console.error("리뷰 수정 실패:", error);
-        alert("리뷰 수정에 실패했습니다.");
+        // 리뷰 수정 실패 시 알림 표시
+        Swal.fire({
+          icon: "error",
+          title: "수정 실패",
+          text: "리뷰 수정에 실패했습니다.",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
+        });
       });
   };
 
@@ -166,10 +181,10 @@ const UserReviewUpdate = () => {
       return <p>이미지가 없습니다.</p>;
     }
   };
-  
-  useEffect(()=>{
-    scrollTo(0,0);
-  },[])
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
 
   return (
     <>

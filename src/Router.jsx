@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./routes/MainPage";
 import SignUp from "./routes/SignUp";
 import MyPage from "./routes/MyPage";
-import NotFound from "./routes/NotFound";
+import NotFound from "./routes/errors/NotFound";
 import Login from "./routes/Login";
 import FindEmail from "./routes/FindEmail";
 import FindEmailResult from "./routes/FindEmailResult";
@@ -56,7 +56,9 @@ import MyPageBoardList from "./routes/MyPageBoardList";
 import TheaterLocation from "./routes/kakaoMap/KakaoMapComponent";
 import ChangePassword from "./routes/Mypage/ChangePassword";
 
-import Forbidden from "./routes/Forbidden";
+//error
+import Forbidden from "./routes/errors/Forbidden";
+import LoginNeed from "./routes/errors/LoginNeed";
 
 const Router = () => {
   return (
@@ -147,6 +149,7 @@ const Router = () => {
         <Route path="/mypage/createMessage" element={<MessageSendPage />} />
 
         <Route path="/forbidden" element={<Forbidden />} />
+        <Route path="/loginNeed" element={<LoginNeed />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

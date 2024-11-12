@@ -11,6 +11,7 @@ import {
   Pagination,
   Select,
 } from "@mui/material";
+import Swal from "sweetalert2";
 const BoardList = () => {
   const navigator = useNavigate();
   const [boardList, setBoardList] = useState([]);
@@ -81,6 +82,30 @@ const BoardList = () => {
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
+
+  const boardWrite = () => {
+    if (localStorage.getItem("email") == null) {
+      Swal.fire({
+        title: "로그인 하시겠습니까?",
+        text: "로그인 후에 쪽지 기능 이용이 가능합니다.",
+        icon: "warning",
+
+        showCancelButton: true, // false가 default
+        confirmButtonColor: "#527853",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "이동",
+        cancelButtonText: "취소",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigator("/login");
+          return;
+        }
+      });
+  } else {
+    navigator("/boardWrite");
+  }
+}
   useEffect(() => {
     scrollTo(0, 0);
   }, []);
@@ -249,7 +274,7 @@ const BoardList = () => {
           <Button
             variant="contained"
             sx={{ fontSize: "1rem", marginTop: "1rem", marginBottom: "2rem" }}
-            onClick={() => navigator("/boardWrite")}
+            onClick={boardWrite}
           >
             글 작성하기
           </Button>

@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Checkbox,
-  Pagination,
-} from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Pagination } from "@mui/material";
 import { Link } from "react-router-dom";
 import { receiveMessage, deleteMessage } from "../../service/Message"; // Import deleteMessage
 import MypageSideBar from "../../components/common/MypageSideBar";
@@ -44,11 +33,7 @@ const ReceiveMessages = () => {
     const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
     const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
 
-    window.open(
-      "/mypage/createMessage",
-      "popup",
-      `width=${width},height=${height},top=${top},left=${left},scrollbars=no`
-    );
+    window.open("/mypage/createMessage", "popup", `width=${width},height=${height},top=${top},left=${left},scrollbars=no`);
   };
 
   // Handle checkbox change
@@ -56,9 +41,7 @@ const ReceiveMessages = () => {
     if (event.target.checked) {
       setSelectedMessages((prevSelected) => [...prevSelected, id]);
     } else {
-      setSelectedMessages((prevSelected) =>
-        prevSelected.filter((messageId) => messageId !== id)
-      );
+      setSelectedMessages((prevSelected) => prevSelected.filter((messageId) => messageId !== id));
     }
   };
 
@@ -67,43 +50,56 @@ const ReceiveMessages = () => {
     if (event.target.checked) {
       // 현재 페이지의 메시지 ID만 선택
       const currentMessagesIds = currentMessages.map((message) => message.id);
-      setSelectedMessages((prevSelected) => [
-        ...new Set([...prevSelected, ...currentMessagesIds]),
-      ]);
+      setSelectedMessages((prevSelected) => [...new Set([...prevSelected, ...currentMessagesIds])]);
     } else {
       // 현재 페이지에 해당하는 메시지 ID만 해제
       const currentMessagesIds = currentMessages.map((message) => message.id);
-      setSelectedMessages((prevSelected) =>
-        prevSelected.filter((id) => !currentMessagesIds.includes(id))
-      );
+      setSelectedMessages((prevSelected) => prevSelected.filter((id) => !currentMessagesIds.includes(id)));
     }
   };
 
   // Handle delete selected messages
   const handleDeleteSelected = async () => {
-    try {
-      for (let messageId of selectedMessages) {
-        await deleteMessage(messageId);
+    // 삭제 확인 알림 표시
+    const result = await Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 시 돌이킬 수 없습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    });
+
+    // 사용자가 삭제를 확인한 경우
+    if (result.isConfirmed) {
+      try {
+        for (let messageId of selectedMessages) {
+          await deleteMessage(messageId);
+        }
+        // 성공 시 알림
+        await Swal.fire({
+          icon: "success",
+          title: "메시지가 삭제되었습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+        getReceiveMessage();
+        setSelectedMessages([]);
+        window.location.reload(); // 성공 후 새로고침
+      } catch (error) {
+        console.error("Error deleting messages:", error);
+        // 에러 발생 시 알림
+        await Swal.fire({
+          icon: "error", // 오류 아이콘으로 변경
+          title: "메시지 삭제에 실패했습니다.",
+          text: "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.", // 추가 설명
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
+        });
       }
-      // 성공 시 알림
-      await Swal.fire({
-        icon: "success",
-        title: "메시지가 삭제되었습니다.", // 메시지 텍스트 수정
-        confirmButtonColor: "#527853",
-        confirmButtonText: "닫기",
-      });
-      getReceiveMessage();
-      setSelectedMessages([]);
-      window.location.reload(); // 성공 후 새로고침
-    } catch (error) {
-      console.error("Error deleting messages:", error);
-      // 에러 발생 시 알림
-      await Swal.fire({
-        icon: "warning",
-        title: "메시지 삭제에 실패했습니다.", // 에러 메시지 텍스트
-        confirmButtonColor: "#527853",
-        confirmButtonText: "닫기",
-      });
     }
   };
 
@@ -114,10 +110,7 @@ const ReceiveMessages = () => {
   // 현재 페이지에 대한 메시지 가져오기
   const indexOfLastMessage = currentPage * messagesPerPage;
   const indexOfFirstMessage = indexOfLastMessage - messagesPerPage;
-  const currentMessages = messages.slice(
-    indexOfFirstMessage,
-    indexOfLastMessage
-  );
+  const currentMessages = messages.slice(indexOfFirstMessage, indexOfLastMessage);
 
   const totalPages = Math.ceil(messages.length / messagesPerPage); // 전체 페이지 수
 
@@ -126,9 +119,7 @@ const ReceiveMessages = () => {
   };
 
   // Determine the state of the "Select All" checkbox for the current page
-  const isSelectAllChecked =
-    currentMessages.length > 0 &&
-    currentMessages.every((message) => selectedMessages.includes(message.id));
+  const isSelectAllChecked = currentMessages.length > 0 && currentMessages.every((message) => selectedMessages.includes(message.id));
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -158,15 +149,9 @@ const ReceiveMessages = () => {
                   }}
                 >
                   <TableCell align="center">
-                    <Checkbox
-                      checked={isSelectAllChecked}
-                      onChange={handleSelectAll}
-                    />
+                    <Checkbox checked={isSelectAllChecked} onChange={handleSelectAll} />
                   </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{ width: "15rem", fontWeight: "bold" }}
-                  >
+                  <TableCell align="center" sx={{ width: "15rem", fontWeight: "bold" }}>
                     보낸사람
                   </TableCell>
                   <TableCell align="center" sx={{ width: "40rem" }}>
@@ -187,18 +172,10 @@ const ReceiveMessages = () => {
                     }}
                   >
                     <TableCell align="center">
-                      <Checkbox
-                        checked={selectedMessages.includes(item.id)}
-                        onChange={(event) =>
-                          handleSelectMessage(event, item.id)
-                        }
-                      />
+                      <Checkbox checked={selectedMessages.includes(item.id)} onChange={(event) => handleSelectMessage(event, item.id)} />
                     </TableCell>
                     <TableCell align="center" sx={{ fontWeight: "bold" }}>
-                      <Link
-                        to={`/mypage/messageDetail/${item.id}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
+                      <Link to={`/mypage/messageDetail/${item.id}`} style={{ textDecoration: "none", color: "inherit" }}>
                         {item.senderNickname}
                       </Link>
                     </TableCell>
@@ -220,11 +197,7 @@ const ReceiveMessages = () => {
             >
               삭제
             </Button>
-            <Button
-              variant="contained"
-              sx={{ marginTop: "25px" }}
-              onClick={goCreateMessage}
-            >
+            <Button variant="contained" sx={{ marginTop: "25px" }} onClick={goCreateMessage}>
               쪽지보내기
             </Button>
           </AddProductButton>

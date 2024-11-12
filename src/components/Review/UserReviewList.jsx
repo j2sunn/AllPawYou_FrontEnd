@@ -1,21 +1,12 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  Button,
-  Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { AllReview, DeleteReview } from "../../service/Review";
 import { useNavigate } from "react-router-dom";
 import MypageSideBar from "../common/MypageSideBar";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -38,18 +29,77 @@ const ReviewList = () => {
       });
   }
 
-  function removeReview(reviewNo) {
-    console.log(reviewNo);
+  // function removeReview(reviewNo) {
+  //   console.log(reviewNo);
 
-    DeleteReview(reviewNo)
-      .then((response) => {
-        console.log(response);
-        getAllReviews();
-      })
-      .catch((error) => {
+  //   DeleteReview(reviewNo)
+  //     .then((response) => {
+  //       console.log(response);
+  //       // 삭제 성공 시 알림 표시
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "삭제 성공",
+  //         text: "리뷰가 성공적으로 삭제되었습니다.",
+  //         confirmButtonColor: "#527853",
+  //         confirmButtonText: "닫기",
+  //       });
+  //       getAllReviews(); // 리뷰 목록 갱신
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //       // 오류 발생 시 알림 표시
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "삭제 실패",
+  //         text: "리뷰 삭제 중 오류가 발생했습니다.",
+  //         confirmButtonColor: "#d33",
+  //         confirmButtonText: "닫기",
+  //       });
+  //     });
+  // }
+
+  const removeReview = async (reviewNo) => {
+    // 삭제 확인 알림 표시
+    const result = await Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 시 돌이킬 수 없습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    });
+
+    // 사용자가 삭제를 확인한 경우
+    if (result.isConfirmed) {
+      try {
+        // 리뷰 삭제
+        await DeleteReview(reviewNo);
+        // 삭제 성공 시 알림 표시
+        await Swal.fire({
+          icon: "success",
+          title: "삭제 성공",
+          text: "리뷰가 성공적으로 삭제되었습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+        getAllReviews(); // 리뷰 목록 갱신
+        window.location.reload(); // 성공 후 새로고침
+      } catch (error) {
         console.error(error);
-      });
-  }
+        // 오류 발생 시 알림 표시
+        await Swal.fire({
+          icon: "error",
+          title: "삭제 실패",
+          text: "리뷰 삭제 중 오류가 발생했습니다.",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
+        });
+      }
+    }
+  };
 
   const handleUpdate = (reviewNo) => {
     navigate(`/review/updateReview/${reviewNo}`);
@@ -57,15 +107,10 @@ const ReviewList = () => {
 
   const formatContent = (content) => {
     // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
-    const singleLineContent = content
-      .replace(/<e>/g, " ")
-      .replace(/<s>/g, " ")
-      .split("\n")[0];
+    const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
 
     // 첫 10자만 자르고, 내용이 더 길면 "..." 추가
-    return singleLineContent.length > 25
-      ? `${singleLineContent.slice(0, 25)}...`
-      : singleLineContent;
+    return singleLineContent.length > 25 ? `${singleLineContent.slice(0, 25)}...` : singleLineContent;
   };
 
   //페이징
@@ -75,14 +120,9 @@ const ReviewList = () => {
   // 현재 페이지에 대한 메시지 가져오기
   const indexOfLastMessage = currentPage * perPage;
   const indexOfFirstMessage = indexOfLastMessage - perPage;
-  const currentReviews = reviews
-    .filter((item) => item.userNo === Number(localStorage.getItem("no")))
-    .slice(indexOfFirstMessage, indexOfLastMessage);
+  const currentReviews = reviews.filter((item) => item.userNo === Number(localStorage.getItem("no"))).slice(indexOfFirstMessage, indexOfLastMessage);
 
-  const totalPages = Math.ceil(
-    reviews.filter((item) => item.userNo === Number(localStorage.getItem("no")))
-      .length / perPage
-  ); // 전체 페이지 수
+  const totalPages = Math.ceil(reviews.filter((item) => item.userNo === Number(localStorage.getItem("no"))).length / perPage); // 전체 페이지 수
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
@@ -143,36 +183,20 @@ const ReviewList = () => {
                             ? `http://localhost:8081${item.reviewImg[0].reviewImgPath}${item.reviewImg[0].reviewImgRename}`
                             : null // 이미지가 없으면 null
                         }
-                        alt={
-                          item.reviewImg && item.reviewImg.length > 0
-                            ? item.reviewImgOriginName
-                            : "이미지가 없습니다."
-                        } // 이미지가 없을 때 대체 텍스트
+                        alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."} // 이미지가 없을 때 대체 텍스트
                         style={{ width: "5rem", height: "5rem" }}
                       />
                     </TableCell>
                     <TableCell align="center">{item.reviewStar}</TableCell>
                     <TableCell align="center">{item.productName}</TableCell>
+                    <TableCell align="center">{formatContent(item.reviewContent)}</TableCell>
+                    <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
                     <TableCell align="center">
-                      {formatContent(item.reviewContent)}
-                    </TableCell>
-                    <TableCell align="center">
-                      {item.reviewDate.substring(0, 10)}
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button
-                        variant="contained"
-                        onClick={() => handleUpdate(item.reviewNo)}
-                        sx={{ marginRight: "1.5rem" }}
-                      >
-                        <MdDriveFileRenameOutline size="25" />
+                      <Button variant="contained" onClick={() => handleUpdate(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
+                        수정
                       </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => removeReview(item.reviewNo)}
-                      >
-                        <FaRegTrashAlt size="25" />
+                      <Button variant="outlined" color="primary" onClick={() => removeReview(item.reviewNo)}>
+                        삭제
                       </Button>
                     </TableCell>
                   </TableRow>
