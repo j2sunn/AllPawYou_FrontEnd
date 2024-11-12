@@ -115,7 +115,7 @@ const MyPage = () => {
     setProfile((prev) => ({ ...prev, [key]: value }));
   };
 
-  const [thumbnail, setThumbnail] = useState({ file: null, preview: "/file/images/profile/defaultprofile.png" });
+  const [thumbnail, setThumbnail] = useState({ file: null, preview: `http://localhost:8081${profile.profile}` });
 
   // useEffect(() => {
   //   if(profile){
