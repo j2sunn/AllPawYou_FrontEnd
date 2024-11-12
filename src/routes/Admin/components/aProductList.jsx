@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
-import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Button,
+  Pagination,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import styled from "styled-components";
 import { listProducts, DeleteProduct } from "../../../service/ProductService";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -41,23 +51,32 @@ const ProductList = () => {
     navigate(`/admin/addproduct`);
   };
 
-  const removeProduct = async (id) => {
-    try {
-      if (confirm("상품을 삭제 하시겠습니까?")) {
-        await DeleteProduct(id);
-        await getAllProducts();
-        alert("상품이 삭제되었습니다.");
-        Swal.fire({
-          title: "상품이 삭제되었습니다.",
-          icon: 'success',
+  const removeProduct = (id) => {
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 시 돌이킬 수 없습니다.",
+      icon: "warning",
 
-          confirmButtonColor: '#527853',
-          confirmButtonText: '닫기',
+      showCancelButton: true, // false가 default
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteProduct(id).then(()=>{
+          Swal.fire({
+            icon: "success",
+            title: "상품이 삭제 되었습니다.",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          }).then(() => {
+            getAllProducts();
+          });
         });
       }
-    } catch (error) {
-      console.log(error);
-    }
+    });
   };
 
   //페이지네이션
@@ -79,12 +98,24 @@ const ProductList = () => {
 
   return (
     <>
-
       <Title>상품 관리</Title>
-      <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: '3rem', boxShadow: 'none' }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          width: "90%",
+          marginTop: "3rem",
+          marginLeft: "3rem",
+          boxShadow: "none",
+        }}
+      >
         <Table>
           <TableHead>
-            <TableRow sx={{borderTop: '2px solid rgba(0,0,0,0.8)', borderBottom: '2px solid rgba(0,0,0,0.8)'}}>
+            <TableRow
+              sx={{
+                borderTop: "2px solid rgba(0,0,0,0.8)",
+                borderBottom: "2px solid rgba(0,0,0,0.8)",
+              }}
+            >
               <TableCell align="center" sx={{ width: "8rem" }}>
                 번호
               </TableCell>
@@ -117,7 +148,14 @@ const ProductList = () => {
                     {item.category}
                   </TableCell>
                   <TableCell align="center" sx={{ width: "30rem" }}>
-                    <Link to={`/shoppingDetail/${item.id}`} style={{ textDecoration: "none", textDecorationColor: "inherit", color: "inherit" }}>
+                    <Link
+                      to={`/shoppingDetail/${item.id}`}
+                      style={{
+                        textDecoration: "none",
+                        textDecorationColor: "inherit",
+                        color: "inherit",
+                      }}
+                    >
                       {item.name}
                     </Link>
                   </TableCell>
@@ -128,10 +166,17 @@ const ProductList = () => {
                     {item.releaseStatus}
                   </TableCell>
                   <TableCell align="center" sx={{ width: "10rem" }}>
-                    <Button variant="contained" onClick={() => goUpdate(item.id)} sx={{ marginRight: "10px" }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => goUpdate(item.id)}
+                      sx={{ marginRight: "10px" }}
+                    >
                       수정
                     </Button>
-                    <Button variant="outlined" onClick={() => removeProduct(item.id)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => removeProduct(item.id)}
+                    >
                       삭제
                     </Button>
                   </TableCell>
@@ -144,22 +189,26 @@ const ProductList = () => {
         </Table>
       </TableContainer>
       <AddProductButton>
-        <Button variant="contained" sx={{ marginTop: "25px" }} onClick={() => goAddProduct()}>
+        <Button
+          variant="contained"
+          sx={{ marginTop: "25px" }}
+          onClick={() => goAddProduct()}
+        >
           상품 등록
         </Button>
       </AddProductButton>
 
       <Pages>
-      {totalPages > 1 && (
-      <Pagination 
-        count={totalPages} // 총 페이지 수
-        page={currentPage} // 현재 페이지
-        onChange={handlePageChange} // 페이지 변경 핸들러
-        siblingCount={2} // 현재 페이지 주변에 보이는 페이지 수
-        boundaryCount={2} // 처음과 끝에 보이는 페이지 수
-        color="primary"
-      />
-      )}
+        {totalPages > 1 && (
+          <Pagination
+            count={totalPages} // 총 페이지 수
+            page={currentPage} // 현재 페이지
+            onChange={handlePageChange} // 페이지 변경 핸들러
+            siblingCount={2} // 현재 페이지 주변에 보이는 페이지 수
+            boundaryCount={2} // 처음과 끝에 보이는 페이지 수
+            color="primary"
+          />
+        )}
       </Pages>
     </>
   );

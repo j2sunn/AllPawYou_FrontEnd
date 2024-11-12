@@ -46,7 +46,8 @@ const ListNoticeComponent = () => {
 
   function removeNotice(noticeNo) {
     Swal.fire({
-      title: "해당 공지사항을 삭제하시겠습니까?",
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 시 돌이킬 수 없습니다.",
       icon: "warning",
 
       showCancelButton: true, // false가 default
@@ -155,7 +156,7 @@ const ListNoticeComponent = () => {
                   >
                     수정
                   </Button>
-                  <Button variant="outlined" onClick={() => console.log(item)}>
+                  <Button variant="outlined" onClick={() => removeNotice(item.noticeNo)}>
                     삭제
                   </Button>
                 </TableCell>

@@ -64,7 +64,8 @@ const ChangePassword = () => {
     let obj = {};
 
     // currentPassword
-    let regex = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    let regex =
+      /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
     regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
     if (!regex.test(values.currentPassword.trim())) {
@@ -76,7 +77,11 @@ const ChangePassword = () => {
 
     // password
     if (!regex.test(values.password.trim())) {
-      obj = { ...obj, password: "영어, 숫자, 특수문자가 포함된 8 ~ 20 글자의 비밀번호를 입력해주세요." };
+      obj = {
+        ...obj,
+        password:
+          "영어, 숫자, 특수문자가 포함된 8 ~ 20 글자의 비밀번호를 입력해주세요.",
+      };
       valid = false;
     } else {
       obj = { ...obj, password: "" };
@@ -95,13 +100,12 @@ const ChangePassword = () => {
   };
 
   return (
-    <>
+    <Box>
+      <MypageSideBar />
       <Container>
-        <MypageSideBar />
-
         <Content>
           <Title>비밀번호 변경</Title>
-          <form className="validation-form" onSubmit={handleSubmit}>
+          <form className="validation-form" onSubmit={handleSubmit} style={{width: '60%'}}>
             <div style={{ marginBottom: "16px" }}>
               <TextField
                 id="currentPassword"
@@ -142,35 +146,47 @@ const ChangePassword = () => {
               <Error>{error.passwordConfirm}</Error>
             </div>
             <ButtonContainer>
-              <Button type="submit" variant="contained" sx={{ width: "100%", height: "56px", fontSize: "1.5rem" }}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ width: "100%", height: "56px", fontSize: "1.5rem" }}
+              >
                 확인
               </Button>
             </ButtonContainer>
           </form>
         </Content>
       </Container>
-    </>
+    </Box>
   );
 };
 
 export default ChangePassword;
 
+const Box = styled.div`
+  display: flex;
+`;
+
 const Container = styled.div`
   display: flex;
-  width: 90%;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
 `;
 
 const Content = styled.div`
-  width: 90%;
-  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 600px;
 `;
 
 const Title = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
-  padding-top: 3rem;
-  margin-left: 3rem;
-  width: 90%;
+  padding: 3rem 0;
 `;
 
 const ButtonContainer = styled.div`

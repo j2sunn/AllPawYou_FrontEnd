@@ -25,16 +25,36 @@ const UserList = () => {
   }
 
   function removeUser(no) {
-    console.log(no);
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 시 돌이킬 수 없습니다.",
+      icon: "warning",
 
-    deleteUser(no)
-      .then((response) => {
-        console.log(response);
-        getAllUsers();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      showCancelButton: true, // false가 default
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(no)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        Swal.fire({
+          icon: "success",
+          title: "회원이 삭제 되었습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        }).then(() => {
+          location.reload(true);
+        });
+      }
+    });
   }
 
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지

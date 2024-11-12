@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Button,
+  Pagination,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { AllReview, DeleteReview } from "../../service/Review";
 import { useNavigate } from "react-router-dom";
 import MypageSideBar from "../common/MypageSideBar";
@@ -47,10 +57,15 @@ const ReviewList = () => {
 
   const formatContent = (content) => {
     // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
-    const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
+    const singleLineContent = content
+      .replace(/<e>/g, " ")
+      .replace(/<s>/g, " ")
+      .split("\n")[0];
 
     // 첫 10자만 자르고, 내용이 더 길면 "..." 추가
-    return singleLineContent.length > 25 ? `${singleLineContent.slice(0, 25)}...` : singleLineContent;
+    return singleLineContent.length > 25
+      ? `${singleLineContent.slice(0, 25)}...`
+      : singleLineContent;
   };
 
   //페이징
@@ -60,24 +75,41 @@ const ReviewList = () => {
   // 현재 페이지에 대한 메시지 가져오기
   const indexOfLastMessage = currentPage * perPage;
   const indexOfFirstMessage = indexOfLastMessage - perPage;
-  const currentReviews = reviews.filter((item) => item.userNo === Number(localStorage.getItem("no"))).slice(indexOfFirstMessage, indexOfLastMessage);
+  const currentReviews = reviews
+    .filter((item) => item.userNo === Number(localStorage.getItem("no")))
+    .slice(indexOfFirstMessage, indexOfLastMessage);
 
-  const totalPages = Math.ceil(reviews.filter((item) => item.userNo === Number(localStorage.getItem("no"))).length / perPage); // 전체 페이지 수
+  const totalPages = Math.ceil(
+    reviews.filter((item) => item.userNo === Number(localStorage.getItem("no")))
+      .length / perPage
+  ); // 전체 페이지 수
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
 
   return (
-    <>
+    <Box>
+      <MypageSideBar />
       <Container>
-        <MypageSideBar />
-
         <Content>
           <Title>내 후기 관리</Title>
-          <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: "3rem", boxShadow: "none" }}>
+          <TableContainer
+            component={Paper}
+            sx={{
+              width: "90%",
+              marginTop: "3rem",
+              marginLeft: "3rem",
+              boxShadow: "none",
+            }}
+          >
             <Table>
               <TableHead>
-                <TableRow sx={{ borderTop: "2px solid rgba(0,0,0,0.8)", borderBottom: "2px solid rgba(0,0,0,0.8)" }}>
+                <TableRow
+                  sx={{
+                    borderTop: "2px solid rgba(0,0,0,0.8)",
+                    borderBottom: "2px solid rgba(0,0,0,0.8)",
+                  }}
+                >
                   <TableCell align="center" sx={{ width: "10rem" }}>
                     사진
                   </TableCell>
@@ -96,7 +128,13 @@ const ReviewList = () => {
               </TableHead>
               <TableBody>
                 {currentReviews.map((item) => (
-                  <TableRow key={item.reviewNo} sx={{ borderTop: "2px solid rgba(0,0,0,0.3)", borderBottom: "2px solid rgba(0,0,0,0.3)" }}>
+                  <TableRow
+                    key={item.reviewNo}
+                    sx={{
+                      borderTop: "2px solid rgba(0,0,0,0.3)",
+                      borderBottom: "2px solid rgba(0,0,0,0.3)",
+                    }}
+                  >
                     <TableCell align="center">
                       <img
                         key={item.reviewImgNo}
@@ -105,19 +143,35 @@ const ReviewList = () => {
                             ? `http://localhost:8081${item.reviewImg[0].reviewImgPath}${item.reviewImg[0].reviewImgRename}`
                             : null // 이미지가 없으면 null
                         }
-                        alt={item.reviewImg && item.reviewImg.length > 0 ? item.reviewImgOriginName : "이미지가 없습니다."} // 이미지가 없을 때 대체 텍스트
+                        alt={
+                          item.reviewImg && item.reviewImg.length > 0
+                            ? item.reviewImgOriginName
+                            : "이미지가 없습니다."
+                        } // 이미지가 없을 때 대체 텍스트
                         style={{ width: "5rem", height: "5rem" }}
                       />
                     </TableCell>
                     <TableCell align="center">{item.reviewStar}</TableCell>
                     <TableCell align="center">{item.productName}</TableCell>
-                    <TableCell align="center">{formatContent(item.reviewContent)}</TableCell>
-                    <TableCell align="center">{item.reviewDate.substring(0, 10)}</TableCell>
                     <TableCell align="center">
-                      <Button variant="contained" onClick={() => handleUpdate(item.reviewNo)} sx={{ marginRight: "1.5rem" }}>
+                      {formatContent(item.reviewContent)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {item.reviewDate.substring(0, 10)}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        onClick={() => handleUpdate(item.reviewNo)}
+                        sx={{ marginRight: "1.5rem" }}
+                      >
                         <MdDriveFileRenameOutline size="25" />
                       </Button>
-                      <Button variant="contained" color="error" onClick={() => removeReview(item.reviewNo)}>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => removeReview(item.reviewNo)}
+                      >
                         <FaRegTrashAlt size="25" />
                       </Button>
                     </TableCell>
@@ -141,14 +195,20 @@ const ReviewList = () => {
           </Pages>
         </Content>
       </Container>
-    </>
+    </Box>
   );
 };
 
 export default ReviewList;
 
+const Box = styled.div`
+  display: flex;
+`;
+
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
+  width: 70%;
 `;
 
 const Title = styled.div`
