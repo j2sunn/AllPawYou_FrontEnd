@@ -35,26 +35,27 @@ const NoticeWrite = () => {
   const doSubmit = () => {
     if (validation()) {
       let data = { noticeTitle, noticeContent };
-      createNotice(data, navigator).then(()=>{
+      createNotice(data, navigator)
+        .then(() => {
+          Swal.fire({
+            title: "등록 성공",
+            text: "공지사항이 성공적으로 등록되었습니다.",
+            icon: "success",
 
-        Swal.fire({
-          title: "등록 성공",
-          text: "공지사항이 성공적으로 등록되었습니다.",
-          icon: "success",
-          
-          confirmButtonColor: "#527853",
-          confirmButtonText: "닫기",
+            confirmButtonColor: "#527853",
+            confirmButtonText: "닫기",
+          });
+          navigator("/admin/noticeList");
+        })
+        .catch(() => {
+          Swal.fire({
+            icon: "error",
+            title: "등록 실패",
+            text: "등록 중 오류가 발생했습니다. 다시 시도해 주세요.",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "닫기",
+          });
         });
-        navigator("/admin/noticeList");
-      }).catch(()=>{
-        Swal.fire({
-          icon: "error",
-          title: "등록 실패",
-          text: "등록 중 오류가 발생했습니다. 다시 시도해 주세요.",
-          confirmButtonColor: "#d33",
-          confirmButtonText: "닫기",
-        });
-      })
     }
   };
 
@@ -85,6 +86,23 @@ const NoticeWrite = () => {
   useEffect(() => {
     scrollTo(0, 0);
   }, []);
+
+  const role = localStorage.getItem("role");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // 'ROLE_ADMIN' 만 접근 허용
+    if (role !== "ROLE_ADMIN") {
+      navigate("/forbidden"); // 권한이 없으면 접근 불가 페이지로 리다이렉트
+      Swal.fire({
+        title: "비정상적인 접근이 감지되었습니다.",
+        icon: "warning",
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+    }
+  }, [role, navigate]);
 
   return (
     <>

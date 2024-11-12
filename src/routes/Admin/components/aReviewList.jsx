@@ -93,6 +93,8 @@ const ReviewList = () => {
     setCurrentPage(page);
   };
 
+  
+
   return (
     <>
       <Title>후기 관리</Title>
