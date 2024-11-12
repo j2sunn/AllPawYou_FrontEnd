@@ -41,35 +41,62 @@ const OrderList = () => {
   };
 
   //결제 취소
-  const cancelPayment = (data) => {
-    Swal.fire({
+  const cancelPayment = async (data) => {
+    // 주문 취소 확인 알림 표시
+    const result = await Swal.fire({
       title: "주문을 취소 하시겠습니까?",
-      icon: 'warning',
-      
+      text: "취소 후 복구할 수 없습니다.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#527853',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '주문 취소',
-      cancelButtonText: '뒤로가기',
-      reverseButtons: true
-      
-   }).then(result => {
-      if (result.isConfirmed) { 
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "주문 취소",
+      cancelButtonText: "뒤로가기",
+      reverseButtons: true,
+    });
+
+    // 사용자가 취소를 확인한 경우
+    if (result.isConfirmed) {
+      try {
+        // 결제 상태 업데이트
         const arr = paymentList;
-        arr.forEach(i=>i[0].tid == data.tid ? i[0].paymentState = false : null);
+        arr.forEach((i) => {
+          if (i[0].tid === data.tid) {
+            i[0].paymentState = false;
+          }
+        });
         setPaymentList([...arr]);
-        paymentCancel(data);
-        Swal.fire({
+
+        // 결제 취소 API 호출
+        await paymentCancel(data);
+
+        // 취소 성공 시 알림 표시
+        await Swal.fire({
           icon: "success",
-          title:'주문이 취소되었습니다.',
-          confirmButtonColor: '#527853'
+          title: "취소 성공",
+          text: "주문이 성공적으로 취소되었습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+
+        // 필요 시 페이지 새로고침
+        window.location.reload(); // 성공 후 새로고침
+      } catch (error) {
+        console.error("주문 취소 실패:", error);
+        // 오류 발생 시 알림 표시
+        await Swal.fire({
+          icon: "error",
+          title: "취소 실패",
+          text: "취소 중 오류가 발생했습니다. 다시 시도해 주세요.",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
         });
       }
-   });
+    }
   };
 
   useEffect(() => {
-    scrollTo(0,0);
+    scrollTo(0, 0);
     loadPayments();
   }, []);
 
@@ -85,7 +112,7 @@ const OrderList = () => {
 
   return (
     <Box>
-        <MypageSideBar />
+      <MypageSideBar />
       <Container>
         <Content>
           <Title>주문 목록</Title>
@@ -94,7 +121,12 @@ const OrderList = () => {
               return (
                 <Payment key={payment[0].tid}>
                   <PaymentHeader>
-                    <PaymentTitle>{payment[0].createdAt.slice(0, 10)} <span style={{fontSize: '1rem', fontWeight: '100', marginLeft: '2rem'}}>{payment[0].tid} {payment[0].paymentState ? '' : '(주문 취소)'}</span> </PaymentTitle>
+                    <PaymentTitle>
+                      {payment[0].createdAt.slice(0, 10)}{" "}
+                      <span style={{ fontSize: "1rem", fontWeight: "100", marginLeft: "2rem" }}>
+                        {payment[0].tid} {payment[0].paymentState ? "" : "(주문 취소)"}
+                      </span>{" "}
+                    </PaymentTitle>
                     <div>
                       <Button variant="outlined" onClick={() => navigator(`${payment[0].tid}`, { state: { payment } })}>
                         주문 상세
@@ -113,15 +145,22 @@ const OrderList = () => {
                     return (
                       <Product key={order?.orderNo}>
                         <OrderInfo>
-                          <ProductImg src={`http://localhost:8081${order.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지" />
+                          <ProductImg
+                            src={`http://localhost:8081${order.productFileDTO?.find((file) => file.productFileTypeId === 1)?.imagePath}`}
+                            alt="이미지"
+                          />
                           <div>
                             <Detail>
-                              <div style={{fontSize: '1.1rem', marginRight: '2rem'}}>
+                              <div style={{ fontSize: "1.1rem", marginRight: "2rem" }}>
                                 {order?.name} ({order?.quantity}개)
                               </div>
                               <div>총 가격 : {(order?.price * order?.quantity).toLocaleString()}원</div>
                             </Detail>
-                            <Button variant="outlined" onClick={() => navigator(`/review/createreview/${order?.name}`)} disabled={!payment[0].paymentState}>
+                            <Button
+                              variant="outlined"
+                              onClick={() => navigator(`/review/createreview/${order?.name}`)}
+                              disabled={!payment[0].paymentState}
+                            >
                               후기 작성하기
                             </Button>
                           </div>
@@ -174,7 +213,7 @@ const Payments = styled.div`
 
 const Payment = styled.div`
   width: 100%;
-  border-top: 2px solid rgba(0,0,0,0.3);
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
   margin-bottom: 2rem;
   padding: 2rem 0;
   display: flex;
@@ -198,7 +237,7 @@ const Product = styled.div`
   align-self: center;
   display: flex;
   justify-content: center;
-  border: 1px solid rgba(0,0,0,0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   width: 80%;
   margin: 1rem 0;
   padding: 1rem;

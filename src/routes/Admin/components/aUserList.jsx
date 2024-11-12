@@ -167,15 +167,20 @@ const UserList = () => {
                   {item.email}
                 </TableCell>
                 <TableCell align="center">
-                  <Select value={item.role} onChange={(e) => fetchRole(item.no, e.target.value)} variant="outlined" sx={{ width: "10rem" }}>
+                  <Select
+                    value={item.role}
+                    onChange={(e) => fetchRole(item.no, e.target.value)}
+                    variant="outlined"
+                    sx={{ width: "10rem", height: "2.5rem" }}
+                  >
                     <MenuItem value="ROLE_USER">사용자</MenuItem>
                     <MenuItem value="ROLE_SALER">판매자</MenuItem>
                     <MenuItem value="ROLE_ADMIN">관리자</MenuItem>
                   </Select>
                 </TableCell>
                 <TableCell align="center" onClick={() => removeUser(item.no)} sx={{ width: "10rem" }}>
-                  <Button variant="contained" color="error">
-                    <FaRegTrashAlt size="25" />
+                  <Button variant="outlined" color="primary">
+                    삭제
                   </Button>
                 </TableCell>
               </TableRow>
