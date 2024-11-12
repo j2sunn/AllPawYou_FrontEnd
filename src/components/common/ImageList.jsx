@@ -50,11 +50,10 @@ const BoardImageList = () => {
     >
       {itemData.map((item) => (
         <ImageListItem key={item.boardNo} cols={item.cols || 1} rows={item.rows || 1}
-        onClick = {()=>navigator("/board/"+item.boardNo+"/"+no)}>
+        onClick = {()=>navigator("/board/"+item.boardNo)}>
           
           <img
             {...srcset(item.imgRename, 121, item.rows, item.cols)}
-            onClick={()=>console.log(item)}
             alt={item.boardNo}
             loading="lazy"
           />

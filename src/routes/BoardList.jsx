@@ -3,7 +3,14 @@ import styled from "styled-components";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { loadList } from "../service/BoardService";
-import { Button, FormControl, InputLabel, MenuItem, Pagination, Select, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+} from "@mui/material";
 const BoardList = () => {
   const navigator = useNavigate();
   const [boardList, setBoardList] = useState([]);
@@ -12,11 +19,16 @@ const BoardList = () => {
   //상세조회,리스트 조회 페이지 서로 이동 시 전달해야할 데이터 5개!!
   const location = useLocation();
   // const cp = state?.cp;
-  const [selectedCategory, setSelectedCategory] = useState(location.state?.selectedCategory || 0); //필터해서 볼 카테고리(강아지고양이) 0==전체
+  const [selectedCategory, setSelectedCategory] = useState(
+    location.state?.selectedCategory || 0
+  ); //필터해서 볼 카테고리(강아지고양이) 0==전체
 
   // const [orderOpt,setOrderOpt] = useState(location.state?.orderOpt||"choi"); //choi : 최신순, in : 인기순
 
   const [searchOpt, setSearchOpt] = useState(location.state?.searchOpt || ""); //검색옵션(작성자u,제목t,내용c)
+  const [keywordInput, setKeywordInput] = useState(
+    location.state?.keyword || ""
+  );
   const [keyword, setKeyword] = useState(location.state?.keyword || ""); //검색키워드
   //========
   // // 검색용 상태 (검색 버튼 클릭 시 적용할 값) 이건 없어도 되지 않을까..?
@@ -42,19 +54,17 @@ const BoardList = () => {
   };
   //정렬순서 버튼 클릭
 
-  // 검색 버튼 클릭 시 검색 옵션과 키워드 적용
-  // const handleSearchBtnClick = () => {
-  //     setSearchOpt(searchOpt);
-  //     setKeyword(keyword);
-  //     setCurrentPage(1); // 페이지 번호 초기화
-  // };
-
   const formatContent = (content) => {
     // <e>를 줄바꿈, <s>를 공백으로 변환하고 첫 번째 줄만 가져옴
-    const singleLineContent = content.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0];
+    const singleLineContent = content
+      .replace(/<e>/g, " ")
+      .replace(/<s>/g, " ")
+      .split("\n")[0];
 
     // 첫 10자만 자르고, 내용이 더 길면 "..." 추가
-    return singleLineContent.length > 10 ? `${singleLineContent.slice(0, 10)}...` : singleLineContent;
+    return singleLineContent.length > 10
+      ? `${singleLineContent.slice(0, 10)}...`
+      : singleLineContent;
   };
 
   //페이징
@@ -79,51 +89,66 @@ const BoardList = () => {
   return (
     <>
       <Container>
-        <One>
-          <div className="title">
-            <span>자유게시판</span>
-          </div>
+        <BoardHeader>
+          <Title>자유게시판</Title>
           <div style={{ marginLeft: "auto" }} className="searchBox">
-            <FormControl fullWidth style={{ width: "120px", marginRight: "1rem" }}>
-              <InputLabel id="demo-simple-select-label">선택하세요</InputLabel>
+            <FormControl
+              fullWidth
+              style={{ width: "100px", height: "3rem", marginRight: "1rem" }}
+            >
+              <InputLabel id="demo-simple-select-label">검색 종류</InputLabel>
               <Select
                 onChange={(e) => setSearchOpt(e.target.value)}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={searchOpt}
+                value={searchOpt || "작성자"}
                 label="선택하세요"
-                style={{ width: "120px" }}
+                style={{ width: "100px", height: "3rem" }}
               >
                 <MenuItem value={"작성자"}>작성자</MenuItem>
                 <MenuItem value={"제목"}>제목</MenuItem>
                 <MenuItem value={"내용"}>내용</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              label="게시글 검색"
-              id="search"
-              variant="outlined"
-              // value={values.email}
-              placeholder="작성자/제목/내용"
-              sx={{ width: "350px" }}
-              onChange={(e) => setKeyword(e.target.value)}
-            />
-            {/* <Button variant="contained" sx={{fontSize: '1rem', marginTop: '1rem', marginLeft: '1rem', marginBottom: '1rem',height : '2rem'}} 
-                            onClick={handleSearchBtnClick}
-                            >
-                        검색
-                        </Button> */}
+            <div style={{ alignSelf: "end" }}>
+              <Input onChange={() => setKeywordInput(event.target.value)} />
+              <Button
+                sx={{ height: "3rem" }}
+                onClick={() => setKeyword(keywordInput)}
+              >
+                검색
+              </Button>
+            </div>
           </div>
-        </One>
-        <Two>
+        </BoardHeader>
+        <Category>
           <div className="div2Con">
-            <Div2 className="category" onClick={() => handleSelectedCategoryClick(1)} selected={selectedCategory === 1}>
+            <Div2
+              className="category"
+              onClick={() => handleSelectedCategoryClick(0)}
+              selected={selectedCategory === 0}
+            >
+              전체
+            </Div2>
+            <Div2
+              className="category"
+              onClick={() => handleSelectedCategoryClick(1)}
+              selected={selectedCategory === 1}
+            >
               강아지
             </Div2>
-            <Div2 className="category" onClick={() => handleSelectedCategoryClick(2)} selected={selectedCategory === 2}>
+            <Div2
+              className="category"
+              onClick={() => handleSelectedCategoryClick(2)}
+              selected={selectedCategory === 2}
+            >
               고양이
             </Div2>
-            <Div2 className="category" onClick={() => handleSelectedCategoryClick(3)} selected={selectedCategory === 3}>
+            <Div2
+              className="category"
+              onClick={() => handleSelectedCategoryClick(3)}
+              selected={selectedCategory === 3}
+            >
               기타
             </Div2>
           </div>
@@ -141,31 +166,42 @@ const BoardList = () => {
                     </div> */}
 
           {/* 최신순 인기순 할 땐 List<MyEntity> findAllByOrderByAAscBDesc(); 이용하기 */}
-        </Two>
-        <Three>
+        </Category>
+        <List>
           {currentBoardList.length > 0 ? (
             currentBoardList.map((board, index) => (
-              <Con
+              <Card
                 key={index}
                 onClick={() =>
                   navigator(`/board/${board.boardNo}`, {
-                    state: { cp: { currentPage }, selectedCategory: { selectedCategory }, searchOpt: { searchOpt }, keyword: { keyword } },
+                    state: {
+                      cp: { currentPage },
+                      selectedCategory: { selectedCategory },
+                      searchOpt: { searchOpt },
+                      keyword: { keyword },
+                    },
                   })
                 }
-                style={{ border: "1px solid gray", borderRadius: "10px", padding: "10px", marginBottom: "10px" }}
               >
-                {/*  Con을 반복하기 */}
-                <div className="first">
-                  <Div> {board.category === 1 ? "강아지" : board.category === 2 ? "고양이" : "기타"}</Div>
-                  <p className="boardTitle">{board.boardTitle}</p>
+                {/*  Card 반복하기 */}
+                <CardInfo>
+                  <CardCategory>
+                    {" "}
+                    {board.category === 1
+                      ? "강아지"
+                      : board.category === 2
+                      ? "고양이"
+                      : "기타"}
+                  </CardCategory>
+                  <CardTitle>{board.boardTitle}</CardTitle>
                   {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
-                  <p
+                  <CardContent
                     className="boardContent"
                     // dangerouslySetInnerHTML={{ __html: board.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }}
                   >
                     {" "}
                     {formatContent(board.boardContent)}
-                  </p>
+                  </CardContent>
                   <div className="boardInfo">
                     <img
                       src={
@@ -181,20 +217,20 @@ const BoardList = () => {
                       {board.likeCount}
                     </p>
                   </div>
-                </div>
+                </CardInfo>
                 {board.imgRename ? (
-                  <div className="second">
-                    <img src={`http://localhost:8081/images/board/${board.imgRename}`} />
-                  </div>
+                    <CardImg
+                      src={`http://localhost:8081/images/board/${board.imgRename}`}
+                    />
                 ) : (
                   <></>
                 )}
-              </Con>
+              </Card>
             ))
           ) : (
-            <>게시글 로딩중입니다.</>
+            <NoData>게시글이 존재하지 않습니다.</NoData>
           )}
-        </Three>
+        </List>
 
         <Pages>
           {totalPages > 1 && (
@@ -210,7 +246,11 @@ const BoardList = () => {
         </Pages>
 
         <Four>
-          <Button variant="contained" sx={{ fontSize: "1rem", marginTop: "1rem", marginBottom: "2rem" }} onClick={() => navigator("/boardWrite")}>
+          <Button
+            variant="contained"
+            sx={{ fontSize: "1rem", marginTop: "1rem", marginBottom: "2rem" }}
+            onClick={() => navigator("/boardWrite")}
+          >
             글 작성하기
           </Button>
         </Four>
@@ -224,26 +264,33 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const One = styled.div`
+
+const BoardHeader = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin: 30px 0;
   .searchBox {
     display: flex;
     align-items: center;
   }
-  .title {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border: 2px solid black;
-    border-radius: 20px;
-    width: 100px;
-    text-align: center;
-  }
 `;
-const Two = styled.div`
+
+const Title = styled.div`
+  padding: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+`;
+
+const Input = styled.input`
+  border-width: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  outline: none;
+  height: 2rem;
+`;
+
+const Category = styled.div`
   width: 50%;
   display: flex;
   margin-top: 20px;
@@ -255,60 +302,49 @@ const Two = styled.div`
     margin-left: auto;
   }
 `;
-const Three = styled.div`
+
+const List = styled.div`
   width: 50%;
 `;
-const Con = styled.div`
+
+const Card = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 170px;
-  margin-top: 10px;
-  .first {
-    display: flex;
-    flex-direction: column;
-    .boardInfo {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      img {
-        width: 40px;
-        height: 40px;
-      }
-      .boardNick {
-        margin: 0px 10px;
-      }
-      .boardComment {
-        margin: 0px 10px;
-      }
-      .boardLike {
-        margin: 0px 10px;
-        color: red;
-      }
-    }
-  }
-  .second {
-    display: flex;
-    img {
-      width: 100px;
-      height: 100px;
-    }
-  }
-  .boardTitle {
-    font-size: 20px;
-    font-weight: bold;
-  }
-  .boardContent {
-    font-size: 13px;
-    color: gray;
+  margin-top: 20px;
+  padding: 1rem 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+  &:last-child{
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
   }
 `;
-const Four = styled.div`
-  width: 50%;
+
+const CardInfo = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  .boardInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    img {
+      width: 40px;
+      height: 40px;
+    }
+    .boardNick {
+      margin: 0px 10px;
+    }
+    .boardComment {
+      margin: 0px 10px;
+    }
+    .boardLike {
+      margin: 0px 10px;
+      color: red;
+    }
+  }
 `;
-const Div = styled.div`
+
+const CardCategory = styled.div`
   background-color: #eec759;
   margin-right: 10px;
   width: 60px;
@@ -316,11 +352,29 @@ const Div = styled.div`
   font-weight: bold;
   border-radius: 40px;
   text-align: center;
-  padding: 7px;
-  margin: 3px;
+  padding: 5px;
+  margin: 1rem 0;
 `;
+
+const CardTitle = styled.div`
+  font-size: 1.3rem;
+  font-weight: bold;
+`;
+
+const CardContent = styled.div`
+  color: gray;
+  margin-bottom: 1rem;
+`;
+
+const Four = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const Div2 = styled.div`
-  background-color: ${({ selected }) => (selected ? "#EEC759" : "RGB(240, 240, 243)")};
+  background-color: ${({ selected }) =>
+    selected ? "#EEC759" : "RGB(240, 240, 243)"};
   margin-right: 10px;
   width: 100px;
   font-weight: bold;
@@ -337,4 +391,19 @@ const Pages = styled.div`
   margin-top: 3rem;
   display: flex;
   justify-content: center;
+`;
+
+const CardImg = styled.img`
+  width: 150px;
+  height: 150px;
+`;
+
+const NoData = styled.div`
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  margin: 3rem;
 `;
