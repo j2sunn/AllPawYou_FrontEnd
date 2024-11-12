@@ -85,9 +85,9 @@ const OrderList = () => {
   }, [paymentList]);
 
   return (
-    <>
-      <Container>
+    <Box>
         <MypageSideBar />
+      <Container>
         <Content>
           <Title>주문 목록</Title>
           <Payments>
@@ -136,24 +136,25 @@ const OrderList = () => {
           </Payments>
         </Content>
       </Container>
-    </>
+    </Box>
   );
 };
 
 export default OrderList;
 
-const Container = styled.div`
-  width: 100%;
-  min-height: 600px;
-  padding-left: 4rem;
+const Box = styled.div`
   display: flex;
 `;
 
-const Content = styled.div`
-  width: 100%;
+const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 5rem;
+  width: 70%;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.div`

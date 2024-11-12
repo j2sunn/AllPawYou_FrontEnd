@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Pagination,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 // import { AllReview, DeleteReview } from "../../service/Review";
 // import {loadMine} from "../service/BoardService";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +28,10 @@ const MyPageBoardList = () => {
   // 현재 페이지에 대한 메시지 가져오기
   const indexOfLastMessage = currentPage * messagesPerPage;
   const indexOfFirstMessage = indexOfLastMessage - messagesPerPage;
-  const currentBoardList = boardList.slice(indexOfFirstMessage, indexOfLastMessage);
+  const currentBoardList = boardList.slice(
+    indexOfFirstMessage,
+    indexOfLastMessage
+  );
 
   const totalPages = Math.ceil(boardList.length / messagesPerPage); // 전체 페이지 수
   const handlePageChange = (event, page) => {
@@ -34,22 +46,36 @@ const MyPageBoardList = () => {
   }, []);
 
   const loadMine = () => {
-    axios.get("http://localhost:8081/board/myBoard/" + localStorage.getItem("no")).then((resp) => {
-      setBoardList(resp.data);
-    });
+    axios
+      .get("http://localhost:8081/board/myBoard/" + localStorage.getItem("no"))
+      .then((response) => {
+        setBoardList(response.data);
+      });
   };
 
   return (
-    <>
+    <Box>
+      <MypageSideBar />
       <Container>
-        <MypageSideBar />
-
         <Content>
           <Title>내 글 관리</Title>
-          <TableContainer component={Paper} sx={{ width: "90%", marginTop: "3rem", marginLeft: "3rem", boxShadow: "none" }}>
+          <TableContainer
+            component={Paper}
+            sx={{
+              width: "90%",
+              marginTop: "3rem",
+              marginLeft: "3rem",
+              boxShadow: "none",
+            }}
+          >
             <Table>
               <TableHead>
-                <TableRow sx={{ borderTop: "2px solid rgba(0,0,0,0.8)", borderBottom: "2px solid rgba(0,0,0,0.8)" }}>
+                <TableRow
+                  sx={{
+                    borderTop: "2px solid rgba(0,0,0,0.8)",
+                    borderBottom: "2px solid rgba(0,0,0,0.8)",
+                  }}
+                >
                   {/* 제목,내용,작성일,좋아요 수,댓글 수,썸네일 
                   썸네일, 제목, 내용, 댓글 수, 좋아요 수, 작성일 순서!*/}
                   <TableCell align="center" sx={{ width: "10rem" }}>
@@ -75,7 +101,10 @@ const MyPageBoardList = () => {
               <TableBody>
                 {boardList.length > 0 ? (
                   currentBoardList.map((board) => (
-                    <TableRow key={board.boardNo} onClick={() => navigate(`/board/${board.boardNo}`)}>
+                    <TableRow
+                      key={board.boardNo}
+                      onClick={() => navigate(`/board/${board.boardNo}`)}
+                    >
                       <TableCell align="center">
                         {board.imgList && board.imgList.length > 0 ? (
                           <img
@@ -89,7 +118,14 @@ const MyPageBoardList = () => {
                         )}
                       </TableCell>
                       <TableCell align="center">{board.boardTitle}</TableCell>
-                      <TableCell align="center">{board.boardContent.replace(/<e>/g, " ").replace(/<s>/g, " ").split("\n")[0]}</TableCell>
+                      <TableCell align="center">
+                        {
+                          board.boardContent
+                            .replace(/<e>/g, " ")
+                            .replace(/<s>/g, " ")
+                            .split("\n")[0]
+                        }
+                      </TableCell>
                       <TableCell align="center">{board.commentCount}</TableCell>
                       <TableCell align="center">{board.likeCount}</TableCell>
                       <TableCell align="center">{board.boardDate}</TableCell>
@@ -116,14 +152,20 @@ const MyPageBoardList = () => {
           </Pages>
         </Content>
       </Container>
-    </>
+    </Box>
   );
 };
 
 export default MyPageBoardList;
 
+const Box = styled.div`
+  display: flex;
+`;
+
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
+  width: 70%;
 `;
 
 const Title = styled.div`
