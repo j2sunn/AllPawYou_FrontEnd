@@ -11,6 +11,7 @@ import {
   Pagination,
   Select,
 } from "@mui/material";
+import Swal from "sweetalert2";
 const BoardList = () => {
   const navigator = useNavigate();
   const [boardList, setBoardList] = useState([]);
@@ -26,9 +27,6 @@ const BoardList = () => {
   // const [orderOpt,setOrderOpt] = useState(location.state?.orderOpt||"choi"); //choi : 최신순, in : 인기순
 
   const [searchOpt, setSearchOpt] = useState(location.state?.searchOpt || ""); //검색옵션(작성자u,제목t,내용c)
-  const [keywordInput, setKeywordInput] = useState(
-    location.state?.keyword || ""
-  );
   const [keyword, setKeyword] = useState(location.state?.keyword || ""); //검색키워드
   //========
   // // 검색용 상태 (검색 버튼 클릭 시 적용할 값) 이건 없어도 되지 않을까..?
@@ -36,14 +34,13 @@ const BoardList = () => {
   // const [appliedKeyword, setAppliedKeyword] = useState('');
 
   //===========================================================================================================
-  useEffect(() => {
+  const loadBoardList = () => {
     loadList(selectedCategory, searchOpt, keyword, setBoardList);
-  }, [
-    //currentPage,
-    selectedCategory,
-    searchOpt,
-    keyword,
-  ]);
+  }
+  
+  useEffect(() => {
+    loadBoardList();
+  }, []);
 
   //카테고리 버튼 클릭
   const handleSelectedCategoryClick = (selectedCategory) => {
@@ -81,6 +78,30 @@ const BoardList = () => {
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
+
+  const boardWrite = () => {
+    if (localStorage.getItem("email") == null) {
+      Swal.fire({
+        title: "로그인 하시겠습니까?",
+        text: "로그인 후에 쪽지 기능 이용이 가능합니다.",
+        icon: "warning",
+
+        showCancelButton: true, // false가 default
+        confirmButtonColor: "#527853",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "이동",
+        cancelButtonText: "취소",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigator("/login");
+          return;
+        }
+      });
+  } else {
+    navigator("/boardWrite");
+  }
+}
   useEffect(() => {
     scrollTo(0, 0);
   }, []);
@@ -111,10 +132,10 @@ const BoardList = () => {
               </Select>
             </FormControl>
             <div style={{ alignSelf: "end" }}>
-              <Input onChange={() => setKeywordInput(event.target.value)} />
+              <Input onChange={() => setKeyword(event.target.value)} />
               <Button
                 sx={{ height: "3rem" }}
-                onClick={() => setKeyword(keywordInput)}
+                onClick={loadBoardList}
               >
                 검색
               </Button>
@@ -249,7 +270,7 @@ const BoardList = () => {
           <Button
             variant="contained"
             sx={{ fontSize: "1rem", marginTop: "1rem", marginBottom: "2rem" }}
-            onClick={() => navigator("/boardWrite")}
+            onClick={boardWrite}
           >
             글 작성하기
           </Button>

@@ -9,6 +9,7 @@ import { listProducts } from "../service/ProductService";
 const MainPage = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [bestProducts, setBestProducts] = useState([]);
 
   const loadProducts = async () => {
     const response = await listProducts();
@@ -18,6 +19,14 @@ const MainPage = () => {
     } else {
       setProducts(response.data);
     }
+    let arr = [];
+    const length = response.data.length >= 10 ? 10 : response.data.length;
+    for(let i=0; i<length;i++){
+      if(i%2 == 0){
+         arr.push(response.data[i]);
+      }
+    }
+    setBestProducts(arr.reverse());
   };
   useEffect(() => {
     scrollTo(0, 0);
@@ -35,9 +44,40 @@ const MainPage = () => {
         <Grid>
           {products?.map((product) => {
             return (
-              <GridItem key={product?.id} onClick={() => navigate(`/shoppingDetail/${product?.id}`)}>
+              <GridItem
+                key={product?.id}
+                onClick={() => navigate(`/shoppingDetail/${product?.id}`)}
+              >
                 <GridImage
-                  src={`http://localhost:8081${product.productFileDTO?.find((file) => file.productFileTypeId === 1)?.imagePath}`}
+                  src={`http://localhost:8081${
+                    product.productFileDTO?.find(
+                      (file) => file.productFileTypeId === 1
+                    )?.imagePath
+                  }`}
+                  alt="상품 이미지"
+                />
+                <GridTitle>{product?.name}</GridTitle>
+                <GridText>{product?.price.toLocaleString()}원</GridText>
+              </GridItem>
+            );
+          })}
+        </Grid>
+      </Container>
+      <Container>
+        <Title>이번주 베스트 아이템</Title>
+        <Grid>
+          {bestProducts?.map((product) => {
+            return (
+              <GridItem
+                key={product?.id}
+                onClick={() => navigate(`/shoppingDetail/${product?.id}`)}
+              >
+                <GridImage
+                  src={`http://localhost:8081${
+                    product.productFileDTO?.find(
+                      (file) => file.productFileTypeId === 1
+                    )?.imagePath
+                  }`}
                   alt="상품 이미지"
                 />
                 <GridTitle>{product?.name}</GridTitle>

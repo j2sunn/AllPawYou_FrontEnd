@@ -62,7 +62,7 @@ const AdminOrderList = () => {
                 <Payment key={payment[0]?.tid}>
                   <PaymentHeader>
                     <PaymentTitle>{payment[0]?.createdAt?.slice(0, 10)} <span style={{fontSize: '1rem', fontWeight: '100', marginLeft: '2rem'}}>{payment[0].tid} {payment[0].paymentState ? '' : '(주문 취소)'}</span> </PaymentTitle>
-                      <Button variant="outlined" onClick={() => navigator(`${payment[0].tid}`, { state: { payment } })}>
+                      <Button variant="outlined" onClick={() => navigator(`/order/${payment[0].tid}`, { state: { payment } })}>
                         주문 상세
                       </Button>
                   </PaymentHeader>
