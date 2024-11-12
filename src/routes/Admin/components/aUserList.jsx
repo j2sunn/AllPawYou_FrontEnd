@@ -5,6 +5,7 @@ import { Button, MenuItem, Pagination, Paper, Select, Table, TableBody, TableCel
 import { FaRegTrashAlt } from "react-icons/fa";
 import defaultProfile from "src/assets/defaultprofile.png";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const [users, setUsers] = useState([[]]);
@@ -107,6 +108,23 @@ const UserList = () => {
         console.error(error);
       });
   }
+
+  const role = localStorage.getItem("role");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // 'ROLE_ADMIN' 만 접근 허용
+    if (role !== "ROLE_ADMIN") {
+      navigate("/forbidden"); // 권한이 없으면 접근 불가 페이지로 리다이렉트
+      Swal.fire({
+        title: "비정상적인 접근이 감지되었습니다.",
+        icon: "warning",
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+    }
+  }, [role, navigate]);
 
   return (
     <>
