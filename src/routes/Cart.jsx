@@ -151,16 +151,13 @@ const Cart = () => {
   // + 버튼 동작
   const plus = (event) => {
     const arr = [...productList];
-    arr.forEach((i) =>
-      i.id == event.target.id
-        ? i.quantity >= 99
-          ? Swal.fire({
-              icon: "warning",
-              title: "최대 수량입니다.",
-              confirmButtonColor: "#527853",
-            })
-          : i.quantity++
-        : null
+    arr.forEach((i) => i.id == event.target.id ? i.quantity >= 99 ? 
+      Swal.fire({
+        icon: "warning",
+        title: "최대 수량입니다.",
+        confirmButtonColor: "#527853",
+      }) : i.quantity++
+      : null
     );
     setProductList(arr);
   };
@@ -168,17 +165,14 @@ const Cart = () => {
   // - 버튼 동작
   const minus = (event) => {
     const arr = [...productList];
-    arr.forEach((i) =>
-      i.id == event.target.id
-        ? i.quantity <= 1
-          ? Swal.fire({
-              icon: "warning",
-              title: "최소 수량입니다.",
-              confirmButtonColor: "#527853",
-            })
-          : i.quantity--
-        : null
-    );
+    arr.forEach((i) => i.id == event.target.id ? i.quantity <= 1 ? 
+      Swal.fire({
+        icon: "warning",
+        title: "최소 수량입니다.",
+        confirmButtonColor: "#527853",
+      }) : i.quantity--
+    : null
+  );
     setProductList(arr);
   };
 

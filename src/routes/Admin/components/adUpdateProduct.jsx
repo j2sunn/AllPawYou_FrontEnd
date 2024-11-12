@@ -69,7 +69,6 @@ const UpdateProduct = () => {
 
     console.log("새 썸네일 파일:", file);
     if (file) {
-
       setThumbnail({
         file: file, // 실제 파일 객체 저장
         preview: URL.createObjectURL(file), // 미리보기 URL 저장
@@ -83,22 +82,21 @@ const UpdateProduct = () => {
 
   // 상품 설명 이미지 업로드 핸들러 (최대 8장)
   const handleDetailImageChange = (e) => {
-
     const files = Array.from(e.target.files);
     console.log("상세이미지 : ", files);
     if (files.length + images.length > 8) {
       alert("최대 8장까지 업로드할 수 있습니다.");
 
-//     const selectedFiles = Array.from(e.target.files);
-    
-//     if (selectedFiles.length + images.length > 8) {
-//       Swal.fire({
-//         title: "최대 8장까지 업로드할 수 있습니다.",
-//         icon: 'warning',
-        
-//         confirmButtonColor: '#527853',
-//         confirmButtonText: '닫기',
-//      });
+      //     const selectedFiles = Array.from(e.target.files);
+
+      //     if (selectedFiles.length + images.length > 8) {
+      //       Swal.fire({
+      //         title: "최대 8장까지 업로드할 수 있습니다.",
+      //         icon: 'warning',
+
+      //         confirmButtonColor: '#527853',
+      //         confirmButtonText: '닫기',
+      //      });
 
       return;
     }
@@ -113,7 +111,6 @@ const UpdateProduct = () => {
   };
 
   const handleRemoveDetailImage = (index) => {
-
     const imageToRemove = images[index];
     console.log("imageToRemove.id : ", imageToRemove.id);
 
@@ -138,23 +135,22 @@ const UpdateProduct = () => {
 
   const cancel = () => {
     Swal.fire({
-        title: "상품 목록으로 돌아가시겠습니까?",
-        text: '진행상황이 저장되지 않습니다.',
-        icon: 'warning',
-        
-        showCancelButton: true, // false가 default
-        confirmButtonColor: '#527853',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '이동',
-        cancelButtonText: '취소',
-        reverseButtons: true
-        
-     }).then(result => {
-        if (result.isConfirmed) {
-            navigator(-1);
-        }
+      title: "상품 목록으로 돌아가시겠습니까?",
+      text: "진행상황이 저장되지 않습니다.",
+      icon: "warning",
+
+      showCancelButton: true, // false가 default
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "이동",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigator(-1);
+      }
     });
-}
+  };
 
   const doSubmit = () => {
     const formData = new FormData();
@@ -174,52 +170,50 @@ const UpdateProduct = () => {
     });
 
     try {
-      if(productInfo.name.trim().length == 0){
+      if (productInfo.name.trim().length === 0) {
         Swal.fire({
-            title: "상품 이름을 입력해주세요.",
-            icon: 'warning',
-            
-            confirmButtonColor: '#527853',
-            cancelButtonText: '확인'                    
-         });
-      }else if(+productInfo.price <= 0){
-          Swal.fire({
-              title: "올바른 가격을 입력해주세요.",
-              icon: 'warning',
-              
-              confirmButtonColor: '#527853',
-              cancelButtonText: '확인'                    
-          });
-      }else if(thumbnail.file == null){
-          Swal.fire({
-              title: "썸네일 이미지를 등록해주세요.",
-              icon: 'warning',
-              
-              confirmButtonColor: '#527853',
-              cancelButtonText: '확인'                    
-          });
-      }else{
-        // 상품 수정 API 호출
-        updateProduct(id, formData);
+          title: "상품 이름을 입력해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#527853",
+          cancelButtonText: "확인",
+        });
+      } else if (+productInfo.price <= 0) {
+        Swal.fire({
+          title: "올바른 가격을 입력해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#527853",
+          cancelButtonText: "확인",
+        });
+      } else if (thumbnail.file == null) {
+        Swal.fire({
+          title: "썸네일 이미지를 등록해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#527853",
+          cancelButtonText: "확인",
+        });
+      } else {
+        updateProduct(id, formData); // 상품 수정
+        Swal.fire({
+          icon: "success",
+          title: "수정 성공",
+          text: "상품이 성공적으로 수정되었습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+
         // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
         navigator("/admin/productlist"); // 이동할 페이지 URL을 설정
-        Swal.fire({
-          title: "상품이 수정되었습니다.",
-          icon: 'success',
-          
-          confirmButtonColor: '#527853',
-          cancelButtonText: '확인'                    
-       });
       }
-      } catch (error) {
-        console.error("상품 등록 실패:", error);
-        Swal.fire({
-          title: "상품 수정에 실패했습니다. 다시 시도해주세요.",
-          icon: 'error',
-          
-          confirmButtonColor: '#527853',
-          cancelButtonText: '확인'                    
-       });
+    } catch (error) {
+      console.error("상품 수정 실패:", error);
+      // 오류 발생 시 알림 표시
+      Swal.fire({
+        icon: "error",
+        title: "수정 실패",
+        text: "수정 중 오류가 발생했습니다. 다시 시도해 주세요.",
+        confirmButtonColor: "#d33",
+        confirmButtonText: "닫기",
+      });
     }
   };
 
@@ -302,9 +296,11 @@ const UpdateProduct = () => {
         </>
       ) : (
         <Container>
-            <NoData>존재하지 않는 상품입니다.</NoData>
-            <Button variant="contained" onClick={()=>navigator(-1)} sx={{fontSize: '1.5rem', marginTop: '2rem'}}>이전 페이지로 돌아가기</Button>
-          </Container>
+          <NoData>존재하지 않는 상품입니다.</NoData>
+          <Button variant="contained" onClick={() => navigator(-1)} sx={{ fontSize: "1.5rem", marginTop: "2rem" }}>
+            이전 페이지로 돌아가기
+          </Button>
+        </Container>
       )}
     </>
   );
@@ -431,9 +427,9 @@ const FileInput = styled.input`
 `;
 
 const NoData = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 2rem;
-    margin-top: 15rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  margin-top: 15rem;
 `;
