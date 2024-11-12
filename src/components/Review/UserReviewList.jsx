@@ -29,35 +29,6 @@ const ReviewList = () => {
       });
   }
 
-  // function removeReview(reviewNo) {
-  //   console.log(reviewNo);
-
-  //   DeleteReview(reviewNo)
-  //     .then((response) => {
-  //       console.log(response);
-  //       // 삭제 성공 시 알림 표시
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "삭제 성공",
-  //         text: "리뷰가 성공적으로 삭제되었습니다.",
-  //         confirmButtonColor: "#527853",
-  //         confirmButtonText: "닫기",
-  //       });
-  //       getAllReviews(); // 리뷰 목록 갱신
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       // 오류 발생 시 알림 표시
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "삭제 실패",
-  //         text: "리뷰 삭제 중 오류가 발생했습니다.",
-  //         confirmButtonColor: "#d33",
-  //         confirmButtonText: "닫기",
-  //       });
-  //     });
-  // }
-
   const removeReview = async (reviewNo) => {
     // 삭제 확인 알림 표시
     const result = await Swal.fire({
@@ -81,7 +52,7 @@ const ReviewList = () => {
         await Swal.fire({
           icon: "success",
           title: "삭제 성공",
-          text: "리뷰가 성공적으로 삭제되었습니다.",
+          text: "후기가 성공적으로 삭제되었습니다.",
           confirmButtonColor: "#527853",
           confirmButtonText: "닫기",
         });
@@ -93,7 +64,7 @@ const ReviewList = () => {
         await Swal.fire({
           icon: "error",
           title: "삭제 실패",
-          text: "리뷰 삭제 중 오류가 발생했습니다.",
+          text: "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.",
           confirmButtonColor: "#d33",
           confirmButtonText: "닫기",
         });

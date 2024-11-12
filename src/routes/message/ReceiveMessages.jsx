@@ -82,7 +82,8 @@ const ReceiveMessages = () => {
         // 성공 시 알림
         await Swal.fire({
           icon: "success",
-          title: "메시지가 삭제되었습니다.",
+          title: "삭제 성공",
+          text: "쪽지가 성공적으로 삭제되었습니다.",
           confirmButtonColor: "#527853",
           confirmButtonText: "닫기",
         });
@@ -94,7 +95,7 @@ const ReceiveMessages = () => {
         // 에러 발생 시 알림
         await Swal.fire({
           icon: "error", // 오류 아이콘으로 변경
-          title: "메시지 삭제에 실패했습니다.",
+          title: "삭제 실패",
           text: "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.", // 추가 설명
           confirmButtonColor: "#d33",
           confirmButtonText: "닫기",
