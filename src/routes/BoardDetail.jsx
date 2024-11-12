@@ -187,7 +187,8 @@ const BoardDetail = () => {
         axios.delete("http://localhost:8081/board/delete/" + boardNo).then((resp) => {
           Swal.fire({
             icon: "success",
-            title: "게시글이 삭제되었습니다.",
+            title: "삭제 성공",
+            text: "게시글이 성공적으로 삭제되었습니다.",
             confirmButtonColor: "#527853",
             confirmButtonText: "닫기",
           });
@@ -215,7 +216,8 @@ const BoardDetail = () => {
           if (resp.data > 0) {
             Swal.fire({
               icon: "success",
-              title: "댓글이 삭제되었습니다.",
+              title: "삭제 성공",
+              text: "댓글이 성공적으로 삭제되었습니다.",
               confirmButtonColor: "#527853",
               confirmButtonText: "닫기",
             });
@@ -224,8 +226,8 @@ const BoardDetail = () => {
             }, 500);
           } else {
             Swal.fire({
-              title: "삭제에 실패했습니다.",
-              text: "다시 시도해 주세요.",
+              title: "삭제 실패",
+              text: "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.",
               icon: "warning",
 
               confirmButtonColor: "#527853",
@@ -250,7 +252,8 @@ const BoardDetail = () => {
         if (resp.data > 0) {
           Swal.fire({
             icon: "success",
-            title: "댓글이 수정되었습니다.",
+            title: "수정 성공",
+            text: "댓글이 성공적으로 수정되었습니다.",
             confirmButtonColor: "#527853",
             confirmButtonText: "닫기",
           });
@@ -262,8 +265,8 @@ const BoardDetail = () => {
           }, 500);
         } else {
           Swal.fire({
-            title: "수정에 실패했습니다.",
-            text: "다시 시도해 주세요.",
+            title: "삭제 실패",
+            text: "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.",
             icon: "warning",
 
             confirmButtonColor: "#527853",
