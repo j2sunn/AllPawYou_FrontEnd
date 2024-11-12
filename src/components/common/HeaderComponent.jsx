@@ -49,6 +49,7 @@ const HeaderComponent = () => {
        };
        
        setUserInfo(userData);
+       console.log("profileImage : " , profileImage);
      
    }, []);
  
@@ -85,8 +86,10 @@ const HeaderComponent = () => {
                     >
                       <AccordionSummary sx={{ marginBottom: "-1rem" }}>
                         {/* 이미지 넣기 */}
-                        <img src={userInfo?.profileImage && userInfo?.profileImage !== "default" 
-                        ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile} 
+                        <img 
+                        src={userInfo?.profileImage && userInfo?.profileImage !== "default" 
+                          && userInfo?.profileImage !== null
+                        ? `http://localhost:8081${userInfo.profileImage}` : defaultProfile } 
                         style={{width:'60px', height:'60px' , borderRadius:'50%'}} />
                         {/* <IoPersonCircleSharp size={60} style={{ color: "gray" }} /> */}
                     

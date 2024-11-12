@@ -109,7 +109,7 @@ const UpdateProduct = () => {
     }));
 
     console.log("추가된 상세 이미지 파일들:", newImages);
-    setImages((prevImages) => [...prevImages, newImages]);
+    setImages((prevImages) => [...prevImages, ...newImages]);
   };
 
   const handleRemoveDetailImage = (index) => {
