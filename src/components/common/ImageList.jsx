@@ -43,7 +43,7 @@ const BoardImageList = () => {
     },[]);
   return (
     <ImageList
-      sx={{ width: '100%', height: 650 }}
+      sx={{ width: '100%', height: '100%' }}
       variant="quilted"
       rows={4}
       cols={8}
