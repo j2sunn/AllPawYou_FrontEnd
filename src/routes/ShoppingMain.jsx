@@ -34,7 +34,8 @@ const ShoppingMain = () => {
 
   const loadProducts = async () => {
     const response = await getProductsByStatus(status);
-    setProducts(response);
+    const sortedProducts = response.sort((a, b) => b.id - a.id); // Sort by productId in descending order
+    setProducts(sortedProducts);
   };
 
   useEffect(() => {
@@ -44,7 +45,8 @@ const ShoppingMain = () => {
       getProductsByCategoryAndStatus(category, status)
         .then((response) => {
           console.log("response 정보 : ", response);
-          setProducts(response);
+          const sortedProducts = response.sort((a, b) => b.id - a.id);
+          setProducts(sortedProducts);
         })
         .catch((error) => {
           console.log("에러발생 : ", error);
@@ -62,7 +64,8 @@ const ShoppingMain = () => {
   const getAllProductsBySearch = async () => {
     if (searchItem.trim().length > 0) {
       const response = await getProductsBySearch(searchItem);
-      setProducts(response);
+      const sortedProducts = response.sort((a, b) => b.id - a.id); 
+      setProducts(sortedProducts);
     } else {
       Swal.fire({
         title: "검색어를 입력해주세요.",
@@ -76,7 +79,7 @@ const ShoppingMain = () => {
 
   //페이징
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const PerPage = 10; // 페이지당 메시지 개수
+  const PerPage = 15; // 페이지당 메시지 개수
 
   // 현재 페이지에 대한 메시지 가져오기
   const indexOfLast = currentPage * PerPage;
@@ -238,7 +241,7 @@ const IconCard = styled.div`
   margin: 0 40px;
   cursor: pointer;
   &:hover img {
-    scale: 1.2;
+    scale: 1.1;
     transition: 0.5s;
   }
 `;
@@ -274,10 +277,15 @@ const Grid = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 5rem 1rem;
   margin: 0 8rem;
+
 `;
 
 const GridItem = styled.div`
   min-width: 200px;
+     &:hover {
+    scale: 1.1;
+    transition: 0.5s;
+  }
 `;
 
 const GridImage = styled.img`
@@ -285,6 +293,7 @@ const GridImage = styled.img`
   height: 350px;
   margin-bottom: 1rem;
   cursor: pointer;
+  
 `;
 
 const GridTitle = styled.div`

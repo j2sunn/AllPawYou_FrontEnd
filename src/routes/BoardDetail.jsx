@@ -83,18 +83,30 @@ const BoardDetail = () => {
     const response = await axios.get("http://localhost:8081/board/" + boardNo + "/" + no);
     return response.data;
   };
+
   const handleContentChange = (e) => {
     setComment(e.target.value);
 
     let text = e.target.value.replace(/<script.*?>.*?<\/script>/gi, "");
     setResult(text.replace(/\n/g, "<e>").replace(/ /g, "<s>"));
   };
+
+  const goCreateMessage = () => {
+    const width = 650; // 팝업의 너비
+    const height = 500; // 팝업의 높이
+    const left = window.innerWidth / 2 - width / 2; // 화면 중앙에 위치
+    const top = window.innerHeight / 2 - height / 2; // 화면 중앙에 위치
+
+    window.open("/mypage/createMessage", "popup", `width=${width},height=${height},top=${top},left=${left},scrollbars=no`);
+  };
+
   const addComment = () => {
     if (localStorage.getItem("email") == null) {
       Swal.fire({
         title: "로그인 하시겠습니까?",
         text: "로그인 후에 댓글 작성이 가능합니다.",
         icon: "warning",
+
         showCancelButton: true, // false가 default
         confirmButtonColor: "#527853",
         cancelButtonColor: "#d33",
@@ -132,6 +144,7 @@ const BoardDetail = () => {
         title: "로그인 하시겠습니까?",
         text: "로그인 후 좋아요 표시가 가능합니다.",
         icon: "warning",
+
         showCancelButton: true, // false가 default
         confirmButtonColor: "#527853",
         cancelButtonColor: "#d33",
@@ -146,11 +159,16 @@ const BoardDetail = () => {
       });
     }
 
-    axios.post("http://localhost:8081/board/like/insert", { boardNo, email: loginEmail }).then((response) => {
-      // loadData(boardNo,setBoardData);
-      // setIsLiked(prev => prev==0 ? 1 : 0);
-      renew();
-    });
+    axios
+      .post("http://localhost:8081/board/like/insert", {
+        boardNo,
+        email: loginEmail,
+      })
+      .then((response) => {
+        // loadData(boardNo,setBoardData);
+        // setIsLiked(prev => prev==0 ? 1 : 0);
+        renew();
+      });
   };
   const boardDelete = (boardNo) => {
     Swal.fire({
@@ -184,6 +202,7 @@ const BoardDetail = () => {
       title: "정말 삭제하시겠습니까?",
       text: "삭제 시 돌이킬 수 없습니다.",
       icon: "warning",
+
       showCancelButton: true, // false가 default
       confirmButtonColor: "#527853",
       cancelButtonColor: "#d33",
@@ -208,13 +227,11 @@ const BoardDetail = () => {
               title: "삭제에 실패했습니다.",
               text: "다시 시도해 주세요.",
               icon: "warning",
+
               confirmButtonColor: "#527853",
-              cancelButtonColor: "#d33",
               confirmButtonText: "확인",
+
               reverseButtons: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-              }
             });
           }
         });
@@ -248,9 +265,11 @@ const BoardDetail = () => {
             title: "수정에 실패했습니다.",
             text: "다시 시도해 주세요.",
             icon: "warning",
+
             confirmButtonColor: "#527853",
             cancelButtonColor: "#d33",
             confirmButtonText: "확인",
+
             reverseButtons: true,
           }).then((result) => {
             if (result.isConfirmed) {
@@ -264,14 +283,13 @@ const BoardDetail = () => {
     scrollTo(0, 0);
   }, []);
 
-  console.log(boardData.boardUsername);
   return (
     <>
       <div>
         {boardData ? (
           <>
             <Container>
-              <One style={{ marginTop: "3rem" }}>
+              <DetailHeader style={{ marginTop: "3rem" }}>
                 <Div> {boardData.category === 1 ? "강아지" : boardData.category === 2 ? "고양이" : "기타"}</Div>
                 <p style={{ fontSize: "32px" }}>{boardData.boardTitle}</p>
                 <div className="profile">
@@ -294,13 +312,13 @@ const BoardDetail = () => {
                           boardData.boardDate.substr(8, 2) +
                           "  " +
                           boardData.boardDate.substr(11, 2) +
-                          "." +
+                          ":" +
                           boardData.boardDate.substr(14, 2)}
                       </p>
                     </div>
                     <div className="letterTwo">
                       {localStorage.getItem("no") != boardData.no ? (
-                        <Button variant="contained" sx={{ fontSize: "1rem", marginTop: "1rem" }}>
+                        <Button variant="contained" sx={{ fontSize: "1rem", marginTop: "1rem" }} onClick={goCreateMessage}>
                           쪽지
                         </Button>
                       ) : (
@@ -314,13 +332,21 @@ const BoardDetail = () => {
                         <Button
                           variant="contained"
                           sx={{ fontSize: "1rem", marginTop: "1rem" }}
-                          onClick={() => navigate(`/boardUpdate`, { state: { boardNo: boardNo } })}
+                          onClick={() =>
+                            navigate(`/boardUpdate`, {
+                              state: { boardNo: boardNo },
+                            })
+                          }
                         >
                           수정
                         </Button>
                         <Button
                           variant="contained"
-                          sx={{ fontSize: "1rem", marginTop: "1rem", marginLeft: "1rem" }}
+                          sx={{
+                            fontSize: "1rem",
+                            marginTop: "1rem",
+                            marginLeft: "1rem",
+                          }}
                           onClick={() => boardDelete(boardData.boardNo)}
                         >
                           삭제
@@ -331,22 +357,37 @@ const BoardDetail = () => {
                     )}
                     <Button
                       variant="contained"
-                      sx={{ fontSize: "1rem", marginTop: "1rem", marginLeft: "1rem" }}
+                      sx={{
+                        fontSize: "1rem",
+                        marginTop: "1rem",
+                        marginLeft: "1rem",
+                      }}
                       onClick={() =>
-                        navigate(`/boardList`, { state: { cp: cp, selectedCategory: selectedCategory, searchOpt: searchOpt, keyword: keyword } })
+                        navigate(`/boardList`, {
+                          state: {
+                            cp: cp,
+                            selectedCategory: selectedCategory,
+                            searchOpt: searchOpt,
+                            keyword: keyword,
+                          },
+                        })
                       }
                     >
                       목록으로
                     </Button>
                   </div>
                 </div>
-              </One>
+              </DetailHeader>
 
-              <Two>
+              <BoardText>
                 {/* <p>{boardData.boardContent.replace(/<s>/g," ").replace(/<e>/g,"\n")}</p> */}
-                <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
-              </Two>
-              <Three>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />"),
+                  }}
+                />
+              </BoardText>
+              <BoardImages>
                 {boardData.imgList && boardData.imgList.length > 0 ? (
                   <>
                     {boardData.imgList.map((img, index) => (
@@ -376,23 +417,34 @@ const BoardDetail = () => {
                   variant="contained"
                   sx={{ fontSize: "1rem", marginTop: "1rem" }}
                   onClick={() =>
-                    navigate(`/boardList`, { state: { cp: cp, selectedCategory: selectedCategory, searchOpt: searchOpt, keyword: keyword } })
+                    navigate(`/boardList`, {
+                      state: {
+                        cp: cp,
+                        selectedCategory: selectedCategory,
+                        searchOpt: searchOpt,
+                        keyword: keyword,
+                      },
+                    })
                   }
                 >
                   목록으로
                 </Button>
-              </Three>
-              <Four>
-                <div className="commentBoxes">
-                  <p className="commentCount">댓글({boardData.commentCount})</p>
+              </BoardImages>
+              <Comments>
+                <CommentHeader>
+                  <div className="commentCount">댓글({boardData.commentCount})</div>
                   <Button
                     variant="contained"
-                    sx={{ fontSize: "1rem", width: "6rem", marginLeft: "auto", height: "2.7rem", marginTop: "0.5rem" }}
+                    sx={{
+                      fontSize: "1rem",
+                      marginLeft: "auto",
+                      height: "2.5rem",
+                    }}
                     onClick={() => addComment()}
                   >
                     작성하기
                   </Button>
-                </div>
+                </CommentHeader>
 
                 <ContentTextarea id="comment" onChange={(e) => handleContentChange(e)} />
                 <Error>{error.comment}</Error>
@@ -432,7 +484,14 @@ const BoardDetail = () => {
                               />
                               {console.log("여기쪽지" + comments.no)}
                               {localStorage.getItem("no") != comments.no ? (
-                                <Button variant="contained" sx={{ fontSize: "1rem", marginTop: "1rem", marginLeft: "1rem" }}>
+                                <Button
+                                  variant="contained"
+                                  sx={{
+                                    fontSize: "1rem",
+                                    marginTop: "1rem",
+                                    marginLeft: "1rem",
+                                  }}
+                                >
                                   쪽지
                                 </Button>
                               ) : (
@@ -442,7 +501,11 @@ const BoardDetail = () => {
                             <p>{comments.commentUsername}</p>
 
                             {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
-                            <p dangerouslySetInnerHTML={{ __html: comments.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} />
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: comments.commentContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />"),
+                              }}
+                            />
                             {/* <p>{comment.commentContent}</p> */}
                           </>
                         )}
@@ -456,7 +519,7 @@ const BoardDetail = () => {
                             comments.commentDate.substr(8, 2) +
                             "  " +
                             comments.commentDate.substr(11, 2) +
-                            "." +
+                            ":" +
                             comments.commentDate.substr(14, 2)}
                         </p>
                         <div className="commentBtns">
@@ -473,7 +536,11 @@ const BoardDetail = () => {
                               <Button
                                 onClick={() => deleteComment(comments.commentNo)}
                                 variant="contained"
-                                sx={{ fontSize: "1rem", marginTop: "1rem", marginLeft: "1rem" }}
+                                sx={{
+                                  fontSize: "1rem",
+                                  marginTop: "1rem",
+                                  marginLeft: "1rem",
+                                }}
                               >
                                 삭제
                               </Button>
@@ -492,7 +559,11 @@ const BoardDetail = () => {
                               </Button>
                               <Button
                                 variant="contained"
-                                sx={{ fontSize: "1rem", marginTop: "1rem", marginLeft: "1rem" }}
+                                sx={{
+                                  fontSize: "1rem",
+                                  marginTop: "1rem",
+                                  marginLeft: "1rem",
+                                }}
                                 onClick={() => setOnUpdateCommentNo(0)}
                               >
                                 취소
@@ -509,10 +580,9 @@ const BoardDetail = () => {
                     </div>
                   ))
                 ) : (
-                  //====요기까짓!
                   <>댓글이 없습니다.</>
                 )}
-              </Four>
+              </Comments>
             </Container>
 
             <hr />
@@ -525,11 +595,13 @@ const BoardDetail = () => {
   );
 };
 export default BoardDetail;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const Div = styled.div`
   background-color: #eec759;
   margin-right: 10px;
@@ -538,13 +610,16 @@ const Div = styled.div`
   border-radius: 40px;
   text-align: center;
   padding: 7px;
+  margin-bottom: 1rem;
 `;
-const One = styled.div`
+
+const DetailHeader = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
   border-bottom: 3px solid gray;
-  padding-bottom: 13px;
+  padding: 1rem 0;
+  margin: 2rem 0;
   .profile {
     display: flex;
   }
@@ -567,13 +642,15 @@ const One = styled.div`
     }
   }
 `;
-const Two = styled.div`
+
+const BoardText = styled.div`
   width: 50%;
   p {
-    font-size: 30px;
+    font-size: 1.2rem;
   }
 `;
-const Three = styled.div`
+
+const BoardImages = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -603,14 +680,17 @@ const Three = styled.div`
     font-size: 20px;
   }
 `;
-const Four = styled.div`
+
+const Comments = styled.div`
   border-top: 3px solid gray;
+  padding: 1rem 0;
+  margin: 2rem 0;
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   .commentCount {
-    font-size: 35px;
+    font-size: 1.5rem;
   }
   img {
     width: 60px;
@@ -632,6 +712,15 @@ const Four = styled.div`
     align-items: center;
   }
 `;
+
+const CommentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+`;
+
 //댓글
 const ContentTextarea = styled.textarea`
   width: 100%;
@@ -648,6 +737,7 @@ const ContentTextarea = styled.textarea`
     border-color: #6c63ff;
   }
 `;
+
 const Error = styled.div`
   color: red;
 `;

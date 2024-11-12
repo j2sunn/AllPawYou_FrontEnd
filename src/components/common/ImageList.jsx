@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import {  useNavigate } from "react-router-dom";
 function srcset(image, size, rows = 1, cols = 1) {
   return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
+    src: `http://localhost:8081/images/board/${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
     srcSet: `${image}?w=${size * cols}&h=${
       size * rows
     }&fit=crop&auto=format&dpr=2 2x`,
@@ -50,10 +50,10 @@ const BoardImageList = () => {
     >
       {itemData.map((item) => (
         <ImageListItem key={item.boardNo} cols={item.cols || 1} rows={item.rows || 1}
-        onClick = {()=>navigator("/board/"+item.boardNo+"/"+no)}>
+        onClick = {()=>navigator("/board/"+item.boardNo)}>
           
           <img
-            {...srcset(item.img, 121, item.rows, item.cols)}
+            {...srcset(item.imgRename, 121, item.rows, item.cols)}
             alt={item.boardNo}
             loading="lazy"
           />
