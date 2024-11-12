@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import { Button } from "@mui/material";
 
 const NoticeWrite = () => {
-
   const navigator = useNavigate();
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
@@ -15,48 +14,55 @@ const NoticeWrite = () => {
 
   const cancel = () => {
     Swal.fire({
-        title: "공지사항 목록으로 돌아가시겠습니까?",
-        text: '진행상황이 저장되지 않습니다.',
-        icon: 'warning',
-        
-        showCancelButton: true, // false가 default
-        confirmButtonColor: '#527853',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '이동',
-        cancelButtonText: '취소',
-        reverseButtons: true
-        
-     }).then(result => {
-        if (result.isConfirmed) {
-            setTimeout(()=>{},2000);
-            navigator(-1);
-        }
+      title: "공지사항 목록으로 돌아가시겠습니까?",
+      text: "진행상황이 저장되지 않습니다.",
+      icon: "warning",
+
+      showCancelButton: true, // false가 default
+      confirmButtonColor: "#527853",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "이동",
+      cancelButtonText: "취소",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setTimeout(() => {}, 2000);
+        navigator(-1);
+      }
     });
-}
+  };
 
   const doSubmit = () => {
     if (validation()) {
       let data = { noticeTitle, noticeContent };
       Swal.fire({
-        title: "공지사항을 등록했습니다.",
-        icon: 'success',
-        
-        confirmButtonColor: '#527853',
-        confirmButtonText: '닫기'
-     })
+        title: "등록 성공",
+        text: "공지사항이 성공적으로 등록되었습니다.",
+        icon: "success",
+
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
       createNotice(data, navigator);
       navigator("/admin/noticeList");
       setTimeout(() => {
         console.log(1);
+        Swal.fire({
+          icon: "error",
+          title: "등록 실패",
+          text: "등록 중 오류가 발생했습니다. 다시 시도해 주세요.",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
+        });
       }, 3000);
     }
   };
 
   const handleNoticeContent = (e) => {
     setNoticeContent(e.target.value);
-    let text = e.target.value.replace(/<script.*?>.*?<\/script>/gi, ''); 
-    setResult(text.replace(/\n/g, '<e>').replace(/ /g, '<s>'));
-  }
+    let text = e.target.value.replace(/<script.*?>.*?<\/script>/gi, "");
+    setResult(text.replace(/\n/g, "<e>").replace(/ /g, "<s>"));
+  };
 
   const validation = () => {
     //필수값 다 작성했는지 검사
@@ -98,8 +104,12 @@ const NoticeWrite = () => {
         <Error>{error.content}</Error>
       </Content>
       <Buttons>
-        <Button variant="outlined" onClick={cancel} sx={{width: '5rem', marginRight: '2rem'}}>취소</Button>
-        <Button variant="contained" onClick={doSubmit} sx={{width: '5rem'}}>등록</Button>
+        <Button variant="outlined" onClick={cancel} sx={{ width: "5rem", marginRight: "2rem" }}>
+          취소
+        </Button>
+        <Button variant="contained" onClick={doSubmit} sx={{ width: "5rem" }}>
+          등록
+        </Button>
       </Buttons>
     </>
   );
@@ -115,12 +125,12 @@ const Title = styled.div`
 `;
 
 const Content = styled.div`
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 3rem;
-    margin-bottom: 3rem;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 3rem;
+  margin-bottom: 3rem;
   h5 {
     margin-top: 30px;
   }
@@ -158,10 +168,10 @@ const ContentTextarea = styled.textarea`
   }
 `;
 const Buttons = styled.div`
-    width: 90%;
-    margin-left: 3rem;
-    display: flex;
-    justify-content: end;
+  width: 90%;
+  margin-left: 3rem;
+  display: flex;
+  justify-content: end;
 `;
 
 const Error = styled.div`

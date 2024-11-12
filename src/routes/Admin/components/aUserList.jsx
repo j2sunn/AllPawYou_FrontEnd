@@ -24,38 +24,49 @@ const UserList = () => {
       });
   }
 
-  function removeUser(no) {
-    Swal.fire({
+  const removeUser = async (no) => {
+    // 삭제 확인 알림 표시
+    const result = await Swal.fire({
       title: "정말 삭제하시겠습니까?",
       text: "삭제 시 돌이킬 수 없습니다.",
       icon: "warning",
-
-      showCancelButton: true, // false가 default
+      showCancelButton: true,
       confirmButtonColor: "#527853",
       cancelButtonColor: "#d33",
       confirmButtonText: "삭제",
       cancelButtonText: "취소",
       reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteUser(no)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-        Swal.fire({
+    });
+
+    // 사용자가 삭제를 확인한 경우
+    if (result.isConfirmed) {
+      try {
+        // 사용자 삭제
+        const response = await deleteUser(no);
+        console.log(response);
+        // 삭제 성공 시 알림 표시
+        await Swal.fire({
           icon: "success",
-          title: "회원이 삭제 되었습니다.",
+          title: "삭제 성공",
+          text: "회원이 성공적으로 삭제되었습니다.",
           confirmButtonColor: "#527853",
           confirmButtonText: "닫기",
-        }).then(() => {
-          location.reload(true);
+        });
+        // 성공 후 페이지 새로고침
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
+        // 오류 발생 시 알림 표시
+        await Swal.fire({
+          icon: "error",
+          title: "삭제 실패",
+          text: "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
         });
       }
-    });
-  }
+    }
+  };
 
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const PerPage = 5; // 페이지당 메시지 개수
@@ -77,16 +88,19 @@ const UserList = () => {
       .then(() => {
         Swal.fire({
           icon: "success",
-          title: "권한을 변경했습니다.",
+          title: "변경 성공",
+          text: "권한이 성공적으로 변경되었습니다.",
           confirmButtonColor: "#527853",
           confirmButtonText: "닫기",
         });
         getAllUsers(); // 사용자 목록 새로고침
+        window.location.reload();
       })
       .catch((error) => {
         Swal.fire({
           icon: "error",
-          title: "오류가 발생했습니다..",
+          title: "변경 실패",
+          text: "변경 중 오류가 발생했습니다. 다시 시도해 주세요.",
           confirmButtonColor: "#527853",
           confirmButtonText: "닫기",
         });

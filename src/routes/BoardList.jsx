@@ -27,9 +27,6 @@ const BoardList = () => {
   // const [orderOpt,setOrderOpt] = useState(location.state?.orderOpt||"choi"); //choi : 최신순, in : 인기순
 
   const [searchOpt, setSearchOpt] = useState(location.state?.searchOpt || ""); //검색옵션(작성자u,제목t,내용c)
-  const [keywordInput, setKeywordInput] = useState(
-    location.state?.keyword || ""
-  );
   const [keyword, setKeyword] = useState(location.state?.keyword || ""); //검색키워드
   //========
   // // 검색용 상태 (검색 버튼 클릭 시 적용할 값) 이건 없어도 되지 않을까..?
@@ -37,14 +34,13 @@ const BoardList = () => {
   // const [appliedKeyword, setAppliedKeyword] = useState('');
 
   //===========================================================================================================
-  useEffect(() => {
+  const loadBoardList = () => {
     loadList(selectedCategory, searchOpt, keyword, setBoardList);
-  }, [
-    //currentPage,
-    selectedCategory,
-    searchOpt,
-    keyword,
-  ]);
+  }
+  
+  useEffect(() => {
+    loadBoardList();
+  }, []);
 
   //카테고리 버튼 클릭
   const handleSelectedCategoryClick = (selectedCategory) => {
@@ -136,10 +132,10 @@ const BoardList = () => {
               </Select>
             </FormControl>
             <div style={{ alignSelf: "end" }}>
-              <Input onChange={() => setKeywordInput(event.target.value)} />
+              <Input onChange={() => setKeyword(event.target.value)} />
               <Button
                 sx={{ height: "3rem" }}
-                onClick={() => setKeyword(keywordInput)}
+                onClick={loadBoardList}
               >
                 검색
               </Button>
