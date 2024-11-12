@@ -163,7 +163,7 @@ const AdminHeader = () => {
             <>
               {/* 관리자는 관리자 아이콘을, 판매자는 판매자 아이콘을 표시 */}
               {role === "ROLE_ADMIN" ? (
-                <Avatar sx={{ backgroundColor: "#C4E1F6", width: "3.5rem", height: "3.5rem" }}>어드민</Avatar>
+                <Avatar sx={{ backgroundColor: "#C4E1F6", width: "3.5rem", height: "3.5rem" }}>관리자</Avatar>
               ) : role === "ROLE_SALER" ? (
                 <Avatar sx={{ backgroundColor: "#EEC759", width: "3.5rem", height: "3.5rem" }}>판매자</Avatar>
               ) : null}

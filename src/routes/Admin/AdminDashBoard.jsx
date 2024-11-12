@@ -264,8 +264,10 @@ export default function AdminDashBoard() {
               </Paper>
             </Grid> */}
 
-            {/* <Barchart /> */}
-            <LineChart />
+            <Barchart />
+
+            {/* <LineChart /> */}
+
             <Piechart />
 
             {/* 최근 가입 사용자 */}

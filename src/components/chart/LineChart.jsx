@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { Select, MenuItem, FormControl, InputLabel, Grid, Paper, Box } from "@mui/material";
-import { graphDailyOrder, graphDailyBoardCount, graphDailyTotalPrice } from "../../service/DashBoard";
+import { graphDailyOrder, graphDailyTotalPrice } from "../../service/DashBoard";
 
 const LineChart = () => {
   const [data, setData] = useState([]);
-  const [boardData, setBoardData] = useState([]);
   const [totalPriceData, setTotalPriceData] = useState([]);
   const [timeFrame, setTimeFrame] = useState("daily");
-  const [dataType, setDataType] = useState("orders");
   const revenueDates = getDatesForRevenue();
 
   const fetchDailyOrders = async (dates) => {
@@ -19,16 +17,6 @@ const LineChart = () => {
     }));
     const reversedData = formattedData.reverse();
     setData(reversedData);
-  };
-
-  const fetchDailyBoardCount = async (dates) => {
-    const dailyBoardCounts = await graphDailyBoardCount(dates);
-    const formattedData = dailyBoardCounts.map((board) => ({
-      date: board.date,
-      count: board.count,
-    }));
-    const reversedData = formattedData.reverse();
-    setBoardData(reversedData);
   };
 
   const fetchDailyTotalPrice = async (dates) => {
@@ -45,19 +33,15 @@ const LineChart = () => {
     const fetchData = async () => {
       if (timeFrame === "daily") {
         await fetchDailyOrders(revenueDates.dailyDates);
-        await fetchDailyBoardCount(revenueDates.dailyDates);
         await fetchDailyTotalPrice(revenueDates.dailyDates);
       } else if (timeFrame === "weekly") {
         await fetchDailyOrders(revenueDates.weeklyDates);
-        await fetchDailyBoardCount(revenueDates.weeklyDates);
         await fetchDailyTotalPrice(revenueDates.weeklyDates);
       } else if (timeFrame === "twoWeekly") {
         await fetchDailyOrders(revenueDates.twoWeeklyDates);
-        await fetchDailyBoardCount(revenueDates.twoWeeklyDates);
         await fetchDailyTotalPrice(revenueDates.twoWeeklyDates);
       } else if (timeFrame === "monthly") {
         await fetchDailyOrders(revenueDates.monthlyDates);
-        await fetchDailyBoardCount(revenueDates.monthlyDates);
         await fetchDailyTotalPrice(revenueDates.monthlyDates);
       }
     };
@@ -70,10 +54,6 @@ const LineChart = () => {
     {
       id: "주문 수",
       data: data.map((item) => ({ x: item.date, y: item.count })),
-    },
-    {
-      id: "게시글 등록 수",
-      data: boardData.map((item) => ({ x: item.date, y: item.count })),
     },
     {
       id: "총 수익",

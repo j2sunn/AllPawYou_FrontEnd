@@ -75,6 +75,7 @@ const Barchart = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          minHeight: "600px",
         }}
       >
         <Box>
@@ -98,7 +99,7 @@ const Barchart = () => {
           </FormControl>
         </Box>
 
-        <div style={{ width: "100%", height: "400px", marginTop: "20px" }}>
+        <div style={{ width: "100%", height: "100%", marginTop: "20px" }}>
           <ResponsiveBar
             data={dataType === "orders" ? data : dataType === "boardCount" ? boardData : totalPriceData}
             keys={dataType === "totalPrice" ? ["totalPrice"] : ["count"]}
