@@ -63,13 +63,17 @@ const ProductList = () => {
   //페이지네이션
   const [currentPage, setCurrentPage] = useState(location.state?.cp || 1); // 현재 페이지쪽수 초기값
   const ITEMS_PER_PAGE = 10;
+  const indexOfLast = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirst = indexOfLast - ITEMS_PER_PAGE;
+  const currentList = product.slice(indexOfFirst, indexOfLast);
+
   const totalPages = Math.ceil(product.length / ITEMS_PER_PAGE);
   // 현재 페이지에 해당하는 게시글 슬라이싱
-  const currentList = product.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-  const handlePageChange = (page) => {
+  // const currentList = product.slice(
+  //   (currentPage - 1) * PerPage,
+  //   currentPage * PerPage
+  // );
+  const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
 
@@ -145,17 +149,18 @@ const ProductList = () => {
         </Button>
       </AddProductButton>
 
-      <PaginationContainer>
-        <Button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>이전</Button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <Button key={i + 1}
-            onClick={() => handlePageChange(i + 1)}
-            className={currentPage === i + 1 ? 'selected' : ''}>{i + 1}
-          </Button>
-        ))}
-        <Button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>다음</Button>
-      </PaginationContainer>
-
+      <Pages>
+      {totalPages > 1 && (
+      <Pagination 
+        count={totalPages} // 총 페이지 수
+        page={currentPage} // 현재 페이지
+        onChange={handlePageChange} // 페이지 변경 핸들러
+        siblingCount={2} // 현재 페이지 주변에 보이는 페이지 수
+        boundaryCount={2} // 처음과 끝에 보이는 페이지 수
+        color="primary"
+      />
+      )}
+      </Pages>
     </>
   );
 };
@@ -184,4 +189,11 @@ const PaginationContainer = styled.div`
     background-color: #527853;
     color: white;
   }
+`;
+
+const Pages = styled.div`
+  width: 100%;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
 `;
