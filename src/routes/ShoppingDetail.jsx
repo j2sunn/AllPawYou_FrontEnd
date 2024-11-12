@@ -352,10 +352,20 @@ const ShoppingDetail = () => {
                               ))
                             : null}
                         </div>
-                        <p>별점: {review.reviewStar}</p>
-                        <h4>유저 이름: {review.username}</h4>
-                        <p>작성시간: {review.reviewDate.slice(0,16)}</p>
-                        <p>내용: {review.reviewContent}</p>
+                        <div style={{color: "#eec759", fontSize: '1.2rem', marginTop: '1rem'}}>
+                        {[...Array(review.reviewStar)]?.map((_, i) => (
+                          <PiStarFill className="star-lg" key={`full-${i}`} />
+                        ))}
+                        {/* 빈 별 */}
+                        {[...Array(5-review.reviewStar)]?.map((_, i) => (
+                          <PiStarLight className="star-lg" key={`empty-${i}`} />
+                        ))}
+                        </div>
+                        <div style={{display: 'flex', alignItems: 'center', margin: '1rem 0'}}>
+                          <div style={{fontSize: '1.2rem', marginRight: '1rem'}}>{review.username}</div>
+                          <div>{review.reviewDate.slice(0,16)}</div>
+                        </div>
+                        <div>{review.reviewContent}</div>
                       </Review>
                     ) : null // reviewVisible이 "Y"가 아닌 경우 null 반환
                 )
@@ -410,8 +420,8 @@ const Review = styled.div`
 `;
 
 const ReviewImg = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 `;
 
 const NoData = styled.div`
