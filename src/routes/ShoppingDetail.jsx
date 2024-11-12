@@ -60,6 +60,8 @@ const ShoppingDetail = () => {
     quantity: 1,
   });
 
+  const [productDetail, setProductDetail] = useState(false); //상품 설명 이미지 있는지
+
   const [reviews, setReviews] = useState([]);
 
   const addCartItem = () => {
@@ -176,6 +178,10 @@ const ShoppingDetail = () => {
       getProductByProductId(id)
         .then((response) => {
           console.log("response 정보 : ", response);
+
+          let detailImage = false;
+          response.productFileDTO.forEach(i=>i.productFileTypeId == 2 ? detailImage = true : null);
+          setProductDetail(detailImage);
           setProduct(response);
         })
         .catch((error) => {
@@ -221,11 +227,12 @@ const ShoppingDetail = () => {
   //별 그리기
   // 채워진 별 개수
   const totalStars = 5;
-  const fullStars = Math.floor(averageStar.data);
+  const fullStars = +averageStar.data.toFixed(1);
+  console.log(fullStars);
   // 만약 소수점이 있다면 반쪽 별 추가
-  const halfStar = averageStar.data % 1 >= 0.5 ? 1 : 0;
+  const halfStar = fullStars % 1 >= 0.5 ? 1 : 0;
   // 빈 별 개수
-  const emptyStars = totalStars - fullStars - halfStar;
+  const emptyStars = totalStars - Math.floor(fullStars) - halfStar;
 
   //상세 이미지 순서 출력
   const getSortedDetailImages = (productFileDTO) => {
@@ -252,17 +259,17 @@ const ShoppingDetail = () => {
                 <h4 style={{ fontFamily: "NanumSquareRound", fontSize: "2rem", fontWeight: "bold" }}>{product.name}</h4>
               </div>
               <div style={{ fontFamily: "NanumSquareRound", marginBottom: "20px" }}>
-                <h5 style={{ fontWeight: "bold" }}>{(product.price * data.quantity).toLocaleString()}원</h5>
+                <h5 style={{ fontWeight: "bold" }} onClick={()=>console.log(product)}>{(product.price * data.quantity).toLocaleString()}원</h5>
               </div>
               <Box sx={{ display: "flex", alignItems: "center", color: "#eec759" }}>
                 {/* 채워진 별 */}
-                {[...Array(fullStars)].map((_, i) => (
+                {[...Array(Math.floor(fullStars))]?.map((_, i) => (
                   <PiStarFill className="star-lg" key={`full-${i}`} />
                 ))}
                 {/* 반쪽 별 (있을 경우) */}
                 {halfStar > 0 && <PiStarHalfFill className="star-lg half" />}
                 {/* 빈 별 */}
-                {[...Array(emptyStars)].map((_, i) => (
+                {[...Array(emptyStars)]?.map((_, i) => (
                   <PiStarLight className="star-lg" key={`empty-${i}`} />
                 ))}
                 <Box sx={{ marginLeft: "8px", alignItems: "center", color: "black" }}>{averageStar.data.toFixed(1)}</Box>
@@ -315,28 +322,28 @@ const ShoppingDetail = () => {
               <Tab label="리뷰" {...a11yProps(1)} />
             </Tabs>
           </Box>
-          {product ? (
-            <CustomTabPanel value={value} index={0}>
-              {/* 상품 설명 상세내용 */}
+          <CustomTabPanel value={value} index={0}>
+          {productDetail ? (
+              <>
               {getSortedDetailImages(product.productFileDTO).map((file, index) => (
                 <div key={index}>
                   <img src={`http://localhost:8081${file.imagePath}`} />
                 </div>
               ))}
+              </>
+            ) : (
+              <NoData>상품 설명 이미지가 없습니다.</NoData>
+            )}
             </CustomTabPanel>
-          ) : (
-            <p></p>
-          )}
           <CustomTabPanel value={value} index={1}>
-            <div>
-              {reviews.length > 0 ? (
+              {reviews?.length > 0 ? (
                 reviews.map(
                   (review, index) =>
                     review.reviewVisible === "Y" ? ( // && 대신 ? 사용
                       <Review key={index}>
                         <div>
-                          {review.reviewImg.length > 0
-                            ? review.reviewImg.map((item, index) => (
+                          {review?.reviewImg?.length > 0
+                            ? review?.reviewImg?.map((item, index) => (
                                 <ReviewImg
                                   key={index}
                                   src={item?.reviewImgPath ? `http://localhost:8081${item.reviewImgPath}${item.reviewImgRename}` : null}
@@ -347,15 +354,14 @@ const ShoppingDetail = () => {
                         </div>
                         <p>별점: {review.reviewStar}</p>
                         <h4>유저 이름: {review.username}</h4>
-                        <p>작성시간: {review.reviewDate}</p>
+                        <p>작성시간: {review.reviewDate.slice(0,16)}</p>
                         <p>내용: {review.reviewContent}</p>
                       </Review>
                     ) : null // reviewVisible이 "Y"가 아닌 경우 null 반환
                 )
               ) : (
-                <p>리뷰가 없습니다.</p>
+                <NoData>리뷰가 없습니다.</NoData>
               )}
-            </div>
           </CustomTabPanel>
         </Box>
       </DetailArea>
@@ -397,7 +403,7 @@ const Input = styled.input`
 `;
 
 const Review = styled.div`
-  border: 1px solid black;
+  border-top: 2px solid rgba(0,0,0,0.3);
   padding: 2rem 5rem;
   width: 1000px;
 `;
@@ -412,4 +418,5 @@ const NoData = styled.div`
   display: flex;
   justify-content: center;
   font-size: 2rem;
+  margin: 3rem;
 `;
