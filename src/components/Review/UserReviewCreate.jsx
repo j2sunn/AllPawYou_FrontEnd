@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaPhotoFilm } from "react-icons/fa6";
 import MypageSideBar from "../common/MypageSideBar";
 import { findByName } from "../../service/ProductService";
+import Swal from "sweetalert2";
 
 const UserReviewCreate = () => {
   const { orderName } = useParams(); // URL 파라미터에서 orderName 추출
@@ -49,7 +50,13 @@ const UserReviewCreate = () => {
 
   const handleSubmit = () => {
     if (starScore === 0 || reviewContent.trim() === "") {
-      alert("별점과 후기를 모두 입력해주세요.");
+      Swal.fire({
+        title: "별점과 후기를 모두 입력해주세요.",
+        icon: "warning",
+
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
       return;
     }
 
@@ -67,13 +74,26 @@ const UserReviewCreate = () => {
 
     CreateReview(formData)
       .then((response) => {
-        alert("리뷰가 등록되었습니다.");
+        Swal.fire({
+          title: "등록 성공",
+          text: "리뷰가 성공적으로 등록되었습니다.",
+          icon: "success",
+  
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
         navigate("/review/myReview");
       })
       .catch((error) => {
         console.log("에러 :: " + formData);
         console.error("리뷰 등록 실패:", error);
-        alert("리뷰 등록에 실패했습니다.");
+        Swal.fire({
+          icon: "error",
+          title: "등록 실패",
+          text: "등록 중 오류가 발생했습니다. 다시 시도해 주세요.",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
+        });
       });
   };
 

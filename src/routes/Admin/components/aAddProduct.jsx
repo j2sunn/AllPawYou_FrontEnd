@@ -136,20 +136,20 @@ const AdminAddProduct = () => {
         });
       } else {
         //상품 추가 API 호출
-        addProduct(formData);
-
-        Swal.fire({
-          title: "등록 성공",
-          text: "상품이 성공적으로 등록되었습니다.",
-          icon: "success",
-          confirmButtonColor: "#527853",
-          cancelButtonText: "확인",
+        addProduct(formData).then(()=>{
+          Swal.fire({
+            title: "등록 성공",
+            text: "상품이 성공적으로 등록되었습니다.",
+            icon: "success",
+            confirmButtonColor: "#527853",
+            cancelButtonText: "확인",
+          });
+          setTimeout(() => {
+            console.log(1);
+          }, 5000);
+          navigator("/admin/productlist", { state: { refresh: true } });
         });
         // 성공적으로 상품을 등록한 후, 상품 목록 페이지로 이동
-        setTimeout(() => {
-          console.log(1);
-        }, 5000);
-        navigator("/admin/productlist", { state: { refresh: true } });
       }
     } catch (error) {
       console.error("상품 등록 실패:", error);
