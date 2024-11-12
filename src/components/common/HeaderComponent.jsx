@@ -98,7 +98,10 @@ const HeaderComponent = () => {
                           {localStorage.getItem("role") == "ROLE_ADMIN" ? (
                             <AccordianItem onClick={() => navigator("/admin/dashboard")}>관리자 페이지</AccordianItem>
                           ) : (
-                            <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
+                            <>
+                              <AccordianItem onClick={() => navigator("/mypage")}>마이페이지</AccordianItem>
+                              <AccordianItem onClick={() => navigator("/admin/dashboard")}>판매자 페이지</AccordianItem>
+                            </>
                           )}
                           <AccordianItem onClick={handleLogout}>로그아웃</AccordianItem>
                         </AccordionDetails>

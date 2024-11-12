@@ -53,7 +53,7 @@ const AdminOrderList = () => {
 
   return (
     <>
-      {role == "ROLE_ADMIN" ? (
+      {role == "ROLE_ADMIN" || role == "ROLE_SALER" ? (
         <>
           <Title>주문 목록</Title>
           <Payments>
@@ -61,19 +61,27 @@ const AdminOrderList = () => {
               return (
                 <Payment key={payment[0]?.tid}>
                   <PaymentHeader>
-                    <PaymentTitle>{payment[0]?.createdAt?.slice(0, 10)} <span style={{fontSize: '1rem', fontWeight: '100', marginLeft: '2rem'}}>{payment[0].tid} {payment[0].paymentState ? '' : '(주문 취소)'}</span> </PaymentTitle>
-                      <Button variant="outlined" onClick={() => navigator(`/order/${payment[0].tid}`, { state: { payment } })}>
-                        주문 상세
-                      </Button>
+                    <PaymentTitle>
+                      {payment[0]?.createdAt?.slice(0, 10)}{" "}
+                      <span style={{ fontSize: "1rem", fontWeight: "100", marginLeft: "2rem" }}>
+                        {payment[0].tid} {payment[0].paymentState ? "" : "(주문 취소)"}
+                      </span>{" "}
+                    </PaymentTitle>
+                    <Button variant="outlined" onClick={() => navigator(`/order/${payment[0].tid}`, { state: { payment } })}>
+                      주문 상세
+                    </Button>
                   </PaymentHeader>
                   {payment?.map((order) => {
                     return (
                       <Product key={order?.orderNo}>
                         <OrderInfo>
-                          <ProductImg src={`http://localhost:8081${order.productFileDTO?.find(file => file.productFileTypeId === 1)?.imagePath}`} alt="이미지" />
+                          <ProductImg
+                            src={`http://localhost:8081${order.productFileDTO?.find((file) => file.productFileTypeId === 1)?.imagePath}`}
+                            alt="이미지"
+                          />
                           <div>
                             <Detail>
-                              <div style={{fontSize: '1.1rem', marginRight: '2rem'}}>
+                              <div style={{ fontSize: "1.1rem", marginRight: "2rem" }}>
                                 {order?.name} ({order?.quantity}개)
                               </div>
                               <div>총 가격 : {(order?.price * order?.quantity).toLocaleString()}원</div>
@@ -84,7 +92,6 @@ const AdminOrderList = () => {
                     );
                   })}
                 </Payment>
-                
               );
             })}
           </Payments>
@@ -118,7 +125,7 @@ const Payments = styled.div`
 
 const Payment = styled.div`
   width: 100%;
-  border-top: 2px solid rgba(0,0,0,0.3);
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
   margin-bottom: 2rem;
   padding: 2rem 0;
   display: flex;
@@ -142,7 +149,7 @@ const Product = styled.div`
   align-self: center;
   display: flex;
   justify-content: center;
-  border: 1px solid rgba(0,0,0,0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   width: 80%;
   margin: 1rem 0;
   padding: 1rem;
