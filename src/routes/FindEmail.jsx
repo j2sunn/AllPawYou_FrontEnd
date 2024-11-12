@@ -134,6 +134,14 @@ const verify = () => {
                   });
                 return;
             }else{
+                Swal.fire({
+                    title: "인증 성공",
+                    text: "인증을 성공했습니다.",
+                    icon: "success",
+            
+                    confirmButtonColor: "#527853",
+                    confirmButtonText: "닫기",
+                  });
                 const errorCopy = {...error, same: ''}; //스프레드 연산자
                 console.log(error);
                 //일치하는 인증번호 작성 시
@@ -186,6 +194,14 @@ const final = () => {
             let email = response.data;
             if(email){
             //null이 아닐 때 
+                Swal.fire({
+                    title: "이메일 찾기 성공",
+                    text: "이메일을 성공적으로 찾았습니다.",
+                    icon: "success",
+            
+                    confirmButtonColor: "#527853",
+                    confirmButtonText: "닫기",
+                });
                 navigator('/findEmailResult', {state: {email}});
             }            
         })
