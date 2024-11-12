@@ -255,8 +255,8 @@ const ShoppingDetail = () => {
               ></ProductImage>
             </ImgArea>
             <ContentArea className="contentArea">
-              <div className="productName" style={{ marginBottom: "40px" }}>
-                <h4 style={{ fontFamily: "NanumSquareRound", fontSize: "2rem", fontWeight: "bold" }}>{product.name}</h4>
+              <div className="productName" style={{ marginBottom: "40px", width: '300px', display: 'flex'}}>
+                <h4 style={{ fontFamily: "NanumSquareRound", fontSize: "1.7rem", fontWeight: "bold", wordWrap: 'break-word', width: '300px' }}>{product.name}</h4>
               </div>
               <div style={{ fontFamily: "NanumSquareRound", marginBottom: "20px" }}>
                 <h5 style={{ fontWeight: "bold" }} onClick={()=>console.log(product)}>{(product.price * data.quantity).toLocaleString()}원</h5>
@@ -295,7 +295,7 @@ const ShoppingDetail = () => {
                   </Button>
                 </Box>
               </quantityIcon>
-              <div className="orderArea">
+              <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
                 <Button sx={{ fontFamily: "NanumSquareRound", marginRight: "10px", width: "150px" }} variant="outlined" onClick={addCartItem}>
                   장바구니에 담기
                 </Button>
@@ -392,7 +392,8 @@ const ContentArea = styled.div`
 const ImgArea = styled.div``;
 
 const ProductImage = styled.img`
-  width: 400px;
+  max-width: 400px;
+  max-height: 600px;
 `;
 
 const DetailArea = styled.div``;
