@@ -1,15 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import styled from "styled-components";
 import { listProducts, DeleteProduct } from "../../../service/ProductService";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -51,32 +41,47 @@ const ProductList = () => {
     navigate(`/admin/addproduct`);
   };
 
-  const removeProduct = (id) => {
-    Swal.fire({
+  const removeProduct = async (id) => {
+    // 삭제 확인 알림 표시
+    const result = await Swal.fire({
       title: "정말 삭제하시겠습니까?",
       text: "삭제 시 돌이킬 수 없습니다.",
       icon: "warning",
-
-      showCancelButton: true, // false가 default
+      showCancelButton: true,
       confirmButtonColor: "#527853",
       cancelButtonColor: "#d33",
       confirmButtonText: "삭제",
       cancelButtonText: "취소",
       reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        DeleteProduct(id).then(()=>{
-          Swal.fire({
-            icon: "success",
-            title: "상품이 삭제 되었습니다.",
-            confirmButtonColor: "#527853",
-            confirmButtonText: "닫기",
-          }).then(() => {
-            getAllProducts();
-          });
+    });
+
+    // 사용자가 삭제를 확인한 경우
+    if (result.isConfirmed) {
+      try {
+        // 상품 삭제
+        await DeleteProduct(id);
+        // 삭제 성공 시 알림 표시
+        await Swal.fire({
+          icon: "success",
+          title: "삭제 성공",
+          text: "상품이 성공적으로 삭제되었습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+        // 페이지 새로고침
+        window.location.reload();
+      } catch (error) {
+        console.error("상품 삭제 실패:", error);
+        // 오류 발생 시 알림 표시
+        await Swal.fire({
+          icon: "error",
+          title: "삭제 실패",
+          text: "삭제 중 오류가 발생했습니다. 다시 시도해 주세요.",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "닫기",
         });
       }
-    });
+    }
   };
 
   //페이지네이션
@@ -166,17 +171,10 @@ const ProductList = () => {
                     {item.releaseStatus}
                   </TableCell>
                   <TableCell align="center" sx={{ width: "10rem" }}>
-                    <Button
-                      variant="contained"
-                      onClick={() => goUpdate(item.id)}
-                      sx={{ marginRight: "10px" }}
-                    >
+                    <Button variant="contained" onClick={() => goUpdate(item.id)} sx={{ marginRight: "10px" }}>
                       수정
                     </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={() => removeProduct(item.id)}
-                    >
+                    <Button variant="outlined" onClick={() => removeProduct(item.id)}>
                       삭제
                     </Button>
                   </TableCell>
@@ -189,11 +187,7 @@ const ProductList = () => {
         </Table>
       </TableContainer>
       <AddProductButton>
-        <Button
-          variant="contained"
-          sx={{ marginTop: "25px" }}
-          onClick={() => goAddProduct()}
-        >
+        <Button variant="contained" sx={{ marginTop: "25px" }} onClick={() => goAddProduct()}>
           상품 등록
         </Button>
       </AddProductButton>
