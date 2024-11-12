@@ -47,7 +47,7 @@ const getDatesForRevenue = (numDays = 5) => {
 };
 
 // 날짜 형식 변환 함수
-const getCurrentDate = (date) => {
+const getCurrentDate = (date = new Date()) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -75,7 +75,9 @@ export const TotalOrder = async () => {
 // 일일 주문
 export const DailyOrder = async () => {
   const datetime = getCurrentDate(); // 현재 날짜를 yyyy-MM-dd 형식으로 받음
-  const response = await AuthApi.get(`${REST_API_URL}/order/orderCount/${datetime}`);
+  console.log(datetime);
+
+  const response = await AuthApi.get(`/api/order/orderCount/${datetime}`);
   return response.data;
 };
 

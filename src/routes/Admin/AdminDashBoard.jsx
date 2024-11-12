@@ -60,10 +60,13 @@ export default function AdminDashBoard() {
     }
   };
 
+  DailyOrder();
+
   // 일일 주문수 저장하는 함수
   const fetchDailyOrder = async () => {
     try {
       const DailyOrderCount = await DailyOrder();
+      console.log("DailyOrderCount", DailyOrderCount);
       return DailyOrderCount; // 총 주문 수량 반환
     } catch (error) {
       console.error("Error fetching Daily Order:", error);
@@ -86,7 +89,7 @@ export default function AdminDashBoard() {
   const fetchDailyTotalPrice = async () => {
     try {
       const aDailyTotalPrice = await DailyTotalPrice();
-      return aDailyTotalPrice; // 주문수 만환
+      return aDailyTotalPrice; // 주문수 반환
     } catch (error) {
       console.error("Error fetching dailyTotalPrice:", error);
       return 0; // 에러 발생 시 기본값으로 0 반환
@@ -108,6 +111,7 @@ export default function AdminDashBoard() {
   const fetchDailyBoardCount = async () => {
     try {
       const aDailyBoardCount = await DailyBoardCount();
+      console.log(aDailyBoardCount);
       return aDailyBoardCount; // 게시물 등록수 반환
     } catch (error) {
       console.error("Error fetching daily BoardCount:", error);
@@ -130,42 +134,50 @@ export default function AdminDashBoard() {
     scrollTo(0, 0);
     const getDailyVisitors = async () => {
       const count = await fetchDailyVisitors(); // 일일 방문자 수 가져오기
+      console.log("일일 방문자 수:", count);
       setDailyVisitors(count); // 상태 업데이트
     };
 
     const getTotalVisitors = async () => {
       const count = await fetchTotalVisitors(); // 총 방문자 수 가져오기
+      console.log("총 방문자수:", count);
       setTotalVisitors(count); // 상태 업데이트
     };
 
     const getDailyOrders = async () => {
       const count = await fetchDailyOrder(); // 일일 주문 수 가져오기
+      console.log("일일 주문수:", count);
       setDailyorders(count);
     };
 
     const getTotalOrder = async () => {
       const count = await fetchTotalOrder(); // 총 방문자 수 가져오기
+      console.log("총 방문자 수:", count);
       setTotalOrder(count); // 상태 업데이트
     };
 
     const getDailyTotalPrice = async () => {
       const count = await fetchDailyTotalPrice();
       const formattedPrice = new Intl.NumberFormat("ko-KR").format(count);
+      console.log("일일 수입:", formattedPrice);
       setDailyTotalPrice(formattedPrice);
     };
 
     const getTotalPrice = async () => {
-      const count = await fetchTotalPrice(); // 총 방문자 수 가져오기
+      const count = await fetchTotalPrice(); // 총 수입 가져오기
+      console.log("총 수입:", count);
       setTotalPrice(count); // 상태 업데이트
     };
 
     const getDailyBoardCount = async () => {
       const count = await fetchDailyBoardCount(); // 일일 게시글 등록수 가져오기
+      console.log("게시물 등록수:", count);
       setDailyBoardCount(count);
     };
 
     const getTotalBoardCount = async () => {
       const count = await fetchTotalBoardCount(); // 총  게시글 등록수 가져오기
+      console.log("총게시물 등록수:", count);
       setTotalBoardCount(count); // 상태 업데이트
     };
 
