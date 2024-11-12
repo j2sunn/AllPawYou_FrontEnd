@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { listUsers, deleteUser } from "../../../service/UserService";
+import { listUsers, deleteUser, updateRole } from "../../../service/UserService";
 import styled from "styled-components";
-import { Button, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, MenuItem, Pagination, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaRegTrashAlt } from "react-icons/fa";
 import defaultProfile from "src/assets/defaultprofile.png";
+import Swal from "sweetalert2";
 
 const UserList = () => {
   const [users, setUsers] = useState([[]]);
@@ -51,6 +52,28 @@ const UserList = () => {
     setCurrentPage(page);
   };
 
+  function fetchRole(no, newRole) {
+    updateRole(no, newRole) // API 호출
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "권한을 변경했습니다.",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+        getAllUsers(); // 사용자 목록 새로고침
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "오류가 발생했습니다..",
+          confirmButtonColor: "#527853",
+          confirmButtonText: "닫기",
+        });
+        console.error(error);
+      });
+  }
+
   return (
     <>
       <Title>회원 관리</Title>
@@ -97,16 +120,26 @@ const UserList = () => {
                   borderBottom: "2px solid rgba(0,0,0,0.3)",
                 }}
               >
-                <TableCell align="center">
+                <TableCell align="center" sx={{ width: "5rem" }}>
                   <img
                     src={item?.profileImage && item?.profileImage !== "default" ? `http://localhost:8081${item.profileImage}` : defaultProfile}
                     style={{ width: "50px", height: "50px", borderRadius: "50%" }}
                   />
                 </TableCell>
-                <TableCell align="center">{item.username}</TableCell>
-                <TableCell align="center">{item.email}</TableCell>
-                <TableCell align="center">{item.role}</TableCell>
-                <TableCell align="center" onClick={() => removeUser(item.no)}>
+                <TableCell align="center" sx={{ width: "5rem" }}>
+                  {item.username}
+                </TableCell>
+                <TableCell align="center" sx={{ width: "15rem" }}>
+                  {item.email}
+                </TableCell>
+                <TableCell align="center">
+                  <Select value={item.role} onChange={(e) => fetchRole(item.no, e.target.value)} variant="outlined" sx={{ width: "10rem" }}>
+                    <MenuItem value="ROLE_USER">사용자</MenuItem>
+                    <MenuItem value="ROLE_SALER">판매자</MenuItem>
+                    <MenuItem value="ROLE_ADMIN">관리자</MenuItem>
+                  </Select>
+                </TableCell>
+                <TableCell align="center" onClick={() => removeUser(item.no)} sx={{ width: "10rem" }}>
                   <Button variant="contained" color="error">
                     <FaRegTrashAlt size="25" />
                   </Button>
