@@ -95,7 +95,7 @@ const Router = () => {
           <Route path="/shoppingDetail/:id" element={<ShoppingDetail />} />
           {/* 게시판 */}
           <Route path="/boardWrite" element={<BoardWrite />} />
-          <Route path="/board/:boardNo" element={<BoardDetail />} />
+          <Route path="/board/:boardNo/:userNo" element={<BoardDetail />} />
           <Route path="/temp" element={<Temp />} />
           <Route path="/boardList" element={<BoardList />} />
           <Route path="/boardUpdate" element={<BoardUpdate />} />
