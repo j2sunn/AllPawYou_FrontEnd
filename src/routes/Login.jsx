@@ -1,7 +1,5 @@
 import { Button, TextField } from "@mui/material";
 import styled from "styled-components";
-import { SiKakaotalk } from "react-icons/si";
-import { FcGoogle } from "react-icons/fc";
 import { login, fetchKakaoOAuth, autoLogin } from "../service/Login";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -16,12 +14,6 @@ const LoginContainer = styled.div`
 `;
 const Content = styled.div`
   padding: 20px 0;
-`;
-const Icons = styled.div`
-  margin: 2rem 0;
-  width: 10%;
-  display: flex;
-  justify-content: space-between;
 `;
 
 const Links = styled.a`
