@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadData, updateBoard } from "../service/BoardService";
 import styled from "styled-components";
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import Swal from "sweetalert2";
 const BoardUpdate = () => {
   //백업해둔 것!
@@ -254,7 +254,7 @@ const BoardUpdate = () => {
             <></>
           )}
 
-          <EndBtn onClick={doSubmit}>등록</EndBtn>
+          <Button variant="contained" onClick={doSubmit} sx={{marginBottom: '2rem', width: '5rem'}}>수정</Button>
         </Container>
       ) : (
         <></>
