@@ -257,14 +257,14 @@ const BoardDetail = () => {
 
   //댓글 수정 API 요청
   const updateComment = (onUpdateComment, onUpdateCommentNo) => {
-    if(onUpdateComment.trim().length == 0 ){
-        Swal.fire({
-            icon: "warning",
-            title: "내용이 없습니다.",
-            confirmButtonColor: "#527853",
-            confirmButtonText: "닫기",
-          });
-        return;
+    if (onUpdateComment.trim().length == 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "내용이 없습니다.",
+        confirmButtonColor: "#527853",
+        confirmButtonText: "닫기",
+      });
+      return;
     }
 
     axios
@@ -514,7 +514,7 @@ const BoardDetail = () => {
                 {commentData && commentData.length > 0 ? (
                   commentData.map((comments, ind) => (
                     <Comment key={ind}>
-                      <div style={{width: '80%'}}>
+                      <div style={{ width: "80%" }}>
                         {onUpdateCommentNo == comments.commentNo ? (
                           <>
                             {/* 수정중인 경우 */}
@@ -534,37 +534,42 @@ const BoardDetail = () => {
                             />
                           </>
                         ) : (
-                          <div style={{display: 'flex'}}>
+                          <div style={{ display: "flex", flexDirection: 'column' }}>
                             {/* 수정중이지 않은 경우 */}
                             {/* 댓글 작성자 프로필이미지 */}
                             <CommentWriter>
                               <img
+                                style={{ marginBlock: "1rem" }}
                                 src={
                                   comments.commentProfile != null
                                     ? `http://localhost:8081${comments.commentProfile}`
                                     : `http://localhost:8081/file/images/profile/defaultprofile.png`
                                 }
                               />
-                              {localStorage.getItem("no") != comments.no ? (
-                                <Button
-                                  variant="contained"
-                                  sx={{
-                                    fontSize: "1rem",
-                                    marginTop: "1rem",
-                                    marginLeft: "1rem",
-                                  }}
-                                >
-                                  쪽지
-                                </Button>
-                              ) : (
-                                <></>
-                              )}
-                                {comments.commentUsername}
+                              <div style={{display: 'flex', alignItems: 'center' }}>
+                                <div style={{fontSize: '1.2rem'}}>{comments.commentUsername}</div>
+                                {localStorage.getItem("no") != comments.no ? (
+                                  <Button
+                                    variant="contained"
+                                    onClick={goCreateMessage}
+                                    sx={{
+                                      fontSize: "1rem",
+                                      width: '3rem',
+                                      height: "2rem",
+                                      marginLeft: '1rem'
+                                    }}
+                                  >
+                                    쪽지
+                                  </Button>
+                                ) : (
+                                  <></>
+                                )}
+                              </div>
                             </CommentWriter>
 
                             {/* <p dangerouslySetInnerHTML={{ __html: boardData.boardContent.replace(/<s>/g, " ").replace(/<e>/g, "<br />") }} /> */}
-                            <div 
-                              style={{width: '80%'}}
+                            <div
+                              style={{ width: "100%" }}
                               dangerouslySetInnerHTML={{
                                 __html: comments.commentContent
                                   .replace(/<s>/g, " ")
@@ -596,7 +601,7 @@ const BoardDetail = () => {
                                 variant="contained"
                                 sx={{ fontSize: "1rem", marginTop: "1rem" }}
                                 onClick={() => {
-                                    setOnUpdateComment(comments.commentContent),
+                                  setOnUpdateComment(comments.commentContent),
                                     setOnUpdateCommentNo(comments.commentNo);
                                 }}
                               >
@@ -784,6 +789,7 @@ const Comments = styled.div`
   img {
     width: 60px;
     height: 60px;
+    margin-right: 1rem;
   }
   .commentBoxes {
     display: flex;
@@ -820,15 +826,12 @@ const Comment = styled.div`
 `;
 
 const CommentWriter = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-right: 1.5rem;
+  display: flex;
+  align-items: center;
 `;
 
 const Buttons = styled.div`
-    width: 100%;
+  width: 100%;
 `;
 
 const Error = styled.div`
