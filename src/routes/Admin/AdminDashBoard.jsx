@@ -264,9 +264,9 @@ export default function AdminDashBoard() {
               </Paper>
             </Grid> */}
 
-            <Barchart />
+            {/* <Barchart /> */}
 
-            {/* <LineChart /> */}
+            <LineChart />
 
             <Piechart />
 
@@ -313,7 +313,7 @@ export default function AdminDashBoard() {
                           borderBottom: "2px solid rgba(0,0,0,0.3)",
                         }}
                       >
-                        <TableCell sx={{ height: "70px" }}>누적 접속횟수</TableCell>
+                        <TableCell sx={{ height: "85px" }}>누적 접속횟수</TableCell>
                         <TableCell>{totalVisitors}</TableCell>
                       </TableRow>
 
