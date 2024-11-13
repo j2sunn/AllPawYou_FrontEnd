@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box, FormControl, Grid, InputLabel, MenuItem, Paper, Select } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Grid, Paper } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 import axios from "axios";
 

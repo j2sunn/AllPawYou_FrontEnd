@@ -70,6 +70,7 @@ const LineChart = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          minHeight: "600px",
         }}
       >
         <Box>

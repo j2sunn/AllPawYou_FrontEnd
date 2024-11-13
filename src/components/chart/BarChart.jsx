@@ -13,30 +13,34 @@ const Barchart = () => {
 
   const fetchDailyOrders = async (dates) => {
     const dailyOrders = await graphDailyOrder(dates);
+    console.log(dailyOrders);
     const formattedData = dailyOrders.map((order) => ({
       date: order.date,
       count: order.count,
     }));
     const reversedData = formattedData.reverse();
-    setData(reversedData);
+    setData("orders", reversedData);
   };
 
   const fetchDailyBoardCount = async (dates) => {
     const dailyBoardCounts = await graphDailyBoardCount(dates);
+    console.log(dailyBoardCounts);
     const formattedData = dailyBoardCounts.map((board) => ({
       date: board.date,
       count: board.count,
     }));
     const reversedData = formattedData.reverse();
-    setBoardData(reversedData);
+    setBoardData("Board", reversedData);
   };
 
   const fetchDailyTotalPrice = async (dates) => {
     const dailyTotalPrices = await graphDailyTotalPrice(dates);
+    console.log("Price", dailyTotalPrices);
     const formattedData = dailyTotalPrices.map((price) => ({
       date: price.date,
       totalPrice: price.totalPrice,
     }));
+    console.log(formattedData);
     const reversedData = formattedData.reverse();
     setTotalPriceData(reversedData);
   };
